@@ -93,6 +93,7 @@ git checkout main
 git pull origin main
 
 git checkout BaoVy
+git merge main (dùng để merge với main, cân nhắc khi dùng nhe, ví dụ git checkout lần dầu thì phải merge nhe)
 
 # Coding...
 
@@ -110,6 +111,7 @@ git checkout main
 git pull origin main
 
 git checkout ThanhThanh
+git merge main (dùng để merge với main, cân nhắc khi dùng nhe, ví dụ git checkout lần dầu thì phải merge nhe)
 
 # Coding...
 
@@ -127,6 +129,7 @@ git checkout main
 git pull origin main
 
 git checkout HongHanh
+git merge main (dùng để merge với main, cân nhắc khi dùng nhe, ví dụ git checkout lần dầu thì phải merge nhe)
 
 # Coding...
 
@@ -144,6 +147,7 @@ git checkout main
 git pull origin main
 
 git checkout HoangDuc
+git merge main (dùng để merge với main, cân nhắc khi dùng nhe, ví dụ git checkout lần dầu thì phải merge nhe)
 
 # Coding...
 
@@ -161,6 +165,7 @@ git checkout main
 git pull origin main
 
 git checkout TrungNhan
+git merge main (dùng để merge với main, cân nhắc khi dùng nhe, ví dụ git checkout lần dầu thì phải merge nhe)
 
 # Coding...
 
