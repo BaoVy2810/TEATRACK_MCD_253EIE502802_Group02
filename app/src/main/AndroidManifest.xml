@@ -12,6 +12,103 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02">
         <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.NavBarClient"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.NavBarAdmin"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.HeaderAdmin"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.HeaderClient"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.ChatbotBubble"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.ContactWithUs"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.FilledOTP"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.BlogDetail"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.BlogGeneral"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.AboutUsActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.AboutUs"
+            android:exported="false"
+            android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.Payment"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.Checkout"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.Cart"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.ProductDetail"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.Menu"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.PageNotFound"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.OrderTracking"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.OrderHistory"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.UserProfile"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.ForgotPassword"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminOrders"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminPromotion"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminComplaints"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminBlog"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminAgency"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.Agency"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminProduct"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminProfile"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminAccount"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name="com.teatrack_mcd_253eie502802_group02.client.Homepage"
             android:exported="false" />
         <activity
