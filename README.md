@@ -93,7 +93,6 @@ git checkout main
 git pull origin main
 
 git checkout BaoVy
-git merge main
 
 # Coding...
 
@@ -111,7 +110,6 @@ git checkout main
 git pull origin main
 
 git checkout ThanhThanh
-git merge main
 
 # Coding...
 
@@ -129,7 +127,6 @@ git checkout main
 git pull origin main
 
 git checkout HongHanh
-git merge main
 
 # Coding...
 
@@ -147,7 +144,6 @@ git checkout main
 git pull origin main
 
 git checkout HoangDuc
-git merge main
 
 # Coding...
 
@@ -165,7 +161,6 @@ git checkout main
 git pull origin main
 
 git checkout TrungNhan
-git merge main
 
 # Coding...
 
