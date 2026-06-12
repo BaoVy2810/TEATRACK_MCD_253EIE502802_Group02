@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02">
         <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.client.Homepage"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.Ad"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
