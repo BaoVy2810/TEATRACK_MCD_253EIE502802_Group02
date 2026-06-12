@@ -22,80 +22,9 @@ https://github.com/BaoVy2810/TEATRACK_MCD_253EIE502802_Group02
 
 ---
 
-# 📂 Project Structure
+# 🚀 First Time Setup
 
-```text
-app/src/main/java/com/teatrack/
-
-├── client/
-│   ├── auth/
-│   ├── home/
-│   ├── product/
-│   ├── checkout/
-│   ├── profile/
-│   ├── tracking/
-│   ├── content/
-│   └── error/
-│
-├── admin/
-│   ├── auth/
-│   ├── dashboard/
-│   ├── account/
-│   ├── product/
-│   ├── content/
-│   ├── support/
-│   └── error/
-│
-└── shared/
-    ├── model/
-    ├── api/
-    ├── utils/
-    └── ui/
-
-app/src/main/res/
-
-├── drawable/
-│   └── icons/
-│
-├── layout/
-│   ├── client/
-│   └── admin/
-│
-└── values/
-    ├── colors_client.xml
-    ├── colors_admin.xml
-    └── styles.xml
-```
-
----
-
-# 👨‍💻 Task Assignment
-
-| Folder          | Member      | Responsibility                        |
-| --------------- | ----------- | ------------------------------------- |
-| client/auth     | Thanh Thanh | Login, Register, Forgot Password, OTP |
-| client/profile  | Thanh Thanh | User Profile, Order History           |
-| client/tracking | Thanh Thanh | Order Tracking                        |
-| client/home     | Bảo Vy      | Home Page, Menu                       |
-| client/product  | Bảo Vy      | Product Detail, Cart                  |
-| client/checkout | Bảo Vy      | Checkout, Payment                     |
-| client/content  | Hồng Hạnh   | About Us, Agency, Blog, Contact       |
-| client/error    | Hồng Hạnh   | Client 404                            |
-| shared/ui       | Hồng Hạnh   | Header, Footer, Chatbot               |
-| admin/auth      | Hoàng Đức   | Admin Login                           |
-| admin/dashboard | Hoàng Đức   | Dashboard                             |
-| admin/account   | Hoàng Đức   | Admin Account & Profile               |
-| admin/product   | Hoàng Đức   | Product Management, Orders            |
-| admin/content   | Trung Nhân  | Agency, Blog, Promotion               |
-| admin/support   | Trung Nhân  | Contact & Complaints                  |
-| admin/error     | Trung Nhân  | Admin 404                             |
-| shared/model    | Bảo Vy      | Models                                |
-| shared/api      | Bảo Vy      | Retrofit, API Services                |
-| shared/utils    | Bảo Vy      | Utilities, Constants                  |
-
----
-
-# 🚀 Clone Repository
+Clone repository:
 
 ```bash
 git clone https://github.com/BaoVy2810/TEATRACK_MCD_253EIE502802_Group02.git
@@ -103,39 +32,37 @@ git clone https://github.com/BaoVy2810/TEATRACK_MCD_253EIE502802_Group02.git
 cd TEATRACK_MCD_253EIE502802_Group02
 ```
 
----
+Tạo branch cá nhân (chỉ làm một lần):
 
-# 🌱 Create Personal Branch (First Time Only)
-
-Ví dụ với Bảo Vy:
+### Bảo Vy
 
 ```bash
 git checkout -b BaoVy
 git push -u origin BaoVy
 ```
 
-Ví dụ với Hoàng Đức:
-
-```bash
-git checkout -b HoangDuc
-git push -u origin HoangDuc
-```
-
-Ví dụ với Thanh Thanh:
+### Thanh Thanh
 
 ```bash
 git checkout -b ThanhThanh
 git push -u origin ThanhThanh
 ```
 
-Ví dụ với Hồng Hạnh:
+### Hồng Hạnh
 
 ```bash
 git checkout -b HongHanh
 git push -u origin HongHanh
 ```
 
-Ví dụ với Trung Nhân:
+### Hoàng Đức
+
+```bash
+git checkout -b HoangDuc
+git push -u origin HoangDuc
+```
+
+### Trung Nhân
 
 ```bash
 git checkout -b TrungNhan
@@ -144,30 +71,22 @@ git push -u origin TrungNhan
 
 ---
 
-# 🔄 Update Latest Code
+# 👨‍💻 Daily Workflow
 
-Trước khi bắt đầu code mỗi ngày:
+Mỗi lần bắt đầu làm việc:
 
-```bash
-git checkout main
-git pull origin main
-```
-
----
-
-# 🌿 Switch To Your Branch
-
-Ví dụ:
-
-```bash
-git checkout BaoVy
-```
+1. Cập nhật `main`
+2. Chuyển sang branch cá nhân
+3. Đồng bộ branch cá nhân với `main`
+4. Coding
+5. Commit
+6. Push lên branch cá nhân
 
 ---
 
-# 🔁 Sync Branch With Main
+# 🍵 Quick Copy For Each Member
 
-Đồng bộ branch cá nhân với nhánh chính:
+## Dành cho Bảo Vy
 
 ```bash
 git checkout main
@@ -175,112 +94,6 @@ git pull origin main
 
 git checkout BaoVy
 git merge main
-```
-
-Nếu có conflict:
-
-```bash
-git add .
-git commit -m "Resolve merge conflict"
-```
-
----
-
-# 💻 Coding
-
-Sau khi đã sync branch:
-
-```bash
-git checkout BaoVy
-```
-
-Bắt đầu code các chức năng được phân công.
-
----
-
-# ✅ Commit Changes
-
-Kiểm tra file thay đổi:
-
-```bash
-git status
-```
-
-Add toàn bộ file:
-
-```bash
-git add .
-```
-
-Commit:
-
-```bash
-git commit -m "Add product detail screen"
-```
-
-Ví dụ:
-
-```bash
-git commit -m "Update checkout screen"
-git commit -m "Add admin dashboard"
-git commit -m "Fix login validation"
-```
-
----
-
-# ☁️ Push To Personal Branch
-
-Ví dụ:
-
-```bash
-git push origin BaoVy
-```
-
----
-
-# 🔀 Create Pull Request
-
-Sau khi hoàn thành chức năng:
-
-1. Push branch lên GitHub
-2. Vào repository
-3. Chọn **Compare & Pull Request**
-4. Base Branch = `main`
-5. Compare Branch = branch cá nhân
-6. Tạo Pull Request
-
-Ví dụ:
-
-```text
-main ← BaoVy
-```
-
----
-
-# 🔒 Merge To Main
-
-Chỉ Leader hoặc người được phân quyền thực hiện.
-
-```bash
-git checkout main
-git pull origin main
-
-git merge BaoVy
-
-git push origin main
-```
-
-Hoặc merge trực tiếp trên GitHub thông qua Pull Request.
-
----
-
-# ⚡ Quick Workflow
-
-```bash
-git checkout main
-git pull origin main
-
-git checkout BaoVy
 
 # Coding...
 
@@ -288,6 +101,129 @@ git add .
 git commit -m "Update home screen"
 git push origin BaoVy
 ```
+
+---
+
+## Dành cho Thanh Thanh
+
+```bash
+git checkout main
+git pull origin main
+
+git checkout ThanhThanh
+git merge main
+
+# Coding...
+
+git add .
+git commit -m "Update login screen"
+git push origin ThanhThanh
+```
+
+---
+
+## Dành cho Hồng Hạnh
+
+```bash
+git checkout main
+git pull origin main
+
+git checkout HongHanh
+git merge main
+
+# Coding...
+
+git add .
+git commit -m "Update about us screen"
+git push origin HongHanh
+```
+
+---
+
+## Dành cho Hoàng Đức
+
+```bash
+git checkout main
+git pull origin main
+
+git checkout HoangDuc
+git merge main
+
+# Coding...
+
+git add .
+git commit -m "Update admin dashboard"
+git push origin HoangDuc
+```
+
+---
+
+## Dành cho Trung Nhân
+
+```bash
+git checkout main
+git pull origin main
+
+git checkout TrungNhan
+git merge main
+
+# Coding...
+
+git add .
+git commit -m "Update promotion management"
+git push origin TrungNhan
+```
+
+---
+
+# 🔀 Merge Workflow
+
+Sau khi hoàn thành chức năng:
+
+* Thành viên chỉ cần push lên branch cá nhân.
+* Báo Leader để merge vào `main`.
+
+Ví dụ:
+
+> "Em đã push branch của em xong, nhờ Leader merge giúp."
+
+---
+
+## Leader Merge
+
+```bash
+git checkout main
+git pull origin main
+
+git merge BaoVy
+git merge ThanhThanh
+git merge HongHanh
+git merge HoangDuc
+git merge TrungNhan
+
+git push origin main
+```
+
+---
+
+# ✅ Pull Request (Optional)
+
+Nếu nhóm muốn theo workflow chuẩn GitHub:
+
+1. Push branch cá nhân.
+2. Vào GitHub Repository.
+3. Chọn **Compare & Pull Request**.
+4. Base Branch = `main`.
+5. Compare Branch = branch cá nhân.
+6. Leader review và merge.
+
+Ví dụ:
+
+```text
+main ← BaoVy
+```
+
+> Đối với đồ án môn học, Pull Request không bắt buộc nếu Leader merge thủ công.
 
 ---
 
@@ -309,13 +245,13 @@ git push origin BaoVy
 
 ✅ Pull `main` trước khi code
 
+✅ Merge `main` vào branch cá nhân trước khi bắt đầu
+
 ✅ Commit message rõ ràng
 
 ✅ Push lên branch cá nhân
 
-✅ Tạo Pull Request trước khi merge
-
-✅ Đặt đúng package và folder được phân công
+✅ Báo Leader sau khi hoàn thành chức năng
 
 ✅ Đồng bộ branch với `main` thường xuyên
 
@@ -325,15 +261,13 @@ git push origin BaoVy
 
 ❌ Không sửa module của thành viên khác khi chưa trao đổi
 
-❌ Không đổi cấu trúc project khi chưa thống nhất nhóm
-
-❌ Không commit file build hoặc APK
+❌ Không commit file build, APK hoặc thư mục `build/`
 
 ---
 
 # 🎯 Team Goal
 
-* Hoàn thành đúng chức năng được phân công
-* Hạn chế conflict khi merge code
-* Tuân thủ Git Workflow của nhóm
-* Giữ cấu trúc project rõ ràng, dễ bảo trì
+* Hoàn thành đúng chức năng được phân công.
+* Hạn chế conflict khi merge code.
+* Tuân thủ Git Workflow của nhóm.
+* Giữ cấu trúc project rõ ràng, dễ bảo trì.
