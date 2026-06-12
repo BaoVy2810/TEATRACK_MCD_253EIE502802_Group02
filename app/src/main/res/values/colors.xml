@@ -2,4 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="brand_blue">#0088FF</color>
+    <color name="brand_teal">#8DF1E3</color>
+    <color name="nav_inactive">#2C3E50</color>
+    <color name="screen_background">#F2F9FE</color>
+    <color name="card_shadow">#1A000000</color>
+    <color name="darkgreen">#006F65</color>
 </resources>
