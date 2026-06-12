@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="tablet_horizontal_margin">24dp</dimen>
+    <dimen name="header_height">72dp</dimen>
+    <dimen name="header_corner_radius">20dp</dimen>
+    <dimen name="header_elevation">6dp</dimen>
+    <dimen name="header_icon_size">28dp</dimen>
+    <dimen name="header_profile_size">44dp</dimen>
+    <dimen name="header_logo_height">48dp</dimen>
+
+    <dimen name="nav_bar_height">88dp</dimen>
+    <dimen name="nav_bar_corner_radius">20dp</dimen>
+    <dimen name="nav_bar_elevation">6dp</dimen>
+    <dimen name="nav_item_icon_size">24dp</dimen>
+    <dimen name="nav_item_text_size">12sp</dimen>
+    <dimen name="nav_item_padding_vertical">10dp</dimen>
+    <dimen name="nav_item_padding_horizontal">8dp</dimen>
+</resources>

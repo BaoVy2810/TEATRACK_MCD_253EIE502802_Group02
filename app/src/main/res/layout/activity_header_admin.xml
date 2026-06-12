@@ -5,6 +5,76 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.teatrack_mcd_253eie502802_group02.admin.HeaderAdmin">
+    android:background="@color/screen_background"
+    tools:context="com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderAdmin">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/header_admin"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/header_height"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="@dimen/header_elevation"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.BottomRounded"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="20dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:id="@+id/img_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/header_logo_height"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/logo_ngo_gia"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <FrameLayout
+                android:id="@+id/btn_profile"
+                android:layout_width="@dimen/header_profile_size"
+                android:layout_height="@dimen/header_profile_size"
+                android:background="@drawable/bg_profile_circle"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/nav_account"
+                    android:src="@drawable/user"
+                    app:tint="@color/darkgreen" />
+            </FrameLayout>
+
+            <ImageButton
+                android:id="@+id/btn_notification"
+                android:layout_width="@dimen/header_profile_size"
+                android:layout_height="@dimen/header_profile_size"
+                android:layout_marginEnd="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/nav_feedbacks"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/bell"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_profile"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/brand_blue" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

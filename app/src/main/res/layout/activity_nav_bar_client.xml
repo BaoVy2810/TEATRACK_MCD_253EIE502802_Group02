@@ -5,6 +5,101 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.teatrack_mcd_253eie502802_group02.client.NavBarClient">
+    android:background="@color/screen_background"
+    tools:context="com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarClient">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/nav_bar_client"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/design_default_color_background"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="@dimen/nav_bar_elevation"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.TopRounded"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:id="@+id/nav_dashboard"
+                style="@style/NavBarItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/nav_dashboard_icon"
+                    style="@style/NavBarIcon"
+                    android:contentDescription="@string/nav_dashboard"
+                    android:src="@drawable/chart" />
+
+                <TextView
+                    android:id="@+id/nav_dashboard_label"
+                    style="@style/NavBarLabel"
+                    android:text="@string/nav_dashboard" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/nav_products"
+                style="@style/NavBarItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/nav_products_icon"
+                    style="@style/NavBarIcon"
+                    android:contentDescription="@string/nav_products"
+                    android:src="@drawable/bag1" />
+
+                <TextView
+                    android:id="@+id/nav_products_label"
+                    style="@style/NavBarLabel"
+                    android:text="@string/nav_products" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/nav_orders"
+                style="@style/NavBarItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/nav_orders_icon"
+                    style="@style/NavBarIcon"
+                    android:contentDescription="@string/nav_orders"
+                    android:src="@drawable/cart" />
+
+                <TextView
+                    android:id="@+id/nav_orders_label"
+                    style="@style/NavBarLabel"
+                    android:text="@string/nav_orders" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/nav_account"
+                style="@style/NavBarItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/nav_account_icon"
+                    style="@style/NavBarIcon"
+                    android:contentDescription="@string/nav_account"
+                    android:src="@drawable/users" />
+
+                <TextView
+                    android:id="@+id/nav_account_label"
+                    style="@style/NavBarLabel"
+                    android:text="@string/nav_account" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

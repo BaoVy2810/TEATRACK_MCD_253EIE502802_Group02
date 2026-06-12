@@ -12,16 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02">
         <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.NavBarClient"
+            android:name="com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarClient"
             android:exported="false" />
         <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.NavBarAdmin"
+            android:name="com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarAdmin"
             android:exported="false" />
         <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.HeaderAdmin"
+            android:name="com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderAdmin"
             android:exported="false" />
         <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.HeaderClient"
+            android:name="com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderClient"
             android:exported="false" />
         <activity
             android:name="com.teatrack_mcd_253eie502802_group02.client.ChatbotBubble"

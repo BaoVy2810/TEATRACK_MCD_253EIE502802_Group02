@@ -6,4 +6,42 @@
     </style>
 
     <style name="Theme.TEATRACK_MCD_253EIE502802_Group02" parent="Base.Theme.TEATRACK_MCD_253EIE502802_Group02" />
+
+    <style name="NavBarItem">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_nav_item_selector</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingHorizontal">@dimen/nav_item_padding_horizontal</item>
+        <item name="android:paddingVertical">@dimen/nav_item_padding_vertical</item>
+    </style>
+
+    <style name="NavBarIcon">
+        <item name="android:layout_width">@dimen/nav_item_icon_size</item>
+        <item name="android:layout_height">@dimen/nav_item_icon_size</item>
+        <item name="android:tint">@color/nav_inactive</item>
+    </style>
+
+    <style name="NavBarLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">@color/nav_inactive</item>
+        <item name="android:textSize">@dimen/nav_item_text_size</item>
+    </style>
+    <style name="ShapeAppearance.BottomRounded" parent="">
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomLeft">@dimen/nav_bar_corner_radius</item>
+        <item name="cornerSizeBottomRight">@dimen/nav_bar_corner_radius</item>
+    </style>
+
+    <style name="ShapeAppearance.TopRounded" parent="">
+        <item name="cornerSizeTopLeft">@dimen/nav_bar_corner_radius</item>
+        <item name="cornerSizeTopRight">@dimen/nav_bar_corner_radius</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
 </resources>
