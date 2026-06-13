@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.client.BlogGeneral;
 import com.teatrack_mcd_253eie502802_group02.client.Homepage;
 import com.teatrack_mcd_253eie502802_group02.client.Menu;
 import com.teatrack_mcd_253eie502802_group02.client.OrderHistory;
@@ -19,10 +20,11 @@ import com.teatrack_mcd_253eie502802_group02.client.UserProfile;
 public class NavBarClient extends AppCompatActivity {
 
     private static final int[] NAV_ITEM_IDS = {
-            R.id.nav_dashboard,
-            R.id.nav_products,
+            R.id.nav_home,
+            R.id.nav_menu,
             R.id.nav_orders,
-            R.id.nav_account
+            R.id.nav_promotion,
+            R.id.nav_profile
     };
 
     @Override
@@ -36,7 +38,7 @@ public class NavBarClient extends AppCompatActivity {
             return insets;
         });
 
-        NavBarHelper.setupNavBar(this, NAV_ITEM_IDS, R.id.nav_dashboard, this::onNavItemClicked);
+        NavBarHelper.setupNavBar(this, NAV_ITEM_IDS, R.id.nav_home, this::onNavItemClicked);
     }
 
     private void onNavItemClicked(View view) {
@@ -46,13 +48,15 @@ public class NavBarClient extends AppCompatActivity {
 
         Class<?> destination = null;
         int id = view.getId();
-        if (id == R.id.nav_dashboard) {
+        if (id == R.id.nav_home) {
             destination = Homepage.class;
-        } else if (id == R.id.nav_products) {
+        } else if (id == R.id.nav_menu) {
             destination = Menu.class;
         } else if (id == R.id.nav_orders) {
             destination = OrderHistory.class;
-        } else if (id == R.id.nav_account) {
+        } else if (id == R.id.nav_promotion) {
+            destination = BlogGeneral.class;
+        } else if (id == R.id.nav_profile) {
             destination = UserProfile.class;
         }
 

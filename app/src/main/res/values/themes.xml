@@ -31,6 +31,14 @@
         <item name="android:textColor">@color/nav_inactive</item>
         <item name="android:textSize">@dimen/nav_item_text_size</item>
     </style>
+
+    <style name="HomeSectionTitle">
+        <item name="android:textColor">#E00000</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:paddingBottom">10dp</item>
+    </style>
     <style name="ShapeAppearance.BottomRounded" parent="ShapeAppearance.Material3.MediumComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">0dp</item>
