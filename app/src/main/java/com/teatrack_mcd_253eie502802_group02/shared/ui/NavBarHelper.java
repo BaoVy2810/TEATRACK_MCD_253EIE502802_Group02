@@ -31,7 +31,6 @@ public final class NavBarHelper {
         item.setSelected(selected);
         int color = ContextCompat.getColor(context, selected ? R.color.white : R.color.nav_inactive);
 
-        // Set background: blue rounded when selected, transparent when not
         if (selected) {
             item.setBackground(ResourcesCompat.getDrawable(
                     context.getResources(), R.drawable.nav_item_background, context.getTheme()));

@@ -13,7 +13,6 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/header_height"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="0dp"
         app:cardElevation="@dimen/header_elevation"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.BottomRounded"
         app:layout_constraintEnd_toEndOf="parent"
