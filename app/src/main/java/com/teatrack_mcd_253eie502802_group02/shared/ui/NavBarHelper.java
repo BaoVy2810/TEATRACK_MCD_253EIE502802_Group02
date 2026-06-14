@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import com.example.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.R;
 
 public final class NavBarHelper {
 
