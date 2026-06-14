@@ -33,7 +33,7 @@ public class CategoryProductData {
 
     private static List<Product> teaLatteProducts() {
         List<Product> list = new ArrayList<>();
-        list.add(new Product("Sữa Tươi Khoai Môn Nghiền", R.mipmap.suatuoikhoaimon, 4.9f, "1k", "25.000", "29.000", "22.000", "26.000"));
+        list.add(new Product("Sữa Tươi Khoai Môn Nghiền", R.mipmap.suatuoikhoaimonnghien, 4.9f, "1k", "25.000", "29.000", "22.000", "26.000"));
         list.add(new Product("Ô Long Latte", R.mipmap.olonglatte, 4.9f, "1k", "24.000", "28.000", "21.000", "25.000"));
         list.add(new Product("Sữa Tươi Trân Châu Đường Đen", R.mipmap.trasuatranchauduongden, 4.9f, "1k", "26.000", "30.000", "23.000", "27.000"));
         return list;
@@ -42,7 +42,7 @@ public class CategoryProductData {
     private static List<Product> milkTeaProducts() {
         List<Product> list = new ArrayList<>();
         list.add(new Product("Trà Sữa Trân Châu", R.mipmap.trasuatranchauduongden, 4.9f, "1k", "20.000", "24.000", "20.000", "24.000"));
-        list.add(new Product("Trà Sữa Khoai Môn", R.mipmap.suatuoikhoaimon, 4.9f, "1k", "22.000", "26.000", "22.000", "26.000"));
+        list.add(new Product("Trà Sữa Khoai Môn", R.mipmap.trasuakhoaimonnghien, 4.9f, "1k", "22.000", "26.000", "22.000", "26.000"));
         list.add(new Product("Trà Sữa Ô Long", R.mipmap.olonglatte, 4.9f, "1k", "21.000", "25.000", "21.000", "25.000"));
         return list;
     }

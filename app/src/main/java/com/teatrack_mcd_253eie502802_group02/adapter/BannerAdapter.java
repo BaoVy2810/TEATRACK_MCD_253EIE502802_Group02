@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
-import com.example.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.R;
 
 import java.util.List;
 
