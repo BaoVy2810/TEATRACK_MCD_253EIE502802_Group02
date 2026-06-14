@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/screen_background"
     tools:context="com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderClient">
 

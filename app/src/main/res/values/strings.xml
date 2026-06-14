@@ -8,7 +8,6 @@
     <string name="nav_forum">Forum</string>
     <string name="nav_branch">Branch</string>
     <string name="nav_feedbacks">Feedbacks</string>
-    <string name="nav_promotion">Promotion</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -48,4 +47,38 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="nav_home">Home</string>
+    <string name="nav_menu">Menu</string>
+    <string name="nav_promotion">Promotion</string>
+    <string name="nav_profile">Profile</string>
+    <string name="str_search_hint">Find products...</string>
+    <string name="home_search">Search</string>
+    <string name="home_our_beverages">OUR BEVERAGES</string>
+    <string name="home_beverage_description">Special beverage creations that blend premium pure tea with rich milk and a signature hint of salt, offering a creative twist on a familiar favorite.</string>
+    <string name="home_featured_products">FEATURED PRODUCTS</string>
+    <string name="home_exciting_promotions">EXCITING PROMOTIONS</string>
+    <string name="home_whats_new">WHAT\'S NEW</string>
+    <string name="home_price_medium">M</string>
+    <string name="home_price_large">L</string>
+    <string name="home_vip_badge">VIP</string>
+    <string name="home_rating_suffix">rating</string>
+    <string name="firebase_collection_products">products</string>
+    <string name="firebase_collection_blogs">blogs</string>
+    <string name="firebase_collection_vouchers">vouchers</string>
+    <string name="firebase_field_id">id</string>
+    <string name="firebase_field_name">name</string>
+    <string name="firebase_field_title">title</string>
+    <string name="firebase_field_image">image</string>
+    <string name="firebase_field_price">price</string>
+    <string name="firebase_field_price_l">priceL</string>
+    <string name="firebase_field_vip_price_m">vipPriceM</string>
+    <string name="firebase_field_vip_price_l">vipPriceL</string>
+    <string name="firebase_field_category">category</string>
+    <string name="firebase_field_date">date</string>
+    <string name="pure_tea">Pure Tea</string>
+    <string name="tea_latte">Tea Latte</string>
+    <string name="milk_tea">Milk Tea</string>
+    <string name="new_arrivals">New Arrivals</string>
+    <string name="best_sellers">Best Sellers</string>
+    <string name="fruit_tea">Fruit Tea</string>
 </resources>

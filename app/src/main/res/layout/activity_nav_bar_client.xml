@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/screen_background"
     tools:context="com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarClient">
 
@@ -27,39 +27,39 @@
             android:padding="8dp">
 
             <LinearLayout
-                android:id="@+id/nav_dashboard"
+                android:id="@+id/nav_home"
                 style="@style/NavBarItem"
                 android:layout_width="0dp"
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/nav_dashboard_icon"
+                    android:id="@+id/nav_home_icon"
                     style="@style/NavBarIcon"
-                    android:contentDescription="@string/nav_dashboard"
-                    android:src="@drawable/chart" />
+                    android:contentDescription="@string/nav_home"
+                    android:src="@drawable/home" />
 
                 <TextView
-                    android:id="@+id/nav_dashboard_label"
+                    android:id="@+id/nav_home_label"
                     style="@style/NavBarLabel"
-                    android:text="@string/nav_dashboard" />
+                    android:text="@string/nav_home" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/nav_products"
+                android:id="@+id/nav_menu"
                 style="@style/NavBarItem"
                 android:layout_width="0dp"
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/nav_products_icon"
+                    android:id="@+id/nav_menu_icon"
                     style="@style/NavBarIcon"
-                    android:contentDescription="@string/nav_products"
-                    android:src="@drawable/bag1" />
+                    android:contentDescription="@string/nav_menu"
+                    android:src="@drawable/burger" />
 
                 <TextView
                     android:id="@+id/nav_products_label"
                     style="@style/NavBarLabel"
-                    android:text="@string/nav_products" />
+                    android:text="@string/nav_menu" />
             </LinearLayout>
 
             <LinearLayout
@@ -72,30 +72,47 @@
                     android:id="@+id/nav_orders_icon"
                     style="@style/NavBarIcon"
                     android:contentDescription="@string/nav_orders"
-                    android:src="@drawable/cart" />
+                    android:src="@drawable/bag1" />
 
                 <TextView
                     android:id="@+id/nav_orders_label"
                     style="@style/NavBarLabel"
                     android:text="@string/nav_orders" />
             </LinearLayout>
-
             <LinearLayout
-                android:id="@+id/nav_account"
+                android:id="@+id/nav_promotion"
                 style="@style/NavBarItem"
                 android:layout_width="0dp"
                 android:layout_weight="1">
 
                 <ImageView
-                    android:id="@+id/nav_account_icon"
+                    android:id="@+id/nav_promotion_icon"
                     style="@style/NavBarIcon"
-                    android:contentDescription="@string/nav_account"
-                    android:src="@drawable/users" />
+                    android:contentDescription="@string/nav_promotion"
+                    android:src="@drawable/coupon1" />
 
                 <TextView
-                    android:id="@+id/nav_account_label"
+                    android:id="@+id/nav_promotion_label"
                     style="@style/NavBarLabel"
-                    android:text="@string/nav_account" />
+                    android:text="@string/nav_promotion" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/nav_profile"
+                style="@style/NavBarItem"
+                android:layout_width="0dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/nav_profile_icon"
+                    style="@style/NavBarIcon"
+                    android:contentDescription="@string/nav_profile"
+                    android:src="@drawable/user" />
+
+                <TextView
+                    android:id="@+id/nav_profile_label"
+                    style="@style/NavBarLabel"
+                    android:text="@string/nav_profile" />
             </LinearLayout>
 
         </LinearLayout>

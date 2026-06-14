@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="darkgreen">#006F65</color>
+    <color name="Red">#D11515</color>
+    <color name="bg_baby_blue">#F2F9FE</color>
+    <color name="Gray">#8D8D8D</color>
 </resources>
