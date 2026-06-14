@@ -8,7 +8,7 @@
     <dimen name="header_profile_size">44dp</dimen>
     <dimen name="header_logo_height">48dp</dimen>
 
-    <dimen name="nav_bar_height">88dp</dimen>
+    <dimen name="nav_bar_height">72dp</dimen>
     <dimen name="nav_bar_corner_radius">20dp</dimen>
     <dimen name="nav_bar_elevation">6dp</dimen>
     <dimen name="nav_item_icon_size">24dp</dimen>

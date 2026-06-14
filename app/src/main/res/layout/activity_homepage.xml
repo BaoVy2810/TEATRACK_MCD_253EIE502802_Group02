@@ -5,6 +5,434 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_baby_blue"
     tools:context="com.teatrack_mcd_253eie502802_group02.client.Homepage">
 
+    <include
+        android:id="@+id/headerClient"
+        layout="@layout/activity_header_client"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/navBarClient"
+        layout="@layout/activity_nav_bar_client"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/homeScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toTopOf="@id/navBarClient"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerClient">
+
+        <LinearLayout
+            android:id="@+id/homeContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="18dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/searchBar"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:contentDescription="@string/home_search"
+                        android:src="@drawable/search"
+                        app:tint="@color/brand_blue" />
+
+                    <EditText
+                        android:id="@+id/edtSearch"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="@string/str_search_hint"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textColor="@color/nav_inactive"
+                        android:textColorHint="@color/brand_blue"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="142dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="14dp">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPagerBanners"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:visibility="gone" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgBannerPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Banner"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/banner1"
+                    android:visibility="gone"
+                    app:shapeAppearanceOverlay="@style/RoundedBanner"
+                    tools:visibility="visible" />
+
+                <LinearLayout
+                    android:id="@+id/layoutDots"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:id="@+id/dot1"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/dot_shape" />
+
+                    <View
+                        android:id="@+id/dot2"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/dot_shape" />
+
+                    <View
+                        android:id="@+id/dot3"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/dot_shape" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="28dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp">
+
+                    <TextView
+                        style="@style/HomeSectionTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/home_our_beverages" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutBeverageCategories"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:baselineAligned="false"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Pure Tea"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/tra_yakult" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/pure_tea"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Tea Latte"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/tra_latte" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/tea_latte"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Milk Tea"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/tra_sua" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/milk_tea"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="New Arrivals"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/thuc_uong_moi" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/new_arrivals"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Best Sellers"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/cac_mon_hot" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/best_sellers"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Fruit Tea"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/tra_dai_loan" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/fruit_tea"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvCategoryDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.25"
+                        android:paddingStart="32dp"
+                        android:paddingTop="6dp"
+                        android:paddingEnd="32dp"
+                        android:text="@string/home_beverage_description"
+                        android:textColor="@color/black"
+                        android:textSize="8sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                style="@style/HomeSectionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="18dp"
+                android:paddingEnd="14dp"
+                android:text="@string/home_featured_products" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/layoutFeaturedProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_product_card" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="#E8F6FF"
+                android:orientation="vertical"
+                android:paddingTop="18dp"
+                android:paddingBottom="24dp">
+
+                <TextView
+                    style="@style/HomeSectionTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="18dp"
+                    android:paddingEnd="14dp"
+                    android:text="@string/home_exciting_promotions" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/layoutPromotions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_promotion_banner" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/HomeSectionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="14dp"
+                android:text="@string/home_whats_new" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/layoutNews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_news_card" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
