@@ -1,4 +1,4 @@
-package com.example.teatrack_mcd_253eie502802_group02;
+package com.teatrack_mcd_253eie502802_group02;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.teatrack_mcd_253eie502802_group02", appContext.getPackageName());
+        assertEquals("com.teatrack_mcd_253eie502802_group02", appContext.getPackageName());
     }
 }
