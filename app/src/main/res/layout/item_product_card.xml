@@ -3,131 +3,147 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="166dp"
-    android:layout_height="250dp"
-    android:layout_marginEnd="18dp"
+    android:layout_width="98dp"
+    android:layout_height="150dp"
+    android:layout_marginEnd="12dp"
     android:layout_marginBottom="8dp"
-    app:cardCornerRadius="14dp"
-    app:cardElevation="5dp"
-    app:cardBackgroundColor="#E8F6FF">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="5dp">
 
-        <!-- Product Image -->
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgProduct"
             android:layout_width="match_parent"
-            android:layout_height="138dp"
+            android:layout_height="72dp"
             android:contentDescription="Product"
             android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/RoundedProductImage"
             tools:src="@mipmap/traxanhbidao" />
 
-        <!-- Product Name -->
-        <TextView
-            android:id="@+id/tvProductName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Trà xanh bí đao"
-            android:textSize="11sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingTop="8dp" />
-
-        <!-- Rating Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
             android:paddingTop="4dp"
             android:baselineAligned="false">
-
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:src="@android:drawable/btn_star_big_on"
-                android:contentDescription="Star" />
 
             <TextView
                 android:id="@+id/tvRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:includeFontPadding="false"
                 android:text="4.9"
-                android:textSize="9sp"
-                android:textColor="#FFA000"
-                android:paddingStart="2dp" />
+                android:textColor="#6F6F6F"
+                android:textSize="5sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="7dp"
+                android:layout_height="7dp"
+                android:layout_marginStart="1dp"
+                android:src="@android:drawable/btn_star_big_on"
+                android:contentDescription="Star"
+                app:tint="#FFB21A" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:includeFontPadding="false"
+                android:text="|"
+                android:textColor="#9B9B9B"
+                android:textSize="5sp" />
 
             <TextView
                 android:id="@+id/tvReviews"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="  1k  Đánh giá"
-                android:textSize="9sp"
-                android:textColor="#AAAAAA" />
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="1k Đánh giá"
+                android:textColor="#8F8F8F"
+                android:textSize="5sp" />
 
         </LinearLayout>
 
-        <!-- Size & Price Row -->
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:paddingTop="3dp"
+            android:text="Trà Ô Long Mộc Hương"
+            android:textColor="@color/black"
+            android:textSize="7sp"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="9dp">
+            android:orientation="horizontal"
+            android:paddingTop="5dp">
 
-            <!-- M Size -->
             <TextView
                 android:id="@+id/tvSizeM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="12dp"
                 android:background="@drawable/bg_size_tag"
-                android:text="M"
-                android:textSize="10sp"
-                android:textColor="#E53935"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:paddingTop="1dp"
-                android:paddingBottom="1dp" />
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="@string/home_price_medium"
+                android:textColor="@color/brand_blue"
+                android:textSize="6sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvPriceM"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="16.000"
-                android:textSize="9sp"
-                android:textColor="#222222"
-                android:paddingStart="4dp" />
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="19.000đ"
+                android:textColor="#111111"
+                android:textSize="5sp"
+                android:textStyle="bold" />
 
-            <!-- L Size -->
             <TextView
                 android:id="@+id/tvSizeL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="13dp"
+                android:layout_height="12dp"
                 android:background="@drawable/bg_size_tag"
-                android:text="L"
-                android:textSize="10sp"
-                android:textColor="#E53935"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:paddingTop="1dp"
-                android:paddingBottom="1dp" />
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="@string/home_price_large"
+                android:textColor="@color/brand_blue"
+                android:textSize="6sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvPriceL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="19.000"
-                android:textSize="9sp"
-                android:textColor="#222222"
-                android:paddingStart="4dp" />
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="22.000đ"
+                android:textColor="#111111"
+                android:textSize="5sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -136,20 +152,18 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingTop="8dp">
+            android:paddingTop="5dp">
 
             <TextView
                 android:id="@+id/tvVipM"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="16dp"
+                android:layout_height="12dp"
                 android:background="@drawable/bg_vip_tag"
-                android:paddingStart="4dp"
-                android:paddingTop="1dp"
-                android:paddingEnd="4dp"
-                android:paddingBottom="1dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
                 android:text="@string/home_vip_badge"
                 android:textColor="@color/white"
-                android:textSize="8sp"
+                android:textSize="6sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -157,23 +171,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingStart="4dp"
-                android:text="16.000"
-                android:textColor="#222222"
-                android:textSize="9sp" />
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="16.000đ"
+                android:textColor="#111111"
+                android:textSize="5sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvVipL"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="16dp"
+                android:layout_height="12dp"
                 android:background="@drawable/bg_vip_tag"
-                android:paddingStart="4dp"
-                android:paddingTop="1dp"
-                android:paddingEnd="4dp"
-                android:paddingBottom="1dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
                 android:text="@string/home_vip_badge"
                 android:textColor="@color/white"
-                android:textSize="8sp"
+                android:textSize="6sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -181,10 +195,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingStart="4dp"
-                android:text="19.000"
-                android:textColor="#222222"
-                android:textSize="9sp" />
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="19.000đ"
+                android:textColor="#111111"
+                android:textSize="5sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

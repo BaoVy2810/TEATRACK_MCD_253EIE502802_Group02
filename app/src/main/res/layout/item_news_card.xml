@@ -2,23 +2,24 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="126dp"
-    android:layout_height="164dp"
+    android:layout_width="120dp"
+    android:layout_height="180dp"
+    android:layout_marginEnd="34dp"
     android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="#E8F6FF"
+    app:cardBackgroundColor="@color/design_default_color_background"
     app:cardCornerRadius="14dp"
-    app:cardElevation="5dp">
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <!-- News Image -->
         <ImageView
             android:id="@+id/imgNews"
             android:layout_width="match_parent"
-            android:layout_height="92dp"
+            android:layout_height="116dp"
             android:contentDescription="News"
             android:scaleType="centerCrop"
             tools:src="@mipmap/blog_6" />
@@ -28,10 +29,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:gravity="center_horizontal"
             android:paddingStart="8dp"
-            android:paddingTop="10dp"
+            android:paddingTop="9dp"
             android:paddingEnd="8dp"
-            android:paddingBottom="8dp">
+            android:paddingBottom="10dp">
 
             <TextView
                 android:id="@+id/tvNewsTitle"
@@ -39,22 +41,24 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="center"
+                android:includeFontPadding="false"
                 android:lineSpacingMultiplier="1.2"
                 android:maxLines="2"
-                android:text="NHÂM NHI TRÀ NGON\nNHẬN NGAY KHÓA XINH"
-                android:textColor="#555555"
-                android:textSize="11sp"
+                android:text="VẸN TRÒN TRUNG THU – TRỌN VỊ NGÔ GIA"
+                android:textColor="@color/black"
+                android:textSize="7sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvNewsDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:gravity="center"
-                android:paddingTop="14dp"
-                android:text="01 - 02.05.2026"
-                android:textColor="#AAAAAA"
-                android:textSize="7sp" />
+                android:includeFontPadding="false"
+                android:text="26-31.07.25"
+                android:textColor="@color/nav_inactive"
+                android:textSize="6sp" />
 
         </LinearLayout>
 

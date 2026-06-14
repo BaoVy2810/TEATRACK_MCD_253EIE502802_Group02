@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/bg_baby_blue"
     tools:context="com.teatrack_mcd_253eie502802_group02.client.Homepage">
 
     <include
@@ -50,9 +50,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="32dp"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="14dp"
+                android:layout_marginBottom="16dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="4dp">
@@ -89,56 +89,66 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <HorizontalScrollView
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:overScrollMode="never"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:scrollbars="none">
+                android:layout_height="142dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="14dp">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPagerBanners"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:visibility="gone" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgBannerPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="Banner"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/banner1"
+                    android:visibility="gone"
+                    app:shapeAppearanceOverlay="@style/RoundedBanner"
+                    tools:visibility="visible" />
 
                 <LinearLayout
-                    android:id="@+id/layoutBanners"
+                    android:id="@+id/layoutDots"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
-                    <include
-                        layout="@layout/item_banner"
-                        android:layout_width="360dp"
-                        android:layout_height="142dp"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+                    <View
+                        android:id="@+id/dot1"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/dot_shape" />
 
-                    <include
-                        layout="@layout/item_banner"
-                        android:layout_width="360dp"
-                        android:layout_height="142dp"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+                    <View
+                        android:id="@+id/dot2"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/dot_shape" />
 
-                    <include
-                        layout="@layout/item_banner"
-                        android:layout_width="360dp"
-                        android:layout_height="142dp"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
+                    <View
+                        android:id="@+id/dot3"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/dot_shape" />
                 </LinearLayout>
-            </HorizontalScrollView>
-
-            <LinearLayout
-                android:id="@+id/layoutDots"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:gravity="center"
-                android:orientation="horizontal" />
+            </FrameLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="14dp"
                 android:layout_marginBottom="28dp"
                 app:cardBackgroundColor="@color/white"
@@ -149,8 +159,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp">
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp">
 
                     <TextView
                         style="@style/HomeSectionTitle"
@@ -159,53 +169,178 @@
                         android:gravity="center"
                         android:text="@string/home_our_beverages" />
 
-                    <HorizontalScrollView
+                    <LinearLayout
+                        android:id="@+id/layoutBeverageCategories"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clipToPadding="false"
-                        android:overScrollMode="never"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
-                        android:scrollbars="none">
+                        android:baselineAligned="false"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            android:id="@+id/layoutBeverageCategories"
-                            android:layout_width="400dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                            <include
-                                layout="@layout/item_beverage_category"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Pure Tea"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/tra_yakult" />
 
-                            <include
-                                layout="@layout/item_beverage_category"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
-
-                            <include
-                                layout="@layout/item_beverage_category"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
-
-                            <include
-                                layout="@layout/item_beverage_category"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
-
-                            <include
-                                layout="@layout/item_beverage_category"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
-
-                            <include
-                                layout="@layout/item_beverage_category"
-                                android:visibility="gone"
-                                tools:visibility="visible" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/pure_tea"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
                         </LinearLayout>
-                    </HorizontalScrollView>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Tea Latte"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/tra_latte" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/tea_latte"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Milk Tea"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/tra_sua" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/milk_tea"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="New Arrivals"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/thuc_uong_moi" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/new_arrivals"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Best Sellers"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/cac_mon_hot" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/best_sellers"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Fruit Tea"
+                                android:scaleType="fitCenter"
+                                android:src="@mipmap/tra_dai_loan" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:includeFontPadding="false"
+                                android:maxLines="1"
+                                android:paddingTop="7dp"
+                                android:text="@string/fruit_tea"
+                                android:textColor="@color/Red"
+                                android:textSize="7sp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tvCategoryDescription"
@@ -214,7 +349,7 @@
                         android:gravity="center"
                         android:lineSpacingMultiplier="1.25"
                         android:paddingStart="32dp"
-                        android:paddingTop="10dp"
+                        android:paddingTop="6dp"
                         android:paddingEnd="32dp"
                         android:text="@string/home_beverage_description"
                         android:textColor="@color/black"
@@ -230,46 +365,28 @@
                 android:paddingEnd="14dp"
                 android:text="@string/home_featured_products" />
 
-            <HorizontalScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/layoutFeaturedProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
                 android:overScrollMode="never"
-                android:paddingStart="18dp"
-                android:paddingEnd="10dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/layoutFeaturedProducts"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <include
-                        layout="@layout/item_product_card"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <include
-                        layout="@layout/item_product_card"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <include
-                        layout="@layout/item_product_card"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-                </LinearLayout>
-            </HorizontalScrollView>
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_product_card" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="26dp"
+                android:layout_marginTop="18dp"
                 android:background="#E8F6FF"
                 android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:paddingBottom="28dp">
+                android:paddingTop="18dp"
+                android:paddingBottom="24dp">
 
                 <TextView
                     style="@style/HomeSectionTitle"
@@ -279,74 +396,43 @@
                     android:paddingEnd="14dp"
                     android:text="@string/home_exciting_promotions" />
 
-                <HorizontalScrollView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/layoutPromotions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
                     android:overScrollMode="never"
-                    android:paddingStart="18dp"
-                    android:paddingEnd="10dp"
-                    android:scrollbars="none">
-
-                    <LinearLayout
-                        android:id="@+id/layoutPromotions"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <include
-                            layout="@layout/item_promotion_banner"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
-
-                        <include
-                            layout="@layout/item_promotion_banner"
-                            android:visibility="gone"
-                            tools:visibility="visible" />
-                    </LinearLayout>
-                </HorizontalScrollView>
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_promotion_banner" />
             </LinearLayout>
 
             <TextView
                 style="@style/HomeSectionTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="18dp"
                 android:paddingStart="18dp"
                 android:paddingEnd="14dp"
                 android:text="@string/home_whats_new" />
 
-            <HorizontalScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/layoutNews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
                 android:overScrollMode="never"
-                android:paddingStart="18dp"
-                android:paddingEnd="10dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:id="@+id/layoutNews"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <include
-                        layout="@layout/item_news_card"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <include
-                        layout="@layout/item_news_card"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <include
-                        layout="@layout/item_news_card"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-                </LinearLayout>
-            </HorizontalScrollView>
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_news_card" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
