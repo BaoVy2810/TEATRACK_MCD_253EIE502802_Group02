@@ -29,4 +29,10 @@
     <string name="firebase_field_vip_price_l">vipPriceL</string>
     <string name="firebase_field_category">category</string>
     <string name="firebase_field_date">date</string>
+    <string name="pure_tea">Pure Tea</string>
+    <string name="tea_latte">Tea Latte</string>
+    <string name="milk_tea">Milk Tea</string>
+    <string name="new_arrivals">New Arrivals</string>
+    <string name="best_sellers">Best Sellers</string>
+    <string name="fruit_tea">Fruit Tea</string>
 </resources>

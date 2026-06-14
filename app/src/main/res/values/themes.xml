@@ -3,6 +3,9 @@
     <style name="Base.Theme.TEATRACK_MCD_253EIE502802_Group02" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:fontFamily">@font/inter_family</item>
+        <item name="fontFamily">@font/inter_family</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="Theme.TEATRACK_MCD_253EIE502802_Group02" parent="Base.Theme.TEATRACK_MCD_253EIE502802_Group02" />
@@ -28,11 +31,13 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">4dp</item>
+        <item name="android:fontFamily">@font/inter_family</item>
         <item name="android:textColor">@color/nav_inactive</item>
         <item name="android:textSize">@dimen/nav_item_text_size</item>
     </style>
 
     <style name="HomeSectionTitle">
+        <item name="android:fontFamily">@font/inter_family</item>
         <item name="android:textColor">#E00000</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
@@ -53,5 +58,17 @@
         <item name="cornerSizeTopRight">20dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+    <style name="RoundedBanner">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
+    </style>
+    <style name="RoundedProductImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">9dp</item>
+    </style>
+    <style name="RoundedImage8dp">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
     </style>
 </resources>

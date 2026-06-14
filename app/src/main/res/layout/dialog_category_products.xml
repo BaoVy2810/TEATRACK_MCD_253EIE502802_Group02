@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_category_dialog"
+    android:minHeight="280dp"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/btnCloseDialog"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:contentDescription="Close"
+        android:padding="4dp"
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+    <!-- Tăng kích thước ảnh Hero và bỏ bớt padding để nó trông lớn hơn như trong ảnh mẫu -->
+    <ImageView
+        android:id="@+id/imgCategoryHero"
+        android:layout_width="160dp"
+        android:layout_height="220dp"
+        android:contentDescription="Category hero product"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/tra_yakult" />
+
+    <!-- Nút mũi tên bên trái -->
+    <ImageView
+        android:id="@+id/btnPrevProduct"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_arrow_circle"
+        android:contentDescription="Previous"
+        android:padding="6dp"
+        android:src="@drawable/ic_arrow_left"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/rvCategoryProducts"
+        app:layout_constraintStart_toEndOf="@id/imgCategoryHero"
+        app:layout_constraintTop_toTopOf="@id/rvCategoryProducts"
+        app:tint="@color/brand_blue" />
+
+    <!-- RecyclerView: Thêm layoutManager và orientation="horizontal" -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCategoryProducts"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnNextProduct"
+        app:layout_constraintStart_toEndOf="@id/btnPrevProduct"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_category_product" />
+
+    <!-- Nút mũi tên bên phải -->
+    <ImageView
+        android:id="@+id/btnNextProduct"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@drawable/bg_arrow_circle"
+        android:contentDescription="Next"
+        android:padding="6dp"
+        android:src="@drawable/ic_arrow_right"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/rvCategoryProducts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rvCategoryProducts"
+        app:tint="@color/brand_blue" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
