@@ -1,4 +1,4 @@
-package com.example.teatrack_mcd_253eie502802_group02;
+package com.teatrack_mcd_253eie502802_group02;
 
 import org.junit.Test;
 

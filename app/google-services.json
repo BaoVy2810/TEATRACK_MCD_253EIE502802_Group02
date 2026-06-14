@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "276172473565",
+    "firebase_url": "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "teatrack-htng",
+    "storage_bucket": "teatrack-htng.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276172473565:android:4de8e08e96db5cd71c8734",
+        "android_client_info": {
+          "package_name": "com.teatrack_mcd_253eie502802_group02"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADhfaFqO3x6kmfF4nX3QLIuekCK5Z1Mw0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

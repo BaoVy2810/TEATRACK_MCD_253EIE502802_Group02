@@ -1,19 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
+    // Firebase
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.example.teatrack_mcd_253eie502802_group02"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    namespace = "com.teatrack_mcd_253eie502802_group02"
+    compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.example.teatrack_mcd_253eie502802_group02"
+        applicationId = "com.teatrack_mcd_253eie502802_group02"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -45,6 +43,17 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    // Firebase BOM
+        implementation(platform("com.google.firebase:firebase-bom:34.14.1"))
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth")
+    // Firebase Realtime Database
+    implementation("com.google.firebase:firebase-database")
+    // Firebase Analytics (không bắt buộc)
+    implementation("com.google.firebase:firebase-analytics")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
