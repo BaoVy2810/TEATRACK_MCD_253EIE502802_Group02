@@ -2,35 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="130dp"
+    android:layout_width="108dp"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="14dp"
+    android:layout_marginEnd="10dp"
     android:gravity="center"
     android:orientation="vertical">
 
-    <!-- Product Image -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgCategoryProduct"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="118dp"
         android:contentDescription="Product"
         android:scaleType="centerCrop"
         app:shapeAppearanceOverlay="@style/RoundedImage8dp"
         tools:src="@mipmap/hongtradailoan" />
 
-    <!-- Product Name -->
     <TextView
         android:id="@+id/tvCategoryProductName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
         android:gravity="center"
         android:lineSpacingMultiplier="1.1"
         android:maxLines="2"
-        android:ellipsize="end"
-        android:text="Trà Ô Long Mộc Hương"
         android:textColor="@color/black"
-        android:textSize="13sp"
-        android:textStyle="bold" />
+        android:textSize="11sp"
+        android:textStyle="bold"
+        tools:text="Trà Ô Long Mộc Hương" />
 
 </LinearLayout>

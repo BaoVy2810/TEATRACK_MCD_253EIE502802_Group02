@@ -12,17 +12,13 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.teatrack_mcd_253eie502802_group02.R;
+import com.example.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.CategoryProductAdapter;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
+import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 import java.util.List;
 
-/**
- * Dialog shown when the user taps an item_beverage_category on the homepage.
- * Shows a large hero image of the current product plus a horizontal list
- * of related products in the same category, with prev/next navigation.
- */
 public class CategoryProductDialog extends DialogFragment {
 
     private List<Product> categoryProducts;
@@ -53,9 +49,12 @@ public class CategoryProductDialog extends DialogFragment {
         dialog.setContentView(view);
 
         if (dialog.getWindow() != null) {
+            int horizontalMargin = (int) (20 * getResources().getDisplayMetrics().density);
             dialog.getWindow().setLayout(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().getDecorView().setPadding(
+                    horizontalMargin, 0, horizontalMargin, 0);
         }
 
         bindViews(view);
@@ -72,33 +71,36 @@ public class CategoryProductDialog extends DialogFragment {
         rvProducts.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        adapter = new CategoryProductAdapter(categoryProducts, position -> {
-            currentIndex = position;
-            updateHero();
-        });
+        adapter = new CategoryProductAdapter(categoryProducts, position -> selectProduct(position));
         rvProducts.setAdapter(adapter);
 
         btnClose.setOnClickListener(v -> dismiss());
 
         btnPrev.setOnClickListener(v -> {
-            if (categoryProducts == null || categoryProducts.isEmpty()) return;
-            currentIndex = (currentIndex - 1 + categoryProducts.size()) % categoryProducts.size();
-            updateHero();
+            if (categoryProducts == null || categoryProducts.isEmpty()) {
+                return;
+            }
+            selectProduct((currentIndex - 1 + categoryProducts.size()) % categoryProducts.size());
         });
 
         btnNext.setOnClickListener(v -> {
-            if (categoryProducts == null || categoryProducts.isEmpty()) return;
-            currentIndex = (currentIndex + 1) % categoryProducts.size();
-            updateHero();
+            if (categoryProducts == null || categoryProducts.isEmpty()) {
+                return;
+            }
+            selectProduct((currentIndex + 1) % categoryProducts.size());
         });
 
-        updateHero();
+        selectProduct(currentIndex);
     }
 
-    private void updateHero() {
-        if (categoryProducts == null || categoryProducts.isEmpty()) return;
+    private void selectProduct(int position) {
+        if (categoryProducts == null || categoryProducts.isEmpty()) {
+            return;
+        }
+        currentIndex = position;
         Product product = categoryProducts.get(currentIndex);
-        imgHero.setImageResource(product.getImageRes());
+        ProductImageHelper.load(imgHero, product);
         adapter.setSelectedPosition(currentIndex);
+        rvProducts.smoothScrollToPosition(currentIndex);
     }
 }

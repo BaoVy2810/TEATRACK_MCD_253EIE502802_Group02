@@ -81,4 +81,12 @@
     <string name="new_arrivals">New Arrivals</string>
     <string name="best_sellers">Best Sellers</string>
     <string name="fruit_tea">Fruit Tea</string>
+    <string name="firebase_category_pure_tea">Loại Thuần Trà</string>
+    <string name="firebase_category_tea_latte">Loại Trà Latte</string>
+    <string name="firebase_category_milk_tea">Loại Trà Sữa</string>
+    <string name="firebase_category_new_arrivals">Thức Uống Mới</string>
+    <string name="firebase_category_best_sellers">Thức Uống Hot</string>
+    <string name="firebase_category_fruit_tea">Loại Trà Trái Cây</string>
+    <string name="category_products_empty">No products found for this category.</string>
+    <string name="category_products_load_error">Unable to load products. Please try again.</string>
 </resources>

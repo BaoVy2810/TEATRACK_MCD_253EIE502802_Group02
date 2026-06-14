@@ -180,9 +180,13 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
+                            android:id="@+id/categoryPureTea"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -207,17 +211,15 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/categoryTeaLatte"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="52dp"
-                                android:layout_height="58dp"
-                                android:adjustViewBounds="true"
-                                android:contentDescription="Tea Latte"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/tra_latte" />
 
@@ -234,17 +236,15 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/categoryMilkTea"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="52dp"
-                                android:layout_height="58dp"
-                                android:adjustViewBounds="true"
-                                android:contentDescription="Milk Tea"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/tra_sua" />
 
@@ -261,17 +261,15 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/categoryNewArrivals"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="52dp"
-                                android:layout_height="58dp"
-                                android:adjustViewBounds="true"
-                                android:contentDescription="New Arrivals"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/thuc_uong_moi" />
 
@@ -288,17 +286,15 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/categoryBestSellers"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="52dp"
-                                android:layout_height="58dp"
-                                android:adjustViewBounds="true"
-                                android:contentDescription="Best Sellers"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/cac_mon_hot" />
 
@@ -315,17 +311,15 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/categoryFruitTea"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="52dp"
-                                android:layout_height="58dp"
-                                android:adjustViewBounds="true"
-                                android:contentDescription="Fruit Tea"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/tra_dai_loan" />
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -13,9 +14,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.BannerAdapter;
+import com.teatrack_mcd_253eie502802_group02.adapter.NewsCardAdapter;
 import com.teatrack_mcd_253eie502802_group02.adapter.ProductCardAdapter;
 import com.teatrack_mcd_253eie502802_group02.adapter.PromotionAdapter;
-import com.teatrack_mcd_253eie502802_group02.adapter.NewsCardAdapter;
+import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
 import com.teatrack_mcd_253eie502802_group02.model.NewsItem;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.model.Promotion;
@@ -36,17 +38,21 @@ public class Homepage extends AppCompatActivity {
     private RecyclerView rvFeaturedProducts;
     private RecyclerView rvPromotions;
     private RecyclerView rvNews;
+    private FirebaseProductRepository productRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
 
+        productRepository = new FirebaseProductRepository();
         setupBanners();
         setupFeaturedProducts();
         setupPromotions();
         setupNews();
+        setupCategoryClicks();
     }
+
     private void setupBanners() {
         viewPagerBanners = findViewById(R.id.viewPagerBanners);
 
@@ -152,5 +158,42 @@ public class Homepage extends AppCompatActivity {
         newsItems.add(new NewsItem("BLOG 6 TITLE", "DATE RANGE 6", R.mipmap.blog_11));
 
         rvNews.setAdapter(new NewsCardAdapter(newsItems));
+    }
+
+    private void setupCategoryClicks() {
+        bindCategoryClick(R.id.categoryPureTea, R.string.firebase_category_pure_tea);
+        bindCategoryClick(R.id.categoryTeaLatte, R.string.firebase_category_tea_latte);
+        bindCategoryClick(R.id.categoryMilkTea, R.string.firebase_category_milk_tea);
+        bindCategoryClick(R.id.categoryNewArrivals, R.string.firebase_category_new_arrivals);
+        bindCategoryClick(R.id.categoryBestSellers, R.string.firebase_category_best_sellers);
+        bindCategoryClick(R.id.categoryFruitTea, R.string.firebase_category_fruit_tea);
+    }
+
+    private void bindCategoryClick(int viewId, int firebaseCategoryResId) {
+        View categoryView = findViewById(viewId);
+        if (categoryView == null) {
+            return;
+        }
+
+        categoryView.setOnClickListener(v -> openCategoryDialog(getString(firebaseCategoryResId)));
+    }
+
+    private void openCategoryDialog(String firebaseCategory) {
+        productRepository.getProductsByCategory(firebaseCategory, new FirebaseProductRepository.ProductsCallback() {
+            @Override
+            public void onSuccess(List<Product> products) {
+                if (products.isEmpty()) {
+                    Toast.makeText(Homepage.this, R.string.category_products_empty, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                CategoryProductDialog dialog = CategoryProductDialog.newInstance(products, 0);
+                dialog.show(getSupportFragmentManager(), "category_products");
+            }
+
+            @Override
+            public void onError(String message) {
+                Toast.makeText(Homepage.this, R.string.category_products_load_error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
