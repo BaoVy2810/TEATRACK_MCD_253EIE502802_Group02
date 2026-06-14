@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -98,8 +99,7 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPagerBanners"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:visibility="gone" />
+                    android:layout_height="match_parent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imgBannerPreview"
@@ -109,8 +109,7 @@
                     android:scaleType="centerCrop"
                     android:src="@mipmap/banner1"
                     android:visibility="gone"
-                    app:shapeAppearanceOverlay="@style/RoundedBanner"
-                    tools:visibility="visible" />
+                    app:shapeAppearanceOverlay="@style/RoundedBanner" />
 
                 <LinearLayout
                     android:id="@+id/layoutDots"
@@ -220,6 +219,12 @@
                             android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Tea Latte"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/tra_latte" />
 
@@ -245,6 +250,12 @@
                             android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Milk Tea"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/tra_sua" />
 
@@ -270,6 +281,12 @@
                             android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="New Arrivals"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/thuc_uong_moi" />
 
@@ -295,6 +312,12 @@
                             android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Best Sellers"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/cac_mon_hot" />
 
@@ -320,6 +343,12 @@
                             android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="52dp"
+                                android:layout_height="58dp"
+                                android:adjustViewBounds="true"
+                                android:contentDescription="Fruit Tea"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/tra_dai_loan" />
 

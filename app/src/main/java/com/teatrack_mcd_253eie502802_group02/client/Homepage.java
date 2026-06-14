@@ -106,13 +106,17 @@ public class Homepage extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        bannerHandler.removeCallbacks(bannerRunnable);
+        if (bannerRunnable != null) {
+            bannerHandler.removeCallbacks(bannerRunnable);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        bannerHandler.postDelayed(bannerRunnable, BANNER_INTERVAL_MS);
+        if (bannerRunnable != null) {
+            bannerHandler.postDelayed(bannerRunnable, BANNER_INTERVAL_MS);
+        }
     }
 
     private void setupFeaturedProducts() {
