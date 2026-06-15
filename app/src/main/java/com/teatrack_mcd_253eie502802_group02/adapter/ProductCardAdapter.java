@@ -10,15 +10,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
+import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 import java.util.List;
 
 public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.ProductViewHolder> {
 
+    public interface OnProductClickListener {
+        void onProductClick(Product product);
+    }
+
     private final List<Product> products;
+    private final OnProductClickListener clickListener;
 
     public ProductCardAdapter(List<Product> products) {
+        this(products, null);
+    }
+
+    public ProductCardAdapter(List<Product> products, OnProductClickListener clickListener) {
         this.products = products;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -32,7 +43,7 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product item = products.get(position);
-        holder.imgProduct.setImageResource(item.getImageRes());
+        ProductImageHelper.load(holder.imgProduct, item);
         holder.tvProductName.setText(item.getName());
         holder.tvRating.setText(String.valueOf(item.getRating()));
         holder.tvReviews.setText(item.getReviewCount() + " Đánh giá");
@@ -40,6 +51,11 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
         holder.tvPriceL.setText(formatPrice(item.getPriceL()));
         holder.tvVipPriceM.setText(formatPrice(item.getVipPriceM()));
         holder.tvVipPriceL.setText(formatPrice(item.getVipPriceL()));
+        holder.itemView.setOnClickListener(v -> {
+            if (clickListener != null) {
+                clickListener.onProductClick(item);
+            }
+        });
     }
 
     @Override

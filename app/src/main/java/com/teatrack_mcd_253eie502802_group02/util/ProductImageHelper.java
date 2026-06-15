@@ -3,7 +3,7 @@ package com.teatrack_mcd_253eie502802_group02.util;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.example.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 
 public final class ProductImageHelper {

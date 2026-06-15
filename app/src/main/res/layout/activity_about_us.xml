@@ -5,6 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_baby_blue"
     tools:context="com.teatrack_mcd_253eie502802_group02.client.AboutUsActivity">
-
 </androidx.constraintlayout.widget.ConstraintLayout>

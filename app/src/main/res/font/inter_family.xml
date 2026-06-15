@@ -22,4 +22,11 @@
         app:font="@font/inter_semibold"
         app:fontStyle="normal"
         app:fontWeight="700" />
+    <font
+        android:font="@font/inter_extrabold"
+        android:fontStyle="normal"
+        android:fontWeight="900"
+        app:font="@font/inter_extrabold"
+        app:fontStyle="normal"
+        app:fontWeight="900" />
 </font-family>

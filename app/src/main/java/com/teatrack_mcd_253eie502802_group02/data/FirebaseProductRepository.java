@@ -20,6 +20,12 @@ public class FirebaseProductRepository {
         void onError(String message);
     }
 
+    public interface ProductCallback {
+        void onSuccess(Product product);
+
+        void onError(String message);
+    }
+
     private final DatabaseReference productsRef;
 
     public FirebaseProductRepository() {
@@ -32,7 +38,7 @@ public class FirebaseProductRepository {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 List<Product> products = new ArrayList<>();
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    Product product = child.getValue(Product.class);
+                    Product product = parseProduct(child);
                     if (product != null && category.equals(product.getCategory())) {
                         products.add(product);
                     }
@@ -45,5 +51,83 @@ public class FirebaseProductRepository {
                 callback.onError(error.getMessage());
             }
         });
+    }
+
+    public void getAllProducts(ProductsCallback callback) {
+        productsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<Product> products = new ArrayList<>();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    Product product = parseProduct(child);
+                    if (product != null) {
+                        products.add(product);
+                    }
+                }
+                callback.onSuccess(products);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onError(error.getMessage());
+            }
+        });
+    }
+
+    public void getProductByName(String name, ProductCallback callback) {
+        productsRef.orderByChild("name")
+                .equalTo(name)
+                .limitToFirst(1)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot child : snapshot.getChildren()) {
+                            Product product = parseProduct(child);
+                            if (product != null) {
+                                callback.onSuccess(product);
+                                return;
+                            }
+                        }
+                        callback.onError("Product not found");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        callback.onError(error.getMessage());
+                    }
+                });
+    }
+
+    private Product parseProduct(DataSnapshot snapshot) {
+        Product product = snapshot.getValue(Product.class);
+        if (product == null) {
+            return null;
+        }
+
+        // Firebase schema uses "price" for size M.
+        product.setPrice(readLong(snapshot, "price"));
+        product.setPriceL(readLong(snapshot, "priceL"));
+        product.setVipPriceM(readLong(snapshot, "vipPriceM"));
+        product.setVipPriceL(readLong(snapshot, "vipPriceL"));
+        return product;
+    }
+
+    private long readLong(DataSnapshot snapshot, String key) {
+        Object raw = snapshot.child(key).getValue();
+        if (raw == null) {
+            return 0L;
+        }
+        if (raw instanceof Number) {
+            return ((Number) raw).longValue();
+        }
+        String text = String.valueOf(raw).replaceAll("[^0-9]", "");
+        if (text.isEmpty()) {
+            return 0L;
+        }
+        try {
+            return Long.parseLong(text);
+        } catch (NumberFormatException ignored) {
+            return 0L;
+        }
     }
 }

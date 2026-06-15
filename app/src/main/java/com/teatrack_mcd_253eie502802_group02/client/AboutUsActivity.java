@@ -1,6 +1,8 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.VideoView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.teatrack_mcd_253eie502802_group02.R;
 
 public class AboutUsActivity extends AppCompatActivity {
+
+    private VideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

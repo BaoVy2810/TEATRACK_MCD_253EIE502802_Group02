@@ -1,8 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.TEATRACK_MCD_253EIE502802_Group02" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:fontFamily">@font/inter_family</item>
         <item name="fontFamily">@font/inter_family</item>
         <item name="android:windowNoTitle">true</item>
@@ -17,8 +14,10 @@
         <item name="android:focusable">true</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:paddingHorizontal">@dimen/nav_item_padding_horizontal</item>
-        <item name="android:paddingVertical">@dimen/nav_item_padding_vertical</item>
+        <item name="android:paddingStart">@dimen/nav_item_padding_horizontal</item>
+        <item name="android:paddingEnd">@dimen/nav_item_padding_horizontal</item>
+        <item name="android:paddingTop">@dimen/nav_item_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/nav_item_padding_vertical</item>
     </style>
 
     <style name="NavBarIcon">
@@ -37,10 +36,10 @@
     </style>
 
     <style name="HomeSectionTitle">
-        <item name="android:fontFamily">@font/inter_family</item>
+        <item name="android:fontFamily">@font/inter_extrabold</item>
         <item name="android:textColor">#E00000</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textStyle">normal</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:paddingBottom">10dp</item>
     </style>
@@ -70,5 +69,26 @@
     <style name="RoundedImage8dp">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
+    </style>
+    <style name="RoundedImage12dp">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="MenuChip">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:background">@drawable/bg_size_tag</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textColor">@color/brand_blue</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="MenuChipPrimary" parent="MenuChip">
+        <item name="android:background">@drawable/nav_item_background</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>

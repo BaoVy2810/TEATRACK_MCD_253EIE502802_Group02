@@ -7,9 +7,18 @@
     <color name="brand_teal">#8DF1E3</color>
     <color name="nav_inactive">#2C3E50</color>
     <color name="screen_background">#F2F9FE</color>
+    <color name="surface_glass">#F7FBFF</color>
+    <color name="surface_container_low">#EEF5FF</color>
+    <color name="outline_variant">#B8C5D8</color>
+    <color name="secondary">#6B7A90</color>
+    <color name="on_surface">#1B2430</color>
+    <color name="promo_card_bg">#EEF3FF</color>
+    <color name="promo_card_stroke">#D3DEEF</color>
+    <color name="promo_card_corner">#DFE7F8</color>
     <color name="card_shadow">#1A000000</color>
     <color name="darkgreen">#006F65</color>
     <color name="Red">#D11515</color>
     <color name="bg_baby_blue">#F2F9FE</color>
     <color name="Gray">#8D8D8D</color>
+    <color name="bg_promotion">#EAF3FF</color>
 </resources>

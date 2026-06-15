@@ -17,14 +17,36 @@
         android:orientation="vertical"
         android:padding="5dp">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imgProduct"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:contentDescription="Product"
-            android:scaleType="centerCrop"
-            app:shapeAppearanceOverlay="@style/RoundedProductImage"
-            tools:src="@mipmap/traxanhbidao" />
+            android:layout_height="72dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgProduct"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Product"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/RoundedProductImage"
+                tools:src="@mipmap/traxanhbidao" />
+
+            <ImageButton
+                android:id="@+id/btnAddToCartMini"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/bg_circle_cart_red"
+                android:contentDescription="@string/product_detail_add_to_cart"
+                android:elevation="1dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="3dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_cart"
+                app:tint="@android:color/white" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,9 +70,8 @@
                 android:layout_width="7dp"
                 android:layout_height="7dp"
                 android:layout_marginStart="1dp"
-                android:src="@android:drawable/btn_star_big_on"
-                android:contentDescription="Star"
-                app:tint="#FFB21A" />
+                android:src="@drawable/ic_star_rating"
+                android:contentDescription="Star" />
 
             <TextView
                 android:layout_width="wrap_content"

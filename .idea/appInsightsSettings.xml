@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.teatrack_mcd_253eie502802_group02" />
+                  <option name="mobileSdkAppId" value="1:276172473565:android:4de8e08e96db5cd71c8734" />
+                  <option name="projectId" value="teatrack-htng" />
+                  <option name="projectNumber" value="276172473565" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
