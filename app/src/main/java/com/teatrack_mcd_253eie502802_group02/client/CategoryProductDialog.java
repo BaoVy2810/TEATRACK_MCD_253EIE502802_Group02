@@ -98,7 +98,7 @@ public class CategoryProductDialog extends DialogFragment {
     private void updateHero() {
         if (categoryProducts == null || categoryProducts.isEmpty()) return;
         Product product = categoryProducts.get(currentIndex);
-        imgHero.setImageResource(product.getImageRes());
+        imgHero.setImageResource(product.getImageRes(requireContext()));
         adapter.setSelectedPosition(currentIndex);
     }
 }

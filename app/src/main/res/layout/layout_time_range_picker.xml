@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="160dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_rounded_16"
+    android:elevation="6dp"
+    android:orientation="vertical"
+    android:padding="2dp">
+
+    <!-- Today -->
+    <RelativeLayout
+        android:id="@+id/btnToday"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+        <TextView
+            android:id="@+id/tvToday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Today"
+            android:textColor="@color/brand_blue"
+            android:textSize="12sp" />
+        <ImageView
+            android:id="@+id/icToday"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="#FFFFFF" />
+    </RelativeLayout>
+
+    <!-- Last 7 Days -->
+    <RelativeLayout
+        android:id="@+id/btnLast7Days"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+        <TextView
+            android:id="@+id/tvLast7Days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Last 7 Days"
+            android:textColor="@color/brand_blue"
+            android:textSize="12sp" />
+        <ImageView
+            android:id="@+id/icLast7Days"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="#FFFFFF" />
+    </RelativeLayout>
+
+    <!-- Last 30 Days -->
+    <RelativeLayout
+        android:id="@+id/btnLast30Days"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+        <TextView
+            android:id="@+id/tvLast30Days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Last 30 Days"
+            android:textColor="@color/brand_blue"
+            android:textSize="12sp" />
+        <ImageView
+            android:id="@+id/icLast30Days"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="#FFFFFF" />
+    </RelativeLayout>
+
+    <!-- Last 90 Days -->
+    <RelativeLayout
+        android:id="@+id/btnLast90Days"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+        <TextView
+            android:id="@+id/tvLast90Days"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Last 90 Days"
+            android:textColor="@color/brand_blue"
+            android:textSize="12sp" />
+        <ImageView
+            android:id="@+id/icLast90Days"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="#FFFFFF" />
+    </RelativeLayout>
+
+    <!-- Year to Date -->
+    <RelativeLayout
+        android:id="@+id/btnYearToDate"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+        <TextView
+            android:id="@+id/tvYearToDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Year to Date"
+            android:textColor="@color/brand_blue"
+            android:textSize="12sp" />
+        <ImageView
+            android:id="@+id/icYearToDate"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="#FFFFFF" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="#E5E5EA" />
+
+    <!-- Custom Range -->
+    <RelativeLayout
+        android:id="@+id/btnCustomRange"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Custom Range"
+            android:textColor="@color/brand_blue"
+            android:textSize="12sp" />
+        <ImageView
+            android:id="@+id/icChevron"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/brand_blue" />
+    </RelativeLayout>
+</LinearLayout>

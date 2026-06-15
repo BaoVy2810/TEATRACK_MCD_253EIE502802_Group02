@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_recent_order.xml
+    Hiển thị: icon giỏ hàng | "New Order #HTNGTD..." (link màu xanh)
+              | "X mins ago • 60.000đ"
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingTop="@dimen/order_item_padding_v"
+    android:paddingBottom="@dimen/order_item_padding_v"
+    android:background="?attr/selectableItemBackground">
+
+    <!-- Cart icon -->
+    <FrameLayout
+        android:layout_width="@dimen/order_icon_size"
+        android:layout_height="@dimen/order_icon_size"
+        android:background="@drawable/bg_order_icon_wrap"
+        android:layout_marginEnd="@dimen/sp_12">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            android:src="@drawable/cart"
+            android:importantForAccessibility="no" />
+
+    </FrameLayout>
+
+    <!-- Text group -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- "New Order #HTNGTD70702186" — order code in blue -->
+        <TextView
+            android:id="@+id/tvOrderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/order_title_size"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/order_item_gap" />
+
+        <!-- "2 mins ago • 60.000đ" -->
+        <TextView
+            android:id="@+id/tvOrderMeta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/order_subtitle_size"
+            android:textColor="@color/text_secondary" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -12,4 +12,129 @@
     <color name="Red">#D11515</color>
     <color name="bg_baby_blue">#F2F9FE</color>
     <color name="Gray">#8D8D8D</color>
+
+<!--    TEST ADMIN DASHBOARD-->
+    <!-- ── Brand / Primary ── -->
+    <color name="primary">#0088FF</color>
+    <color name="primary_dark">#0066CC</color>
+    <color name="primary_light">#E8F4FF</color>
+
+    <!-- ── Background ── -->
+    <color name="bg_screen">#F0F4F8</color>
+
+    <!-- ── Text ── -->
+    <color name="text_primary">#1F2937</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_muted">#9CA3AF</color>
+    <color name="text_on_primary">#FFFFFF</color>
+
+    <!-- ── Divider / Border ── -->
+    <color name="divider">#E5E7EB</color>
+    <color name="border">#D1D5DB</color>
+
+    <!-- ── Stat card gradients ──
+         Revenue  : #1596D5 → #0B76F0
+         Orders   : #5EC8E8 → #1596D5
+         Sold     : #0088FF → #0055CC
+         Products : #72D5EC → #0EA5E9           -->
+    <color name="stat_revenue_start">#1596D5</color>
+    <color name="stat_revenue_end">#0B76F0</color>
+
+    <color name="stat_orders_start">#5EC8E8</color>
+    <color name="stat_orders_end">#1596D5</color>
+
+    <color name="stat_sold_start">#0088FF</color>
+    <color name="stat_sold_end">#0055CC</color>
+
+    <color name="stat_products_start">#72D5EC</color>
+    <color name="stat_products_end">#0EA5E9</color>
+
+    <!-- text inside stat cards -->
+    <color name="stat_text_white">#FFFFFF</color>
+    <color name="stat_text_soft">#CCE8FF</color>          <!-- ~rgba(255,255,255,0.80) -->
+    <color name="stat_circle_overlay">#1EFFFFFF</color>   <!-- rgba(255,255,255,0.12) -->
+
+    <!-- ── Line chart card  gradient ── -->
+    <color name="chart_line_start">#FFFFFF</color>
+    <color name="chart_line_end">#FFFFFF</color>
+
+    <!-- ── Bar / Donut chart card gradient ── -->
+    <color name="chart_bar_start">#FFFFFF</color>
+    <color name="chart_bar_end">#FFFFFF</color>
+
+    <!-- MPAndroidChart dataset colours -->
+    <color name="chart_revenue_line">#0088FF</color>
+    <color name="chart_expense_line">#EF4444</color>
+    <color name="chart_bar_color">#0088FF</color>
+    <color name="chart_bar_inactive">#B3D9FF</color>      <!-- lighter variant -->
+
+    <!-- Donut slices (top-selling drinks) -->
+    <color name="pie_hot_drinks">#1F2937</color>
+    <color name="pie_pure_tea">#0088FF</color>
+    <color name="pie_latte_tea">#93C5FD</color>
+    <color name="pie_fruit_tea">#3B82F6</color>
+    <color name="pie_new_drinks">#BFDBFE</color>
+    <color name="pie_milk_tea">#7C3AED</color>
+
+    <!-- ── Buttons ── -->
+    <color name="btn_primary_bg">#0088FF</color>
+    <color name="btn_primary_text">#FFFFFF</color>
+    <color name="btn_ghost_bg">#FFFFFF</color>
+    <color name="btn_ghost_text">#374151</color>
+    <color name="btn_ghost_border">#9CA3AF</color>
+    <color name="btn_toggle_active_bg">#0088FF</color>
+    <color name="btn_toggle_active_text">#FFFFFF</color>
+    <color name="btn_toggle_inactive_bg">#E8F4FF</color>
+    <color name="btn_toggle_inactive_text">#0088FF</color>
+
+    <!-- ── Danger ── -->
+    <color name="danger">#EF4444</color>
+    <color name="danger_dark">#DC2626</color>
+    <color name="danger_bg">#FEF2F2</color>
+    <color name="danger_border">#FECACA</color>
+
+    <!-- ── Success ── -->
+    <color name="success">#059669</color>
+    <color name="success_bg">#D1FAE5</color>
+    <color name="success_border">#6EE7B7</color>
+
+    <!-- ── Cards / Sections ── -->
+    <color name="card_bg">#FFFFFF</color>
+    <color name="card_title">#1F2937</color>
+
+    <!-- ── Table ── -->
+    <color name="table_header_bg">#EBF5FF</color>
+    <color name="table_header_text">#0088FF</color>
+    <color name="table_row_even">#FFFFFF</color>
+    <color name="table_row_odd">#F9FAFB</color>
+    <color name="table_row_selected">#EBF5FF</color>
+
+    <!-- ── Status badges ── -->
+    <color name="badge_pending_bg">#FEF9C3</color>
+    <color name="badge_pending_text">#854D0E</color>
+    <color name="badge_processing_bg">#DBEAFE</color>
+    <color name="badge_processing_text">#1E40AF</color>
+    <color name="badge_completed_bg">#D1FAE5</color>
+    <color name="badge_completed_text">#065F46</color>
+    <color name="badge_cancelled_bg">#FEE2E2</color>
+    <color name="badge_cancelled_text">#991B1B</color>
+
+    <!-- ── Modal overlay ── -->
+    <color name="modal_overlay">#80000000</color>   <!-- rgba(0,0,0,0.50) -->
+    <color name="modal_bg">#FFFFFF</color>
+    <color name="modal_header_bg">#0088FF</color>
+    <color name="modal_title_text">#FFFFFF</color>
+
+    <!-- ── Bottom nav ── -->
+    <color name="nav_active">#0088FF</color>
+    <color name="nav_bg">#FFFFFF</color>
+
+    <!-- ── Input ── -->
+    <color name="input_border">#D1D5DB</color>
+    <color name="input_focus_border">#0088FF</color>
+    <color name="placeholder">#9CA3AF</color>
+
+    <!-- ── Toast ── -->
+    <color name="toast_bg">#1F2937</color>
+    <color name="toast_text">#FFFFFF</color>
 </resources>

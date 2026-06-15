@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product item = products.get(position);
-        holder.imgProduct.setImageResource(item.getImageRes());
+        holder.imgProduct.setImageResource(item.getImageRes(holder.itemView.getContext()));
         holder.tvProductName.setText(item.getName());
         holder.tvRating.setText(String.valueOf(item.getRating()));
         holder.tvReviews.setText(item.getReviewCount() + " Đánh giá");
@@ -47,8 +47,8 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
         return products.size();
     }
 
-    private String formatPrice(String price) {
-        return price.endsWith("đ") ? price : price + "đ";
+    private String formatPrice(int price) {
+        return String.format("%,dđ", price).replace(',', '.');
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {

@@ -44,7 +44,7 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product item = products.get(position);
-        holder.imgProduct.setImageResource(item.getImageRes());
+        holder.imgProduct.setImageResource(item.getImageRes(holder.itemView.getContext()));
         holder.tvName.setText(item.getName());
 
         holder.imgProduct.setAlpha(position == selectedPosition ? 1f : 0.7f);
