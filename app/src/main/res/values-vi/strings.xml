@@ -35,4 +35,6 @@
     <string name="new_arrivals">New Arrivals</string>
     <string name="best_sellers">Best Sellers</string>
     <string name="fruit_tea">Fruit Tea</string>
+    <string name="str_otp">-</string>
+    <string name="str_email_masked">ethan@gmail.com</string>
 </resources>

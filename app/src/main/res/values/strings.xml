@@ -81,4 +81,14 @@
     <string name="new_arrivals">New Arrivals</string>
     <string name="best_sellers">Best Sellers</string>
     <string name="fruit_tea">Fruit Tea</string>
+
+    <string name="otp_title">Xác Thực Email</string>
+    <string name="otp_subtitle">Mã xác thực đã được gửi đến email của bạn</string>
+    <string name="otp_resend_countdown">Gửi lại sau 60s</string>
+    <string name="otp_resend_countdown_format">Gửi lại sau %ds</string>
+    <string name="otp_resend">Gửi lại mã OTP</string>
+    <string name="otp_verify_btn">XÁC NHẬN</string>
+    <string name="otp_back">← Quay lại</string>
+    <string name="str_otp">-</string>
+    <string name="str_email_masked">ethan@gmail.com</string>
 </resources>

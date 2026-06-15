@@ -30,7 +30,7 @@
             android:name="com.teatrack_mcd_253eie502802_group02.client.ContactWithUs"
             android:exported="false" />
         <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.FilledOTP"
+            android:name="com.teatrack_mcd_253eie502802_group02.client.FilledOtpActivity"
             android:exported="false" />
         <activity
             android:name="com.teatrack_mcd_253eie502802_group02.client.BlogDetail"

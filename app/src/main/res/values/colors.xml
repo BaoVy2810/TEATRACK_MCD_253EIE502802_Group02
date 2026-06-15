@@ -12,4 +12,6 @@
     <color name="Red">#D11515</color>
     <color name="bg_baby_blue">#F2F9FE</color>
     <color name="Gray">#8D8D8D</color>
+    <color name="Red_pressed">#B01010</color>
+    <color name="otp_error_bg">#FFF0F0</color>
 </resources>
