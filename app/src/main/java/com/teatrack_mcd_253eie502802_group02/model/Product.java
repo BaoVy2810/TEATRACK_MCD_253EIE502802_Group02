@@ -11,11 +11,16 @@ public class Product {
     private String code;
     private String name;
     private String category;
-    private int price; // This is Size M price in Firebase
+    private int price; // Size M price
     private int priceL;
+    private int vipPriceM;
     private int vipPriceL;
+    private String description; // Product Information
+    private String detail;      // Product Description
     private String image;
     private boolean visible;
+    private boolean special;
+    
     private int imageRes;
     private float rating;
     private String reviewCount;
@@ -24,26 +29,32 @@ public class Product {
         // Required for Firebase
     }
 
-    public Product(String id, String code, String name, String category, int price, int priceL, int vipPriceL, String image, boolean visible) {
+    public Product(String id, String code, String name, String category, int price, int priceL, int vipPriceM, int vipPriceL, String description, String detail, String image, boolean visible, boolean special) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.category = category;
         this.price = price;
         this.priceL = priceL;
+        this.vipPriceM = vipPriceM;
         this.vipPriceL = vipPriceL;
+        this.description = description;
+        this.detail = detail;
         this.image = image;
         this.visible = visible;
+        this.special = special;
     }
 
-    public Product(String name, int imageRes, float rating, String reviewCount, String priceM, String priceL, String vipPriceM, String vipPriceL) {
+    // Constructor for Mock Data (Client side)
+    public Product(String name, int imageRes, float rating, String reviewCount, int price, int priceL, int vipPriceM, int vipPriceL) {
         this.name = name;
         this.imageRes = imageRes;
         this.rating = rating;
         this.reviewCount = reviewCount;
-        this.price = Integer.parseInt(priceM.replace(".", ""));
-        this.priceL = Integer.parseInt(priceL.replace(".", ""));
-        this.vipPriceL = Integer.parseInt(vipPriceL.replace(".", ""));
+        this.price = price;
+        this.priceL = priceL;
+        this.vipPriceM = vipPriceM;
+        this.vipPriceL = vipPriceL;
         this.visible = true;
     }
 
@@ -66,8 +77,17 @@ public class Product {
     public int getPriceL() { return priceL; }
     public void setPriceL(int priceL) { this.priceL = priceL; }
 
+    public int getVipPriceM() { return vipPriceM; }
+    public void setVipPriceM(int vipPriceM) { this.vipPriceM = vipPriceM; }
+
     public int getVipPriceL() { return vipPriceL; }
     public void setVipPriceL(int vipPriceL) { this.vipPriceL = vipPriceL; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getDetail() { return detail; }
+    public void setDetail(String detail) { this.detail = detail; }
 
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
@@ -75,28 +95,16 @@ public class Product {
     public boolean isVisible() { return visible; }
     public void setVisible(boolean visible) { this.visible = visible; }
 
-    @Exclude
-    public int getImageRes() { return imageRes; }
-    public void setImageRes(int imageRes) { this.imageRes = imageRes; }
+    public boolean isSpecial() { return special; }
+    public void setSpecial(boolean special) { this.special = special; }
 
     @Exclude
     public int getImageRes(Context context) {
-        if (imageRes != 0) {
-            return imageRes;
-        }
+        if (imageRes != 0) return imageRes;
         if (image != null && !image.isEmpty()) {
-            String imageName = image.toLowerCase()
-                    .replace(".png", "")
-                    .replace(".jpg", "")
-                    .replace(".jpeg", "")
-                    .replace(".webp", "");
-            int resId = context.getResources().getIdentifier(
-                    imageName,
-                    "mipmap",
-                    context.getPackageName());
-            if (resId != 0) {
-                return resId;
-            }
+            String imageName = image.toLowerCase().split("\\.")[0];
+            int resId = context.getResources().getIdentifier(imageName, "mipmap", context.getPackageName());
+            if (resId != 0) return resId;
         }
         return R.mipmap.logo_ngo_gia;
     }
@@ -108,15 +116,4 @@ public class Product {
     @Exclude
     public String getReviewCount() { return reviewCount; }
     public void setReviewCount(String reviewCount) { this.reviewCount = reviewCount; }
-
-    // Business Logic Getters
-    @Exclude
-    public int getPriceM() {
-        return price;
-    }
-
-    @Exclude
-    public int getVipPriceM() {
-        return price > 3000 ? price - 3000 : 0;
-    }
 }

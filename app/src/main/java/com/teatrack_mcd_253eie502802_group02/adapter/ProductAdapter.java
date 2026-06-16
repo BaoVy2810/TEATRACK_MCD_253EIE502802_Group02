@@ -1,16 +1,20 @@
 package com.teatrack_mcd_253eie502802_group02.adapter;
 
+import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -26,10 +30,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private final Context context;
     private List<Product> productList;
     private final DecimalFormat formatter = new DecimalFormat("#,###");
+    private OnEditClickListener editClickListener;
+
+    public interface OnEditClickListener {
+        void onEditClick(Product product);
+    }
 
     public ProductAdapter(Context context, List<Product> productList) {
         this.context = context;
         this.productList = productList;
+    }
+
+    public void setOnEditClickListener(OnEditClickListener listener) {
+        this.editClickListener = listener;
     }
 
     @NonNull
@@ -43,55 +56,63 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
 
-        // Bind data
         holder.tvProductName.setText(product.getName());
         holder.tvCategory.setText(product.getCategory());
 
-        // Price Mapping and Formatting
-        holder.tvPriceM.setText(formatter.format(product.getPriceM()).replace(',', '.') + "đ");
+        holder.tvPriceM.setText(formatter.format(product.getPrice()).replace(',', '.') + "đ");
         holder.tvPriceL.setText(formatter.format(product.getPriceL()).replace(',', '.') + "đ");
         holder.tvVipPriceM.setText(formatter.format(product.getVipPriceM()).replace(',', '.') + "đ");
         holder.tvVipPriceL.setText(formatter.format(product.getVipPriceL()).replace(',', '.') + "đ");
 
-
-        // Image Loading from Mipmap
         holder.imgProduct.setImageResource(product.getImageRes(context));
-
-        // Visibility Icon
         holder.btnToggleVisibility.setImageResource(product.isVisible() ? R.drawable.eye : R.drawable.hide);
 
-        // --- Event Listeners ---
-
-        // Toggle Visibility
         holder.btnToggleVisibility.setOnClickListener(v -> {
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference(context.getString(R.string.firebase_collection_products)).child(product.getId());
-            ref.child(context.getString(R.string.firebase_field_visible)).setValue(!product.isVisible())
-                    .addOnFailureListener(e -> Toast.makeText(context, context.getString(R.string.error_prefix, e.getMessage()), Toast.LENGTH_SHORT).show());
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("products").child(product.getId());
+            ref.child("visible").setValue(!product.isVisible());
         });
 
-        // Edit Product
         holder.btnEdit.setOnClickListener(v -> {
-            // Intent intent = new Intent(context, EditProductActivity.class);
-            // intent.putExtra("productId", product.getId());
-            // context.startActivity(intent);
-            Toast.makeText(context, R.string.msg_edit_update, Toast.LENGTH_SHORT).show();
+            if (editClickListener != null) {
+                editClickListener.onEditClick(product);
+            }
         });
 
-        // Delete Product
-        holder.btnDelete.setOnClickListener(v -> {
-            new AlertDialog.Builder(context)
-                    .setTitle(R.string.modal_delete_title)
-                    .setMessage(R.string.confirm_delete_msg)
-                    .setPositiveButton(R.string.btn_delete, (dialog, which) -> {
-                        FirebaseDatabase.getInstance().getReference(context.getString(R.string.firebase_collection_products))
-                                .child(product.getId()).removeValue()
-                                .addOnSuccessListener(aVoid -> Toast.makeText(context, R.string.msg_product_deleted, Toast.LENGTH_SHORT).show())
-                                .addOnFailureListener(e -> Toast.makeText(context, context.getString(R.string.error_prefix, e.getMessage()), Toast.LENGTH_SHORT).show());
-                    })
-                    .setNegativeButton(R.string.btn_cancel, null)
-                    .show();
+        holder.btnDelete.setOnClickListener(v -> showDeleteDialog(product));
+    }
+
+    private void showDeleteDialog(Product product) {
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_delete_confirm);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.9);
+            dialog.getWindow().setAttributes(params);
+        }
+
+        TextView tvMessage = dialog.findViewById(R.id.tvDeleteMessage);
+        String fullMessage = "The product <font color='#0088ff'><b>" + product.getName() + "</b></font> will be permanently deleted.";
+        
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            tvMessage.setText(Html.fromHtml(fullMessage, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvMessage.setText(Html.fromHtml(fullMessage));
+        }
+
+        dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
+            FirebaseDatabase.getInstance().getReference("products")
+                    .child(product.getId()).removeValue()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(context, "Product deleted", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    });
         });
 
+        dialog.show();
     }
 
     @Override

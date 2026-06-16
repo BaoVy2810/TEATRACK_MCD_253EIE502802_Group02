@@ -36,7 +36,7 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
         holder.tvProductName.setText(item.getName());
         holder.tvRating.setText(String.valueOf(item.getRating()));
         holder.tvReviews.setText(item.getReviewCount() + " Đánh giá");
-        holder.tvPriceM.setText(formatPrice(item.getPriceM()));
+        holder.tvPriceM.setText(formatPrice(item.getPrice()));
         holder.tvPriceL.setText(formatPrice(item.getPriceL()));
         holder.tvVipPriceM.setText(formatPrice(item.getVipPriceM()));
         holder.tvVipPriceL.setText(formatPrice(item.getVipPriceL()));
