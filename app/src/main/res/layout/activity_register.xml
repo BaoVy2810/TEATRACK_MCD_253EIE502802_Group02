@@ -242,7 +242,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelPhone"
                 app:startIconDrawable="@drawable/ic_phonenumber"
-                app:startIconTint="#6279FF">
+                app:startIconTint="#6279FF"
+                app:startIconScaleType="centerInside">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPhone"

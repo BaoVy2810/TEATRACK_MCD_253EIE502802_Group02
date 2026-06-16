@@ -1,6 +1,7 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +10,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.model.User;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -89,7 +96,44 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Clear error if everything is valid
         tvErrorMessage.setVisibility(android.view.View.GONE);
-        // Proceed with registration logic (dùng name, email, phone, password)
+        
+        // Hash password and save to Firebase
+        String hashedPassword = hashPassword(password);
+        saveUserToFirebase(name, email, phone, hashedPassword);
+    }
+
+    private void saveUserToFirebase(String name, String email, String phone, String hashedPassword) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        String userId = usersRef.push().getKey();
+
+        if (userId != null) {
+            User newUser = new User(userId, name, email, phone, hashedPassword);
+            usersRef.child(userId).setValue(newUser)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        showError("Đăng ký thất bại: " + e.getMessage());
+                    });
+        }
+    }
+
+    private String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return password; // Fallback
+        }
     }
 
     private void setFieldError(TextInputLayout til, boolean isError) {
