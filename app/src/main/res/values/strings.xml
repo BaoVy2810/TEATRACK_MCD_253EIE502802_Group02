@@ -81,4 +81,39 @@
     <string name="new_arrivals">New Arrivals</string>
     <string name="best_sellers">Best Sellers</string>
     <string name="fruit_tea">Fruit Tea</string>
+
+    <string name="login_logo_description">Login Logo</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_label_name">Login name*</string>
+    <string name="login_hint_name">Enter your login name</string>
+    <string name="login_label_password">Password*</string>
+    <string name="login_hint_password">Enter your password</string>
+    <string name="login_remember">Remember?</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_btn_login">Log In</string>
+    <string name="login_or">OR</string>
+    <string name="login_btn_google">Log in with Google</string>
+    <string name="login_dont_have_account">Don\'t have an account? </string>
+    <string name="login_sign_up">Sign Up</string>
+    <string name="login_error_invalid">Login Error! Invalid username or password.</string>
+    <string name="login_error_empty">Login Error! Please complete all required fields.</string>
+
+    <string name="welcome_title">Welcome</string>
+    <string name="welcome_subtitle">Sign in to your registered account.</string>
+    <string name="welcome_get_started">Get started</string>
+    <string name="welcome_logo_description">Logo</string>
+
+    <string name="register_sign_up">Sign up</string>
+    <string name="register_label_email">Email:</string>
+    <string name="register_hint_email">Enter your email address</string>
+    <string name="register_label_confirm_password">Confirm password*</string>
+    <string name="register_hint_confirm_password">Confirm your password</string>
+    <string name="register_btn_register">Sign up</string>
+    <string name="register_already_have_account">Already have an account? </string>
+    <string name="register_error_empty">Sign Up Error! Please complete all required fields.</string>
+    <string name="register_error_mismatch">Passwords do not match. Please try again.</string>
+    <string name="register_terms_agreement">By continue you agree with our</string>
+    <string name="register_label_phone">Phone Number:</string>
+    <string name="register_hint_phone">Enter your phone number</string>
+    <string name="register_terms_policy"><b>Terms</b> &amp; <b>Privacy Policy</b></string>
 </resources>
