@@ -75,6 +75,7 @@
         android:padding="10dp"
         android:textColor="#784848"
         android:textSize="10sp"
+        android:paddingStart="20"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
