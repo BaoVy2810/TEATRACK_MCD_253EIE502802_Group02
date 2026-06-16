@@ -63,7 +63,7 @@
             android:layout_marginTop="4dp"
             android:fontFamily="@font/inter_family"
             android:gravity="center"
-            android:textColor="@color/darkgreen"
+            android:textColor="@color/brand_blue"
             android:textSize="14sp"
             android:textStyle="bold"
             tools:text="@string/str_email_masked" />
