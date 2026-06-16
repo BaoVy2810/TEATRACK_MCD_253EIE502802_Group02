@@ -7,12 +7,17 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,13 +45,12 @@ import java.util.Set;
 
 public class AdminProduct extends AppCompatActivity {
 
-    private RecyclerView rvProducts;
-    private ProductAdapter adapter;
+    private ProductAdapter productAdapter;
     private List<Product> productList;
     private List<Product> filteredList;
     private DatabaseReference productsRef;
     private EditText etSearch;
-    private com.google.android.material.button.MaterialButton btnCategorySelect;
+    private MaterialButton btnCategorySelect;
     private List<String> categoryList = new ArrayList<>();
     private String selectedCategory;
 
@@ -56,44 +61,44 @@ public class AdminProduct extends AppCompatActivity {
 
         selectedCategory = getString(R.string.filter_all);
         initViews();
-
         setupFirebase();
         setupSearch();
         setupBottomNavigation();
     }
 
     private void initViews() {
-        rvProducts = findViewById(R.id.rvProducts);
+        RecyclerView rvProducts = findViewById(R.id.rvProducts);
         etSearch = findViewById(R.id.etSearch);
         btnCategorySelect = findViewById(R.id.btnCategorySelect);
+        
         if (btnCategorySelect != null) {
             btnCategorySelect.setOnClickListener(this::showCategoryDialog);
         }
 
         productList = new ArrayList<>();
         filteredList = new ArrayList<>();
-        adapter = new ProductAdapter(this, filteredList);
+        productAdapter = new ProductAdapter(this, filteredList);
+        
+        productAdapter.setOnEditClickListener(product -> 
+            new EditProductDialog(this, product, categoryList).show()
+        );
 
         rvProducts.setLayoutManager(new LinearLayoutManager(this));
-        rvProducts.setAdapter(adapter);
+        rvProducts.setAdapter(productAdapter);
 
-        // Setup Add Product floating action button
         View fabAddProduct = findViewById(R.id.fabAddProduct);
         if (fabAddProduct != null) {
-            fabAddProduct.setOnClickListener(v ->
-                Toast.makeText(this, R.string.msg_under_development, Toast.LENGTH_SHORT).show()
-            );
+            fabAddProduct.setOnClickListener(v -> showAddProductDialog());
         }
 
         findViewById(R.id.btnExportExcel).setOnClickListener(v ->
             Toast.makeText(this, R.string.msg_excel_init, Toast.LENGTH_SHORT).show()
         );
 
-        // Setup Header actions
         View btnProfile = findViewById(R.id.btn_profile);
         if (btnProfile != null) {
             btnProfile.setOnClickListener(v ->
-                startActivity(new Intent(this, com.teatrack_mcd_253eie502802_group02.admin.AdminProfile.class))
+                startActivity(new Intent(this, AdminProfile.class))
             );
         }
     }
@@ -121,14 +126,14 @@ public class AdminProduct extends AppCompatActivity {
                 List<String> sortedCategories = new ArrayList<>(categories);
                 Collections.sort(sortedCategories);
 
-                // Ensure "All categories" is always first
                 String allLabel = getString(R.string.filter_all);
                 if (sortedCategories.contains(allLabel)) {
                     sortedCategories.remove(allLabel);
                     sortedCategories.add(0, allLabel);
                 }
 
-                updateCategoryList(sortedCategories);
+                categoryList = sortedCategories;
+                updateCategoryButtonText();
                 performFilter();
             }
 
@@ -139,22 +144,12 @@ public class AdminProduct extends AppCompatActivity {
         });
     }
 
-    private void updateCategoryList(List<String> categories) {
-        this.categoryList = categories;
-        if (!categoryList.contains(selectedCategory)) {
-            selectedCategory = getString(R.string.filter_all);
-        }
+    private void updateCategoryButtonText() {
         if (btnCategorySelect != null) {
-            btnCategorySelect.setText(selectedCategory + " ▾");
+            btnCategorySelect.setText(String.format("%s ▾", selectedCategory));
         }
     }
 
-    /**
-     * Shows a custom category selector dialog matching the mockup design:
-     * - Blue gradient header with title and checkmark icon
-     * - White body with category items in blue text
-     * - Subtle blue dividers between items
-     */
     private void showCategoryDialog(View anchor) {
         if (categoryList == null || categoryList.isEmpty()) return;
 
@@ -162,50 +157,116 @@ public class AdminProduct extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_category_selector);
 
-        // Make dialog background transparent so our rounded corners show
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.85);
+            
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.6);
+            params.gravity = Gravity.TOP | Gravity.START;
+            
+            int[] location = new int[2];
+            anchor.getLocationOnScreen(location);
+            params.x = location[0];
+            params.y = location[1] + anchor.getHeight();
+            
             dialog.getWindow().setAttributes(params);
+            dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         }
 
-        // Set header title to current selection
         TextView tvTitle = dialog.findViewById(R.id.tvCategoryDialogTitle);
-        if (tvTitle != null) {
-            tvTitle.setText(selectedCategory);
-        }
+        if (tvTitle != null) tvTitle.setText(selectedCategory);
 
-        // Setup RecyclerView with category items
         RecyclerView rvCategories = dialog.findViewById(R.id.rvCategoryList);
         if (rvCategories != null) {
             rvCategories.setLayoutManager(new LinearLayoutManager(this));
-            CategoryDialogAdapter categoryAdapter = new CategoryDialogAdapter(categoryList, category -> {
+            rvCategories.setAdapter(new CategoryDialogAdapter(categoryList, category -> {
                 selectedCategory = category;
-                if (btnCategorySelect != null) {
-                    btnCategorySelect.setText(selectedCategory + " ▾");
-                }
+                updateCategoryButtonText();
                 performFilter();
                 dialog.dismiss();
-            });
-            rvCategories.setAdapter(categoryAdapter);
+            }));
         }
 
         dialog.show();
     }
 
-    private void setupSearch() {
-        etSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+    private void showAddProductDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_add_product);
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                performFilter();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.95);
+            dialog.getWindow().setAttributes(params);
+        }
+
+        EditText etProductId = dialog.findViewById(R.id.etProductId);
+        EditText etProductName = dialog.findViewById(R.id.etProductName);
+        Spinner spinnerCategory = dialog.findViewById(R.id.spinnerCategory);
+        CheckBox cbVisible = dialog.findViewById(R.id.cbVisible);
+        CheckBox cbSpecial = dialog.findViewById(R.id.cbSpecial);
+        EditText etPriceM = dialog.findViewById(R.id.etPriceM);
+        EditText etPriceL = dialog.findViewById(R.id.etPriceL);
+        EditText etVipPriceM = dialog.findViewById(R.id.etVipPriceM);
+        EditText etVipPriceL = dialog.findViewById(R.id.etVipPriceL);
+        EditText etProductInfo = dialog.findViewById(R.id.etProductInfo);
+        EditText etProductDesc = dialog.findViewById(R.id.etProductDesc);
+        
+        List<String> spinnerCategories = new ArrayList<>(categoryList);
+        spinnerCategories.remove(getString(R.string.filter_all));
+        
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, spinnerCategories);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(spinnerAdapter);
+
+        dialog.findViewById(R.id.btnClose).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.findViewById(R.id.btnAdd).setOnClickListener(v -> {
+            String id = etProductId.getText().toString().trim();
+            String name = etProductName.getText().toString().trim();
+            String category = spinnerCategory.getSelectedItem() != null ? spinnerCategory.getSelectedItem().toString() : "";
+            
+            if (id.isEmpty() || name.isEmpty()) {
+                Toast.makeText(this, "Please fill in ID and Name", Toast.LENGTH_SHORT).show();
+                return;
             }
 
-            @Override
-            public void afterTextChanged(Editable s) {}
+            int pM = getIntFromEt(etPriceM);
+            int pL = getIntFromEt(etPriceL);
+            int vM = getIntFromEt(etVipPriceM);
+            int vL = getIntFromEt(etVipPriceL);
+
+            Product newProduct = new Product(
+                id, id, name, category, pM, pL, vM, vL, 
+                etProductInfo.getText().toString().trim(), 
+                etProductDesc.getText().toString().trim(), 
+                "logo_ngo_gia.png", cbVisible.isChecked(), cbSpecial.isChecked()
+            );
+
+            productsRef.child(id).setValue(newProduct)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                })
+                .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        });
+
+        dialog.show();
+    }
+
+    private int getIntFromEt(EditText et) {
+        String s = et.getText().toString().trim();
+        return s.isEmpty() ? 0 : Integer.parseInt(s);
+    }
+
+    private void setupSearch() {
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { performFilter(); }
+            @Override public void afterTextChanged(Editable s) {}
         });
     }
 
@@ -222,19 +283,14 @@ public class AdminProduct extends AppCompatActivity {
                 filteredList.add(product);
             }
         }
-        adapter.updateList(filteredList);
+        productAdapter.updateList(filteredList);
     }
 
     private void setupBottomNavigation() {
         int[] navItemIds = {
-                R.id.nav_dashboard,
-                R.id.nav_products,
-                R.id.nav_orders,
-                R.id.nav_account,
-                R.id.nav_forum,
-                R.id.nav_branch,
-                R.id.nav_feedbacks,
-                R.id.nav_promotion
+                R.id.nav_dashboard, R.id.nav_products, R.id.nav_orders,
+                R.id.nav_account, R.id.nav_forum, R.id.nav_branch,
+                R.id.nav_feedbacks, R.id.nav_promotion
         };
 
         NavBarHelper.setupNavBar(this, navItemIds, R.id.nav_products, v -> {
@@ -254,8 +310,6 @@ public class AdminProduct extends AppCompatActivity {
         });
     }
 
-    // ─── Inner adapter for the category dialog RecyclerView ───────────────────
-
     interface OnCategorySelectedListener {
         void onCategorySelected(String category);
     }
@@ -272,8 +326,7 @@ public class AdminProduct extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_category_dialog, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_dialog, parent, false);
             return new ViewHolder(view);
         }
 
@@ -281,30 +334,18 @@ public class AdminProduct extends AppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String category = categories.get(position);
             holder.tvName.setText(category);
-
-            // Hide divider for last item
-            if (position == categories.size() - 1) {
-                holder.divider.setVisibility(View.GONE);
-            } else {
-                holder.divider.setVisibility(View.VISIBLE);
-            }
-
-            holder.itemView.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onCategorySelected(category);
-                }
-            });
+            holder.divider.setVisibility(position == categories.size() - 1 ? View.GONE : View.VISIBLE);
+            holder.itemView.setOnClickListener(v -> listener.onCategorySelected(category));
         }
 
         @Override
         public int getItemCount() {
-            return categories != null ? categories.size() : 0;
+            return categories.size();
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
             TextView tvName;
             View divider;
-
             ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 tvName = itemView.findViewById(R.id.tvCategoryItemName);
