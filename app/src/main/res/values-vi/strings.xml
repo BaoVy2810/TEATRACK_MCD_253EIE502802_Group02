@@ -34,5 +34,40 @@
     <string name="milk_tea">Milk Tea</string>
     <string name="new_arrivals">New Arrivals</string>
     <string name="best_sellers">Best Sellers</string>
-    <string name="fruit_tea">Fruit Tea</string>
+    <string name="fruit_tea">Trà Trái Cây</string>
+
+    <string name="login_logo_description">Logo Đăng nhập</string>
+    <string name="login_sign_in">Đăng nhập</string>
+    <string name="login_label_name">TÊN ĐĂNG NHẬP</string>
+    <string name="login_hint_name">Tên đăng nhập/Email/Số điện thoại</string>
+    <string name="login_label_password">MẬT KHẨU</string>
+    <string name="login_hint_password">Mật khẩu</string>
+    <string name="login_remember">Ghi nhớ đăng nhập</string>
+    <string name="login_forgot_password">Quên mật khẩu?</string>
+    <string name="login_btn_login">ĐĂNG NHẬP</string>
+    <string name="login_or">HOẶC</string>
+    <string name="login_btn_google">Đăng nhập với Google</string>
+    <string name="login_dont_have_account">Chưa có tài khoản? </string>
+    <string name="login_sign_up">Đăng ký ngay</string>
+    <string name="login_error_invalid">Tên đăng nhập hoặc mật khẩu không đúng</string>
+    <string name="login_error_empty">Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu</string>
+
+    <string name="welcome_title">Chào mừng</string>
+    <string name="welcome_subtitle">Đăng nhập vào tài khoản của bạn.</string>
+    <string name="welcome_get_started">Bắt đầu ngay</string>
+    <string name="welcome_logo_description">Logo</string>
+
+    <string name="register_sign_up">Đăng ký</string>
+    <string name="register_label_email">Email:</string>
+    <string name="register_hint_email">Nhập địa chỉ email của bạn</string>
+    <string name="register_label_confirm_password">Xác nhận mật khẩu*</string>
+    <string name="register_hint_confirm_password">Xác nhận lại mật khẩu</string>
+    <string name="register_btn_register">Đăng ký</string>
+    <string name="register_already_have_account">Đã có tài khoản? </string>
+    <string name="register_error_empty">Lỗi đăng ký! Vui lòng điền đầy đủ các trường bắt buộc.</string>
+    <string name="register_error_mismatch">Mật khẩu không khớp. Vui lòng thử lại.</string>
+    <string name="register_terms_agreement">Bằng cách tiếp tục, bạn đồng ý với</string>
+    <string name="register_label_phone">Số điện thoại</string>
+    <string name="register_hint_phone">Nhập số điện thoại của bạn:</string>
+    <string name="register_terms_policy"><b>Điều khoản</b> &amp; <b>Chính sách bảo mật</b> của chúng tôi</string>
 </resources>

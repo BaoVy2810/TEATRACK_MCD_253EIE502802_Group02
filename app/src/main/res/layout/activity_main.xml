@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".WelcomeActivity">
+    tools:context="com.teatrack_mcd_253eie502802_group02.MainActivity">
 
     <!-- ===== ẢNH NỀN (background xanh + wave + logo) ===== -->
     <ImageView
@@ -28,7 +28,7 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="68dp"
-        android:contentDescription="Logo"
+        android:contentDescription="@string/welcome_logo_description"
         android:scaleType="fitCenter"
         android:src="@mipmap/logo_ngo_gia"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
         android:shadowDx="0"
         android:shadowDy="2"
         android:shadowRadius="4"
-        android:text="Welcome"
+        android:text="@string/welcome_title"
         android:textColor="#2C2C2C"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -64,7 +64,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/inter_light"
-        android:text="Sign in to your registered account."
+        android:text="@string/welcome_subtitle"
         android:textColor="#8D8D8D"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,11 +92,12 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
             android:fontFamily="@font/inter_light"
-            android:text="Get started"
+            android:text="@string/welcome_get_started"
             android:textColor="#8D8D8D"
             android:textSize="15sp" />
 
         <FrameLayout
+            android:id="@+id/btnstart"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@drawable/login">
