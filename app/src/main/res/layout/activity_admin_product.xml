@@ -60,36 +60,40 @@
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <!-- Category Selector Button (styled like dashboard range button) -->
+            <!-- Category Selector Button (Small & Rounded) -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCategorySelect"
-                style="@style/Widget.TeaTrack.Button.Primary"
-                android:layout_width="0dp"
-                android:layout_height="42dp"
-                android:layout_weight="1"
-                android:text="@string/filter_all"
-                android:textSize="12sp"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:backgroundTint="#1976D2"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                android:textAllCaps="false" />
+                android:paddingHorizontal="20dp"
+                android:text="@string/filter_all"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:cornerRadius="19dp"
+                app:elevation="2dp" />
 
             <View
-                android:layout_width="12dp"
-                android:layout_height="0dp" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <!-- Export Excel Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnExportExcel"
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:backgroundTint="#E8F1FF"
-                android:text="@string/btn_export_excel"
-                android:textAllCaps="false"
-                android:textColor="#0D6EFD"
+                android:layout_height="38dp"
+                android:backgroundTint="#E3F2FD"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
+                android:text="@string/btn_export_excel"
+                android:textAllCaps="false"
+                android:textColor="#1976D2"
                 android:textStyle="bold"
-                app:cornerRadius="24dp"
+                app:cornerRadius="19dp"
                 app:elevation="0dp" />
 
         </LinearLayout>

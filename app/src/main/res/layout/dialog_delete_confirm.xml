@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="24dp"
+    app:cardCornerRadius="28dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Top Icon -->
+        <FrameLayout
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/bg_circle_red_light">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/trash_can"
+                app:tint="#D32F2F" />
+        </FrameLayout>
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Confirm Product Deletion"
+            android:textColor="#D32F2F"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Message -->
+        <TextView
+            android:id="@+id/tvDeleteMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="The product Trà Ô Long Mộc Hương will be permanently deleted."
+            android:textColor="#424242"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="This action cannot be undone."
+            android:textColor="#424242"
+            android:textSize="14sp" />
+
+        <!-- Buttons Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <!-- Cancel Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/black"
+                app:cornerRadius="28dp"
+                app:icon="@drawable/close"
+                app:iconGravity="textStart"
+                app:iconSize="20dp"
+                app:iconPadding="8dp"
+                app:iconTint="@color/black"
+                android:strokeColor="@color/black"
+                android:strokeWidth="1.5dp" />
+
+            <!-- Remove Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnConfirmDelete"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#D32F2F"
+                android:text="Remove product"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:cornerRadius="28dp"
+                app:icon="@drawable/trash_can"
+                app:iconGravity="textStart"
+                app:iconSize="20dp"
+                app:iconPadding="8dp"
+                app:iconTint="@color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
