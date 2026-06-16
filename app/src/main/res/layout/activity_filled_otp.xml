@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_baby_blue"
+    android:background="@drawable/welcome_bg"
     android:fillViewport="true"
     tools:context="com.teatrack_mcd_253eie502802_group02.client.FilledOtpActivity"
     tools:device="pixel_4">
+
 
     <LinearLayout
         android:layout_width="match_parent"
