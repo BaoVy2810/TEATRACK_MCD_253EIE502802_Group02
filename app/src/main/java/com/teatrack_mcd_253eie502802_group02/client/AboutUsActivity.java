@@ -3,9 +3,11 @@ package com.teatrack_mcd_253eie502802_group02.client;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
@@ -18,6 +20,7 @@ import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 public class AboutUsActivity extends AppCompatActivity {
 
@@ -36,7 +39,7 @@ public class AboutUsActivity extends AppCompatActivity {
     private TextView tvGreetGhostTop, tvGreetGhostBot;
     private boolean greetAnimStarted = false;
 
-    private final Handler handler = new Handler();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,8 @@ public class AboutUsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about_us);
 
         bindViews();
+        setupHeader();
+        setupNavBar();
         setupVideo();
         setupScrollListener();
 
@@ -65,6 +70,39 @@ public class AboutUsActivity extends AppCompatActivity {
         mosaicCol3      = findViewById(R.id.mosaicCol3);
         tvGreetGhostTop = findViewById(R.id.tvGreetGhostTop);
         tvGreetGhostBot = findViewById(R.id.tvGreetGhostBot);
+    }
+
+    private void setupHeader() {
+        findViewById(R.id.btn_cart).setOnClickListener(v ->
+                startActivity(new Intent(this, Cart.class)));
+
+        findViewById(R.id.btn_profile).setOnClickListener(v ->
+                startActivity(new Intent(this, UserProfile.class)));
+    }
+
+    private void setupNavBar() {
+        int[] navItemIds = {
+                R.id.nav_home,
+                R.id.nav_menu,
+                R.id.nav_orders,
+                R.id.nav_promotion,
+                R.id.nav_profile
+        };
+
+        NavBarHelper.setupNavBar(this, navItemIds, -1, v -> {
+            int id = v.getId();
+            if (id == R.id.nav_home) {
+                startActivity(new Intent(this, Homepage.class));
+            } else if (id == R.id.nav_menu) {
+                startActivity(new Intent(this, Menu.class));
+            } else if (id == R.id.nav_orders) {
+                startActivity(new Intent(this, OrderHistory.class));
+            } else if (id == R.id.nav_promotion) {
+                // startActivity(new Intent(this, Promotion.class));
+            } else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, UserProfile.class));
+            }
+        });
     }
 
     private void setupVideo() {
@@ -186,12 +224,6 @@ public class AboutUsActivity extends AppCompatActivity {
         anim.start();
     }
 
-    // ═══════════════════════════════════════════════════════
-    // ANIMATION 4 — GREETING MARQUEE
-    // Ghost top: chạy từ phải → trái (translateX dương → âm)
-    // Ghost bot: chạy từ trái → phải (translateX âm → dương)
-    // Chữ xanh: đứng yên
-    // ═══════════════════════════════════════════════════════
     private void checkGreetVisible() {
         if (greetAnimStarted) return;
         FrameLayout sectionGreet = findViewById(R.id.sectionGreet);

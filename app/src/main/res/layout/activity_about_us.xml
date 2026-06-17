@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <!-- Header -->
+    <include
+        android:id="@+id/header"
+        layout="@layout/activity_header_client"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/nav_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
         <!--HERO-->
         <LinearLayout
@@ -31,7 +46,7 @@
                     android:id="@+id/tvHeroEyebrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hồng trà Ngô gia"
+                    android:text="@string/about_hero_eyebrow"
                     android:textColor="#0088FF"
                     android:textSize="12sp"
                     android:fontFamily="@font/inter"
@@ -42,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="Tự hào 74 năm hình thành và phát triển"
+                    android:text="@string/about_hero_title"
                     android:textColor="#0F172A"
                     android:textSize="10sp"
                     android:fontFamily="@font/inter"
@@ -55,7 +70,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="16dp"
-                android:contentDescription="Logo Hồng Trà Ngô Gia"
+                android:contentDescription="@string/about_hero_eyebrow"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/logo_ngo_gia" />
         </LinearLayout>
@@ -74,7 +89,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="CÂU CHUYỆN THƯƠNG HIỆU"
+                android:text="@string/about_story_title"
                 android:textColor="#D11515"
                 android:textSize="10sp"
                 android:fontFamily="@font/inter"
@@ -86,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Năm 1951, giữa đất trà mộc mạc, thương hiệu ra đời với đam mê tạo nên những ly trà đậm vị. Từ đó, Ngô Gia đã trở thành một trong những thương hiệu trà được yêu thích nhờ chất lượng ổn định, dịch vụ tận tâm và không ngừng đổi mới để bắt kịp xu hướng của giới trẻ Việt."
+                android:text="@string/about_story_desc"
                 android:textColor="#475569"
                 android:textSize="7sp"
                 android:fontFamily="@font/inter_semibold"
@@ -116,7 +131,7 @@
                         android:background="@drawable/bg_icon_circle"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:contentDescription="Chất lượng" />
+                        android:contentDescription="@string/about_feature_quality_title" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -128,7 +143,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Chất lượng hàng đầu"
+                            android:text="@string/about_feature_quality_title"
                             android:textColor="#D11515"
                             android:textSize="10sp"
                             android:fontFamily="@font/inter"
@@ -138,7 +153,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="An toàn, vệ sinh và ngon miệng. Việc sử dụng các nguyên liệu an toàn, tự nhiên và vệ sinh là ưu tiên hàng đầu của Hồng trà Ngô Gia."
+                            android:text="@string/about_feature_quality_desc"
                             android:textColor="#64748B"
                             android:textSize="7sp"
                             android:fontFamily="@font/inter_semibold"
@@ -170,7 +185,7 @@
                         android:background="@drawable/bg_icon_circle"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:contentDescription="Dịch vụ" />
+                        android:contentDescription="@string/about_feature_service_title" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -182,7 +197,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Dịch vụ tận tâm"
+                            android:text="@string/about_feature_service_title"
                             android:textColor="#D11515"
                             android:textSize="10sp"
                             android:fontFamily="@font/inter"
@@ -192,7 +207,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Hồng trà Ngô Gia mong muốn làm hài lòng khách hàng tốt nhất với tác phong phục vụ chuyên nghiệp và thân thiện."
+                            android:text="@string/about_feature_service_desc"
                             android:textColor="#64748B"
                             android:textSize="7sp"
                             android:fontFamily="@font/inter_semibold"
@@ -224,7 +239,7 @@
                         android:background="@drawable/bg_icon_circle"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
-                        android:contentDescription="Truyền thống" />
+                        android:contentDescription="@string/about_feature_tradition_title" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -236,7 +251,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Truyền thống &amp; sáng tạo"
+                            android:text="@string/about_feature_tradition_title"
                             android:textColor="#D11515"
                             android:textSize="10sp"
                             android:fontFamily="@font/inter"
@@ -246,7 +261,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="Dựa trên hai nền tảng cốt lõi là Chất Lượng và Dịch Vụ, Hồng trà Ngô gia luôn nỗ lực xây dựng thương hiệu đáng tin cậy."
+                            android:text="@string/about_feature_tradition_desc"
                             android:textColor="#64748B"
                             android:textSize="7sp"
                             android:fontFamily="@font/inter_semibold"
@@ -281,7 +296,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="HỒNG TRÀ NGÔ GIA"
+                    android:text="@string/about_video_overlay"
                     android:textColor="#FFFFFF"
                     android:textSize="12sp"
                     android:fontFamily="@font/inter"
@@ -308,7 +323,7 @@
                 android:layout_height="100dp"
                 android:src="@mipmap/banner_aboutus"
                 android:scaleType="centerCrop"
-                android:contentDescription="Sứ mệnh Ngô Gia" />
+                android:contentDescription="@string/about_mission_title" />
 
             <LinearLayout
                 android:id="@+id/missionOverlay"
@@ -323,7 +338,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SỨ MỆNH CỦA CHÚNG TÔI"
+                    android:text="@string/about_mission_title"
                     android:textColor="#FFF8E9"
                     android:textSize="10sp"
                     android:fontFamily="@font/inter"
@@ -341,7 +356,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hồng Trà Ngô Gia cam kết mang đến những thức uống tinh tế, lành mạnh và an toàn cho sức khỏe. Mỗi ly trà là tâm huyết của người làm nghề, gửi gắm niềm tự hào Việt."
+                    android:text="@string/about_mission_desc"
                     android:textColor="#FFF8E9"
                     android:textSize="7sp"
                     android:fontFamily="@font/inter_semibold"
@@ -365,7 +380,7 @@
                 android:layout_height="100dp"
                 android:src="@mipmap/banner_aboutus2"
                 android:scaleType="centerCrop"
-                android:contentDescription="Tầm nhìn thương hiệu" />
+                android:contentDescription="@string/about_vision_title" />
 
             <LinearLayout
                 android:id="@+id/visionOverlay"
@@ -380,7 +395,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TẦM NHÌN THƯƠNG HIỆU"
+                    android:text="@string/about_vision_title"
                     android:textColor="#FFFFFF"
                     android:textSize="10sp"
                     android:fontFamily="@font/inter"
@@ -398,7 +413,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Trở thành thương hiệu tiên phong trong lĩnh vực đồ uống chất lượng cao tại Việt Nam, được người tiêu dùng tin cậy và yêu mến. Ngô Gia hướng đến phát triển bền vững."
+                    android:text="@string/about_vision_desc"
                     android:textColor="#FFFFFF"
                     android:textSize="7sp"
                     android:fontFamily="@font/inter_semibold"
@@ -431,13 +446,13 @@
                     android:layout_marginBottom="6dp"
                     android:src="@mipmap/drink_1"
                     android:scaleType="centerCrop"
-                    android:contentDescription="drink"/>
+                    android:contentDescription="@string/about_drink_desc"/>
                 <ImageView
                     android:layout_width="73dp"
                     android:layout_height="100dp"
                     android:src="@mipmap/drink_3"
                     android:scaleType="centerCrop"
-                    android:contentDescription="drink"/>
+                    android:contentDescription="@string/about_drink_desc"/>
             </LinearLayout>
 
             <!--Col 2 - even -->
@@ -454,13 +469,13 @@
                     android:layout_marginBottom="6dp"
                     android:src="@mipmap/drink_2"
                     android:scaleType="centerCrop"
-                    android:contentDescription="drink"/>
+                    android:contentDescription="@string/about_drink_desc"/>
                 <ImageView
                     android:layout_width="73dp"
                     android:layout_height="100dp"
                     android:src="@mipmap/drink_4"
                     android:scaleType="centerCrop"
-                    android:contentDescription="drink"/>
+                    android:contentDescription="@string/about_drink_desc"/>
             </LinearLayout>
 
             <!--Col 3 - odd -->
@@ -477,13 +492,13 @@
                     android:layout_marginBottom="6dp"
                     android:src="@mipmap/drink_5"
                     android:scaleType="centerCrop"
-                    android:contentDescription="drink"/>
+                    android:contentDescription="@string/about_drink_desc"/>
                 <ImageView
                     android:layout_width="73dp"
                     android:layout_height="100dp"
                     android:src="@mipmap/drink_1"
                     android:scaleType="centerCrop"
-                    android:contentDescription="drink"/>
+                    android:contentDescription="@string/about_drink_desc"/>
             </LinearLayout>
 
             <!--Col 4 - even -->
@@ -500,13 +515,13 @@
                     android:layout_marginBottom="6dp"
                     android:src="@mipmap/drink_3"
                     android:scaleType="centerCrop"
-                    android:contentDescription="drink"/>
+                    android:contentDescription="@string/about_drink_desc"/>
                 <ImageView
                     android:layout_width="73dp"
                     android:layout_height="100dp"
                     android:src="@mipmap/drink_5"
                     android:scaleType="centerCrop"
-                    android:contentDescription="drink"/>
+                    android:contentDescription="@string/about_drink_desc"/>
             </LinearLayout>
 
             <!--Col 5 - odd -->
@@ -523,13 +538,13 @@
                     android:layout_marginBottom="6dp"
                     android:src="@mipmap/drink_2"
                     android:scaleType="centerCrop"
-                    android:contentDescription="drink"/>
+                    android:contentDescription="@string/about_drink_desc"/>
                 <ImageView
                     android:layout_width="73dp"
                     android:layout_height="100dp"
                     android:src="@mipmap/drink_4"
                     android:scaleType="centerCrop"
-                    android:contentDescription="drink"/>
+                    android:contentDescription="@string/about_drink_desc"/>
             </LinearLayout>
         </FrameLayout>
 
@@ -548,7 +563,7 @@
                 android:src="@mipmap/back"
                 android:scaleType="centerCrop"
                 android:alpha="0.5"
-                android:contentDescription="background" />
+                android:contentDescription="@string/about_customer_centric_title" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -560,7 +575,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="KHÁCH HÀNG LÀ TRỌNG TÂM"
+                    android:text="@string/about_customer_centric_title"
                     android:textColor="#D11515"
                     android:textSize="12sp"
                     android:fontFamily="@font/inter"
@@ -571,7 +586,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="Hồng Trà Ngô Gia luôn lắng nghe, thấu hiểu và không ngừng hoàn thiện để mang đến trải nghiệm trà tốt nhất cho bạn. Mỗi ly trà được pha không chỉ bằng hương vị tinh tế, mà còn bằng sự trân trọng và tận tâm dành cho từng vị khách."
+                    android:text="@string/about_customer_centric_desc"
                     android:textColor="#374151"
                     android:textSize="7sp"
                     android:fontFamily="@font/inter_semibold"
@@ -593,7 +608,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
                 android:translationY="-22dp"
-                android:text="NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO"
+                android:text="@string/about_greeting_marquee"
                 android:textColor="#1A163557"
                 android:textSize="18sp"
                 android:fontFamily="@font/inter"
@@ -606,7 +621,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
                 android:translationY="22dp"
-                android:text="NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO"
+                android:text="@string/about_greeting_marquee"
                 android:textColor="#1A163557"
                 android:textSize="18sp"
                 android:fontFamily="@font/inter"
@@ -618,7 +633,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="NGÔ GIA XIN CHÀO"
+                android:text="@string/about_greeting"
                 android:textColor="#0088FF"
                 android:textSize="20sp"
                 android:fontFamily="@font/inter"
@@ -626,6 +641,15 @@
                 android:letterSpacing="0.05"
                 android:gravity="center" />
 
-        </FrameLayout>
-    </LinearLayout>
-</ScrollView>
+            </FrameLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/nav_bar"
+        layout="@layout/activity_nav_bar_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
