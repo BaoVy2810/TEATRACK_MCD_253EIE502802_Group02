@@ -28,7 +28,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/login_bg"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -151,8 +151,8 @@
                     android:hint="@string/login_hint_name"
                     android:inputType="text"
                     android:paddingVertical="12dp"
-                    android:textColor="#2C2C2C"
-                    android:textColorHint="#D1D1D1"
+                    android:textColor="#0088FF"
+                    android:textColorHint="#8B8B8B"
                     android:textSize="10sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -203,8 +203,8 @@
                     android:hint="@string/register_hint_email"
                     android:inputType="textEmailAddress"
                     android:paddingVertical="12dp"
-                    android:textColor="#2C2C2C"
-                    android:textColorHint="#D1D1D1"
+                    android:textColor="#0088FF"
+                    android:textColorHint="#8B8B8B"
                     android:textSize="10sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -256,8 +256,8 @@
                     android:hint="@string/register_hint_phone"
                     android:inputType="phone"
                     android:paddingVertical="12dp"
-                    android:textColor="#2C2C2C"
-                    android:textColorHint="#D1D1D1"
+                    android:textColor="#0088FF"
+                    android:textColorHint="#8B8B8B"
                     android:textSize="10sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -310,8 +310,8 @@
                     android:hint="@string/login_hint_password"
                     android:inputType="textPassword"
                     android:paddingVertical="12dp"
-                    android:textColor="#2C2C2C"
-                    android:textColorHint="#D1D1D1"
+                    android:textColor="#0088FF"
+                    android:textColorHint="#8B8B8B"
                     android:textSize="10sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -364,8 +364,8 @@
                     android:hint="@string/register_hint_confirm_password"
                     android:inputType="textPassword"
                     android:paddingVertical="12dp"
-                    android:textColor="#2C2C2C"
-                    android:textColorHint="#D1D1D1"
+                    android:textColor="#0088FF"
+                    android:textColorHint="#8B8B8B"
                     android:textSize="10sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -408,7 +408,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_light"
                     android:text="@string/register_already_have_account"
-                    android:textColor="#8D8D8D"
+                    android:textColor="#8B8B8B"
                     android:textSize="10sp" />
 
                 <TextView
@@ -432,7 +432,7 @@
                 android:fontFamily="@font/inter_light"
                 android:gravity="center"
                 android:text="@string/register_terms_agreement"
-                android:textColor="#8D8D8D"
+                android:textColor="#8B8B8B"
                 android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -446,7 +446,7 @@
                 android:fontFamily="@font/inter_light"
                 android:gravity="center"
                 android:text="@string/register_terms_policy"
-                android:textColor="#8D8D8D"
+                android:textColor="#8B8B8B"
                 android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
