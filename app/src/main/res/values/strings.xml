@@ -104,7 +104,7 @@
     <string name="welcome_logo_description">Logo</string>
 
     <string name="register_sign_up">Sign up</string>
-    <string name="register_label_email">Email:</string>
+    <string name="register_label_email">Email*</string>
     <string name="register_hint_email">Enter your email address</string>
     <string name="register_label_confirm_password">Confirm password*</string>
     <string name="register_hint_confirm_password">Confirm your password</string>
@@ -116,4 +116,32 @@
     <string name="register_label_phone">Phone Number:</string>
     <string name="register_hint_phone">Enter your phone number</string>
     <string name="register_terms_policy"><b>Terms</b> &amp; <b>Privacy Policy</b></string>
+
+    <string name="forgot_password_title">Forgot Password</string>
+    <string name="forgot_password_content">Please enter your email address to receive the OTP code for password recovery.</string>
+    <string name="forgot_password_label_email">Email*</string>
+    <string name="forgot_password_hint_email">Enter your email address</string>
+    <string name="forgot_password_btn_send_otp">Send OTP</string>
+    <string name="forgot_password_already_have_account">Do you already have an account? </string>
+    <string name="forgot_password_sign_in">Sign in</string>
+    <string name="forgot_password_error_empty">Please enter your email address.</string>
+    <string name="forgot_password_error_not_found">Email not found. Please check and try again.</string>
+
+    <string name="reset_password_title">Reset Password</string>
+    <string name="reset_password_content">Please create a new password for your account.</string>
+    <string name="reset_password_label_password">New Password*</string>
+    <string name="reset_password_hint_password">Enter your password</string>
+    <string name="reset_password_label_confirm">Confirm password*</string>
+    <string name="reset_password_hint_confirm">Confirm your password</string>
+    <string name="reset_password_btn_update">Update Password</string>
+    <string name="reset_password_go_back">Or go back? </string>
+    <string name="reset_password_back_to_sign_in">Back to Sign in</string>
+    <string name="reset_password_error_empty">Reset error! Please complete all required fields.</string>
+    <string name="reset_password_error_mismatch">Passwords do not match. Please try again.</string>
+
+    <string name="success_password_title">Password Changed Successfully!</string>
+    <string name="success_password_content">You can now log in to your account with your new password. Thank you for choosing our service. Please sign in again.</string>
+    <string name="success_password_btn_back">Back to Sign in</string>
+    <string name="success_password_need_help">Need help? </string>
+    <string name="success_password_contact_support">Contact Support</string>
 </resources>

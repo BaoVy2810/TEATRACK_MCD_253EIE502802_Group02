@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.client.LoginActivity;
+import com.teatrack_mcd_253eie502802_group02.client.SucessfullyChangePasswordActivity;
 
 public class MainActivity extends AppCompatActivity {
 

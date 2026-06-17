@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText edtLoginName, edtPassword;
     private TextInputLayout tilLoginName, tilPassword;
     private MaterialButton btnLogIn;
-    private TextView tvErrorMessage, tvSignUp;
+    private TextView tvErrorMessage, tvSignUp, tvForgotPassword;
     private CheckBox cbRemember;
     private SharedPreferences sharedPreferences;
     private static final String PREF_NAME = "LoginPrefs";
@@ -88,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogIn = findViewById(R.id.btnLogIn);
         tvErrorMessage = findViewById(R.id.tvErrorMessage);
         tvSignUp = findViewById(R.id.tvSignUp);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
         cbRemember = findViewById(R.id.cbRemember);
 
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -109,6 +110,10 @@ public class LoginActivity extends AppCompatActivity {
         btnLogIn.setOnClickListener(v -> handleLogin());
         tvSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+        tvForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ForgotPassword.class);
             startActivity(intent);
         });
 

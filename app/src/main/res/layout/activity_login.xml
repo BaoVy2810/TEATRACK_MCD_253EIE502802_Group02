@@ -134,7 +134,7 @@
             android:paddingTop="11dp"
             android:paddingBottom="11dp"
             android:textColorHint="#8B8B8B"
-            android:textColor="#000000"
+            android:textColor="#0088FF"
 
             android:textSize="10sp" />
 
@@ -191,7 +191,7 @@
             android:paddingStart="48dp"
             android:paddingTop="11dp"
             android:paddingBottom="11dp"
-            android:textColor="#000000"
+            android:textColor="#0088FF"
             android:textColorHint="#8B8B8B"
             android:textSize="10sp" />
 
@@ -218,7 +218,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:text="@string/login_forgot_password"
-        android:textColor="#8D8D8D"
+        android:textColor="#8B8B8B"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/cbRemember"
         app:layout_constraintEnd_toEndOf="parent"
@@ -250,7 +250,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:text="@string/login_or"
-        android:textColor="#8D8D8D"
+        android:textColor="#8B8B8B"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -296,7 +296,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_light"
             android:text="@string/login_dont_have_account"
-            android:textColor="#8D8D8D"
+            android:textColor="#8B8B8B"
             android:textSize="10sp" />
 
         <TextView
