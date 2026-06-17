@@ -25,6 +25,7 @@ import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.model.Promotion;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
+import com.teatrack_mcd_253eie502802_group02.R;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;

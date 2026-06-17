@@ -1,10 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.teatrack_mcd_253eie502802_group02.admin.AdminProduct">
+    android:background="#F5F7FA">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:elevation="4dp">
+
+        <include layout="@layout/activity_header_admin" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingBottom="80dp">
+
+        <!-- Screen Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/title_product_management"
+            android:textColor="#0D6EFD"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <!-- Search View (Full Width) -->
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_input_rounded"
+            android:drawableStart="@drawable/search"
+            android:drawablePadding="10dp"
+            android:hint="@string/str_search_hint"
+            android:paddingHorizontal="15dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+        <!-- Filter + Export Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Category Selector Button (Small & Rounded) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCategorySelect"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:backgroundTint="#1976D2"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingHorizontal="20dp"
+                android:text="@string/filter_all"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                app:cornerRadius="19dp"
+                app:elevation="2dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Export Excel Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnExportExcel"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:backgroundTint="#E3F2FD"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/btn_export_excel"
+                android:textAllCaps="false"
+                android:textColor="#1976D2"
+                android:textStyle="bold"
+                app:cornerRadius="19dp"
+                app:elevation="0dp" />
+
+        </LinearLayout>
+
+        <!-- Product List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProducts"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="4dp"
+            android:paddingBottom="16dp" />
+
+    </LinearLayout>
+
+    <!-- Floating Action Button for Add Product -->
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabAddProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="90dp"
+        android:backgroundTint="#0D6EFD"
+        android:text="Add Product"
+        android:textColor="@color/white"
+        app:icon="@drawable/plus"
+        app:iconTint="@color/white"
+        app:cornerRadius="16dp" />
+
+    <!-- Bottom Navigation -->
+    <include
+        android:id="@+id/bottomNav"
+        layout="@layout/activity_nav_bar_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

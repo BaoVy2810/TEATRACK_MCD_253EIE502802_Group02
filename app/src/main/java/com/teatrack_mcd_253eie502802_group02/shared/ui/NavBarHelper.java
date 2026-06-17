@@ -30,26 +30,24 @@ public final class NavBarHelper {
 
     public static void updateItemState(Context context, View item, boolean selected) {
         item.setSelected(selected);
-        int color = ContextCompat.getColor(context, selected ? R.color.white : R.color.nav_inactive);
+        int color = ContextCompat.getColor(context, selected ? R.color.white : R.color.text_secondary);
 
         if (selected) {
             item.setBackground(ResourcesCompat.getDrawable(
                     context.getResources(), R.drawable.nav_item_background, context.getTheme()));
         } else {
-            item.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+            item.setBackgroundResource(android.R.color.transparent);
         }
 
         if (item instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) item;
-            if (group.getChildCount() >= 2) {
-                View iconView = group.getChildAt(0);
-                View labelView = group.getChildAt(1);
-
-                if (iconView instanceof ImageView) {
-                    ((ImageView) iconView).setColorFilter(color);
-                }
-                if (labelView instanceof TextView) {
-                    ((TextView) labelView).setTextColor(color);
+            for (int i = 0; i < group.getChildCount(); i++) {
+                View child = group.getChildAt(i);
+                if (child instanceof ImageView) {
+                    ((ImageView) child).setColorFilter(color);
+                } else if (child instanceof TextView) {
+                    ((TextView) child).setTextColor(color);
+                    ((TextView) child).setTypeface(null, selected ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
                 }
             }
         }

@@ -110,6 +110,7 @@ public class CategoryProductDialog extends DialogFragment {
         currentIndex = position;
         Product product = categoryProducts.get(currentIndex);
         ProductImageHelper.load(imgHero, product);
+        imgHero.setImageResource(product.getImageRes(requireContext()));
         adapter.setSelectedPosition(currentIndex);
         rvProducts.smoothScrollToPosition(currentIndex);
     }
@@ -127,7 +128,7 @@ public class CategoryProductDialog extends DialogFragment {
     private void openProductDetail(Product product) {
         Intent intent = new Intent(requireContext(), ProductDetail.class);
         intent.putExtra("name", product.getName());
-        intent.putExtra("priceM", product.getPriceM());
+        intent.putExtra("priceM", product.getPrice());
         intent.putExtra("priceL", product.getPriceL());
         intent.putExtra("vipM", product.getVipPriceM());
         intent.putExtra("vipL", product.getVipPriceL());

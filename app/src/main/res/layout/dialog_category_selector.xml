@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_category_dialog_body">
+
+    <!-- Header: blue gradient with title + check icon -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_category_dialog_header"
+        android:paddingHorizontal="20dp">
+
+        <TextView
+            android:id="@+id/tvCategoryDialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="All categories"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/ivCheckIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_check_rounded_square"
+            app:tint="@color/white"
+            xmlns:app="http://schemas.android.com/apk/res-auto" />
+    </RelativeLayout>
+
+    <!-- Category list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCategoryList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="300dp"
+        android:paddingVertical="4dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never" />
+
+</LinearLayout>

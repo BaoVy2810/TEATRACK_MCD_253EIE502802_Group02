@@ -35,7 +35,9 @@
                 <LinearLayout
                     android:id="@+id/nav_dashboard"
                     style="@style/NavBarItem"
-                    android:layout_width="78dp">
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="4dp">
 
                     <ImageView
                         android:id="@+id/nav_dashboard_icon"
@@ -52,7 +54,9 @@
                 <LinearLayout
                     android:id="@+id/nav_products"
                     style="@style/NavBarItem"
-                    android:layout_width="78dp">
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="4dp">
 
                     <ImageView
                         android:id="@+id/nav_products_icon"
@@ -69,13 +73,15 @@
                 <LinearLayout
                     android:id="@+id/nav_orders"
                     style="@style/NavBarItem"
-                    android:layout_width="78dp">
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="4dp">
 
                     <ImageView
                         android:id="@+id/nav_orders_icon"
                         style="@style/NavBarIcon"
                         android:contentDescription="@string/nav_orders"
-                        android:src="@drawable/ic_cart" />
+                        android:src="@drawable/cart" />
 
                     <TextView
                         android:id="@+id/nav_orders_label"
@@ -86,7 +92,9 @@
                 <LinearLayout
                     android:id="@+id/nav_account"
                     style="@style/NavBarItem"
-                    android:layout_width="78dp">
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="4dp">
 
                     <ImageView
                         android:id="@+id/nav_account_icon"
@@ -103,7 +111,9 @@
                 <LinearLayout
                     android:id="@+id/nav_forum"
                     style="@style/NavBarItem"
-                    android:layout_width="78dp">
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="4dp">
 
                     <ImageView
                         android:id="@+id/nav_forum_icon"
@@ -120,7 +130,9 @@
                 <LinearLayout
                     android:id="@+id/nav_branch"
                     style="@style/NavBarItem"
-                    android:layout_width="78dp">
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="4dp">
 
                     <ImageView
                         android:id="@+id/nav_branch_icon"
@@ -137,7 +149,9 @@
                 <LinearLayout
                     android:id="@+id/nav_feedbacks"
                     style="@style/NavBarItem"
-                    android:layout_width="78dp">
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="4dp">
 
                     <ImageView
                         android:id="@+id/nav_feedbacks_icon"
@@ -154,7 +168,9 @@
                 <LinearLayout
                     android:id="@+id/nav_promotion"
                     style="@style/NavBarItem"
-                    android:layout_width="78dp">
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="4dp">
 
                     <ImageView
                         android:id="@+id/nav_promotion_icon"

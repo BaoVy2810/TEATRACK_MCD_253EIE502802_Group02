@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_branch_row.xml
+    Mỗi hàng trong bảng Branch Analysis.
+    Màu nền alternating (trắng / xanh nhạt) set từ adapter.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/table_row_padding_h"
+    android:paddingEnd="@dimen/table_row_padding_h"
+    android:paddingTop="@dimen/table_row_padding_v"
+    android:paddingBottom="@dimen/table_row_padding_v">
+
+    <!-- Branch address (weight=2) -->
+    <TextView
+        android:id="@+id/tvBranchAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        style="@style/TextAppearance.TeaTrack.TableCell" />
+
+    <!-- Number of orders (weight=1, center) -->
+    <TextView
+        android:id="@+id/tvBranchOrders"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        style="@style/TextAppearance.TeaTrack.TableCell" />
+
+    <!-- Revenue (weight=1, end) -->
+    <TextView
+        android:id="@+id/tvBranchRevenue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        style="@style/TextAppearance.TeaTrack.TableCell" />
+
+</LinearLayout>

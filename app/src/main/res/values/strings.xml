@@ -84,12 +84,180 @@
     <string name="firebase_field_vip_price_l">vipPriceL</string>
     <string name="firebase_field_category">category</string>
     <string name="firebase_field_date">date</string>
+    <string name="firebase_field_visible">visible</string>
+
     <string name="pure_tea">Pure Tea</string>
     <string name="tea_latte">Tea Latte</string>
     <string name="milk_tea">Milk Tea</string>
     <string name="new_arrivals">New Arrivals</string>
     <string name="best_sellers">Best Sellers</string>
     <string name="fruit_tea">Fruit Tea</string>
+    <!-- Topbar -->
+    <string name="title_overview_dashboard">OVERVIEW DASHBOARD</string>
+    <string name="title_sales_analytics">SALES ANALYTICS</string>
+    <string name="btn_notification">Notification</string>
+    <string name="btn_account">Account</string>
+
+    <!-- Stat Cards -->
+    <string name="stat_revenue_title">REVENUE</string>
+    <string name="stat_orders_title">ORDERS THIS WEEK</string>
+    <string name="stat_sold_title">PRODUCTS SOLD</string>
+    <string name="stat_products_title">PRODUCTS</string>
+    <string name="stat_mom">MoM</string>
+    <string name="stat_active_trading">Active trading</string>
+
+    <!-- Chart titles -->
+    <string name="chart_performance_title">Performance (Revenue &amp; Expenses)</string>
+    <string name="chart_daily_trend_title">Daily Sales Trends</string>
+    <string name="chart_top_drinks_title">Top-selling Drinks</string>
+    <string name="btn_monthly">Monthly</string>
+    <string name="btn_weekly">Weekly</string>
+    <string name="btn_today">Today</string>
+    <string name="btn_last_7_days">Last 7 Days ▾</string>
+
+    <!-- Chart legend -->
+    <string name="legend_revenue">Revenue</string>
+    <string name="legend_expenses">Expenses</string>
+    <string name="legend_hot_drinks">Hot Drinks</string>
+    <string name="legend_pure_tea">Pure Tea</string>
+    <string name="legend_latte_tea">Latte Tea</string>
+    <string name="legend_fruit_tea">Fruit Tea</string>
+    <string name="legend_new_drinks">New Drinks</string>
+    <string name="legend_milk_tea">Milk Tea</string>
+    <string name="pie_center_unit">VND</string>
+
+    <!-- Recent Orders -->
+    <string name="section_recent_orders">Recent Orders</string>
+    <string name="btn_view_detail">View detail</string>
+    <string name="order_new_prefix">New Order</string>
+    <string name="order_ago_suffix">ago</string>
+
+    <!-- Branch Analysis -->
+    <string name="section_branch_analysis">Branch Analysis</string>
+    <string name="col_branch_address">Branch Address</string>
+    <string name="col_num_orders">Number of Orders</string>
+    <string name="col_revenue">Revenue</string>
+    <string name="loading_data">Loading...</string>
+
+    <!-- Product list -->
+    <string name="section_product_list">Product List</string>
+    <string name="btn_add_product">Add Product</string>
+    <string name="hint_search_product">Search products...</string>
+    <string name="btn_export_excel">Export Excel</string>
+    <string name="col_id">ID</string>
+    <string name="col_name">Name</string>
+    <string name="col_category">Category</string>
+    <string name="col_image">Image</string>
+    <string name="col_price">Price</string>
+    <string name="col_visible">Visible</string>
+    <string name="col_actions">Actions</string>
+
+    <!-- Category filter -->
+    <string name="title_product_management">PRODUCT MANAGEMENT</string>
+    <string name="filter_all">All categories</string>
+
+    <string name="msg_excel_init">Exporting to Excel is being initialized...</string>
+    <string name="error_firebase">Firebase Error: %1$s</string>
+    <string name="msg_under_development">Feature under development</string>
+    <string name="price_m_prefix">M: %1$sđ</string>
+    <string name="price_l_prefix">L: %1$sđ</string>
+    <string name="price_vip_prefix">VIP: %1$sđ</string>
+    <string name="msg_edit_update">Edit feature will be updated!</string>
+    <string name="msg_product_deleted">Product deleted successfully</string>
+    <string name="error_prefix">Error: %1$s</string>
+    <string name="confirm_delete_msg">Are you sure you want to delete this product?</string>
+
+    <string name="filter_pure_tea">Pure Tea</string>
+    <string name="filter_milk_tea">Milk Tea</string>
+    <string name="filter_latte">Tea Latte</string>
+    <string name="filter_hot">Hot Drinks</string>
+    <string name="filter_new">New Arrivals</string>
+    <string name="filter_fruit_tea">Fruit Tea</string>
+
+    <!-- Modal: Add Product -->
+    <string name="modal_add_title">ADD PRODUCT</string>
+    <string name="label_product_name">Product Name</string>
+    <string name="hint_product_name">Enter product name</string>
+    <string name="label_product_type">Category</string>
+    <string name="hint_select_type">Select product category</string>
+    <string name="label_status">Status</string>
+    <string name="check_visible">Show product</string>
+    <string name="check_special">Product has special offer</string>
+    <string name="label_current_price">Current price</string>
+    <string name="label_vip_price">VIP price</string>
+    <string name="hint_price">0 VND</string>
+    <string name="size_m">Size M</string>
+    <string name="size_l">Size L</string>
+    <string name="label_product_info">Product Info</string>
+    <string name="hint_product_info">Enter product info...</string>
+    <string name="label_product_desc">Product Description</string>
+    <string name="hint_product_desc">Enter product description...</string>
+    <string name="label_images">Product Images</string>
+    <string name="hint_max_images">(max 4 images)</string>
+    <string name="btn_upload_image">Upload Image</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_add">Add</string>
+
+    <!-- Modal: Edit Product -->
+    <string name="modal_edit_title">EDIT PRODUCT</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_save">Save</string>
+
+    <!-- Modal: Delete Confirm -->
+    <string name="modal_delete_title">Confirm Delete Product</string>
+    <string name="modal_delete_subtitle_prefix">Product</string>
+    <string name="modal_delete_subtitle_suffix">will be permanently deleted.</string>
+    <string name="modal_delete_no_recover">You will not be able to recover this product.</string>
+    <string name="btn_cancel_ghost">Cancel</string>
+    <string name="btn_confirm_delete">Delete Product</string>
+
+    <!-- Modal: Success -->
+    <string name="modal_success_title">SUCCESSFULLY EDITED</string>
+    <string name="modal_success_message">The operation was performed successfully.</string>
+    <string name="btn_close">Close</string>
+
+    <!-- Modal: Alert -->
+    <string name="modal_alert_title">Notification</string>
+    <string name="btn_ok">OK</string>
+
+    <!-- Modal: Order Detail -->
+    <string name="modal_order_detail_title">ORDER DETAIL</string>
+    <string name="section_order_info">Order Info</string>
+    <string name="label_order_code">ORDER CODE:</string>
+    <string name="label_order_date">ORDER DATE:</string>
+    <string name="label_order_time">TIME:</string>
+    <string name="label_order_status">ORDER STATUS:</string>
+    <string name="label_order_agency">SHIPPING BRANCH:</string>
+    <string name="section_recipient_address">Recipient Address:</string>
+    <string name="label_fullname">FULL NAME:</string>
+    <string name="label_phone">PHONE NUMBER:</string>
+    <string name="label_address">ADDRESS:</string>
+    <string name="section_order_items">Order Item List</string>
+    <string name="section_payment">Payment Info</string>
+    <string name="label_subtotal">Subtotal</string>
+    <string name="label_shipping">Shipping Fee</string>
+    <string name="label_discount">Discount Code</string>
+    <string name="label_total">Total</string>
+
+    <!-- Order status options -->
+    <string name="status_pending">Pending Confirmation</string>
+    <string name="status_processing">Preparing Order</string>
+    <string name="status_ready">Ready for Pickup</string>
+    <string name="status_shipping">Shipping</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_cancelled">Cancelled</string>
+
+    <!-- Accessibility -->
+    <string name="cd_notification">Notification</string>
+    <string name="cd_account">Account</string>
+    <string name="cd_revenue_icon">Revenue Icon</string>
+    <string name="cd_orders_icon">Orders Icon</string>
+    <string name="cd_sold_icon">Sold Products Icon</string>
+    <string name="cd_products_icon">Products Icon</string>
+    <string name="cd_upload">Upload Image</string>
+    <string name="cd_remove_image">Remove Image</string>
+    <string name="cd_close_modal">Close</string>
+    <string name="cd_search">Search</string>
     <string name="firebase_category_pure_tea">Loại Thuần Trà</string>
     <string name="firebase_category_tea_latte">Loại Trà Latte</string>
     <string name="firebase_category_milk_tea">Loại Trà Sữa</string>

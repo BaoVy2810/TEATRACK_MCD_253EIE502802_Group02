@@ -1,5 +1,6 @@
 package com.teatrack_mcd_253eie502802_group02.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -9,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 public class AdminOrders extends AppCompatActivity {
 
@@ -21,6 +23,36 @@ public class AdminOrders extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        setupBottomNavigation();
+    }
+
+    private void setupBottomNavigation() {
+        int[] navItemIds = {
+                R.id.nav_dashboard,
+                R.id.nav_products,
+                R.id.nav_orders,
+                R.id.nav_account,
+                R.id.nav_forum,
+                R.id.nav_branch,
+                R.id.nav_feedbacks,
+                R.id.nav_promotion
+        };
+
+        NavBarHelper.setupNavBar(this, navItemIds, R.id.nav_orders, v -> {
+            int id = v.getId();
+            Class<?> destination = null;
+            if (id == R.id.nav_orders) return;
+            if (id == R.id.nav_dashboard) destination = AdminDashboard.class;
+            else if (id == R.id.nav_products) destination = AdminProduct.class;
+            else if (id == R.id.nav_account) destination = AdminAccount.class;
+            else if (id == R.id.nav_promotion) destination = AdminPromotion.class;
+
+            if (destination != null) {
+                startActivity(new Intent(this, destination));
+                finish();
+            }
         });
     }
 }

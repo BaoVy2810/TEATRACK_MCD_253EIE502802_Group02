@@ -43,11 +43,12 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product item = products.get(position);
+        holder.imgProduct.setImageResource(item.getImageRes(holder.itemView.getContext()));
         ProductImageHelper.load(holder.imgProduct, item);
         holder.tvProductName.setText(item.getName());
         holder.tvRating.setText(String.valueOf(item.getRating()));
         holder.tvReviews.setText(item.getReviewCount() + " Đánh giá");
-        holder.tvPriceM.setText(formatPrice(item.getPriceM()));
+        holder.tvPriceM.setText(formatPrice(item.getPrice()));
         holder.tvPriceL.setText(formatPrice(item.getPriceL()));
         holder.tvVipPriceM.setText(formatPrice(item.getVipPriceM()));
         holder.tvVipPriceL.setText(formatPrice(item.getVipPriceL()));
@@ -63,8 +64,8 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
         return products.size();
     }
 
-    private String formatPrice(String price) {
-        return price.endsWith("đ") ? price : price + "đ";
+    private String formatPrice(int price) {
+        return String.format("%,dđ", price).replace(',', '.');
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
