@@ -2,6 +2,8 @@ package com.teatrack_mcd_253eie502802_group02.shared.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -10,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.client.Cart;
+import com.teatrack_mcd_253eie502802_group02.client.Homepage;
 import com.teatrack_mcd_253eie502802_group02.client.UserProfile;
 
 public class HeaderClient extends AppCompatActivity {
@@ -30,5 +33,9 @@ public class HeaderClient extends AppCompatActivity {
 
         findViewById(R.id.btn_profile).setOnClickListener(v ->
                 startActivity(new Intent(this, UserProfile.class)));
+    }
+
+    public void openClientHomepage(View view) {
+        startActivity(new Intent(this, Homepage.class));
     }
 }

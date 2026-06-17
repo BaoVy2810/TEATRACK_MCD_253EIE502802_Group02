@@ -10,43 +10,6 @@
     <string name="nav_feedbacks">Feedbacks</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-    <string name="lorem_ipsum">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
-        volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
-        dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad
-        litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend
-        diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a,
-        ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.\n\n
-        Suspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus
-        egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed
-        neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada
-        fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae,
-        molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor
-        bibendum, vel congue leo egestas.\n\n
-        Sed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit
-        amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel,
-        molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer
-        interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at
-        lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula,
-        in lobortis sem porta sed. Integer id ultrices magna, in luctus elit. Sed a pellentesque
-        est.\n\n
-        Aenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh.
-        Morbi laoreet, tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui
-        non lorem. Nam mollis ipsum quis auctor varius. Quisque elementum eu libero sed commodo. In
-        eros nisl, imperdiet vel imperdiet et, scelerisque a mauris. Pellentesque varius ex nunc,
-        quis imperdiet eros placerat ac. Duis finibus orci et est auctor tincidunt. Sed non viverra
-        ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi a consectetur ipsum, a
-        placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet finibus
-        convallis.\n\n
-        Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et
-        malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa
-        gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper,
-        libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper
-        sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus
-        libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
-        vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
-    </string>
     <string name="nav_home">Home</string>
     <string name="nav_menu">Menu</string>
     <string name="nav_promotion">Promotion</string>
@@ -57,7 +20,7 @@
     <string name="home_beverage_description">Special beverage creations that blend premium pure tea with rich milk and a signature hint of salt, offering a creative twist on a familiar favorite.</string>
     <string name="home_featured_products">FEATURED PRODUCTS</string>
     <string name="home_exciting_promotions">EXCITING PROMOTIONS</string>
-    <string name="home_whats_new">WHAT\'S NEW</string>
+    <string name="home_whats_new">WHATS NEW</string>
     <string name="home_ngo_gia_story_title">NGO GIA STORY</string>
     <string name="home_ngo_gia_story_description">Discover the 74-year heritage journey and dedication in every tea leaf.</string>
     <string name="home_ngo_gia_story_cta">Learn More</string>
@@ -69,9 +32,45 @@
     <string name="home_rating_suffix">rating</string>
     <string name="menu_title">DRINK MENU</string>
     <string name="menu_subtitle">Choose your favorite drink freely</string>
+    <string name="menu_description">From traditional teas and milk teas to innovative new recipes - every flavor is freshly brewed every day.</string>
     <string name="menu_search_hint">Find your drink...</string>
+    <string name="menu_search_desc">Search menu</string>
+    <string name="menu_hero_image_desc">Menu hero image</string>
+    <string name="menu_filter_desc">Open filter options</string>
+    <string name="menu_filter_category_title">Category</string>
+    <string name="menu_filter_sort_title">Sort by</string>
+    <string name="menu_sort_label">Sort:</string>
+    <string name="menu_sort_featured">Featured</string>
+    <string name="menu_sort_name_asc">Name A-Z</string>
+    <string name="menu_sort_name_desc">Name Z-A</string>
+    <string name="menu_sort_price_asc">Price low-high</string>
+    <string name="menu_sort_price_desc">Price high-low</string>
+    <string name="menu_section_subtitle_default">Full drink list at Hong Tra Ngo Gia.</string>
+    <string name="menu_section_subtitle_search">Results for "%1$s".</string>
+    <string name="menu_section_subtitle_pure_tea">Fresh and light pure tea options.</string>
+    <string name="menu_section_subtitle_milk_tea">Rich and creamy milk tea selection.</string>
+    <string name="menu_section_subtitle_tea_latte">Smooth tea latte drinks crafted daily.</string>
+    <string name="menu_section_subtitle_fruit_tea">Refreshing fruit tea for every mood.</string>
+    <string name="menu_section_subtitle_new_arrivals">Latest drinks newly added to the menu.</string>
+    <string name="menu_section_subtitle_best_sellers">Most loved drinks chosen by customers.</string>
+    <string name="menu_result_count_format">%1$d products</string>
+    <string name="menu_result_count_default">0 products</string>
     <string name="menu_all_categories">All categories</string>
     <string name="menu_all_products_title">All drinks</string>
+    <string-array name="menu_sort_options">
+        <item>Featured</item>
+        <item>Name A-Z</item>
+        <item>Name Z-A</item>
+        <item>Price low-high</item>
+        <item>Price high-low</item>
+    </string-array>
+    <string-array name="menu_sort_values">
+        <item>featured</item>
+        <item>name_asc</item>
+        <item>name_desc</item>
+        <item>price_asc</item>
+        <item>price_desc</item>
+    </string-array>
     <string name="firebase_collection_products">products</string>
     <string name="firebase_collection_blogs">blogs</string>
     <string name="firebase_collection_vouchers">vouchers</string>
@@ -124,16 +123,34 @@
     <string name="product_detail_tab_description">Product Description</string>
     <string name="product_detail_tab_review">Reviews</string>
     <string name="product_detail_tab_commitment">Commitment</string>
+    <string name="product_detail_tab_description_content">Rich cocoa milk tea with a creamy and smooth finish.</string>
+    <string name="product_detail_tab_commitment_content">Ngô Gia commits to quality ingredients, transparent origin, and consistent taste in every cup.</string>
     <string name="product_detail_info_title">Detail Information</string>
     <string name="product_detail_info_name">Product name</string>
     <string name="product_detail_info_weight">Weight</string>
     <string name="product_detail_info_storage">Storage</string>
     <string name="product_detail_info_origin">Origin</string>
-    <string name="product_detail_info_topping">Recommended topping:</string>
-    <string name="product_detail_info_weight_value">700ml (M) / 1000ml (L)</string>
-    <string name="product_detail_info_storage_value">1-2 days refrigerated</string>
+    <string name="product_detail_info_topping">Recommended toppings:</string>
+    <string name="product_detail_info_weight_value">700ml (size M) / 1000ml (size L)</string>
+    <string name="product_detail_info_storage_value">1-2 days in refrigerator</string>
     <string name="product_detail_info_origin_value">Vietnam</string>
-    <string name="product_detail_info_topping_value">Coconut jelly, roasted lotus seeds</string>
+    <string name="product_detail_info_topping_value">Original coconut jelly, water chestnut popping pearls</string>
+    <string name="product_detail_info_name_format">%1$s: %2$s</string>
+    <string name="product_detail_info_row_format">%1$s: %2$s</string>
+    <string name="product_detail_commitment_title">Quality commitment</string>
+    <string name="product_detail_commitment_1">Tea leaves are carefully selected from high mountains, &lt;b&gt;no artificial colors - no synthetic flavors&lt;/b&gt;, keeping the original tea flavor intact.</string>
+    <string name="product_detail_commitment_2">Each batch of tea is roasted, brewed and flavored according to a &lt;b&gt;traditional secret&lt;/b&gt;, ensuring a rich aroma and a delicate sweet aftertaste.</string>
+    <string name="product_detail_commitment_3">All products are &lt;b&gt;tightly packed, properly preserved&lt;/b&gt;, ensuring the flavor is always fresh when reaching customers.</string>
+    <string name="product_detail_commitment_4">Hong Tra Ngo Gia always listens to feedback and &lt;b&gt;returns if the product does not meet the committed quality&lt;/b&gt;, providing a reliable experience.</string>
+    <string name="product_detail_review_overall">Overall rating</string>
+    <string name="product_detail_review_count_format">%1$s reviews</string>
+    <string name="product_detail_review_form_title">Product review</string>
+    <string name="product_detail_review_quality_label">Product quality:</string>
+    <string name="product_detail_review_detail_hint">Leave a detailed review here</string>
+    <string name="product_detail_review_comment_hint">Please leave a comment for this product! Ngo Gia sincerely thanks you.</string>
+    <string name="product_detail_review_submit">Review</string>
+    <string name="product_detail_star_desc">Star rating</string>
+    <string name="product_detail_no_reviews_icon_desc">No reviews icon</string>
     <string name="product_detail_quantity">Quantity</string>
     <string name="product_detail_minus">Decrease quantity</string>
     <string name="product_detail_plus">Increase quantity</string>

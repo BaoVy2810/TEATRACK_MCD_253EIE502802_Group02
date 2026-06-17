@@ -56,6 +56,8 @@ public class Homepage extends AppCompatActivity {
     private final List<Product> featuredProducts = new ArrayList<>();
     private final List<NewsItem> newsItems = new ArrayList<>();
     private NewsCardAdapter newsAdapter;
+    private final android.os.Handler bannerHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+    private Runnable bannerRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,30 @@ public class Homepage extends AppCompatActivity {
         safeInit(this::setupStoryAction);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopAutoScroll();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startAutoScroll();
+    }
+
+    private void startAutoScroll() {
+        if (bannerRunnable == null || viewPagerBanners == null) return;
+        bannerHandler.removeCallbacks(bannerRunnable);
+        bannerHandler.postDelayed(bannerRunnable, 5000);
+    }
+
+    private void stopAutoScroll() {
+        if (bannerRunnable != null) {
+            bannerHandler.removeCallbacks(bannerRunnable);
+        }
+    }
+
     private void bindViews() {
         viewPagerBanners = findViewById(R.id.viewPagerBanners);
         dot1 = findViewById(R.id.dot1);
@@ -80,6 +106,10 @@ public class Homepage extends AppCompatActivity {
         rvFeaturedProducts = findViewById(R.id.layoutFeaturedProducts);
         rvPromotions = findViewById(R.id.layoutPromotions);
         rvNews = findViewById(R.id.layoutNews);
+        View logo = findViewById(R.id.img_logo);
+        if (logo != null) {
+            logo.setOnClickListener(v -> startActivity(new Intent(this, Homepage.class)));
+        }
     }
 
     private void setupBottomNav() {
@@ -117,18 +147,42 @@ public class Homepage extends AppCompatActivity {
         if (banners.isEmpty()) {
             return;
         }
-        viewPagerBanners.setAdapter(new BannerAdapter(banners));
+
+        BannerAdapter adapter = new BannerAdapter(banners);
+        adapter.setOnItemClickListener(position -> {
+            // Navigate to BlogDetail with dummy data
+            Intent intent = new Intent(this, BlogDetail.class);
+            intent.putExtra("blog_id", "banner_blog_" + position);
+            startActivity(intent);
+        });
+        viewPagerBanners.setAdapter(adapter);
+
         if (imgBannerPreview != null) {
             imgBannerPreview.setVisibility(View.GONE);
         }
+
+        bannerRunnable = new Runnable() {
+            @Override
+            public void run() {
+                int current = viewPagerBanners.getCurrentItem();
+                int next = (current + 1) % banners.size();
+                viewPagerBanners.setCurrentItem(next, true);
+                bannerHandler.postDelayed(this, 5000);
+            }
+        };
+
         viewPagerBanners.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 updateBannerDots(position);
+                // Reset timer when user swipes manually
+                bannerHandler.removeCallbacks(bannerRunnable);
+                bannerHandler.postDelayed(bannerRunnable, 5000);
             }
         });
         updateBannerDots(0);
+        startAutoScroll();
     }
 
     private void updateBannerDots(int position) {

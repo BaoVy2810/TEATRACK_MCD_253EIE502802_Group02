@@ -11,7 +11,7 @@
     <string name="home_beverage_description">Special beverage creations that blend premium pure tea with rich milk and a signature hint of salt, offering a creative twist on a familiar favorite.</string>
     <string name="home_featured_products">FEATURED PRODUCTS</string>
     <string name="home_exciting_promotions">EXCITING PROMOTIONS</string>
-    <string name="home_whats_new">WHAT\'S NEW</string>
+    <string name="home_whats_new">WHATS NEW</string>
     <string name="home_ngo_gia_story_title">CÂU CHUYỆN NGÔ GIA</string>
     <string name="home_ngo_gia_story_description">Khám phá hành trình 74 năm di sản và tâm huyết trong từng lá trà.</string>
     <string name="home_ngo_gia_story_cta">Tìm hiểu thêm</string>
@@ -23,9 +23,45 @@
     <string name="home_rating_suffix">rating</string>
     <string name="menu_title">MENU THỨC UỐNG</string>
     <string name="menu_subtitle">Thoải mái chọn món yêu thích của bạn</string>
+    <string name="menu_description">Từ trà truyền thống, trà sữa đến những công thức mới lạ - mọi hương vị đều được pha chế tươi mới mỗi ngày.</string>
     <string name="menu_search_hint">Tìm thức uống bạn muốn...</string>
+    <string name="menu_search_desc">Tìm kiếm menu</string>
+    <string name="menu_hero_image_desc">Ảnh minh họa menu</string>
+    <string name="menu_filter_desc">Mở bộ lọc</string>
+    <string name="menu_filter_category_title">Danh mục</string>
+    <string name="menu_filter_sort_title">Sắp xếp theo</string>
+    <string name="menu_sort_label">Sắp xếp:</string>
+    <string name="menu_sort_featured">Nổi bật</string>
+    <string name="menu_sort_name_asc">Tên A-Z</string>
+    <string name="menu_sort_name_desc">Tên Z-A</string>
+    <string name="menu_sort_price_asc">Giá thấp-cao</string>
+    <string name="menu_sort_price_desc">Giá cao-thấp</string>
+    <string name="menu_section_subtitle_default">Danh sách đầy đủ các món tại Hồng Trà Ngô Gia.</string>
+    <string name="menu_section_subtitle_search">Kết quả cho "%1$s".</string>
+    <string name="menu_section_subtitle_pure_tea">Các món thuần trà thanh mát, dễ uống.</string>
+    <string name="menu_section_subtitle_milk_tea">Các món trà sữa béo thơm, đậm vị.</string>
+    <string name="menu_section_subtitle_tea_latte">Các món trà latte mượt vị, pha mới mỗi ngày.</string>
+    <string name="menu_section_subtitle_fruit_tea">Các món trà trái cây tươi mát, sảng khoái.</string>
+    <string name="menu_section_subtitle_new_arrivals">Các món mới vừa được cập nhật trên menu.</string>
+    <string name="menu_section_subtitle_best_sellers">Những món được yêu thích và gọi nhiều nhất.</string>
+    <string name="menu_result_count_format">%1$d sản phẩm</string>
+    <string name="menu_result_count_default">0 sản phẩm</string>
     <string name="menu_all_categories">Tất cả</string>
     <string name="menu_all_products_title">Tất cả thức uống</string>
+    <string-array name="menu_sort_options">
+        <item>Nổi bật</item>
+        <item>Tên A-Z</item>
+        <item>Tên Z-A</item>
+        <item>Giá thấp-cao</item>
+        <item>Giá cao-thấp</item>
+    </string-array>
+    <string-array name="menu_sort_values">
+        <item>featured</item>
+        <item>name_asc</item>
+        <item>name_desc</item>
+        <item>price_asc</item>
+        <item>price_desc</item>
+    </string-array>
     <string name="firebase_collection_products">products</string>
     <string name="firebase_collection_blogs">blogs</string>
     <string name="firebase_collection_vouchers">vouchers</string>
@@ -78,16 +114,34 @@
     <string name="product_detail_tab_description">Mô tả sản phẩm</string>
     <string name="product_detail_tab_review">Đánh giá</string>
     <string name="product_detail_tab_commitment">Cam kết</string>
+    <string name="product_detail_tab_description_content">Trà sữa socola đắng ngọt hòa quyện, béo ngậy, thơm lừng.</string>
+    <string name="product_detail_tab_commitment_content">Ngô Gia cam kết nguyên liệu chất lượng, nguồn gốc rõ ràng và hương vị ổn định cho từng ly.</string>
     <string name="product_detail_info_title">Thông tin chi tiết</string>
     <string name="product_detail_info_name">Tên sản phẩm</string>
     <string name="product_detail_info_weight">Trọng lượng</string>
     <string name="product_detail_info_storage">Bảo quản</string>
     <string name="product_detail_info_origin">Xuất xứ</string>
-    <string name="product_detail_info_topping">Topping khuyên dùng:</string>
-    <string name="product_detail_info_weight_value">700ml (M) / 1000ml (L)</string>
-    <string name="product_detail_info_storage_value">1-2 ngày ngăn mát</string>
+    <string name="product_detail_info_topping">Topping nên dùng kèm:</string>
+    <string name="product_detail_info_weight_value">700ml (size M) / 1000ml (size L)</string>
+    <string name="product_detail_info_storage_value">1-2 ngày ở ngăn mát tủ lạnh</string>
     <string name="product_detail_info_origin_value">Việt Nam</string>
     <string name="product_detail_info_topping_value">Thạch dừa nguyên vị, hạt nổ củ năng</string>
+    <string name="product_detail_info_name_format">%1$s: %2$s</string>
+    <string name="product_detail_info_row_format">%1$s: %2$s</string>
+    <string name="product_detail_commitment_title">Cam kết chất lượng</string>
+    <string name="product_detail_commitment_1">Lá trà được chọn lọc kỹ lưỡng từ vùng núi cao, &lt;b&gt;không phẩm màu - không hương liệu tổng hợp&lt;/b&gt;, giữ trọn vị trà nguyên bản.</string>
+    <string name="product_detail_commitment_2">Mỗi mẻ trà đều được sao, ủ và lên hương theo &lt;b&gt;bí quyết gia truyền&lt;/b&gt;, đảm bảo hương thơm đậm đà, vị hậu ngọt tinh tế.</string>
+    <string name="product_detail_commitment_3">Mọi sản phẩm được &lt;b&gt;đóng gói kín, bảo quản đúng chuẩn&lt;/b&gt;, đảm bảo hương vị luôn tươi mới khi đến tay khách hàng.</string>
+    <string name="product_detail_commitment_4">Hồng Trà Ngô Gia luôn lắng nghe phản hồi và &lt;b&gt;đổi trả nếu sản phẩm không đạt chất lượng cam kết&lt;/b&gt;, mang đến trải nghiệm đáng tin cậy.</string>
+    <string name="product_detail_review_overall">Đánh giá tổng thể</string>
+    <string name="product_detail_review_count_format">%1$s đánh giá</string>
+    <string name="product_detail_review_form_title">Đánh giá sản phẩm</string>
+    <string name="product_detail_review_quality_label">Chất lượng sản phẩm:</string>
+    <string name="product_detail_review_detail_hint">Để lại đánh giá chi tiết tại đây</string>
+    <string name="product_detail_review_comment_hint">Hãy để lại nhận xét cho sản phẩm này bạn nhé! Ngô Gia xin chân thành cảm ơn.</string>
+    <string name="product_detail_review_submit">Đánh giá</string>
+    <string name="product_detail_star_desc">Đánh giá sao</string>
+    <string name="product_detail_no_reviews_icon_desc">Biểu tượng chưa có đánh giá</string>
     <string name="product_detail_quantity">Số lượng</string>
     <string name="product_detail_minus">Giảm số lượng</string>
     <string name="product_detail_plus">Tăng số lượng</string>

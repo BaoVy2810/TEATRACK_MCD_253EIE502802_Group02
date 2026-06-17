@@ -9,6 +9,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.text.Html;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,15 +19,18 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.ProductCardAdapter;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 import java.util.ArrayList;
@@ -48,6 +53,29 @@ public class ProductDetail extends AppCompatActivity {
     private TextView tvRatingSummary;
     private TextView tvDescription;
     private TextView breadcrumbTeaLatte;
+    private TextView tabDescription;
+    private TextView tabReview;
+    private TextView tabCommitment;
+    private View tabIndicator;
+    private View tabIndicatorContainer;
+    private LinearLayout layoutReview;
+    private LinearLayout layoutDescription;
+    private LinearLayout layoutCommitment;
+    private LinearLayout layoutReviewForm;
+    private TextView tvTabPlaceholder;
+    private TextView tvInfoProductName;
+    private TextView tvInfoWeight;
+    private TextView tvInfoStorage;
+    private TextView tvInfoOrigin;
+    private TextView tvInfoTopping;
+    private TextView tvCommitment1;
+    private TextView tvCommitment2;
+    private TextView tvCommitment3;
+    private TextView tvCommitment4;
+    private TextView tvReviewCount;
+    private ImageView imgStar1, imgStar2, imgStar3, imgStar4, imgStar5;
+    private int selectedRating = 0;
+    private MaterialButton btnWriteReview;
     private MaterialButton btnSizeOptionM;
     private MaterialButton btnSizeOptionL;
     private MaterialButton btnSweetnessNone;
@@ -83,7 +111,6 @@ public class ProductDetail extends AppCompatActivity {
         tvDescription = findViewById(R.id.tvDescription);
         btnSizeOptionM = findViewById(R.id.btnSizeOptionM);
         btnSizeOptionL = findViewById(R.id.btnSizeOptionL);
-        btnSweetnessNone = findViewById(R.id.btnSweetnessNone);
         btnSweetnessLess = findViewById(R.id.btnSweetnessLess);
         btnSweetnessNormal = findViewById(R.id.btnSweetnessNormal);
         btnSweetnessHigh = findViewById(R.id.btnSweetnessHigh);
@@ -103,6 +130,36 @@ public class ProductDetail extends AppCompatActivity {
         customizationContent = findViewById(R.id.customizationContent);
         tvNoteChevron = findViewById(R.id.tvNoteChevron);
         toppingRowsContainer = findViewById(R.id.toppingRowsContainer);
+        tabDescription = findViewById(R.id.tabDescription);
+        tabReview = findViewById(R.id.tabReview);
+        tabCommitment = findViewById(R.id.tabCommitment);
+        tabIndicator = findViewById(R.id.tabIndicator);
+        tabIndicatorContainer = findViewById(R.id.tabIndicatorContainer);
+        layoutReview = findViewById(R.id.layoutReview);
+        layoutDescription = findViewById(R.id.layoutDescription);
+        layoutCommitment = findViewById(R.id.layoutCommitment);
+        layoutReviewForm = findViewById(R.id.layoutReviewForm);
+        tvTabPlaceholder = findViewById(R.id.tvTabPlaceholder);
+        tvInfoProductName = findViewById(R.id.tvInfoProductName);
+        tvInfoWeight = findViewById(R.id.tvInfoWeight);
+        tvInfoStorage = findViewById(R.id.tvInfoStorage);
+        tvInfoOrigin = findViewById(R.id.tvInfoOrigin);
+        tvInfoTopping = findViewById(R.id.tvInfoTopping);
+        tvCommitment1 = findViewById(R.id.tvCommitment1);
+        tvCommitment2 = findViewById(R.id.tvCommitment2);
+        tvCommitment3 = findViewById(R.id.tvCommitment3);
+        tvCommitment4 = findViewById(R.id.tvCommitment4);
+        tvReviewCount = findViewById(R.id.tvReviewCount);
+        imgStar1 = findViewById(R.id.imgStar1);
+        imgStar2 = findViewById(R.id.imgStar2);
+        imgStar3 = findViewById(R.id.imgStar3);
+        imgStar4 = findViewById(R.id.imgStar4);
+        imgStar5 = findViewById(R.id.imgStar5);
+        btnWriteReview = findViewById(R.id.btnWriteReview);
+        View logo = findViewById(R.id.img_logo);
+        if (logo != null) {
+            logo.setOnClickListener(v -> openMainTab(MainActivity.TAB_HOME, null));
+        }
 
         btnBack.setOnClickListener(v -> backToMenu());
         breadcrumbHome.setOnClickListener(v -> openMainTab(MainActivity.TAB_HOME, null));
@@ -124,7 +181,9 @@ public class ProductDetail extends AppCompatActivity {
         bindFromIntent(name, category, priceM, priceL, vipM, vipL, imageRes, rating, reviewCount);
         fetchFromFirebase(name);
 
-        setupThumbs(imageRes);
+        Product initialProduct = new Product();
+        initialProduct.setImageRes(imageRes);
+        setupThumbs(initialProduct);
 
         btnQtyMinus.setOnClickListener(v -> {
             quantity = Math.max(1, quantity - 1);
@@ -141,12 +200,120 @@ public class ProductDetail extends AppCompatActivity {
                 Toast.makeText(this, R.string.product_detail_buy_now_message, Toast.LENGTH_SHORT).show());
 
         rvRecommended.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        rvRecommended.setAdapter(new ProductCardAdapter(getRecommendedProducts(), this::openRelatedDetail));
 
         setupBottomNavigation();
+        setupTabs();
         setupOptionSelections();
         setupToppingRows();
+        setupDescriptionInfo(name);
+        setupCommitmentContent();
+        setupReviewSection();
         applyCustomizationState(false);
+    }
+
+    private void setupDescriptionInfo(String productName) {
+        String resolvedName = productName != null ? productName : getString(R.string.product_detail_title);
+        if (tvInfoProductName != null) {
+            tvInfoProductName.setText(formatInfoRow(R.string.product_detail_info_name, resolvedName));
+        }
+        if (tvInfoWeight != null) {
+            tvInfoWeight.setText(formatInfoRow(
+                    R.string.product_detail_info_weight,
+                    getString(R.string.product_detail_info_weight_value)));
+        }
+        if (tvInfoStorage != null) {
+            tvInfoStorage.setText(formatInfoRow(
+                    R.string.product_detail_info_storage,
+                    getString(R.string.product_detail_info_storage_value)));
+        }
+        if (tvInfoOrigin != null) {
+            tvInfoOrigin.setText(formatInfoRow(
+                    R.string.product_detail_info_origin,
+                    getString(R.string.product_detail_info_origin_value)));
+        }
+        if (tvInfoTopping != null) {
+            tvInfoTopping.setText(formatInfoRow(
+                    R.string.product_detail_info_topping,
+                    getString(R.string.product_detail_info_topping_value)));
+        }
+    }
+
+    private CharSequence formatInfoRow(int labelRes, String value) {
+        String label = getString(labelRes);
+        if (!label.endsWith(":")) {
+            label = label + ":";
+        }
+        return Html.fromHtml("<b>" + label + "</b> " + value, Html.FROM_HTML_MODE_LEGACY);
+    }
+
+    private void setupCommitmentContent() {
+        setHtmlText(tvCommitment1, R.string.product_detail_commitment_1);
+        setHtmlText(tvCommitment2, R.string.product_detail_commitment_2);
+        setHtmlText(tvCommitment3, R.string.product_detail_commitment_3);
+        setHtmlText(tvCommitment4, R.string.product_detail_commitment_4);
+    }
+
+    private void setHtmlText(TextView textView, int stringRes) {
+        if (textView == null) {
+            return;
+        }
+        textView.setText(Html.fromHtml(getString(stringRes), Html.FROM_HTML_MODE_LEGACY));
+    }
+
+    private void setupReviewSection() {
+        if (tvReviewCount != null) {
+            tvReviewCount.setText(getString(R.string.product_detail_review_count_format, "0"));
+        }
+
+        View.OnClickListener starClickListener = v -> {
+            int rating = 1;
+            int id = v.getId();
+            if (id == R.id.imgStar1) rating = 1;
+            else if (id == R.id.imgStar2) rating = 2;
+            else if (id == R.id.imgStar3) rating = 3;
+            else if (id == R.id.imgStar4) rating = 4;
+            else if (id == R.id.imgStar5) rating = 5;
+            updateStarRating(rating);
+        };
+
+        if (imgStar1 != null) imgStar1.setOnClickListener(starClickListener);
+        if (imgStar2 != null) imgStar2.setOnClickListener(starClickListener);
+        if (imgStar3 != null) imgStar3.setOnClickListener(starClickListener);
+        if (imgStar4 != null) imgStar4.setOnClickListener(starClickListener);
+        if (imgStar5 != null) imgStar5.setOnClickListener(starClickListener);
+
+        updateStarRating(0);
+
+        if (btnWriteReview != null) {
+            btnWriteReview.setOnClickListener(v -> {
+                if (layoutReviewForm != null) {
+                    if (layoutReviewForm.getVisibility() == View.VISIBLE) {
+                        layoutReviewForm.setVisibility(View.GONE);
+                    } else {
+                        layoutReviewForm.setVisibility(View.VISIBLE);
+                        updateStarRating(0);
+                        EditText reviewTitle = findViewById(R.id.edtReviewTitle);
+                        if (reviewTitle != null) {
+                            reviewTitle.requestFocus();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private void updateStarRating(int rating) {
+        selectedRating = rating;
+        ImageView[] stars = {imgStar1, imgStar2, imgStar3, imgStar4, imgStar5};
+        int activeColor = ContextCompat.getColor(this, R.color.star_rating_active);
+        int inactiveColor = ContextCompat.getColor(this, R.color.outline_variant);
+
+        for (int i = 0; i < stars.length; i++) {
+            if (stars[i] != null) {
+                int color = i < rating ? activeColor : inactiveColor;
+                ImageViewCompat.setImageTintList(stars[i], ColorStateList.valueOf(color));
+            }
+        }
     }
 
     private void bindFromIntent(String name, String category, String priceM, String priceL, String vipM, String vipL,
@@ -205,6 +372,7 @@ public class ProductDetail extends AppCompatActivity {
             if (breadcrumbTeaLatte != null) {
                 breadcrumbTeaLatte.setText(product.getCategory());
             }
+            fetchRecommendedProducts(product.getCategory());
         }
         tvPriceM.setText(safePrice(product.getPriceM()));
         tvPriceL.setText(safePrice(product.getPriceL()));
@@ -218,20 +386,88 @@ public class ProductDetail extends AppCompatActivity {
                 R.string.product_detail_views_format,
                 product.getReviewCount()));
         ProductImageHelper.load(imgDetail, product);
+        setupDescriptionInfo(product.getName());
+        setupThumbs(product);
     }
 
-    private void setupThumbs(int primaryImage) {
-        ImageView thumb1 = findViewById(R.id.thumb1);
-        ImageView thumb2 = findViewById(R.id.thumb2);
-        ImageView thumb3 = findViewById(R.id.thumb3);
-        ImageView thumb4 = findViewById(R.id.thumb4);
+    private void setupThumbs(Product product) {
+        ShapeableImageView[] thumbs = {
+                findViewById(R.id.thumb1),
+                findViewById(R.id.thumb2),
+                findViewById(R.id.thumb3),
+                findViewById(R.id.thumb4)
+        };
 
-        thumb1.setImageResource(primaryImage);
-        thumb4.setImageResource(primaryImage);
-        thumb1.setOnClickListener(v -> imgDetail.setImageDrawable(thumb1.getDrawable()));
-        thumb2.setOnClickListener(v -> imgDetail.setImageDrawable(thumb2.getDrawable()));
-        thumb3.setOnClickListener(v -> imgDetail.setImageDrawable(thumb3.getDrawable()));
-        thumb4.setOnClickListener(v -> imgDetail.setImageDrawable(thumb4.getDrawable()));
+        List<String> sources = collectImageSources(product);
+        boolean useImageRes = sources.isEmpty() && product.getImageRes() != 0;
+        int visibleCount = useImageRes ? 1 : sources.size();
+        int fallbackRes = product.getImageRes() != 0 ? product.getImageRes() : R.mipmap.traolongmochuong;
+
+        for (int i = 0; i < thumbs.length; i++) {
+            ShapeableImageView thumb = thumbs[i];
+            if (thumb == null) {
+                continue;
+            }
+            if (i < visibleCount) {
+                thumb.setVisibility(View.VISIBLE);
+                final int selectedIndex = i;
+                if (useImageRes) {
+                    thumb.setImageResource(fallbackRes);
+                    thumb.setOnClickListener(v -> {
+                        imgDetail.setImageResource(fallbackRes);
+                        updateThumbSelection(thumbs, selectedIndex);
+                    });
+                } else {
+                    String source = sources.get(i);
+                    ProductImageHelper.loadFromSource(thumb, source, fallbackRes);
+                    thumb.setOnClickListener(v -> {
+                        ProductImageHelper.loadFromSource(imgDetail, source, fallbackRes);
+                        updateThumbSelection(thumbs, selectedIndex);
+                    });
+                }
+            } else {
+                thumb.setVisibility(View.GONE);
+                thumb.setOnClickListener(null);
+            }
+        }
+
+        if (visibleCount > 0) {
+            if (useImageRes) {
+                imgDetail.setImageResource(fallbackRes);
+            } else {
+                ProductImageHelper.loadFromSource(imgDetail, sources.get(0), fallbackRes);
+            }
+            updateThumbSelection(thumbs, 0);
+        }
+    }
+
+    private List<String> collectImageSources(Product product) {
+        List<String> sources = new ArrayList<>();
+        if (product.getImages() != null) {
+            for (String image : product.getImages()) {
+                if (image != null && !image.trim().isEmpty()) {
+                    sources.add(image.trim());
+                }
+            }
+        }
+        if (sources.isEmpty() && product.getImage() != null && !product.getImage().trim().isEmpty()) {
+            sources.add(product.getImage().trim());
+        }
+        return sources;
+    }
+
+    private void updateThumbSelection(ShapeableImageView[] thumbs, int selectedIndex) {
+        int activeStroke = ContextCompat.getColor(this, R.color.brand_blue);
+        int inactiveStroke = ContextCompat.getColor(this, R.color.outline_variant);
+        for (int i = 0; i < thumbs.length; i++) {
+            ShapeableImageView thumb = thumbs[i];
+            if (thumb == null || thumb.getVisibility() != View.VISIBLE) {
+                continue;
+            }
+            boolean isSelected = i == selectedIndex;
+            thumb.setStrokeColor(ColorStateList.valueOf(isSelected ? activeStroke : inactiveStroke));
+            thumb.setStrokeWidth(isSelected ? dp(2) : dp(1));
+        }
     }
 
     private String safePrice(String price) {
@@ -252,25 +488,27 @@ public class ProductDetail extends AppCompatActivity {
 
     private void setupOptionSelections() {
         setupSizeGroup(new MaterialButton[]{btnSizeOptionM, btnSizeOptionL}, 0);
-        setupLevelGroup(new MaterialButton[]{btnSweetnessNone, btnSweetnessLess, btnSweetnessNormal, btnSweetnessHigh}, 1);
+        setupLevelGroup(new MaterialButton[]{btnSweetnessNone, btnSweetnessLess, btnSweetnessNormal, btnSweetnessHigh}, 2);
         setupLevelGroup(new MaterialButton[]{btnIceLess, btnIceNormal, btnIceHigh}, 1);
     }
 
     private void setupSizeGroup(MaterialButton[] buttons, int defaultSelected) {
         for (int i = 0; i < buttons.length; i++) {
             MaterialButton button = buttons[i];
-            if (button == null) {
-                continue;
-            }
-            final int selectedIndex = i;
-            applySizeButtonState(button, i == defaultSelected);
+            if (button == null) continue;
+            boolean isSelected = (i == defaultSelected);
+            button.setSelected(isSelected);
+            button.setTypeface(null, isSelected ? Typeface.BOLD : Typeface.NORMAL);
+            
             button.setOnClickListener(v -> {
-                for (int j = 0; j < buttons.length; j++) {
-                    MaterialButton item = buttons[j];
-                    if (item != null) {
-                        applySizeButtonState(item, j == selectedIndex);
+                for (MaterialButton b : buttons) {
+                    if (b != null) {
+                        b.setSelected(false);
+                        b.setTypeface(null, Typeface.NORMAL);
                     }
                 }
+                v.setSelected(true);
+                ((MaterialButton)v).setTypeface(null, Typeface.BOLD);
             });
         }
     }
@@ -278,42 +516,22 @@ public class ProductDetail extends AppCompatActivity {
     private void setupLevelGroup(MaterialButton[] buttons, int defaultSelected) {
         for (int i = 0; i < buttons.length; i++) {
             MaterialButton button = buttons[i];
-            if (button == null) {
-                continue;
-            }
-            final int selectedIndex = i;
-            applyLevelButtonState(button, i == defaultSelected);
+            if (button == null) continue;
+            boolean isSelected = (i == defaultSelected);
+            button.setSelected(isSelected);
+            button.setTypeface(null, isSelected ? Typeface.BOLD : Typeface.NORMAL);
+
             button.setOnClickListener(v -> {
-                for (int j = 0; j < buttons.length; j++) {
-                    MaterialButton item = buttons[j];
-                    if (item != null) {
-                        applyLevelButtonState(item, j == selectedIndex);
+                for (MaterialButton b : buttons) {
+                    if (b != null) {
+                        b.setSelected(false);
+                        b.setTypeface(null, Typeface.NORMAL);
                     }
                 }
+                v.setSelected(true);
+                ((MaterialButton)v).setTypeface(null, Typeface.BOLD);
             });
         }
-    }
-
-    private void applySizeButtonState(MaterialButton button, boolean isSelected) {
-        int bgColor = Color.parseColor(isSelected ? "#C7D8F4" : "#FFFFFF");
-        int textColor = ContextCompat.getColor(this, isSelected ? R.color.brand_blue : R.color.nav_inactive);
-        int strokeColor = ContextCompat.getColor(this, isSelected ? R.color.brand_blue : R.color.outline_variant);
-        button.setBackgroundTintList(ColorStateList.valueOf(bgColor));
-        button.setTextColor(textColor);
-        button.setStrokeColor(ColorStateList.valueOf(strokeColor));
-        button.setStrokeWidth(isSelected ? dp(2) : dp(1));
-        button.setCornerRadius(dp(20));
-    }
-
-    private void applyLevelButtonState(MaterialButton button, boolean isSelected) {
-        int bgColor = Color.parseColor(isSelected ? "#C7D8F4" : "#D8E0F5");
-        int textColor = ContextCompat.getColor(this, isSelected ? R.color.brand_blue : R.color.nav_inactive);
-        int strokeColor = Color.parseColor(isSelected ? "#0088FF" : "#D8E0F5");
-        button.setBackgroundTintList(ColorStateList.valueOf(bgColor));
-        button.setTextColor(textColor);
-        button.setStrokeColor(ColorStateList.valueOf(strokeColor));
-        button.setStrokeWidth(isSelected ? dp(2) : dp(1));
-        button.setCornerRadius(dp(20));
     }
 
     @Override
@@ -321,6 +539,36 @@ public class ProductDetail extends AppCompatActivity {
         super.onResume();
         // Ensure topping rows are always present after config changes/returning to screen.
         setupToppingRows();
+    }
+
+    private void fetchRecommendedProducts(String category) {
+        repository.getProductsByCategory(category, new FirebaseProductRepository.ProductsCallback() {
+            @Override
+            public void onSuccess(List<Product> products) {
+                if (isFinishing()) return;
+                List<Product> limited = new ArrayList<>();
+                String currentName = tvDetailName.getText().toString();
+                for (Product p : products) {
+                    if (!p.getName().equalsIgnoreCase(currentName)) {
+                        limited.add(p);
+                    }
+                    if (limited.size() >= 6) break;
+                }
+                RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
+                if (rvRecommended != null) {
+                    ProductCardAdapter adapter = new ProductCardAdapter(limited, ProductDetail.this::openRelatedDetail);
+                    rvRecommended.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+                RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
+                if (rvRecommended != null) {
+                    rvRecommended.setAdapter(new ProductCardAdapter(getRecommendedProducts(), ProductDetail.this::openRelatedDetail));
+                }
+            }
+        });
     }
 
     private List<Product> getRecommendedProducts() {
@@ -367,8 +615,30 @@ public class ProductDetail extends AppCompatActivity {
         View navPromotion = findViewById(R.id.nav_promotion);
         View navProfile = findViewById(R.id.nav_profile);
 
+        int[] navIds = {
+                R.id.nav_home,
+                R.id.nav_menu,
+                R.id.nav_orders,
+                R.id.nav_promotion,
+                R.id.nav_profile
+        };
+        NavBarHelper.setupNavBar(this, navIds, R.id.nav_menu, v -> {
+            int id = v.getId();
+            if (id == R.id.nav_home) {
+                openMainTab(MainActivity.TAB_HOME, null);
+            } else if (id == R.id.nav_menu) {
+                openMainTab(MainActivity.TAB_MENU, null);
+            } else if (id == R.id.nav_orders) {
+                startActivity(new Intent(this, OrderHistory.class));
+            } else if (id == R.id.nav_promotion) {
+                startActivity(new Intent(this, BlogGeneral.class));
+            } else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, UserProfile.class));
+            }
+        });
+
         if (navMenu != null) {
-            navMenu.setSelected(true);
+            NavBarHelper.updateItemState(this, navMenu, true);
         }
         if (navHome != null) {
             navHome.setOnClickListener(v -> openMainTab(MainActivity.TAB_HOME, null));
@@ -387,6 +657,58 @@ public class ProductDetail extends AppCompatActivity {
         }
     }
 
+    private void setupTabs() {
+        if (tabDescription == null || tabReview == null || tabCommitment == null) {
+            return;
+        }
+        tabDescription.setOnClickListener(v -> selectTab(tabDescription));
+        tabReview.setOnClickListener(v -> selectTab(tabReview));
+        tabCommitment.setOnClickListener(v -> selectTab(tabCommitment));
+        tabDescription.post(() -> selectTab(tabDescription));
+    }
+
+    private void selectTab(TextView selectedTab) {
+        int activeColor = ContextCompat.getColor(this, R.color.brand_blue);
+        int inactiveColor = ContextCompat.getColor(this, R.color.nav_inactive);
+
+        tabDescription.setTextColor(selectedTab == tabDescription ? activeColor : inactiveColor);
+        tabReview.setTextColor(selectedTab == tabReview ? activeColor : inactiveColor);
+        tabCommitment.setTextColor(selectedTab == tabCommitment ? activeColor : inactiveColor);
+
+        if (layoutDescription != null) {
+            layoutDescription.setVisibility(selectedTab == tabDescription ? View.VISIBLE : View.GONE);
+        }
+        if (layoutReview != null) {
+            layoutReview.setVisibility(selectedTab == tabReview ? View.VISIBLE : View.GONE);
+        }
+        if (layoutCommitment != null) {
+            layoutCommitment.setVisibility(selectedTab == tabCommitment ? View.VISIBLE : View.GONE);
+        }
+        if (tvTabPlaceholder != null) {
+            tvTabPlaceholder.setVisibility(View.GONE);
+        }
+        if (layoutReviewForm != null) {
+            layoutReviewForm.setVisibility(View.GONE);
+        }
+        alignIndicatorToTab(selectedTab);
+    }
+
+    private void alignIndicatorToTab(TextView target) {
+        if (tabIndicator == null || tabIndicatorContainer == null || target == null) {
+            return;
+        }
+        int[] targetPos = new int[2];
+        int[] containerPos = new int[2];
+        target.getLocationOnScreen(targetPos);
+        tabIndicatorContainer.getLocationOnScreen(containerPos);
+
+        float x = targetPos[0] - containerPos[0];
+        ViewGroup.LayoutParams layoutParams = tabIndicator.getLayoutParams();
+        layoutParams.width = target.getWidth();
+        tabIndicator.setLayoutParams(layoutParams);
+        tabIndicator.animate().x(x).setDuration(180).start();
+    }
+
     private void toggleCustomization() {
         isCustomizationExpanded = !isCustomizationExpanded;
         applyCustomizationState(true);
@@ -397,7 +719,7 @@ public class ProductDetail extends AppCompatActivity {
             customizationContent.setVisibility(isCustomizationExpanded ? View.VISIBLE : View.GONE);
         }
         if (tvNoteChevron != null) {
-            tvNoteChevron.setText(isCustomizationExpanded ? "⌄" : "⌃");
+            tvNoteChevron.setRotation(isCustomizationExpanded ? 180f : 0f);
         }
     }
 
@@ -433,94 +755,38 @@ public class ProductDetail extends AppCompatActivity {
         }
     }
 
-    private void addToppingRow(String name, String price, boolean addTopMargin) {
-        LinearLayout row = new LinearLayout(this);
-        row.setOrientation(LinearLayout.HORIZONTAL);
-        row.setGravity(Gravity.TOP);
-        LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        if (addTopMargin) {
-            rowParams.topMargin = dp(12);
-        }
-        row.setLayoutParams(rowParams);
+    private void addToppingRow(String name, String price, boolean unused) {
+        View row = getLayoutInflater().inflate(R.layout.item_topping, toppingRowsContainer, false);
+        TextView tvName = row.findViewById(R.id.tvToppingName);
+        TextView tvPrice = row.findViewById(R.id.tvToppingPrice);
+        TextView tvQty = row.findViewById(R.id.tvQuantity);
+        ImageButton btnMinus = row.findViewById(R.id.btnMinus);
+        ImageButton btnPlus = row.findViewById(R.id.btnPlus);
 
-        LinearLayout infoColumn = new LinearLayout(this);
-        infoColumn.setOrientation(LinearLayout.VERTICAL);
-        infoColumn.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-
-        TextView nameView = new TextView(this);
-        nameView.setText(name);
-        nameView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        nameView.setTypeface(Typeface.DEFAULT_BOLD);
-        nameView.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
-
-        TextView priceView = new TextView(this);
-        priceView.setText("+ " + price);
-        priceView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-        priceView.setTypeface(Typeface.DEFAULT_BOLD);
-        priceView.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
-
-        infoColumn.addView(nameView);
-        infoColumn.addView(priceView);
-
-        com.google.android.material.card.MaterialCardView stepperCard =
-                new com.google.android.material.card.MaterialCardView(this);
-        LinearLayout.LayoutParams stepperParams = new LinearLayout.LayoutParams(dp(150), dp(48));
-        stepperCard.setLayoutParams(stepperParams);
-        stepperCard.setCardElevation(0f);
-        stepperCard.setCardBackgroundColor(ContextCompat.getColor(this, android.R.color.white));
-        stepperCard.setStrokeColor(ContextCompat.getColor(this, R.color.outline_variant));
-        stepperCard.setStrokeWidth(dp(1));
-
-        LinearLayout stepperContent = new LinearLayout(this);
-        stepperContent.setOrientation(LinearLayout.HORIZONTAL);
-        stepperContent.setGravity(Gravity.CENTER_VERTICAL);
-        stepperContent.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        stepperContent.setPadding(dp(8), 0, dp(8), 0);
-
-        ImageButton minusButton = new ImageButton(this);
-        minusButton.setLayoutParams(new LinearLayout.LayoutParams(dp(32), dp(32)));
-        minusButton.setBackgroundResource(R.drawable.bg_arrow_circle);
-        minusButton.setImageResource(R.drawable.ic_minus_line);
-        minusButton.setColorFilter(ContextCompat.getColor(this, R.color.nav_inactive));
-
-        TextView quantityView = new TextView(this);
-        LinearLayout.LayoutParams qtyParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
-        quantityView.setLayoutParams(qtyParams);
-        quantityView.setGravity(Gravity.CENTER);
-        quantityView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        quantityView.setTypeface(Typeface.DEFAULT_BOLD);
-        quantityView.setTextColor(ContextCompat.getColor(this, R.color.nav_inactive));
-        quantityView.setText("0");
-
-        ImageButton plusButton = new ImageButton(this);
-        plusButton.setLayoutParams(new LinearLayout.LayoutParams(dp(32), dp(32)));
-        plusButton.setBackgroundResource(R.drawable.bg_circle_brand_blue);
-        plusButton.setImageResource(R.drawable.ic_plus_line);
-        plusButton.setColorFilter(ContextCompat.getColor(this, R.color.white));
-
+        tvName.setText(name);
+        tvPrice.setText("+ " + price);
         toppingQuantities.put(name, 0);
-        minusButton.setOnClickListener(v -> {
+
+        btnMinus.setOnClickListener(v -> {
             int current = toppingQuantities.get(name);
-            int next = Math.max(0, current - 1);
-            toppingQuantities.put(name, next);
-            quantityView.setText(String.valueOf(next));
-        });
-        plusButton.setOnClickListener(v -> {
-            int current = toppingQuantities.get(name);
-            int next = current + 1;
-            toppingQuantities.put(name, next);
-            quantityView.setText(String.valueOf(next));
+            if (current > 0) {
+                current--;
+                toppingQuantities.put(name, current);
+                tvQty.setText(String.valueOf(current));
+                tvQty.setTextColor(ContextCompat.getColor(this, current > 0 ? R.color.on_surface : R.color.nav_inactive));
+                btnMinus.setColorFilter(ContextCompat.getColor(this, current > 0 ? R.color.on_surface : R.color.nav_inactive));
+            }
         });
 
-        stepperContent.addView(minusButton);
-        stepperContent.addView(quantityView);
-        stepperContent.addView(plusButton);
-        stepperCard.addView(stepperContent);
+        btnPlus.setOnClickListener(v -> {
+            int current = toppingQuantities.get(name);
+            current++;
+            toppingQuantities.put(name, current);
+            tvQty.setText(String.valueOf(current));
+            tvQty.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+            btnMinus.setColorFilter(ContextCompat.getColor(this, R.color.on_surface));
+        });
 
-        row.addView(infoColumn);
-        row.addView(stepperCard);
         toppingRowsContainer.addView(row);
     }
 

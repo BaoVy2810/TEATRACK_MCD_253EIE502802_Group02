@@ -1,9 +1,12 @@
 package com.teatrack_mcd_253eie502802_group02.model;
 
+import java.util.List;
+
 public class Product {
     private String id;
     private String name;
     private String image;
+    private List<String> images;
     private String category;
     private int imageRes;
     private float rating = 4.9f;
@@ -56,6 +59,14 @@ public class Product {
         this.image = image;
     }
 
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
     public String getCategory() {
         return category;
     }
@@ -66,6 +77,10 @@ public class Product {
 
     public int getImageRes() {
         return imageRes;
+    }
+
+    public void setImageRes(int imageRes) {
+        this.imageRes = imageRes;
     }
 
     public float getRating() {

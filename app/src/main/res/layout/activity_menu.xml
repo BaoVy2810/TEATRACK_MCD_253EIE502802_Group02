@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_baby_blue"
+    android:paddingEnd="5dp"
     tools:context="com.teatrack_mcd_253eie502802_group02.client.Menu">
 
     <include
@@ -50,7 +51,7 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="14dp"
-                app:cardCornerRadius="16dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -71,26 +72,38 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/menu_title"
-                            android:textColor="@color/brand_blue"
+                            android:textColor="@color/brand_dark_blue"
                             android:textSize="10sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/menu_subtitle"
                             android:textColor="@color/black"
-                            android:textSize="22sp"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:paddingEnd="40dp"
+                            android:text="@string/menu_description"
+                            android:textColor="@color/Gray"
+                            android:textSize="7sp"
+                            android:textStyle="normal" />
                     </LinearLayout>
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:layout_width="112dp"
                         android:layout_height="112dp"
-                        android:contentDescription="Menu drink"
+                        android:background="@drawable/bg_card_white_20dp"
+                        android:backgroundTint="@color/white"
+                        android:contentDescription="@string/menu_hero_image_desc"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/tra_yakult"
+                        android:src="@mipmap/tra_sua"
                         app:shapeAppearanceOverlay="@style/RoundedBanner" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -115,58 +128,37 @@
                     <ImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:contentDescription="Search"
+                        android:contentDescription="@string/menu_search_desc"
                         android:src="@drawable/search"
-                        app:tint="@color/nav_inactive" />
+                        app:tint="@color/brand_blue" />
 
                     <EditText
                         android:id="@+id/edtMenuSearch"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:autofillHints=""
                         android:background="@android:color/transparent"
                         android:hint="@string/menu_search_hint"
                         android:paddingStart="10dp"
-                        android:textColor="@color/nav_inactive"
-                        android:textSize="12sp" />
+                        android:textColor="@color/brand_blue"
+                        android:textColorHint="@color/brand_blue"
+                        android:textSize="11sp" />
+
+                    <ImageButton
+                        android:id="@+id/btnMenuFilter"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/bg_filter_icon_button"
+                        android:contentDescription="@string/menu_filter_desc"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:padding="7dp"
+                        android:src="@drawable/ic_filter"
+                        app:tint="@color/brand_blue" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:scrollbars="none">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingStart="14dp"
-                    android:paddingEnd="14dp">
-
-                    <TextView
-                        android:id="@+id/chipAllCategories"
-                        style="@style/MenuChipPrimary"
-                        android:text="@string/menu_all_categories" />
-                    <TextView
-                        android:id="@+id/chipPureTea"
-                        style="@style/MenuChip"
-                        android:text="@string/firebase_category_pure_tea" />
-                    <TextView
-                        android:id="@+id/chipMilkTea"
-                        style="@style/MenuChip"
-                        android:text="@string/firebase_category_milk_tea" />
-                    <TextView
-                        android:id="@+id/chipTeaLatte"
-                        style="@style/MenuChip"
-                        android:text="@string/firebase_category_tea_latte" />
-                    <TextView
-                        android:id="@+id/chipFruitTea"
-                        style="@style/MenuChip"
-                        android:text="@string/firebase_category_fruit_tea" />
-                </LinearLayout>
-            </HorizontalScrollView>
 
             <TextView
                 android:id="@+id/tvMenuSectionTitle"
@@ -177,8 +169,41 @@
                 android:layout_marginEnd="14dp"
                 android:text="@string/menu_all_products_title"
                 android:textColor="@color/black"
-                android:textSize="22sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvMenuSectionSubtitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/menu_section_subtitle_default"
+                    android:textColor="@color/Gray"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tvMenuResultCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_promotion_rounded_24"
+                    android:paddingStart="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/menu_result_count_default"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMenuProducts"
@@ -186,11 +211,11 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingStart="14dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="14dp"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
                 tools:itemCount="6"
-                tools:listitem="@layout/item_product_card" />
+                tools:listitem="@layout/item_menu_product_card" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

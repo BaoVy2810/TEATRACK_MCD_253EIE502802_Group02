@@ -109,7 +109,35 @@ public class FirebaseProductRepository {
         product.setPriceL(readLong(snapshot, "priceL"));
         product.setVipPriceM(readLong(snapshot, "vipPriceM"));
         product.setVipPriceL(readLong(snapshot, "vipPriceL"));
+        product.setImages(readImages(snapshot));
         return product;
+    }
+
+    private List<String> readImages(DataSnapshot snapshot) {
+        List<String> images = new ArrayList<>();
+        DataSnapshot imagesNode = snapshot.child("images");
+        if (imagesNode.exists()) {
+            for (DataSnapshot child : imagesNode.getChildren()) {
+                Object value = child.getValue();
+                if (value == null) {
+                    continue;
+                }
+                String image = String.valueOf(value).trim();
+                if (!image.isEmpty()) {
+                    images.add(image);
+                }
+            }
+        }
+        if (images.isEmpty()) {
+            Object singleImage = snapshot.child("image").getValue();
+            if (singleImage != null) {
+                String image = String.valueOf(singleImage).trim();
+                if (!image.isEmpty()) {
+                    images.add(image);
+                }
+            }
+        }
+        return images;
     }
 
     private long readLong(DataSnapshot snapshot, String key) {
