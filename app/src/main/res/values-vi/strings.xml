@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TEATRACK_MCD_253EIE502802_Group02</string>
+    <string name="app_name">TEATRACK</string>
     <string name="nav_dashboard">Bảng điều khiển</string>
     <string name="nav_products">Sản phẩm</string>
     <string name="nav_orders">Đơn hàng</string>

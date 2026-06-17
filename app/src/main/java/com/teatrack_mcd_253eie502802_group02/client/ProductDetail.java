@@ -181,9 +181,9 @@ public class ProductDetail extends AppCompatActivity {
         bindFromIntent(name, category, priceM, priceL, vipM, vipL, imageRes, rating, reviewCount);
         fetchFromFirebase(name);
 
-        Product initialProduct = new Product();
-        initialProduct.setImageRes(imageRes);
-        setupThumbs(initialProduct);
+        Product dummy = new Product();
+        dummy.setImageRes(imageRes);
+        setupThumbs(dummy);
 
         btnQtyMinus.setOnClickListener(v -> {
             quantity = Math.max(1, quantity - 1);
@@ -378,7 +378,7 @@ public class ProductDetail extends AppCompatActivity {
         tvPriceL.setText(safePrice(product.getPriceL()));
         tvVipPriceM.setText(safePrice(product.getVipPriceM()));
         tvVipPriceL.setText(safePrice(product.getVipPriceL()));
-        bindCustomizationPrice(product.getPriceM(), product.getPriceL());
+        bindCustomizationPrice(String.valueOf(product.getPriceM()), String.valueOf(product.getPriceL()));
         if (tvRatingValue != null) {
             tvRatingValue.setText(String.format(java.util.Locale.getDefault(), "%.1f", product.getRating()));
         }
@@ -399,9 +399,9 @@ public class ProductDetail extends AppCompatActivity {
         };
 
         List<String> sources = collectImageSources(product);
-        boolean useImageRes = sources.isEmpty() && product.getImageRes() != 0;
+        boolean useImageRes = sources.isEmpty() && product.getImageRes(this) != 0;
         int visibleCount = useImageRes ? 1 : sources.size();
-        int fallbackRes = product.getImageRes() != 0 ? product.getImageRes() : R.mipmap.traolongmochuong;
+        int fallbackRes = product.getImageRes(this) != 0 ? product.getImageRes(this) : R.mipmap.traolongmochuong;
 
         for (int i = 0; i < thumbs.length; i++) {
             ShapeableImageView thumb = thumbs[i];
@@ -470,11 +470,12 @@ public class ProductDetail extends AppCompatActivity {
         }
     }
 
-    private String safePrice(String price) {
-        if (price == null || price.isEmpty()) {
+    private String safePrice(Object price) {
+        String p = String.valueOf(price);
+        if (p == null || p.isEmpty() || p.equals("null")) {
             return "0đ";
         }
-        return price.endsWith("đ") ? price : price + "đ";
+        return p.endsWith("đ") ? p : p + "đ";
     }
 
     private void bindCustomizationPrice(String priceM, String priceL) {
@@ -556,7 +557,7 @@ public class ProductDetail extends AppCompatActivity {
                 }
                 RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
                 if (rvRecommended != null) {
-                    ProductCardAdapter adapter = new ProductCardAdapter(limited, ProductDetail.this::openRelatedDetail);
+                    ProductCardAdapter adapter = new ProductCardAdapter(limited, R.layout.item_product_card, ProductDetail.this::openRelatedDetail);
                     rvRecommended.setAdapter(adapter);
                 }
             }
@@ -565,7 +566,7 @@ public class ProductDetail extends AppCompatActivity {
             public void onError(String message) {
                 RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
                 if (rvRecommended != null) {
-                    rvRecommended.setAdapter(new ProductCardAdapter(getRecommendedProducts(), ProductDetail.this::openRelatedDetail));
+                    rvRecommended.setAdapter(new ProductCardAdapter(getRecommendedProducts(), R.layout.item_product_card, ProductDetail.this::openRelatedDetail));
                 }
             }
         });
@@ -573,9 +574,9 @@ public class ProductDetail extends AppCompatActivity {
 
     private List<Product> getRecommendedProducts() {
         List<Product> products = new ArrayList<>();
-        products.add(new Product("Trà Xanh Sữa", R.mipmap.traxanhsua, 4.8f, "500", "24.000", "28.000", "21.000", "25.000"));
-        products.add(new Product("Đường Đen", R.mipmap.trasuatranchauduongden, 5.0f, "500", "29.000", "31.000", "26.000", "28.000"));
-        products.add(new Product("Trà Ô Long", R.mipmap.traolongmochuong, 4.8f, "500", "19.000", "22.000", "16.000", "19.000"));
+        products.add(new Product("0", "P001", "Trà Xanh Sữa", "Trà Sữa", 24000, 28000, 21000, 25000, "", "", "traxanhsua.png", true, false));
+        products.add(new Product("0", "P002", "Đường Đen", "Trà Sữa", 29000, 31000, 26000, 28000, "", "", "trasuatranchauduongden.png", true, false));
+        products.add(new Product("0", "P003", "Trà Ô Long", "Trà Ô Long", 19000, 22000, 16000, 19000, "", "", "traolongmochuong.png", true, false));
         return products;
     }
 
@@ -583,11 +584,11 @@ public class ProductDetail extends AppCompatActivity {
         Intent intent = new Intent(this, ProductDetail.class);
         intent.putExtra("name", product.getName());
         intent.putExtra("category", product.getCategory());
-        intent.putExtra("priceM", product.getPriceM());
-        intent.putExtra("priceL", product.getPriceL());
-        intent.putExtra("vipM", product.getVipPriceM());
-        intent.putExtra("vipL", product.getVipPriceL());
-        intent.putExtra("imageRes", product.getImageRes());
+        intent.putExtra("priceM", String.valueOf(product.getPriceM()));
+        intent.putExtra("priceL", String.valueOf(product.getPriceL()));
+        intent.putExtra("vipM", String.valueOf(product.getVipPriceM()));
+        intent.putExtra("vipL", String.valueOf(product.getVipPriceL()));
+        intent.putExtra("imageRes", product.getImageRes(this));
         intent.putExtra("rating", product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());
         startActivity(intent);

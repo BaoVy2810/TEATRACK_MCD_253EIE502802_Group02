@@ -39,12 +39,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void routeToTarget(Intent intent) {
-        String selectedTab = intent != null ? intent.getStringExtra(EXTRA_SELECTED_TAB) : null;
-        if (TAB_MENU.equals(selectedTab)) {
-            navigateToMenu(intent.getStringExtra(EXTRA_MENU_CATEGORY));
-            return;
+        setContentView(R.layout.activity_main);
+        
+        LinearLayout layoutGetStarted = findViewById(R.id.layoutGetStarted);
+        if (layoutGetStarted != null) {
+            layoutGetStarted.setOnClickListener(v -> {
+                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+            });
         }
-        startActivity(new Intent(this, Homepage.class));
+
+        String selectedTab = intent != null ? intent.getStringExtra(EXTRA_SELECTED_TAB) : null;
+        if (selectedTab != null) {
+             if (TAB_MENU.equals(selectedTab)) {
+                navigateToMenu(intent.getStringExtra(EXTRA_MENU_CATEGORY));
+                finish();
+                return;
+            }
+        }
+        // If no specific tab, just stay on activity_main (Get Started screen)
     }
 
     public void navigateToMenu(String category) {
@@ -53,14 +66,5 @@ public class MainActivity extends AppCompatActivity {
             menuIntent.putExtra(EXTRA_MENU_CATEGORY, category);
         }
         startActivity(menuIntent);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-
-// Trong onCreate(), sau dòng setContentView(...)
-        LinearLayout layoutGetStarted = findViewById(R.id.layoutGetStarted);
-        layoutGetStarted.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        });
     }
 }

@@ -8,14 +8,14 @@
     <style name="Theme.TEATRACK_MCD_253EIE502802_Group02" parent="Base.Theme.TEATRACK_MCD_253EIE502802_Group02" />
 
     <style name="NavBarItem">
-        <item name="android:layout_height">wrap_content</item>
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        <item name="android:layout_height">match_parent</item>
         <item name="android:background">@drawable/bg_nav_item_selector</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:paddingStart">@dimen/nav_item_padding_horizontal</item>
-        <item name="android:paddingEnd">@dimen/nav_item_padding_horizontal</item>
         <item name="android:paddingTop">@dimen/nav_item_padding_vertical</item>
         <item name="android:paddingBottom">@dimen/nav_item_padding_vertical</item>
     </style>
@@ -23,7 +23,7 @@
     <style name="NavBarIcon">
         <item name="android:layout_width">@dimen/nav_item_icon_size</item>
         <item name="android:layout_height">@dimen/nav_item_icon_size</item>
-        <item name="android:tint">@color/nav_inactive</item>
+        <item name="android:tint">@color/nav_item_color_selector</item>
     </style>
 
     <style name="NavBarLabel">
@@ -31,7 +31,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:fontFamily">@font/inter_family</item>
-        <item name="android:textColor">@color/nav_inactive</item>
+        <item name="android:textColor">@color/nav_item_color_selector</item>
         <item name="android:textSize">@dimen/nav_item_text_size</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">none</item>

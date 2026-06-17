@@ -105,10 +105,10 @@ public class FirebaseProductRepository {
         }
 
         // Firebase schema uses "price" for size M.
-        product.setPrice(readLong(snapshot, "price"));
-        product.setPriceL(readLong(snapshot, "priceL"));
-        product.setVipPriceM(readLong(snapshot, "vipPriceM"));
-        product.setVipPriceL(readLong(snapshot, "vipPriceL"));
+        product.setPrice((int) readLong(snapshot, "price"));
+        product.setPriceL((int) readLong(snapshot, "priceL"));
+        product.setVipPriceM((int) readLong(snapshot, "vipPriceM"));
+        product.setVipPriceL((int) readLong(snapshot, "vipPriceL"));
         product.setImages(readImages(snapshot));
         return product;
     }

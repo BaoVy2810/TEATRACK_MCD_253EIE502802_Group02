@@ -230,10 +230,10 @@ public class Homepage extends AppCompatActivity {
         Intent intent = new Intent(this, ProductDetail.class);
         intent.putExtra("name", product.getName());
         intent.putExtra("category", product.getCategory());
-        intent.putExtra("priceM", product.getPriceM());
-        intent.putExtra("priceL", product.getPriceL());
-        intent.putExtra("vipM", product.getVipPriceM());
-        intent.putExtra("vipL", product.getVipPriceL());
+        intent.putExtra("priceM", String.valueOf(product.getPriceM()));
+        intent.putExtra("priceL", String.valueOf(product.getPriceL()));
+        intent.putExtra("vipM", String.valueOf(product.getVipPriceM()));
+        intent.putExtra("vipL", String.valueOf(product.getVipPriceL()));
         intent.putExtra("imageRes", product.getImageRes());
         intent.putExtra("rating", product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());

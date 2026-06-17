@@ -322,10 +322,10 @@ public class Menu extends AppCompatActivity {
                 list.sort((a, b) -> safeString(b.getName()).compareToIgnoreCase(safeString(a.getName())));
                 break;
             case "price_asc":
-                list.sort((a, b) -> Long.compare(parsePrice(a.getPriceM()), parsePrice(b.getPriceM())));
+                list.sort((a, b) -> Integer.compare(a.getPriceM(), b.getPriceM()));
                 break;
             case "price_desc":
-                list.sort((a, b) -> Long.compare(parsePrice(b.getPriceM()), parsePrice(a.getPriceM())));
+                list.sort((a, b) -> Integer.compare(b.getPriceM(), a.getPriceM()));
                 break;
             default:
                 break;
@@ -382,12 +382,12 @@ public class Menu extends AppCompatActivity {
 
     private List<Product> getFallbackMenuProducts() {
         List<Product> products = new ArrayList<>();
-        products.add(new Product("Trà Ô Long Mộc Hương", R.mipmap.traolongmochuong, 4.8f, "500", "19.000", "22.000", "16.000", "19.000"));
-        products.add(new Product("Hồng Trà Bí Đao", R.mipmap.hongtrabidao, 4.8f, "500", "19.000", "22.000", "16.000", "19.000"));
-        products.add(new Product("Trà Xanh Bí Đao", R.mipmap.traxanhbidao, 4.8f, "500", "19.000", "22.000", "16.000", "19.000"));
-        products.add(new Product("Trà Xanh Hoa Nhài", R.mipmap.traxanhhoanhai, 4.8f, "500", "19.000", "22.000", "16.000", "19.000"));
-        products.add(new Product("Sữa Tươi Khoai Môn", R.mipmap.suatuoikhoaimonnghien, 4.8f, "500", "25.000", "29.000", "22.000", "26.000"));
-        products.add(new Product("Ô Long Latte", R.mipmap.olonglatte, 4.8f, "500", "24.000", "28.000", "21.000", "25.000"));
+        products.add(new Product("Trà Ô Long Mộc Hương", R.mipmap.traolongmochuong, 4.8f, "500", 19000, 22000, 16000, 19000));
+        products.add(new Product("Hồng Trà Bí Đao", R.mipmap.hongtrabidao, 4.8f, "500", 19000, 22000, 16000, 19000));
+        products.add(new Product("Trà Xanh Bí Đao", R.mipmap.traxanhbidao, 4.8f, "500", 19000, 22000, 16000, 19000));
+        products.add(new Product("Trà Xanh Hoa Nhài", R.mipmap.traxanhhoanhai, 4.8f, "500", 19000, 22000, 16000, 19000));
+        products.add(new Product("Sữa Tươi Khoai Môn", R.mipmap.suatuoikhoaimonnghien, 4.8f, "500", 25000, 29000, 22000, 26000));
+        products.add(new Product("Ô Long Latte", R.mipmap.olonglatte, 4.8f, "500", 24000, 28000, 21000, 25000));
         return products;
     }
 
@@ -395,10 +395,10 @@ public class Menu extends AppCompatActivity {
         Intent intent = new Intent(this, ProductDetail.class);
         intent.putExtra("name", product.getName());
         intent.putExtra("category", product.getCategory());
-        intent.putExtra("priceM", product.getPriceM());
-        intent.putExtra("priceL", product.getPriceL());
-        intent.putExtra("vipM", product.getVipPriceM());
-        intent.putExtra("vipL", product.getVipPriceL());
+        intent.putExtra("priceM", String.valueOf(product.getPriceM()));
+        intent.putExtra("priceL", String.valueOf(product.getPriceL()));
+        intent.putExtra("vipM", String.valueOf(product.getVipPriceM()));
+        intent.putExtra("vipL", String.valueOf(product.getVipPriceL()));
         intent.putExtra("imageRes", product.getImageRes());
         intent.putExtra("rating", product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());

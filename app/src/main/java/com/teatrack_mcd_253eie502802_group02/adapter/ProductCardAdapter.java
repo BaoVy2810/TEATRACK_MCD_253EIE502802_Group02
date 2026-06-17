@@ -22,13 +22,19 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
 
     private final List<Product> products;
     private final OnProductClickListener clickListener;
+    private final int layoutId;
 
     public ProductCardAdapter(List<Product> products) {
-        this(products, null);
+        this(products, R.layout.item_product_card, null);
     }
 
     public ProductCardAdapter(List<Product> products, OnProductClickListener clickListener) {
+        this(products, R.layout.item_product_card, clickListener);
+    }
+
+    public ProductCardAdapter(List<Product> products, int layoutId, OnProductClickListener clickListener) {
         this.products = products;
+        this.layoutId = layoutId;
         this.clickListener = clickListener;
     }
 
@@ -36,7 +42,7 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_product_card, parent, false);
+                .inflate(layoutId, parent, false);
         return new ProductViewHolder(view);
     }
 

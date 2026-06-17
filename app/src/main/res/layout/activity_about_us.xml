@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <include layout="@layout/activity_header_client" />
+
         <!--HERO-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,7 +114,7 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@mipmap/ic_leaf"
+                        android:src="@drawable/ic_leaf"
                         android:background="@drawable/bg_icon_circle"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
@@ -166,7 +168,7 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@mipmap/ic_heart"
+                        android:src="@drawable/ic_heart"
                         android:background="@drawable/bg_icon_circle"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
@@ -220,7 +222,7 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@mipmap/ic_star"
+                        android:src="@drawable/ic_star"
                         android:background="@drawable/bg_icon_circle"
                         android:padding="8dp"
                         android:scaleType="fitCenter"
@@ -627,5 +629,7 @@
                 android:gravity="center" />
 
         </FrameLayout>
+
+        <include layout="@layout/activity_nav_bar_client" />
     </LinearLayout>
 </ScrollView>

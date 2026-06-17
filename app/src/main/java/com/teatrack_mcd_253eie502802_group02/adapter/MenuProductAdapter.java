@@ -78,8 +78,9 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
         return products.size();
     }
 
-    private String formatPrice(String price) {
-        return price.endsWith("đ") ? price : price + "đ";
+    private String formatPrice(Object price) {
+        String p = String.valueOf(price);
+        return p.endsWith("đ") ? p : p + "đ";
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {

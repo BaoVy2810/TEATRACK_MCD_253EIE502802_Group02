@@ -26,12 +26,25 @@ public class Product {
     private int imageRes;
     private float rating = 4.9f;
     private String reviewCount = "1k";
-    private float rating;
-    private String reviewCount;
 
     public Product() {
     }
 
+    public Product(String id, String code, String name, String category, int price, int priceL, int vipPriceM, int vipPriceL, String description, String detail, String image, boolean visible, boolean special) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.priceL = priceL;
+        this.vipPriceM = vipPriceM;
+        this.vipPriceL = vipPriceL;
+        this.description = description;
+        this.detail = detail;
+        this.image = image;
+        this.visible = visible;
+        this.special = special;
+    }
 
     public Product(int imageRes,float rating, String reviewCount, String id, String code, String name, String category, int price, int priceL, int vipPriceM, int vipPriceL, String description, String detail, String image, boolean visible, boolean special) {
         this.id = id;
@@ -52,6 +65,17 @@ public class Product {
         this.special = special;
     }
 
+    public Product(String name, int imageRes, float rating, String reviewCount, int price, int priceL, int vipPriceM, int vipPriceL) {
+        this.name = name;
+        this.imageRes = imageRes;
+        this.rating = rating;
+        this.reviewCount = reviewCount;
+        this.price = price;
+        this.priceL = priceL;
+        this.vipPriceM = vipPriceM;
+        this.vipPriceL = vipPriceL;
+    }
+
 
     @Exclude
     public String getId() { return id; }
@@ -68,6 +92,9 @@ public class Product {
 
     public int getPrice() { return price; }
     public void setPrice(int price) { this.price = price; }
+
+    @Exclude
+    public int getPriceM() { return price; }
 
     public int getPriceL() { return priceL; }
     public void setPriceL(int priceL) { this.priceL = priceL; }
@@ -87,11 +114,23 @@ public class Product {
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
 
+    public List<String> getImages() { return images; }
+    public void setImages(List<String> images) { this.images = images; }
+
     public boolean isVisible() { return visible; }
     public void setVisible(boolean visible) { this.visible = visible; }
 
     public boolean isSpecial() { return special; }
     public void setSpecial(boolean special) { this.special = special; }
+
+    @Exclude
+    public int getImageRes() {
+        return imageRes;
+    }
+
+    public void setImageRes(int imageRes) {
+        this.imageRes = imageRes;
+    }
 
     @Exclude
     public int getImageRes(Context context) {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TEATRACK_MCD_253EIE502802_Group02</string>
+    <string name="app_name">TEATRACK</string>
 
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_products">Products</string>
@@ -446,6 +446,4 @@
     <string name="hint_maps_url_example">http://maps.google.com/...</string>
 
     <string name="btn_choose">Choose</string>
-    <string name="btn_cancel">Cancel</string>
-    <string name="btn_save">Save</string>
 </resources>

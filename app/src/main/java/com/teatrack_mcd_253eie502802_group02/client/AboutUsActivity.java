@@ -28,8 +28,6 @@ import com.teatrack_mcd_253eie502802_group02.R;
 public class AboutUsActivity extends AppCompatActivity {
 
     private VideoView videoView;
-
-    private VideoView videoView;
     private ScrollView scrollView;
 
     private LinearLayout missionOverlay;

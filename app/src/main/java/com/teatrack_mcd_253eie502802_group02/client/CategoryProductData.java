@@ -33,9 +33,9 @@ public class CategoryProductData {
 
     private static List<Product> teaLatteProducts() {
         List<Product> list = new ArrayList<>();
-        list.add(new Product("Sữa Tươi Khoai Môn Nghiền", R.mipmap.suatuoikhoaimon, 4.9f, "1k", "25.000", "29.000", "22.000", "26.000"));
-        list.add(new Product("Ô Long Latte", R.mipmap.olonglatte, 4.9f, "1k", "24.000", "28.000", "21.000", "25.000"));
-        list.add(new Product("Sữa Tươi Trân Châu Đường Đen", R.mipmap.trasuatranchauduongden, 4.9f, "1k", "26.000", "30.000", "23.000", "27.000"));
+        list.add(new Product("Sữa Tươi Khoai Môn Nghiền", R.mipmap.suatuoikhoaimonnghien, 4.9f, "1k", 25000, 29000, 22000, 26000));
+        list.add(new Product("Ô Long Latte", R.mipmap.olonglatte, 4.9f, "1k", 24000, 28000, 21000, 25000));
+        list.add(new Product("Sữa Tươi Trân Châu Đường Đen", R.mipmap.trasuatranchauduongden, 4.9f, "1k", 26000, 30000, 23000, 27000));
         return list;
     }
 
