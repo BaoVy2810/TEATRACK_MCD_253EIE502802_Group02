@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TEATRACK_MCD_253EIE502802_Group02</string>
-
     <string name="nav_dashboard">Bảng điều khiển</string>
     <string name="nav_products">Sản phẩm</string>
     <string name="nav_orders">Đơn hàng</string>
@@ -238,4 +237,10 @@
     <string name="success_password_btn_back">Quay lại Đăng nhập</string>
     <string name="success_password_need_help">Cần giúp đỡ? </string>
     <string name="success_password_contact_support">Liên hệ Hỗ trợ</string>
+    <string name="str_otp">-</string>
+    <string name="str_email_masked">ethan@gmail.com</string>
+    <string name="str_agency_location">Agency Location</string>
+    <string name="str_add_agency">+ Add New Agency</string>
+    <string name="str_agency_details">AGENCY DETAILS</string>
+    <string name="str_agency_id">Agency ID</string>
 </resources>

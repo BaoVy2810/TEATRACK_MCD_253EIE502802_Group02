@@ -248,4 +248,36 @@
     <string name="success_password_btn_back">Back to Sign in</string>
     <string name="success_password_need_help">Need help? </string>
     <string name="success_password_contact_support">Contact Support</string>
+
+    <string name="otp_title">Xác Thực Email</string>
+    <string name="otp_subtitle">Mã xác thực đã được gửi đến email của bạn</string>
+    <string name="otp_resend_countdown">Gửi lại sau 60s</string>
+    <string name="otp_resend_countdown_format">Gửi lại sau %ds</string>
+    <string name="otp_resend">Gửi lại mã OTP</string>
+    <string name="otp_verify_btn">XÁC NHẬN</string>
+    <string name="otp_back">← Quay lại</string>
+    <string name="str_otp">-</string>
+    <string name="str_email_masked">ethan@gmail.com</string>
+    <string name="str_agency_location">Agency Location</string>
+    <string name="str_agency_search">Search agencies by name or district...</string>
+    <string name="str_add_agency">+ Add New Agency</string>
+    <string name="str_agency_details">AGENCY DETAILS</string>
+    <string name="str_agency_id">Agency ID</string>
+    <string name="str_close">Close</string>
+    <string name="str_agency_name">Agency Name</string>
+    <string name="str_address">Address</string>
+    <string name="str_phone_number">Phone Number</string>
+    <string name="str_image_source_file">Image Source File</string>
+    <string name="str_google_maps_url">Google Maps URL</string>
+
+    <string name="hint_agency_id_example">e.g., CN01</string>
+    <string name="hint_enter_agency_name">Enter agency name</string>
+    <string name="hint_enter_full_address">Enter full address</string>
+    <string name="hint_phone_example">e.g., 0999.888.777</string>
+    <string name="hint_image_url_or_upload">Image URL or upload</string>
+    <string name="hint_maps_url_example">http://maps.google.com/...</string>
+
+    <string name="btn_choose">Choose</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_save">Save</string>
 </resources>

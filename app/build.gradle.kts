@@ -5,16 +5,12 @@ plugins {
 
 android {
     namespace = "com.teatrack_mcd_253eie502802_group02"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.teatrack_mcd_253eie502802_group02"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -50,6 +46,24 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation(platform("com.google.firebase:firebase-bom:34.14.1"))
     implementation("com.google.firebase:firebase-database")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
+    // Firebase BOM
+        implementation(platform("com.google.firebase:firebase-bom:34.14.1"))
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth")
+    // Firebase Realtime Database
+    implementation("com.google.firebase:firebase-database:21.0.0")
+    // Firebase Storage
+    implementation("com.google.firebase:firebase-storage")
+    // Firebase Analytics (không bắt buộc)
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Glide
+    implementation(libs.glide)
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
