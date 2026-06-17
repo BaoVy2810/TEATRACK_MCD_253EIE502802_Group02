@@ -71,4 +71,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
     </style>
+    <style name="CheckBoxTheme" parent="Theme.AppCompat">
+        <item name="colorAccent">#0088FF</item>
+        <item name="colorControlNormal">#979797</item>
+        <item name="colorControlActivated">#0088FF</item>
+    </style>
 </resources>

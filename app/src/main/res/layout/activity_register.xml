@@ -93,7 +93,7 @@
 
                 android:fontFamily="@font/inter_light"
                 android:padding="12dp"
-                android:paddingStart="20"
+                android:paddingStart="20dp"
                 android:text="@string/register_error_empty"
                 android:textColor="#784848"
                 android:textSize="10sp"
@@ -381,6 +381,7 @@
                 android:text="@string/register_btn_register"
                 android:textAllCaps="false"
                 android:textSize="15sp"
+                android:textColor="#FFFFFF"
                 app:cornerRadius="25dp"
                 android:shadowColor="#33000000"
                 android:shadowDx="0"
@@ -417,8 +418,7 @@
                     android:layout_marginStart="6dp"
                     android:fontFamily="@font/inter_light"
                     android:text="@string/login_sign_in"
-                    android:textColor="#0088ff
-"
+                    android:textColor="#0088ff"
                     android:textSize="10sp"
                     android:textStyle="bold" />
             </LinearLayout>
