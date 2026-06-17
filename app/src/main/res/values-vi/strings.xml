@@ -37,4 +37,8 @@
     <string name="fruit_tea">Fruit Tea</string>
     <string name="str_otp">-</string>
     <string name="str_email_masked">ethan@gmail.com</string>
+    <string name="str_agency_location">Agency Location</string>
+    <string name="str_add_agency">+ Add New Agency</string>
+    <string name="str_agency_details">AGENCY DETAILS</string>
+    <string name="str_agency_id">Agency ID</string>
 </resources>

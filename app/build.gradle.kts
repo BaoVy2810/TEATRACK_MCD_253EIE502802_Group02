@@ -51,9 +51,16 @@ dependencies {
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
     // Firebase Realtime Database
-    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-database:21.0.0")
+    // Firebase Storage
+    implementation("com.google.firebase:firebase-storage")
     // Firebase Analytics (không bắt buộc)
     implementation("com.google.firebase:firebase-analytics")
+
+    // Glide
+    implementation(libs.glide)
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

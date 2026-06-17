@@ -16,15 +16,32 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="start"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:backgroundTint="@color/brand_blue"
-            android:contentDescription="@string/previous"
-            android:src="@drawable/ic_arrow_left" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:backgroundTint="@color/brand_blue"
+                android:contentDescription="@string/previous"
+                android:src="@drawable/ic_arrow_left" />
+
+            <TextView
+                android:id="@+id/tvBackLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:fontFamily="@font/inter_family"
+                android:text="@string/otp_back"
+                android:textColor="@color/brand_blue"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <ImageView
             android:layout_width="100dp"
