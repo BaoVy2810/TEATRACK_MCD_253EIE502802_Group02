@@ -203,7 +203,7 @@
             android:fontFamily="@font/inter_family"
             android:gravity="center"
             android:text="@string/otp_resend"
-            android:textColor="@color/darkgreen"
+            android:textColor="@color/brand_blue"
             android:textSize="13sp"
             android:visibility="gone"
             tools:visibility="visible" />
