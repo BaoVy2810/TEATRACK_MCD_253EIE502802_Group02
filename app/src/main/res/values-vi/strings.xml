@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="nav_home">Home</string>
-    <string name="nav_menu">Menu</string>
-    <string name="nav_orders">Orders</string>
-    <string name="nav_promotion">Promotion</string>
-    <string name="nav_profile">Profile</string>
-    <string name="str_search_hint">Find products...</string>
-    <string name="home_search">Search</string>
-    <string name="home_our_beverages">OUR BEVERAGES</string>
-    <string name="home_beverage_description">Special beverage creations that blend premium pure tea with rich milk and a signature hint of salt, offering a creative twist on a familiar favorite.</string>
-    <string name="home_featured_products">FEATURED PRODUCTS</string>
-    <string name="home_exciting_promotions">EXCITING PROMOTIONS</string>
-    <string name="home_whats_new">WHATS NEW</string>
+    <string name="app_name">TEATRACK_MCD_253EIE502802_Group02</string>
+
+    <string name="nav_dashboard">Bảng điều khiển</string>
+    <string name="nav_products">Sản phẩm</string>
+    <string name="nav_orders">Đơn hàng</string>
+    <string name="nav_account">Tài khoản</string>
+    <string name="nav_forum">Diễn đàn</string>
+    <string name="nav_branch">Chi nhánh</string>
+    <string name="nav_feedbacks">Phản hồi</string>
+    <string name="next">Tiếp theo</string>
+    <string name="previous">Quay lại</string>
     <string name="home_ngo_gia_story_title">CÂU CHUYỆN NGÔ GIA</string>
     <string name="home_ngo_gia_story_description">Khám phá hành trình 74 năm di sản và tâm huyết trong từng lá trà.</string>
     <string name="home_ngo_gia_story_cta">Tìm hiểu thêm</string>
@@ -20,7 +19,7 @@
     <string name="home_price_medium">M</string>
     <string name="home_price_large">L</string>
     <string name="home_vip_badge">VIP</string>
-    <string name="home_rating_suffix">rating</string>
+    <string name="home_rating_suffix">đánh giá</string>
     <string name="menu_title">MENU THỨC UỐNG</string>
     <string name="menu_subtitle">Thoải mái chọn món yêu thích của bạn</string>
     <string name="menu_description">Từ trà truyền thống, trà sữa đến những công thức mới lạ - mọi hương vị đều được pha chế tươi mới mỗi ngày.</string>
@@ -75,12 +74,6 @@
     <string name="firebase_field_vip_price_l">vipPriceL</string>
     <string name="firebase_field_category">category</string>
     <string name="firebase_field_date">date</string>
-    <string name="pure_tea">Pure Tea</string>
-    <string name="tea_latte">Tea Latte</string>
-    <string name="milk_tea">Milk Tea</string>
-    <string name="new_arrivals">New Arrivals</string>
-    <string name="best_sellers">Best Sellers</string>
-    <string name="fruit_tea">Fruit Tea</string>
     <string name="firebase_category_pure_tea">Loại Thuần Trà</string>
     <string name="firebase_category_tea_latte">Loại Trà Latte</string>
     <string name="firebase_category_milk_tea">Loại Trà Sữa</string>
@@ -176,4 +169,73 @@
     <string name="product_detail_topping_thach_dua_price">+ 8.000đ</string>
     <string name="product_detail_topping_kem_cheese">Kem cheese</string>
     <string name="product_detail_topping_kem_cheese_price">+ 10.000đ</string>
+    <string name="pure_tea">Trà nguyên chất</string>
+    <string name="tea_latte">Trà Latte</string>
+    <string name="milk_tea">Trà sữa</string>
+    <string name="new_arrivals">Sản phẩm mới</string>
+    <string name="best_sellers">Bán chạy nhất</string>
+    <string name="fruit_tea">Trà trái cây</string>
+
+    <string name="login_logo_description">Logo Đăng nhập</string>
+    <string name="login_sign_in">Đăng nhập</string>
+    <string name="login_label_name">Tên đăng nhập*</string>
+    <string name="login_hint_name">Nhập tên đăng nhập của bạn</string>
+    <string name="login_label_password">Mật khẩu*</string>
+    <string name="login_hint_password">Nhập mật khẩu của bạn</string>
+    <string name="login_remember">Ghi nhớ đăng nhập?</string>
+    <string name="login_forgot_password">Quên mật khẩu?</string>
+    <string name="login_btn_login">Đăng nhập</string>
+    <string name="login_or">HOẶC</string>
+    <string name="login_btn_google">Đăng nhập với Google</string>
+    <string name="login_dont_have_account">Chưa có tài khoản? </string>
+    <string name="login_sign_up">Đăng ký ngay</string>
+    <string name="login_error_invalid">Lỗi đăng nhập! Tên đăng nhập hoặc mật khẩu không đúng.</string>
+    <string name="login_error_empty">Lỗi đăng nhập! Vui lòng điền đầy đủ các thông tin bắt buộc.</string>
+
+    <string name="welcome_title">Chào mừng</string>
+    <string name="welcome_subtitle">Đăng nhập vào tài khoản đã đăng ký của bạn.</string>
+    <string name="welcome_get_started">Bắt đầu ngay</string>
+    <string name="welcome_logo_description">Logo</string>
+
+    <string name="register_sign_up">Đăng ký</string>
+    <string name="register_label_email">Email*</string>
+    <string name="register_hint_email">Nhập địa chỉ email của bạn</string>
+    <string name="register_label_confirm_password">Mật khẩu*</string>
+    <string name="register_hint_confirm_password">Xác nhận lại mật khẩu của bạn</string>
+    <string name="register_btn_register">Đăng ký</string>
+    <string name="register_already_have_account">Đã có tài khoản? </string>
+    <string name="register_error_empty">Lỗi đăng ký! Vui lòng điền đầy đủ các thông tin bắt buộc.</string>
+    <string name="register_error_mismatch">Mật khẩu không khớp. Vui lòng thử lại.</string>
+    <string name="register_terms_agreement">Bằng cách tiếp tục, bạn đồng ý với</string>
+    <string name="register_label_phone">Số điện thoại:</string>
+    <string name="register_hint_phone">Nhập số điện thoại của bạn</string>
+    <string name="register_terms_policy"><b>Điều khoản</b> &amp; <b>Chính sách bảo mật</b> của chúng tôi</string>
+
+    <string name="forgot_password_title">Quên mật khẩu</string>
+    <string name="forgot_password_content">Vui lòng nhập địa chỉ email của bạn để nhận mã OTP khôi phục mật khẩu.</string>
+    <string name="forgot_password_label_email">Email*</string>
+    <string name="forgot_password_hint_email">Nhập địa chỉ email của bạn</string>
+    <string name="forgot_password_btn_send_otp">Gửi mã OTP</string>
+    <string name="forgot_password_already_have_account">Bạn đã có tài khoản? </string>
+    <string name="forgot_password_sign_in">Đăng nhập</string>
+    <string name="forgot_password_error_empty">Vui lòng nhập địa chỉ email của bạn.</string>
+    <string name="forgot_password_error_not_found">Email không tồn tại. Vui lòng kiểm tra và thử lại.</string>
+
+    <string name="reset_password_title">Đặt lại mật khẩu</string>
+    <string name="reset_password_content">Vui lòng tạo mật khẩu mới cho tài khoản của bạn.</string>
+    <string name="reset_password_label_password">Mật khẩu mới*</string>
+    <string name="reset_password_hint_password">Nhập mật khẩu của bạn</string>
+    <string name="reset_password_label_confirm">Xác nhận mật khẩu*</string>
+    <string name="reset_password_hint_confirm">Xác nhận lại mật khẩu của bạn</string>
+    <string name="reset_password_btn_update">Cập nhật mật khẩu</string>
+    <string name="reset_password_go_back">Hoặc quay lại? </string>
+    <string name="reset_password_back_to_sign_in">Quay lại Đăng nhập</string>
+    <string name="reset_password_error_empty">Lỗi đặt lại! Vui lòng điền đầy đủ các thông tin bắt buộc.</string>
+    <string name="reset_password_error_mismatch">Mật khẩu không khớp. Vui lòng thử lại.</string>
+
+    <string name="success_password_title">Mật khẩu đã được thay đổi thành công!</string>
+    <string name="success_password_content">Bây giờ bạn có thể đăng nhập vào tài khoản của mình bằng mật khẩu mới. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. Vui lòng đăng nhập lại.</string>
+    <string name="success_password_btn_back">Quay lại Đăng nhập</string>
+    <string name="success_password_need_help">Cần giúp đỡ? </string>
+    <string name="success_password_contact_support">Liên hệ Hỗ trợ</string>
 </resources>

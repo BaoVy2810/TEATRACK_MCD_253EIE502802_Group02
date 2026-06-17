@@ -37,9 +37,9 @@
 
     <style name="HomeSectionTitle">
         <item name="android:fontFamily">@font/inter_extrabold</item>
-        <item name="android:textColor">#E00000</item>
+        <item name="android:textColor">#D11515</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:paddingBottom">10dp</item>
     </style>
@@ -90,5 +90,10 @@
     <style name="MenuChipPrimary" parent="MenuChip">
         <item name="android:background">@drawable/nav_item_background</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="CheckBoxTheme" parent="Theme.AppCompat">
+        <item name="colorAccent">#0088FF</item>
+        <item name="colorControlNormal">#979797</item>
+        <item name="colorControlActivated">#0088FF</item>
     </style>
 </resources>

@@ -20,7 +20,7 @@
     <string name="home_beverage_description">Special beverage creations that blend premium pure tea with rich milk and a signature hint of salt, offering a creative twist on a familiar favorite.</string>
     <string name="home_featured_products">FEATURED PRODUCTS</string>
     <string name="home_exciting_promotions">EXCITING PROMOTIONS</string>
-    <string name="home_whats_new">WHATS NEW</string>
+    <string name="home_whats_new">WHAT\'S NEW</string>
     <string name="home_ngo_gia_story_title">NGO GIA STORY</string>
     <string name="home_ngo_gia_story_description">Discover the 74-year heritage journey and dedication in every tea leaf.</string>
     <string name="home_ngo_gia_story_cta">Learn More</string>
@@ -185,4 +185,67 @@
     <string name="product_detail_topping_thach_dua_price">+ 8.000đ</string>
     <string name="product_detail_topping_kem_cheese">Cheese cream</string>
     <string name="product_detail_topping_kem_cheese_price">+ 10.000đ</string>
+
+    <string name="login_logo_description">Login Logo</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_label_name">Login name*</string>
+    <string name="login_hint_name">Enter your login name</string>
+    <string name="login_label_password">Password*</string>
+    <string name="login_hint_password">Enter your password</string>
+    <string name="login_remember">Remember?</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="login_btn_login">Log In</string>
+    <string name="login_or">OR</string>
+    <string name="login_btn_google">Log in with Google</string>
+    <string name="login_dont_have_account">Don\'t have an account? </string>
+    <string name="login_sign_up">Sign Up</string>
+    <string name="login_error_invalid">Login Error! Invalid username or password.</string>
+    <string name="login_error_empty">Login Error! Please complete all required fields.</string>
+
+    <string name="welcome_title">Welcome</string>
+    <string name="welcome_subtitle">Sign in to your registered account.</string>
+    <string name="welcome_get_started">Get started</string>
+    <string name="welcome_logo_description">Logo</string>
+
+    <string name="register_sign_up">Sign up</string>
+    <string name="register_label_email">Email*</string>
+    <string name="register_hint_email">Enter your email address</string>
+    <string name="register_label_confirm_password">Confirm password*</string>
+    <string name="register_hint_confirm_password">Confirm your password</string>
+    <string name="register_btn_register">Sign up</string>
+    <string name="register_already_have_account">Already have an account? </string>
+    <string name="register_error_empty">Sign Up Error! Please complete all required fields.</string>
+    <string name="register_error_mismatch">Passwords do not match. Please try again.</string>
+    <string name="register_terms_agreement">By continue you agree with our</string>
+    <string name="register_label_phone">Phone Number:</string>
+    <string name="register_hint_phone">Enter your phone number</string>
+    <string name="register_terms_policy"><b>Terms</b> &amp; <b>Privacy Policy</b></string>
+
+    <string name="forgot_password_title">Forgot Password</string>
+    <string name="forgot_password_content">Please enter your email address to receive the OTP code for password recovery.</string>
+    <string name="forgot_password_label_email">Email*</string>
+    <string name="forgot_password_hint_email">Enter your email address</string>
+    <string name="forgot_password_btn_send_otp">Send OTP</string>
+    <string name="forgot_password_already_have_account">Do you already have an account? </string>
+    <string name="forgot_password_sign_in">Sign in</string>
+    <string name="forgot_password_error_empty">Please enter your email address.</string>
+    <string name="forgot_password_error_not_found">Email not found. Please check and try again.</string>
+
+    <string name="reset_password_title">Reset Password</string>
+    <string name="reset_password_content">Please create a new password for your account.</string>
+    <string name="reset_password_label_password">New Password*</string>
+    <string name="reset_password_hint_password">Enter your password</string>
+    <string name="reset_password_label_confirm">Confirm password*</string>
+    <string name="reset_password_hint_confirm">Confirm your password</string>
+    <string name="reset_password_btn_update">Update Password</string>
+    <string name="reset_password_go_back">Or go back? </string>
+    <string name="reset_password_back_to_sign_in">Back to Sign in</string>
+    <string name="reset_password_error_empty">Reset error! Please complete all required fields.</string>
+    <string name="reset_password_error_mismatch">Passwords do not match. Please try again.</string>
+
+    <string name="success_password_title">Password Changed Successfully!</string>
+    <string name="success_password_content">You can now log in to your account with your new password. Thank you for choosing our service. Please sign in again.</string>
+    <string name="success_password_btn_back">Back to Sign in</string>
+    <string name="success_password_need_help">Need help? </string>
+    <string name="success_password_contact_support">Contact Support</string>
 </resources>
