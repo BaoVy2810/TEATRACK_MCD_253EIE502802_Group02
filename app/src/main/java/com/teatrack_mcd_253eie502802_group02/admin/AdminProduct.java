@@ -312,13 +312,16 @@ public class AdminProduct extends AppCompatActivity {
 
             Class<?> destination = null;
             if (id == R.id.nav_dashboard) destination = AdminDashboard.class;
+            else if (id == R.id.nav_orders) destination = AdminOrders.class;
             else if (id == R.id.nav_account) destination = AdminAccount.class;
+            else if (id == R.id.nav_forum) destination = AdminBlog.class;
+            else if (id == R.id.nav_branch) destination = AdminAgency.class;
+            else if (id == R.id.nav_feedbacks) destination = AdminComplaints.class;
+            else if (id == R.id.nav_promotion) destination = AdminPromotion.class;
 
             if (destination != null) {
                 startActivity(new Intent(this, destination));
                 finish();
-            } else {
-                Toast.makeText(this, R.string.msg_under_development, Toast.LENGTH_SHORT).show();
             }
         });
     }

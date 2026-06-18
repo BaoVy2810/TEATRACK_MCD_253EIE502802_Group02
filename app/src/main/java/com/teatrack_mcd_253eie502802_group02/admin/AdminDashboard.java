@@ -226,16 +226,20 @@ public class AdminDashboard extends AppCompatActivity {
 
         NavBarHelper.setupNavBar(this, navItemIds, R.id.nav_dashboard, v -> {
             int id = v.getId();
-            Class<?> destination = null;
             if (id == R.id.nav_dashboard) return;
+
+            Class<?> destination = null;
             if (id == R.id.nav_products) destination = AdminProduct.class;
             else if (id == R.id.nav_orders) destination = AdminOrders.class;
             else if (id == R.id.nav_account) destination = AdminAccount.class;
+            else if (id == R.id.nav_forum) destination = AdminBlog.class;
+            else if (id == R.id.nav_branch) destination = AdminAgency.class;
+            else if (id == R.id.nav_feedbacks) destination = AdminComplaints.class;
             else if (id == R.id.nav_promotion) destination = AdminPromotion.class;
-            // Add other mappings as needed
 
             if (destination != null) {
                 startActivity(new Intent(this, destination));
+                finish();
             }
         });
     }

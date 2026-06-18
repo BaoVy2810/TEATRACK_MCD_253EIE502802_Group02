@@ -42,11 +42,15 @@ public class AdminOrders extends AppCompatActivity {
 
         NavBarHelper.setupNavBar(this, navItemIds, R.id.nav_orders, v -> {
             int id = v.getId();
-            Class<?> destination = null;
             if (id == R.id.nav_orders) return;
+
+            Class<?> destination = null;
             if (id == R.id.nav_dashboard) destination = AdminDashboard.class;
             else if (id == R.id.nav_products) destination = AdminProduct.class;
             else if (id == R.id.nav_account) destination = AdminAccount.class;
+            else if (id == R.id.nav_forum) destination = AdminBlog.class;
+            else if (id == R.id.nav_branch) destination = AdminAgency.class;
+            else if (id == R.id.nav_feedbacks) destination = AdminComplaints.class;
             else if (id == R.id.nav_promotion) destination = AdminPromotion.class;
 
             if (destination != null) {
