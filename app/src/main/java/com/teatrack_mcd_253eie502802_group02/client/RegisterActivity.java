@@ -15,6 +15,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.User;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -99,15 +102,16 @@ public class RegisterActivity extends AppCompatActivity {
         
         // Hash password and save to Firebase
         String hashedPassword = hashPassword(password);
-        saveUserToFirebase(name, email, phone, hashedPassword);
+        String createdAt = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(new Date());
+        saveUserToFirebase(name, email, phone, hashedPassword, createdAt);
     }
 
-    private void saveUserToFirebase(String name, String email, String phone, String hashedPassword) {
+    private void saveUserToFirebase(String name, String email, String phone, String hashedPassword, String createdAt) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
         String userId = usersRef.push().getKey();
 
         if (userId != null) {
-            User newUser = new User(userId, name, email, phone, hashedPassword);
+            User newUser = new User(userId, name, email, phone, hashedPassword, createdAt);
             usersRef.child(userId).setValue(newUser)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();

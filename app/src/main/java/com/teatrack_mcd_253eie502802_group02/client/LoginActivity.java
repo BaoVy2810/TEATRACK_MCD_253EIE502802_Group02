@@ -31,6 +31,9 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard;
 import com.teatrack_mcd_253eie502802_group02.model.User;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -73,7 +76,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Luôn cập nhật/tạo mới tài khoản admin để đảm bảo mật khẩu admin123 là đúng
-                User adminUser = new User(adminId, "admin", "admin@teatrack.com", "0000000000", hashedPw);
+                String createdAt = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(new Date());
+                User adminUser = new User(adminId, "admin", "admin@teatrack.com", "0000000000", hashedPw, createdAt);
                 usersRef.child(adminId).setValue(adminUser);
             }
 
