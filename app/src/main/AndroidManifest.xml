@@ -15,120 +15,54 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02">
-        <activity
-            android:name=".client.SucessfullyChangePasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".client.ResetPasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".shared.ui.NavBarClient"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarAdmin"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderAdmin"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderClient"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.ChatbotBubble"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.ContactWithUs"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.FilledOtpActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.BlogDetail"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.BlogGeneral"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.AboutUsActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.Payment"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.Checkout"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.Cart"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.ProductDetail"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.Menu"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.PageNotFound"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.OrderTracking"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.OrderHistory"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.UserProfile"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.ForgotPassword"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminOrders"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminPromotion"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminComplaints"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminBlog"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminAgency"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.Agency"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminProduct"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminProfile"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminAccount"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.Homepage"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard"
-            android:exported="false" />
-        <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.admin.Ad"
-            android:exported="false" />
+
+        <!-- Client Activities -->
+        <activity android:name=".client.SucessfullyChangePasswordActivity" android:exported="false" />
+        <activity android:name=".client.ResetPasswordActivity" android:exported="false" />
+        <activity android:name=".client.LoginActivity" android:exported="false" />
+        <activity android:name=".client.RegisterActivity" android:exported="false" />
+        <activity android:name=".client.ForgotPassword" android:exported="false" />
+        <activity android:name=".client.UserProfile" android:exported="false" />
+        <activity android:name=".client.Homepage" android:exported="false" />
+        <activity android:name=".client.Menu" android:exported="false" />
+        <activity android:name=".client.ProductDetail" android:exported="false" />
+        <activity android:name=".client.Cart" android:exported="false" />
+        <activity android:name=".client.Checkout" android:exported="false" />
+        <activity android:name=".client.Payment" android:exported="false" />
+        <activity android:name=".client.OrderTracking" android:exported="false" />
+        <activity android:name=".client.OrderHistory" android:exported="false" />
+        <activity android:name=".client.Agency" android:exported="false" />
+        <activity android:name=".client.AboutUsActivity" android:exported="false" />
+        <activity android:name=".client.BlogGeneral" android:exported="false" />
+        <activity android:name=".client.BlogDetail" android:exported="false" />
+        <activity android:name=".client.ContactWithUs" android:exported="false" />
+        <activity android:name=".client.ChatbotBubble" android:exported="false" />
+        <activity android:name=".client.FilledOtpActivity" android:exported="false" />
+        <activity android:name=".client.PageNotFound" android:exported="false" />
+
+        <!-- Admin Activities -->
+        <activity android:name=".admin.AdminDashboard" android:exported="false" />
+        <activity android:name=".admin.AdminProduct" android:exported="false" />
+        <activity android:name=".admin.AdminOrders" android:exported="false" />
+        <activity android:name=".admin.AdminAccount" android:exported="false" />
+        <activity android:name=".admin.AdminBlog" android:exported="false" />
+        <activity android:name=".admin.AdminAgency" android:exported="false" />
+        <activity android:name=".admin.AdminComplaints" android:exported="false" />
+        <activity android:name=".admin.AdminPromotion" android:exported="false" />
+        <activity android:name=".admin.AdminProfile" android:exported="false" />
+
+        <!-- Shared/UI Components (Declared as Activities) -->
+        <activity android:name=".shared.ui.NavBarClient" android:exported="false" />
+        <activity android:name=".shared.ui.NavBarAdmin" android:exported="false" />
+        <activity android:name=".shared.ui.HeaderAdmin" android:exported="false" />
+        <activity android:name=".shared.ui.HeaderClient" android:exported="false" />
+
+        <!-- Main/Launcher -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

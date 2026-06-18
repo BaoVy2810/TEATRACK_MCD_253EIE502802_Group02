@@ -15,6 +15,7 @@
     <string name="nav_promotion">Promotion</string>
     <string name="nav_profile">Profile</string>
     <string name="str_search_hint">Find products...</string>
+    <string name="str_search_hint_account">Find usernames...</string>
     <string name="home_search">Search</string>
     <string name="home_our_beverages">OUR BEVERAGES</string>
     <string name="home_beverage_description">Special beverage creations that blend premium pure tea with rich milk and a signature hint of salt, offering a creative twist on a familiar favorite.</string>
@@ -459,4 +460,22 @@
     <string name="hint_maps_url_example">http://maps.google.com/...</string>
 
     <string name="btn_choose">Choose</string>
+
+    <!-- Account item -->
+    <string name="account_upgrade_vip">Nang VIP</string>
+    <string name="account_role">Vai tro</string>
+    <string name="account_phone">SDT</string>
+    <string name="account_address">Dia chi</string>
+    <string name="account_created_at">Ngay tao</string>
+    <string name="account_view">View account</string>
+    <string name="account_edit">Edit account</string>
+    <string name="account_delete">Delete account</string>
+
+    <!-- Admin Section Titles -->
+    <string name="title_account_management">ACCOUNT MANAGEMENT</string>
+    <string name="title_orders_management">ORDERS MANAGEMENT</string>
+    <string name="title_forum_management">FORUM MANAGEMENT</string>
+    <string name="title_branch_management">BRANCH MANAGEMENT</string>
+    <string name="title_feedback_management">FEEDBACK MANAGEMENT</string>
+    <string name="title_promotion_management">PROMOTION MANAGEMENT</string>
 </resources>
