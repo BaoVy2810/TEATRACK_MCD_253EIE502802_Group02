@@ -263,6 +263,9 @@ public class AdminProduct extends AppCompatActivity {
     }
 
     private void setupSearch() {
+        if (etSearch == null) {
+            return;
+        }
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) { performFilter(); }
@@ -271,13 +274,26 @@ public class AdminProduct extends AppCompatActivity {
     }
 
     private void performFilter() {
-        String query = etSearch.getText().toString().toLowerCase().trim();
+        if (etSearch == null || productAdapter == null) {
+            return;
+        }
+
+        String query = etSearch.getText() != null
+                ? etSearch.getText().toString().toLowerCase().trim()
+                : "";
         filteredList.clear();
 
+        String allCategory = getString(R.string.filter_all);
         for (Product product : productList) {
-            boolean matchesSearch = product.getName().toLowerCase().contains(query);
-            boolean matchesCategory = selectedCategory.equals(getString(R.string.filter_all)) ||
-                                     (product.getCategory() != null && product.getCategory().equals(selectedCategory));
+            if (product == null) {
+                continue;
+            }
+
+            String name = product.getName();
+            boolean matchesSearch = query.isEmpty()
+                    || (name != null && name.toLowerCase().contains(query));
+            boolean matchesCategory = allCategory.equals(selectedCategory)
+                    || (product.getCategory() != null && product.getCategory().equals(selectedCategory));
 
             if (matchesSearch && matchesCategory) {
                 filteredList.add(product);

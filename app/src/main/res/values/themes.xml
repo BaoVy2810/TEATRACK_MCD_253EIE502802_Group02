@@ -38,7 +38,8 @@
     </style>
 
     <style name="HomeSectionTitle">
-        <item name="android:fontFamily">@font/inter_extrabold</item>
+        <item name="android:fontFamily">@font/inter_family</item>
+        <item name="android:fontWeight">800</item>
         <item name="android:textColor">#D11515</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>

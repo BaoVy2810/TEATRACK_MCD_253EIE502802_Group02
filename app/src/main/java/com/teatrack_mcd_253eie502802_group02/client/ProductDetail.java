@@ -199,7 +199,10 @@ public class ProductDetail extends AppCompatActivity {
         btnBuyNow.setOnClickListener(v ->
                 Toast.makeText(this, R.string.product_detail_buy_now_message, Toast.LENGTH_SHORT).show());
 
-        rvRecommended.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        if (rvRecommended != null) {
+            rvRecommended.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            rvRecommended.setAdapter(new ProductCardAdapter(new ArrayList<>(), R.layout.item_product_card, ProductDetail.this::openRelatedDetail));
+        }
 
         setupBottomNavigation();
         setupTabs();
@@ -548,8 +551,11 @@ public class ProductDetail extends AppCompatActivity {
             public void onSuccess(List<Product> products) {
                 if (isFinishing()) return;
                 List<Product> limited = new ArrayList<>();
-                String currentName = tvDetailName.getText().toString();
+                String currentName = tvDetailName != null ? tvDetailName.getText().toString() : "";
                 for (Product p : products) {
+                    if (p == null || p.getName() == null) {
+                        continue;
+                    }
                     if (!p.getName().equalsIgnoreCase(currentName)) {
                         limited.add(p);
                     }
