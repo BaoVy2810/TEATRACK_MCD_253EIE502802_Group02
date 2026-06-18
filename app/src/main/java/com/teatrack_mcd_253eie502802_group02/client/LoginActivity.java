@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard;
 import com.teatrack_mcd_253eie502802_group02.model.User;
 
 import java.security.MessageDigest;
@@ -58,33 +60,33 @@ public class LoginActivity extends AppCompatActivity {
 
         initViews();
         setupListeners();
+        // Đảm bảo tài khoản admin tồn tại trên Firebase
         ensureAdminAccount();
     }
 
     private void ensureAdminAccount() {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
-        usersRef.orderByChild("name").equalTo("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+        String adminId = "admin_fixed";
+        String hashedPw = hashPassword("admin123");
+        
+        usersRef.child(adminId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()) {
-                    String hashedPw = "240be518fabd2724ddb6f0403fd3d3588e6c2c1a0c115bd34d7d1f14e9c06519";
-                    String adminId = "admin_fixed";
-                    User adminUser = new User(adminId, "admin", "admin@teatrack.com", "0000000000", hashedPw);
-                    usersRef.child(adminId).setValue(adminUser);
-                }
+                // Luôn cập nhật/tạo mới tài khoản admin để đảm bảo mật khẩu admin123 là đúng
+                User adminUser = new User(adminId, "admin", "admin@teatrack.com", "0000000000", hashedPw);
+                usersRef.child(adminId).setValue(adminUser);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
 
     private void initViews() {
         tilLoginName = findViewById(R.id.tilLoginName);
         tilPassword = findViewById(R.id.tilPassword);
-        edtLoginName = tilLoginName.findViewById(R.id.edtLoginName);
-        edtPassword = tilPassword.findViewById(R.id.edtPassword);
+        edtLoginName = findViewById(R.id.edtLoginName);
+        edtPassword = findViewById(R.id.edtPassword);
         btnLogIn = findViewById(R.id.btnLogIn);
         tvErrorMessage = findViewById(R.id.tvErrorMessage);
         tvSignUp = findViewById(R.id.tvSignUp);
@@ -98,34 +100,22 @@ public class LoginActivity extends AppCompatActivity {
     private void loadRememberedData() {
         boolean isRemembered = sharedPreferences.getBoolean(KEY_REMEMBER, false);
         if (isRemembered) {
-            String username = sharedPreferences.getString(KEY_USERNAME, "");
-            String password = sharedPreferences.getString(KEY_PASSWORD, "");
-            edtLoginName.setText(username);
-            edtPassword.setText(password);
+            edtLoginName.setText(sharedPreferences.getString(KEY_USERNAME, ""));
+            edtPassword.setText(sharedPreferences.getString(KEY_PASSWORD, ""));
             cbRemember.setChecked(true);
         }
     }
 
     private void setupListeners() {
         btnLogIn.setOnClickListener(v -> handleLogin());
-        tvSignUp.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
-        });
-        tvForgotPassword.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, ForgotPassword.class);
-            startActivity(intent);
-        });
+        tvSignUp.setOnClickListener(v -> startActivity(new Intent(this, RegisterActivity.class)));
+        tvForgotPassword.setOnClickListener(v -> startActivity(new Intent(this, ForgotPassword.class)));
 
         TextWatcher clearErrorWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                hideError();
-            }
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) { hideError(); }
             @Override
             public void afterTextChanged(Editable s) {}
         };
@@ -143,6 +133,17 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // CƠ CHẾ ƯU TIÊN ADMIN CỤC BỘ: Cho phép vào ngay nếu đúng admin/admin123
+        if (loginName.equalsIgnoreCase("admin") && password.equals("admin123")) {
+            saveLoginData(loginName, password);
+            hideError();
+            Toast.makeText(this, "Chào mừng Admin!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, AdminDashboard.class));
+            finish();
+            return;
+        }
+
+        // ĐĂNG NHẬP THÔNG QUA FIREBASE CHO NGƯỜI DÙNG KHÁC
         String hashedPassword = hashPassword(password);
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
 
@@ -163,8 +164,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginSuccess) {
                     saveLoginData(loginName, password);
                     hideError();
-                    Intent intent = new Intent(LoginActivity.this, Homepage.class);
-                    startActivity(intent);
+                    startActivity(new Intent(LoginActivity.this, Homepage.class));
                     finish();
                 } else {
                     showError(getString(R.string.login_error_invalid));
@@ -202,7 +202,6 @@ public class LoginActivity extends AppCompatActivity {
             }
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
             return password;
         }
     }
