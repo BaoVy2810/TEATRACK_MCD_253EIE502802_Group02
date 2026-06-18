@@ -65,13 +65,7 @@ public class Menu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_menu);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
-            return insets;
-        });
 
         selectedCategory = getIntent() != null
                 ? getIntent().getStringExtra(MainActivity.EXTRA_MENU_CATEGORY)
@@ -411,12 +405,6 @@ public class Menu extends AppCompatActivity {
     }
 
     private void setupBottomNav() {
-        View navHome = findViewById(R.id.nav_home);
-        View navMenu = findViewById(R.id.nav_menu);
-        View navOrders = findViewById(R.id.nav_orders);
-        View navPromotion = findViewById(R.id.nav_promotion);
-        View navProfile = findViewById(R.id.nav_profile);
-
         NavBarHelper.setupNavBar(this, NAV_IDS, R.id.nav_menu, v -> {
             int id = v.getId();
             if (id == R.id.nav_home) {
@@ -432,16 +420,6 @@ public class Menu extends AppCompatActivity {
                 startActivity(new Intent(this, UserProfile.class));
             }
         });
-
-        if (navMenu != null) NavBarHelper.updateItemState(this, navMenu, true);
-        if (navHome != null) navHome.setOnClickListener(v -> startActivity(new Intent(this, Homepage.class)));
-        if (navMenu != null) navMenu.setOnClickListener(v -> {
-            selectedCategory = null;
-            applyFilter();
-        });
-        if (navOrders != null) navOrders.setOnClickListener(v -> startActivity(new Intent(this, OrderHistory.class)));
-        if (navPromotion != null) navPromotion.setOnClickListener(v -> startActivity(new Intent(this, BlogGeneral.class)));
-        if (navProfile != null) navProfile.setOnClickListener(v -> startActivity(new Intent(this, UserProfile.class)));
     }
 
     @Override
