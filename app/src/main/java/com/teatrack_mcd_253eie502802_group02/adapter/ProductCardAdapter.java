@@ -49,7 +49,6 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product item = products.get(position);
-        holder.imgProduct.setImageResource(item.getImageRes(holder.itemView.getContext()));
         ProductImageHelper.load(holder.imgProduct, item);
         holder.tvProductName.setText(item.getName());
         holder.tvRating.setText(String.valueOf(item.getRating()));

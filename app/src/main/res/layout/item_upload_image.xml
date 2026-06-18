@@ -1,26 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="0dp"
-    android:layout_height="80dp"
-    android:layout_margin="4dp"
+    android:layout_height="52dp"
+    android:layout_margin="3dp"
     android:layout_weight="1"
-    android:background="@drawable/bg_dash_border"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:background="@drawable/bg_dash_border">
+
+    <LinearLayout
+        android:id="@+id/llUploadPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/cloudupload"
+            app:tint="@color/brand_blue" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@string/label_image_uploaded"
+            android:textAlignment="center"
+            android:textColor="@color/brand_blue"
+            android:textSize="7sp" />
+    </LinearLayout>
 
     <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/cloudupload"
-        app:tint="#1976D2" />
+        android:id="@+id/ivProductImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Image Uploaded"
-        android:textColor="#1976D2"
-        android:textSize="8sp" />
-
-</LinearLayout>
+</FrameLayout>

@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
+import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -56,6 +57,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
 
+        holder.tvProductId.setText("ID: #" + product.getId());
         holder.tvProductName.setText(product.getName());
         holder.tvCategory.setText(product.getCategory());
 
@@ -64,7 +66,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvVipPriceM.setText(formatter.format(product.getVipPriceM()).replace(',', '.') + "đ");
         holder.tvVipPriceL.setText(formatter.format(product.getVipPriceL()).replace(',', '.') + "đ");
 
-        holder.imgProduct.setImageResource(product.getImageRes(context));
+        // Hiển thị ảnh sử dụng ProductImageHelper để đồng bộ logic
+        ProductImageHelper.load(holder.imgProduct, product);
+
         holder.btnToggleVisibility.setImageResource(product.isVisible() ? R.drawable.eye : R.drawable.hide);
 
         holder.btnToggleVisibility.setOnClickListener(v -> {
@@ -125,9 +129,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         notifyDataSetChanged();
     }
 
-    static class ProductViewHolder extends RecyclerView.ViewHolder {
+    public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct, btnToggleVisibility, btnEdit, btnDelete;
-        TextView tvProductName, tvCategory;
+        TextView tvProductName, tvCategory, tvProductId;
         TextView tvPriceM, tvPriceL, tvVipPriceM, tvVipPriceL;
 
         public ProductViewHolder(@NonNull View itemView) {
@@ -136,6 +140,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             btnToggleVisibility = itemView.findViewById(R.id.btnToggleVisibility);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
+            tvProductId = itemView.findViewById(R.id.tvProductId);
             tvProductName = itemView.findViewById(R.id.tvProductName);
             tvCategory = itemView.findViewById(R.id.tvCategory);
             tvPriceM = itemView.findViewById(R.id.tvPriceM);

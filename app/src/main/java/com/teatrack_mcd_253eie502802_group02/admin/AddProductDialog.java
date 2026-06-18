@@ -21,6 +21,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
@@ -31,36 +35,33 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.util.CloudinaryHelper;
-import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 
-public class EditProductDialog {
+public class AddProductDialog {
 
     private final Context context;
-    private final Product product;
     private final List<String> categories;
     private Uri selectedImageUri;
     private Uri cameraImageUri;
     private ImageView ivMainPreview;
     private View llPlaceholder;
-    private String uploadedImageUrl;
+    private String uploadedImageUrl = "logo_ngo_gia.png"; // Mặc định
     private final DecimalFormat priceFormatter = new DecimalFormat("#,###");
 
-    public EditProductDialog(Context context, Product product, List<String> categories) {
+    public AddProductDialog(Context context, List<String> categories) {
         this.context = context;
-        this.product = product;
         this.categories = categories;
-        this.uploadedImageUrl = product.getImage();
     }
 
     public void show() {
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_edit_product);
+        dialog.setContentView(R.layout.dialog_add_product);
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -70,6 +71,7 @@ public class EditProductDialog {
             dialog.getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
         }
 
+        EditText etProductId = dialog.findViewById(R.id.etProductId);
         EditText etProductName = dialog.findViewById(R.id.etProductName);
         Spinner spinnerCategory = dialog.findViewById(R.id.spinnerCategory);
         CheckBox cbVisible = dialog.findViewById(R.id.cbVisible);
@@ -82,64 +84,49 @@ public class EditProductDialog {
         EditText etProductDesc = dialog.findViewById(R.id.etProductDesc);
         ImageButton btnClose = dialog.findViewById(R.id.btnClose);
         MaterialButton btnCancel = dialog.findViewById(R.id.btnCancel);
-        MaterialButton btnEdit = dialog.findViewById(R.id.btnEdit);
+        MaterialButton btnAdd = dialog.findViewById(R.id.btnAdd);
 
-        // Fill Data
-        etProductName.setText(product.getName());
-        cbVisible.setChecked(product.isVisible());
-        cbSpecial.setChecked(product.isSpecial());
-        
-        etPriceM.setText(formatInitialPrice(product.getPrice()));
-        etPriceL.setText(formatInitialPrice(product.getPriceL()));
-        etVipPriceM.setText(formatInitialPrice(product.getVipPriceM()));
-        etVipPriceL.setText(formatInitialPrice(product.getVipPriceL()));
-
-        etProductInfo.setText(product.getDescription());
-        etProductDesc.setText(product.getDetail());
-
+        // Setup Price Formatters
         setupPriceFormatting(etPriceM);
         setupPriceFormatting(etPriceL);
         setupPriceFormatting(etVipPriceM);
         setupPriceFormatting(etVipPriceL);
 
+        // Default image for new product
         setupImageUpload(dialog);
 
         // Setup Spinner
         List<String> spinnerCats = new ArrayList<>(categories);
         spinnerCats.remove(context.getString(R.string.filter_all));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, spinnerCats);
+        if (spinnerCats.isEmpty()) {
+            spinnerCats.add(context.getString(R.string.pure_tea));
+            spinnerCats.add(context.getString(R.string.milk_tea));
+            spinnerCats.add(context.getString(R.string.tea_latte));
+            spinnerCats.add(context.getString(R.string.fruit_tea));
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.item_spinner_category, spinnerCats);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(adapter);
-        
-        int categoryIndex = spinnerCats.indexOf(product.getCategory());
-        if (categoryIndex >= 0) spinnerCategory.setSelection(categoryIndex);
 
         btnClose.setOnClickListener(v -> dialog.dismiss());
         btnCancel.setOnClickListener(v -> dialog.dismiss());
 
-        btnEdit.setOnClickListener(v -> {
+        btnAdd.setOnClickListener(v -> {
+            String id = etProductId.getText().toString().trim();
             String name = etProductName.getText().toString().trim();
-            if (name.isEmpty()) {
-                Toast.makeText(context, "Product name cannot be empty", Toast.LENGTH_SHORT).show();
+
+            if (id.isEmpty() || name.isEmpty()) {
+                Toast.makeText(context, "Please fill in ID and Name", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            product.setName(name);
-            product.setCategory(spinnerCategory.getSelectedItem().toString());
-            product.setVisible(cbVisible.isChecked());
-            product.setSpecial(cbSpecial.isChecked());
-            product.setPrice(parsePrice(etPriceM));
-            product.setPriceL(parsePrice(etPriceL));
-            product.setVipPriceM(parsePrice(etVipPriceM));
-            product.setVipPriceL(parsePrice(etVipPriceL));
-            product.setDescription(etProductInfo.getText().toString().trim());
-            product.setDetail(etProductDesc.getText().toString().trim());
-
             if (selectedImageUri != null) {
-                uploadImageAndSaveProduct(dialog);
+                uploadImageAndSaveProduct(dialog, id, name, spinnerCategory, cbVisible, cbSpecial,
+                        etPriceM, etPriceL, etVipPriceM, etVipPriceL, etProductInfo, etProductDesc);
             } else {
-                product.setImage(uploadedImageUrl);
-                saveToFirebase(dialog);
+                saveToFirebase(id, name, spinnerCategory, cbVisible, cbSpecial,
+                        etPriceM, etPriceL, etVipPriceM, etVipPriceL, etProductInfo, etProductDesc, uploadedImageUrl);
+                dialog.dismiss();
             }
         });
 
@@ -148,43 +135,12 @@ public class EditProductDialog {
 
     private void setupImageUpload(Dialog dialog) {
         int[] imageSlotIds = {R.id.imgSlot1, R.id.imgSlot2, R.id.imgSlot3, R.id.imgSlot4};
-        List<String> productImages = product.getImages();
+        View slotView = dialog.findViewById(imageSlotIds[0]);
+        if (slotView != null) {
+            ivMainPreview = slotView.findViewById(R.id.ivProductImage);
+            llPlaceholder = slotView.findViewById(R.id.llUploadPlaceholder);
 
-        for (int i = 0; i < imageSlotIds.length; i++) {
-            final int index = i;
-            View slotView = dialog.findViewById(imageSlotIds[i]);
-            if (slotView == null) continue;
-
-            ImageView ivPreview = slotView.findViewById(R.id.ivProductImage);
-            View placeholder = slotView.findViewById(R.id.llUploadPlaceholder);
-
-            if (i == 0) {
-                ivMainPreview = ivPreview;
-                llPlaceholder = placeholder;
-            }
-
-            // Hiển thị ảnh cũ nếu có
-            if (productImages != null && index < productImages.size()) {
-                String imgUrl = productImages.get(index);
-                if (imgUrl != null && !imgUrl.isEmpty()) {
-                    placeholder.setVisibility(View.GONE);
-                    ivPreview.setVisibility(View.VISIBLE);
-                    ProductImageHelper.loadFromUrl(ivPreview, imgUrl);
-                }
-            } else if (i == 0 && (product.getImage() != null || product.getImageRes() != 0)) {
-                // Fallback cho ảnh chính cũ (trường image)
-                placeholder.setVisibility(View.GONE);
-                ivPreview.setVisibility(View.VISIBLE);
-                ProductImageHelper.load(ivPreview, product);
-            }
-
-            slotView.setOnClickListener(v -> {
-                if (index == 0) {
-                    showImageSourceDialog();
-                } else {
-                    Toast.makeText(context, "Currently only support editing the main image", Toast.LENGTH_SHORT).show();
-                }
-            });
+            slotView.setOnClickListener(v -> showImageSourceDialog());
         }
     }
 
@@ -205,7 +161,7 @@ public class EditProductDialog {
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         if (context instanceof Activity) {
-            ((Activity) context).startActivityForResult(intent, 1003); // Use 1003 for Edit Gallery
+            ((Activity) context).startActivityForResult(intent, 1001);
         }
     }
 
@@ -215,18 +171,19 @@ public class EditProductDialog {
         if (cameraImageUri != null) {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri);
             if (context instanceof Activity) {
-                ((Activity) context).startActivityForResult(intent, 1004); // Use 1004 for Edit Camera
+                ((Activity) context).startActivityForResult(intent, 1002);
             }
         }
     }
 
     private Uri createImageUri() {
         java.io.File storageDir = context.getExternalFilesDir(android.os.Environment.DIRECTORY_PICTURES);
-        java.io.File imageFile = new java.io.File(storageDir, "temp_product_edit_" + System.currentTimeMillis() + ".jpg");
+        java.io.File imageFile = new java.io.File(storageDir, "temp_product_" + System.currentTimeMillis() + ".jpg");
         return androidx.core.content.FileProvider.getUriForFile(context,
                 context.getPackageName() + ".fileprovider", imageFile);
     }
 
+    // Xử lý ảnh từ Gallery
     public void handleImageResult(Uri uri) {
         if (uri != null) {
             selectedImageUri = uri;
@@ -238,13 +195,18 @@ public class EditProductDialog {
         }
     }
 
+    // Xử lý ảnh từ Camera
     public void handleCameraResult() {
         if (cameraImageUri != null) {
             handleImageResult(cameraImageUri);
         }
     }
 
-    private void uploadImageAndSaveProduct(Dialog dialog) {
+    private void uploadImageAndSaveProduct(Dialog dialog, String id, String name, Spinner spinnerCategory,
+                                           CheckBox cbVisible, CheckBox cbSpecial, EditText etPriceM,
+                                           EditText etPriceL, EditText etVipPriceM, EditText etVipPriceL,
+                                           EditText etProductInfo, EditText etProductDesc) {
+
         Toast.makeText(context, "Uploading image...", Toast.LENGTH_SHORT).show();
 
         MediaManager.get().upload(selectedImageUri)
@@ -257,8 +219,9 @@ public class EditProductDialog {
                     @Override
                     public void onSuccess(String requestId, Map resultData) {
                         uploadedImageUrl = (String) resultData.get("secure_url");
-                        product.setImage(uploadedImageUrl);
-                        saveToFirebase(dialog);
+                        saveToFirebase(id, name, spinnerCategory, cbVisible, cbSpecial,
+                                etPriceM, etPriceL, etVipPriceM, etVipPriceL, etProductInfo, etProductDesc, uploadedImageUrl);
+                        dialog.dismiss();
                     }
                     @Override
                     public void onError(String requestId, ErrorInfo error) {
@@ -269,17 +232,29 @@ public class EditProductDialog {
                 }).dispatch();
     }
 
-    private void saveToFirebase(Dialog dialog) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("products").child(product.getId());
-        ref.setValue(product).addOnSuccessListener(aVoid -> {
-            Toast.makeText(context, "Product updated successfully", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
-        }).addOnFailureListener(e -> Toast.makeText(context, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    private void saveToFirebase(String id, String name, Spinner spinnerCategory, CheckBox cbVisible,
+                                CheckBox cbSpecial, EditText etPriceM, EditText etPriceL,
+                                EditText etVipPriceM, EditText etVipPriceL, EditText etProductInfo,
+                                EditText etProductDesc, String imageUrl) {
+
+        Product newProduct = new Product(
+                id, id, name, spinnerCategory.getSelectedItem().toString(),
+                parsePrice(etPriceM), parsePrice(etPriceL),
+                parsePrice(etVipPriceM), parsePrice(etVipPriceL),
+                etProductInfo.getText().toString().trim(),
+                etProductDesc.getText().toString().trim(),
+                imageUrl, cbVisible.isChecked(), cbSpecial.isChecked()
+        );
+
+        String collectionPath = context.getString(R.string.firebase_collection_products);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(collectionPath).child(id);
+        ref.setValue(newProduct).addOnSuccessListener(aVoid -> {
+            Toast.makeText(context, "Product added successfully", Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> Toast.makeText(context, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private String formatInitialPrice(int price) {
-        if (price <= 0) return "";
-        return priceFormatter.format(price).replace(',', '.');
+    private void setupDefaultImage(Dialog dialog) {
+        // Method replaced by setupImageUpload
     }
 
     private void setupPriceFormatting(EditText et) {

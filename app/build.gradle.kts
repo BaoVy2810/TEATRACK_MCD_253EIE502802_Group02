@@ -70,6 +70,10 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     // CircleImageView (avatar topbar)
     implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    // Cloudinary
+    implementation("com.cloudinary:cloudinary-android:3.1.2")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
