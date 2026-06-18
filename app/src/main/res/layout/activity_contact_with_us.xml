@@ -2,9 +2,357 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.teatrack_mcd_253eie502802_group02.client.ContactWithUs">
+    android:background="#f2f9fe">
+
+    <!-- Header -->
+    <include
+        android:id="@+id/header"
+        layout="@layout/activity_header_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/nav_bar"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="40dp">
+
+            <!-- Breadcrumb Banner -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#d4edfc"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/str_contact"
+                    android:textColor="#0b1320"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/str_contact_breadcrumb"
+                    android:textColor="#808080"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Contact Info Card (Blue Section) -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_contact_info_blue"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:text="@string/str_contact_info"
+                                android:textColor="@android:color/white"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/inter"
+                                android:lineSpacingMultiplier="1.5"
+                                android:text="@string/str_contact_desc"
+                                android:textColor="@android:color/white"
+                                android:textSize="7sp" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp"
+                                    android:src="@drawable/call"
+                                    app:tint="@android:color/white" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:fontFamily="@font/inter"
+                                    android:textSize="7sp"
+                                    android:text="@string/str_phone"
+                                    android:textColor="@android:color/white"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp"
+                                    android:src="@drawable/mail"
+                                    app:tint="@android:color/white" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:textSize="7sp"
+                                    android:fontFamily="@font/inter"
+                                    android:text="@string/str_email"
+                                    android:textColor="@android:color/white"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Form Section -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <!-- Full Name -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/str_fullname"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="7sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edtFullName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:background="@null"
+                            android:hint="@string/str_fullname_hint"
+                            android:inputType="textPersonName"
+                            android:paddingVertical="6dp"
+                            android:textSize="7sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#d9d9d9" />
+
+                        <!-- Email -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/str_email_hint"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="7sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edtEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:background="@null"
+                            android:hint="@string/str_email_prompt"
+                            android:inputType="textEmailAddress"
+                            android:paddingVertical="6dp"
+                            android:textSize="7sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#d9d9d9" />
+
+                        <!-- Phone -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/str_phone_hint"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="7sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edtPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@null"
+                            android:hint="@string/str_phone_prompt"
+                            android:inputType="phone"
+                            android:paddingVertical="10dp"
+                            android:textSize="7sp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="#d9d9d9" />
+
+                        <!-- Branch -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/str_branch_label"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="7sp"
+                            android:textStyle="bold" />
+
+                        <!-- Topic -->
+                        <Spinner
+                            android:id="@+id/spinnerBranch"
+                            android:layout_width="match_parent"
+                            android:layout_height="36dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/bg_contact_card" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/str_feedback_topic"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="7sp"
+                            android:textStyle="bold" />
+
+                        <RadioGroup
+                            android:id="@+id/radioTopic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:orientation="vertical">
+
+                            <RadioButton
+                                android:id="@+id/rbComplain"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/brand_blue"
+                                android:text="@string/str_topic_complain"
+                                android:textSize="7sp" />
+
+                            <RadioButton
+                                android:id="@+id/rbPraise"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/brand_blue"
+                                android:text="@string/str_topic_praise"
+                                android:textSize="7sp" />
+
+                            <RadioButton
+                                android:id="@+id/rbSuggest"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/brand_blue"
+                                android:text="@string/str_topic_suggest"
+                                android:textSize="7sp" />
+
+                            <RadioButton
+                                android:id="@+id/rbOther"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/brand_blue"
+                                android:text="@string/str_topic_other"
+                                android:textSize="7sp" />
+                        </RadioGroup>
+
+                        <!-- Content -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/str_feedback_content"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="7sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/edtContent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/bg_contact_card"
+                            android:gravity="top"
+                            android:hint="@string/str_feedback_content_hint"
+                            android:inputType="textMultiLine"
+                            android:minHeight="80dp"
+                            android:padding="8dp"
+                            android:textSize="7sp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnSubmit"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:layout_marginTop="16dp"
+                            android:backgroundTint="#0088ff"
+                            android:text="@string/str_send"
+                            android:textAllCaps="true"
+                            android:textColor="@android:color/white"
+                            android:textStyle="bold"
+                            app:cornerRadius="10dp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Navigation Bar -->
+    <include
+        android:id="@+id/nav_bar"
+        layout="@layout/activity_nav_bar_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

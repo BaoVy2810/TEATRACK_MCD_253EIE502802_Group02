@@ -12,4 +12,8 @@
     <color name="Red">#D11515</color>
     <color name="bg_baby_blue">#F2F9FE</color>
     <color name="Gray">#8D8D8D</color>
+    <color name="page_background">#F3F9FE</color>
+    <color name="banner_bg">#D4EDFC</color>
+    <color name="light_blue">#E7F3FF</color>
+    <color name="primary_blue">#0088FF</color>
 </resources>

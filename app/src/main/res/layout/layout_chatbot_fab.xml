@@ -1,0 +1,19 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:focusable="false">
+    <ImageButton
+        android:id="@+id/fabChatbot"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_fab_chatbot"
+        android:src="@drawable/ic_chat_bubble"
+        android:contentDescription="Chat hỗ trợ"
+        android:elevation="10dp"
+        android:stateListAnimator="@null"
+        android:padding="12dp"/>
+</FrameLayout>
