@@ -3,20 +3,9 @@ package com.teatrack_mcd_253eie502802_group02;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.client.LoginActivity;
-import com.teatrack_mcd_253eie502802_group02.client.SucessfullyChangePasswordActivity;
-import com.teatrack_mcd_253eie502802_group02.client.Homepage;
 import com.teatrack_mcd_253eie502802_group02.client.Menu;
-import com.teatrack_mcd_253eie502802_group02.admin.AdminAgency;
-import com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_SELECTED_TAB = "extra_selected_tab";
@@ -28,17 +17,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         routeToTarget(getIntent());
-        finish();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         routeToTarget(intent);
-        finish();
     }
 
     private void routeToTarget(Intent intent) {
+        // Kiểm tra xem có yêu cầu chuyển hướng đến tab cụ thể (ví dụ: Menu) không
+        String selectedTab = intent != null ? intent.getStringExtra(EXTRA_SELECTED_TAB) : null;
+        
+        if (TAB_MENU.equals(selectedTab)) {
+            navigateToMenu(intent.getStringExtra(EXTRA_MENU_CATEGORY));
+            finish(); // Chỉ đóng MainActivity nếu đã chuyển hướng sang màn hình khác
+            return;
+        }
+
+        // Nếu không có yêu cầu chuyển hướng, hiển thị màn hình chính (Get Started)
         setContentView(R.layout.activity_main);
         
         LinearLayout layoutGetStarted = findViewById(R.id.layoutGetStarted);
@@ -48,16 +45,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(loginIntent);
             });
         }
-
-        String selectedTab = intent != null ? intent.getStringExtra(EXTRA_SELECTED_TAB) : null;
-        if (selectedTab != null) {
-             if (TAB_MENU.equals(selectedTab)) {
-                navigateToMenu(intent.getStringExtra(EXTRA_MENU_CATEGORY));
-                finish();
-                return;
-            }
-        }
-        // If no specific tab, just stay on activity_main (Get Started screen)
     }
 
     public void navigateToMenu(String category) {
