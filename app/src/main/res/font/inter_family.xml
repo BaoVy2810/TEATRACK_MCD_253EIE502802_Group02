@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <font-family xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Thin 100 (fallback to local light) -->
+    <font
+        android:font="@font/inter_light"
+        android:fontStyle="normal"
+        android:fontWeight="100"
+        app:font="@font/inter_light"
+        app:fontStyle="normal"
+        app:fontWeight="100" />
+    <!-- Light 300 -->
+    <font
+        android:font="@font/inter_light"
+        android:fontStyle="normal"
+        android:fontWeight="300"
+        app:font="@font/inter_light"
+        app:fontStyle="normal"
+        app:fontWeight="300" />
+    <!-- Regular 400 -->
     <font
         android:font="@font/inter"
         android:fontStyle="normal"
@@ -8,6 +25,7 @@
         app:font="@font/inter"
         app:fontStyle="normal"
         app:fontWeight="400" />
+    <!-- SemiBold 600 -->
     <font
         android:font="@font/inter_semibold"
         android:fontStyle="normal"
@@ -15,6 +33,7 @@
         app:font="@font/inter_semibold"
         app:fontStyle="normal"
         app:fontWeight="600" />
+    <!-- Bold 700 (Using Semibold as fallback) -->
     <font
         android:font="@font/inter_semibold"
         android:fontStyle="normal"
@@ -22,4 +41,12 @@
         app:font="@font/inter_semibold"
         app:fontStyle="normal"
         app:fontWeight="700" />
+    <!-- ExtraBold 800 (local semibold fallback) -->
+    <font
+        android:font="@font/inter_semibold"
+        android:fontStyle="normal"
+        android:fontWeight="800"
+        app:font="@font/inter_semibold"
+        app:fontStyle="normal"
+        app:fontWeight="800" />
 </font-family>

@@ -1,8 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.TEATRACK_MCD_253EIE502802_Group02" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:fontFamily">@font/inter_family</item>
         <item name="fontFamily">@font/inter_family</item>
         <item name="android:windowNoTitle">true</item>
@@ -11,20 +8,22 @@
     <style name="Theme.TEATRACK_MCD_253EIE502802_Group02" parent="Base.Theme.TEATRACK_MCD_253EIE502802_Group02" />
 
     <style name="NavBarItem">
-        <item name="android:layout_height">wrap_content</item>
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        <item name="android:layout_height">match_parent</item>
         <item name="android:background">@drawable/bg_nav_item_selector</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
         <item name="android:gravity">center</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:paddingHorizontal">@dimen/nav_item_padding_horizontal</item>
-        <item name="android:paddingVertical">@dimen/nav_item_padding_vertical</item>
+        <item name="android:paddingTop">@dimen/nav_item_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/nav_item_padding_vertical</item>
     </style>
 
     <style name="NavBarIcon">
         <item name="android:layout_width">@dimen/nav_item_icon_size</item>
         <item name="android:layout_height">@dimen/nav_item_icon_size</item>
-        <item name="android:tint">@color/nav_inactive</item>
+        <item name="android:tint">@color/nav_item_color_selector</item>
     </style>
 
     <style name="NavBarLabel">
@@ -32,18 +31,26 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">4dp</item>
         <item name="android:fontFamily">@font/inter_family</item>
-        <item name="android:textColor">@color/nav_inactive</item>
+        <item name="android:textColor">@color/nav_item_color_selector</item>
         <item name="android:textSize">@dimen/nav_item_text_size</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">none</item>
     </style>
 
     <style name="HomeSectionTitle">
         <item name="android:fontFamily">@font/inter_family</item>
-        <item name="android:textColor">#E00000</item>
+        <item name="android:fontWeight">800</item>
+        <item name="android:textColor">#D11515</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:paddingBottom">10dp</item>
     </style>
+    <style name="ShapeAppearance.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
     <style name="ShapeAppearance.BottomRounded" parent="ShapeAppearance.Material3.MediumComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">0dp</item>
@@ -70,5 +77,223 @@
     <style name="RoundedImage8dp">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
+    </style>
+    <style name="RoundedImage12dp">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="MenuChip">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:background">@drawable/bg_size_tag</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:textColor">@color/brand_blue</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="MenuChipPrimary" parent="MenuChip">
+        <item name="android:background">@drawable/nav_item_background</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="CheckBoxTheme" parent="Theme.AppCompat">
+        <item name="colorAccent">#0088FF</item>
+        <item name="colorControlNormal">#979797</item>
+        <item name="colorControlActivated">#0088FF</item>
+    </style>
+
+    <style name="RoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
+    <style name="RoundedCorners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+<!--    TEST FOR ADMIN DASHBOARD-->
+    <!-- Base app theme -->
+    <style name="Theme.TeaTrack" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/bg_screen</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorError">@color/danger</item>
+    </style>
+
+    <!-- ── Stat card ── -->
+    <style name="Widget.TeaTrack.StatCard">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cardCornerRadius">@dimen/stat_card_corner</item>
+        <item name="cardElevation">@dimen/stat_card_elevation</item>
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="TextAppearance.TeaTrack.StatTitle">
+        <item name="android:textSize">@dimen/stat_title_size</item>
+        <item name="android:textColor">@color/stat_text_white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TextAppearance.TeaTrack.StatValue">
+        <item name="android:textSize">@dimen/stat_value_size</item>
+        <item name="android:textColor">@color/stat_text_white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.TeaTrack.StatDesc">
+        <item name="android:textSize">@dimen/stat_desc_size</item>
+        <item name="android:textColor">@color/stat_text_soft</item>
+    </style>
+
+    <!-- ── White card (sections) ── -->
+    <style name="Widget.TeaTrack.Card">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cardCornerRadius">@dimen/card_corner</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="cardBackgroundColor">@color/card_bg</item>
+    </style>
+
+    <style name="TextAppearance.TeaTrack.CardTitle">
+        <item name="android:textSize">@dimen/section_title_size</item>
+        <item name="android:textColor">@color/card_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- ── Primary button ── -->
+    <style name="Widget.TeaTrack.Button.Primary" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/btn_primary_bg</item>
+        <item name="android:textColor">@color/btn_primary_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/btn_text_size</item>
+        <item name="cornerRadius">@dimen/btn_corner</item>
+        <item name="android:paddingStart">@dimen/btn_padding_h</item>
+        <item name="android:paddingEnd">@dimen/btn_padding_h</item>
+        <item name="android:paddingTop">@dimen/btn_padding_v</item>
+        <item name="android:paddingBottom">@dimen/btn_padding_v</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <!-- ── Ghost / cancel button ── -->
+    <style name="Widget.TeaTrack.Button.Ghost" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/btn_ghost_text</item>
+        <item name="strokeColor">@color/btn_ghost_border</item>
+        <item name="strokeWidth">1.5dp</item>
+        <item name="cornerRadius">@dimen/btn_corner</item>
+        <item name="android:backgroundTint">@color/btn_ghost_bg</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/btn_text_size</item>
+    </style>
+
+    <!-- ── Danger button ── -->
+    <style name="Widget.TeaTrack.Button.Danger" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/danger</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">@dimen/btn_corner</item>
+        <item name="android:textSize">@dimen/btn_text_size</item>
+    </style>
+
+    <!-- ── Toggle button (active) ── -->
+    <style name="Widget.TeaTrack.ToggleButton.Active">
+        <item name="android:layout_height">@dimen/toggle_btn_height</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@drawable/bg_toggle_active</item>
+        <item name="android:textColor">@color/btn_toggle_active_text</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/toggle_btn_text_size</item>
+        <item name="android:paddingStart">@dimen/toggle_btn_padding_h</item>
+        <item name="android:paddingEnd">@dimen/toggle_btn_padding_h</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- ── Toggle button (inactive) ── -->
+    <style name="Widget.TeaTrack.ToggleButton.Inactive">
+        <item name="android:layout_height">@dimen/toggle_btn_height</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@drawable/bg_toggle_inactive</item>
+        <item name="android:textColor">@color/btn_toggle_inactive_text</item>
+        <item name="android:textSize">@dimen/toggle_btn_text_size</item>
+        <item name="android:paddingStart">@dimen/toggle_btn_padding_h</item>
+        <item name="android:paddingEnd">@dimen/toggle_btn_padding_h</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- ── Table header cell ── -->
+    <style name="TextAppearance.TeaTrack.TableHeader">
+        <item name="android:textSize">@dimen/table_header_text_size</item>
+        <item name="android:textColor">@color/table_header_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.TeaTrack" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">@font/inter_family</item>
+    </style>
+
+    <style name="Widget.TeaTrack" parent="Widget.Material3.CardView.Elevated">
+    </style>
+
+    <style name="Widget.TeaTrack.ToggleButton" parent="Widget.Material3.Button.TextButton">
+    </style>
+
+    <!-- ── Table body cell ── -->
+    <style name="TextAppearance.TeaTrack.TableCell">
+        <item name="android:textSize">@dimen/table_text_size</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- ── Form TextInputLayout ── -->
+    <style name="Widget.TeaTrack.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">@dimen/form_input_corner</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/form_input_corner</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/form_input_corner</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/form_input_corner</item>
+        <item name="boxStrokeColor">@color/input_border</item>
+        <item name="hintTextColor">@color/primary</item>
+        <item name="android:textColorHint">@color/placeholder</item>
+    </style>
+
+    <!-- ── Dropdown / spinner ── -->
+    <style name="Widget.TeaTrack.Spinner" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxCornerRadiusTopStart">@dimen/form_input_corner</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/form_input_corner</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/form_input_corner</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/form_input_corner</item>
+        <item name="boxStrokeColor">@color/input_border</item>
+    </style>
+
+    <!-- ── Modal dialog ── -->
+    <style name="Theme.TeaTrack.Dialog" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowMinWidthMinor">92%</item>
+        <item name="colorSurface">@color/modal_bg</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.TeaTrack.Modal</item>
+    </style>
+
+    <style name="ShapeAppearance.TeaTrack.Modal" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/modal_corner</item>
+    </style>
+
+    <!-- ── Status badge (chip) ── -->
+    <style name="Widget.TeaTrack.Badge">
+        <item name="android:paddingStart">@dimen/badge_padding_h</item>
+        <item name="android:paddingEnd">@dimen/badge_padding_h</item>
+        <item name="android:paddingTop">@dimen/badge_padding_v</item>
+        <item name="android:paddingBottom">@dimen/badge_padding_v</item>
+        <item name="android:textSize">@dimen/badge_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CustomMaterialCalendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/brand_blue</item>
     </style>
 </resources>

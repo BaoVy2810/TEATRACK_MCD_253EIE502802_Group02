@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:app/src/main/java/com/teatrack_mcd_253eie502802_group02/MainActivity.java
+package com.teatrack_mcd_253eie502802_group02;
+========
 package com.teatrack_mcd_253eie502802_group02.client;
+>>>>>>>> main:app/src/main/java/com/teatrack_mcd_253eie502802_group02/client/Cart.java
 
 import android.os.Bundle;
 
@@ -10,7 +14,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 
+<<<<<<<< HEAD:app/src/main/java/com/teatrack_mcd_253eie502802_group02/MainActivity.java
+public class MainActivity extends AppCompatActivity {
+========
 public class Cart extends AppCompatActivity {
+>>>>>>>> main:app/src/main/java/com/teatrack_mcd_253eie502802_group02/client/Cart.java
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

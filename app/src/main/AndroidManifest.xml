@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,7 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02">
         <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarClient"
+            android:name=".client.SucessfullyChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".shared.ui.NavBarClient"
             android:exported="false" />
         <activity
             android:name="com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarAdmin"
@@ -30,7 +38,7 @@
             android:name="com.teatrack_mcd_253eie502802_group02.client.ContactWithUs"
             android:exported="false" />
         <activity
-            android:name="com.teatrack_mcd_253eie502802_group02.client.FilledOTP"
+            android:name="com.teatrack_mcd_253eie502802_group02.client.FilledOtpActivity"
             android:exported="false" />
         <activity
             android:name="com.teatrack_mcd_253eie502802_group02.client.BlogDetail"
@@ -109,6 +117,9 @@
             android:exported="false" />
         <activity
             android:name="com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard"
+            android:exported="false" />
+        <activity
+            android:name="com.teatrack_mcd_253eie502802_group02.admin.Ad"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

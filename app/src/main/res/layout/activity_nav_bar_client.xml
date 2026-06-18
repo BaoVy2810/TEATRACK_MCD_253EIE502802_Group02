@@ -82,7 +82,7 @@
             <LinearLayout
                 android:id="@+id/nav_promotion"
                 style="@style/NavBarItem"
-                android:layout_width="0dp"
+                android:layout_width="10dp"
                 android:layout_weight="1">
 
                 <ImageView

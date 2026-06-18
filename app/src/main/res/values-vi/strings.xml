@@ -1,21 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="nav_home">Trang chủ</string>
-    <string name="nav_menu">Thực đơn</string>
+    <string name="app_name">TEATRACK</string>
+    <string name="nav_dashboard">Bảng điều khiển</string>
+    <string name="nav_products">Sản phẩm</string>
     <string name="nav_orders">Đơn hàng</string>
-    <string name="nav_promotion">Khuyến mãi</string>
-    <string name="nav_profile">Hồ sơ</string>
-    <string name="str_search_hint">Tìm kiếm sản phẩm...</string>
-    <string name="home_search">Tìm kiếm</string>
-    <string name="home_our_beverages">THỨC UỐNG CỦA CHÚNG TÔI</string>
-    <string name="home_beverage_description">Những sáng tạo thức uống đặc biệt kết hợp trà tinh khiết cao cấp với sữa béo ngậy và một chút muối đặc trưng, mang đến sự biến tấu sáng tạo cho hương vị quen thuộc.</string>
-    <string name="home_featured_products">SẢN PHẨM NỔI BẬT</string>
-    <string name="home_exciting_promotions">KHUYẾN MÃI HẤP DẪN</string>
-    <string name="home_whats_new">CÓ GÌ MỚI</string>
+    <string name="nav_account">Tài khoản</string>
+    <string name="nav_forum">Diễn đàn</string>
+    <string name="nav_branch">Chi nhánh</string>
+    <string name="nav_feedbacks">Phản hồi</string>
+    <string name="next">Tiếp theo</string>
+    <string name="previous">Quay lại</string>
+    <string name="home_ngo_gia_story_title">CÂU CHUYỆN NGÔ GIA</string>
+    <string name="home_ngo_gia_story_description">Khám phá hành trình 74 năm di sản và tâm huyết trong từng lá trà.</string>
+    <string name="home_ngo_gia_story_cta">Tìm hiểu thêm</string>
+    <string name="home_ngo_gia_story_image_desc">Hình câu chuyện Ngô Gia</string>
+    <string name="home_banner_desc">Ảnh banner trang chủ</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_menu">Menu</string>
+    <string name="nav_promotion">Promotion</string>
+    <string name="nav_profile">Profile</string>
+    <string name="str_search_hint">Find products...</string>
+    <string name="home_search">Search</string>
+    <string name="home_our_beverages">OUR BEVERAGES</string>
+    <string name="home_beverage_description">Special beverage creations that blend premium pure tea with rich milk and a signature hint of salt, offering a creative twist on a familiar favorite.</string>
+    <string name="home_featured_products">FEATURED PRODUCTS</string>
+    <string name="home_exciting_promotions">EXCITING PROMOTIONS</string>
+    <string name="home_whats_new">WHAT\'S NEW</string>
     <string name="home_price_medium">M</string>
     <string name="home_price_large">L</string>
     <string name="home_vip_badge">VIP</string>
-    <string name="home_rating_suffix">rating</string>
+    <string name="home_rating_suffix">đánh giá</string>
+    <string name="menu_title">MENU THỨC UỐNG</string>
+    <string name="menu_subtitle">Thoải mái chọn món yêu thích của bạn</string>
+    <string name="menu_description">Từ trà truyền thống, trà sữa đến những công thức mới lạ - mọi hương vị đều được pha chế tươi mới mỗi ngày.</string>
+    <string name="menu_search_hint">Tìm thức uống bạn muốn...</string>
+    <string name="menu_search_desc">Tìm kiếm menu</string>
+    <string name="menu_hero_image_desc">Ảnh minh họa menu</string>
+    <string name="menu_filter_desc">Mở bộ lọc</string>
+    <string name="menu_filter_category_title">Danh mục</string>
+    <string name="menu_filter_sort_title">Sắp xếp theo</string>
+    <string name="menu_sort_label">Sắp xếp:</string>
+    <string name="menu_sort_featured">Nổi bật</string>
+    <string name="menu_sort_name_asc">Tên A-Z</string>
+    <string name="menu_sort_name_desc">Tên Z-A</string>
+    <string name="menu_sort_price_asc">Giá thấp-cao</string>
+    <string name="menu_sort_price_desc">Giá cao-thấp</string>
+    <string name="menu_section_subtitle_default">Danh sách đầy đủ các món tại Hồng Trà Ngô Gia.</string>
+    <string name="menu_section_subtitle_search">Kết quả cho "%1$s".</string>
+    <string name="menu_section_subtitle_pure_tea">Các món thuần trà thanh mát, dễ uống.</string>
+    <string name="menu_section_subtitle_milk_tea">Các món trà sữa béo thơm, đậm vị.</string>
+    <string name="menu_section_subtitle_tea_latte">Các món trà latte mượt vị, pha mới mỗi ngày.</string>
+    <string name="menu_section_subtitle_fruit_tea">Các món trà trái cây tươi mát, sảng khoái.</string>
+    <string name="menu_section_subtitle_new_arrivals">Các món mới vừa được cập nhật trên menu.</string>
+    <string name="menu_section_subtitle_best_sellers">Những món được yêu thích và gọi nhiều nhất.</string>
+    <string name="menu_result_count_format">%1$d sản phẩm</string>
+    <string name="menu_result_count_default">0 sản phẩm</string>
+    <string name="menu_all_categories">Tất cả</string>
+    <string name="menu_all_products_title">Tất cả thức uống</string>
+    <string-array name="menu_sort_options">
+        <item>Nổi bật</item>
+        <item>Tên A-Z</item>
+        <item>Tên Z-A</item>
+        <item>Giá thấp-cao</item>
+        <item>Giá cao-thấp</item>
+    </string-array>
+    <string-array name="menu_sort_values">
+        <item>featured</item>
+        <item>name_asc</item>
+        <item>name_desc</item>
+        <item>price_asc</item>
+        <item>price_desc</item>
+    </string-array>
     <string name="firebase_collection_products">products</string>
     <string name="firebase_collection_blogs">blogs</string>
     <string name="firebase_collection_vouchers">vouchers</string>
@@ -29,76 +84,341 @@
     <string name="firebase_field_vip_price_l">vipPriceL</string>
     <string name="firebase_field_category">category</string>
     <string name="firebase_field_date">date</string>
-    <string name="pure_tea">Pure Tea</string>
-    <string name="tea_latte">Tea Latte</string>
-    <string name="milk_tea">Milk Tea</string>
-    <string name="new_arrivals">New Arrivals</string>
-    <string name="best_sellers">Best Sellers</string>
-    <string name="fruit_tea">Fruit Tea</string>
-    <string name="blog_page_title">Tất cả bài viết</string>
-    <string name="blog_breadcrumb">Trang chủ / Blog</string>
-    <string name="blog_related_title">Có thể bạn sẽ quan tâm</string>
-    <string name="blog_prev_page">‹</string>
-    <string name="blog_next_page">›</string>
-    <string name="blog_image_desc">Ảnh bài viết</string>
-    <string name="blog_related_image_desc">Ảnh bài viết liên quan</string>
-    <string name="str_password_recovery">Khôi phục mật khẩu</string>
-    <string name="str_agency_title">Các chi nhánh hoạt động</string>
-    <string name="str_breadcrumb_agency">Trang chủ / Chi nhánh</string>
-    <string name="str_select_branch">Chọn một chi nhánh để xem bản đồ</string>
-    <string name="str_branch_list">Danh sách chi nhánh</string>
-    <string name="str_contact">Liên hệ</string>
-    <string name="str_contact_breadcrumb">Trang chủ / Liên hệ</string>
-    <string name="str_contact_info">Thông tin liên hệ:</string>
-    <string name="str_contact_desc">Hồng Trà Ngô Gia luôn mong muốn nhận được những phản hồi quý giá của quý khách hàng để có cơ hội hoàn thiện sản phẩm, dịch vụ hơn nữa. Những đóng góp của quý khách hàng luôn là tài sản vô giá đối với chúng tôi.</string>
-    <string name="str_phone">0999.888.777</string>
-    <string name="str_email">ngogiahotro@gmail.com</string>
-    <string name="str_fullname">Họ và tên</string>
-    <string name="str_fullname_hint">Hãy nhập họ và tên đầy đủ của bạn</string>
-    <string name="str_email_hint">Email</string>
-    <string name="str_email_prompt">Hãy nhập email của bạn</string>
-    <string name="str_phone_hint">Số điện thoại</string>
-    <string name="str_phone_prompt">Hãy nhập số điện thoại của bạn</string>
-    <string name="str_feedback_topic">Vấn đề phản hồi</string>
-    <string name="str_feedback_content">Nội dung phản hồi</string>
-    <string name="str_feedback_content_hint">Mô tả chi tiết nội dung bạn muốn phản hồi...</string>
-    <string name="str_branch_label">Chi nhánh phản hồi</string>
-    <string name="str_branch_prompt">— Chọn chi nhánh —</string>
-    <string name="str_topic_complain">Khiếu nại</string>
-    <string name="str_topic_praise">Khen ngợi</string>
-    <string name="str_topic_suggest">Góp ý / Đề xuất</string>
-    <string name="str_topic_other">Khác</string>
-    <string name="str_send">Gửi</string>
-    <string name="str_contact_success_title">Thông báo</string>
-    <string name="str_contact_success_msg">Cảm ơn bạn đã gửi phản hồi!</string>
-    <string name="err_required">Vui lòng nhập thông tin</string>
-    <string name="err_invalid_email">Email không hợp lệ</string>
+    <string name="firebase_category_pure_tea">Loại Thuần Trà</string>
+    <string name="firebase_category_tea_latte">Loại Trà Latte</string>
+    <string name="firebase_category_milk_tea">Loại Trà Sữa</string>
+    <string name="firebase_category_new_arrivals">Thức Uống Mới</string>
+    <string name="firebase_category_best_sellers">Thức Uống Hot</string>
+    <string name="firebase_category_fruit_tea">Loại Trà Trái Cây</string>
+    <string name="category_products_empty">Không có sản phẩm trong danh mục này.</string>
+    <string name="category_products_load_error">Không thể tải sản phẩm. Vui lòng thử lại.</string>
+    <string name="product_detail_title">Chi tiết sản phẩm</string>
+    <string name="product_detail_back">Quay lại</string>
+    <string name="product_detail_share">Chia sẻ</string>
+    <string name="product_detail_category_default">Loại thức uống</string>
+    <string name="product_detail_rating">Đánh giá</string>
+    <string name="product_detail_rating_default">4.9 (1k đánh giá)</string>
+    <string name="product_detail_views_format">(%1$s lượt xem)</string>
+    <string name="product_detail_size_m_default">M: 28.000đ</string>
+    <string name="product_detail_size_l_default">L: 31.000đ</string>
+    <string name="product_detail_vip_default">VIP: 25.000đ</string>
+    <string name="product_detail_price_m_default">28.000đ</string>
+    <string name="product_detail_price_l_default">31.000đ</string>
+    <string name="product_detail_vip_price_m_default">25.000đ</string>
+    <string name="product_detail_vip_price_l_default">28.000đ</string>
+    <string name="product_detail_size_price_format">%1$s: %2$s</string>
+    <string name="product_detail_vip_price_format">VIP: %1$s</string>
+    <string name="product_detail_rating_summary_format">%1$s (%2$s đánh giá)</string>
+    <string name="product_detail_promo_title">Ưu đãi đặc biệt</string>
+    <string name="product_detail_promo_body">• Mua 5 tặng 1 trà sữa bất kỳ cùng size\n• Tích điểm: Size L được 1 điểm, 8 điểm = 1 ly miễn phí 16.000đ.</string>
+    <string name="product_detail_promo_line1">Mua 5 tặng 1 trà sữa bất kỳ cùng size</string>
+    <string name="product_detail_promo_line2">Tích điểm: Size L được 1 điểm, 8 điểm = 1 ly miễn phí 16.000đ.</string>
+    <string name="product_detail_description_default">Trà sữa socola đắng ngọt hòa quyện, béo ngậy, thơm lừng.</string>
+    <string name="product_detail_tab_description">Mô tả sản phẩm</string>
+    <string name="product_detail_tab_review">Đánh giá</string>
+    <string name="product_detail_tab_commitment">Cam kết</string>
+    <string name="product_detail_tab_description_content">Trà sữa socola đắng ngọt hòa quyện, béo ngậy, thơm lừng.</string>
+    <string name="product_detail_tab_commitment_content">Ngô Gia cam kết nguyên liệu chất lượng, nguồn gốc rõ ràng và hương vị ổn định cho từng ly.</string>
+    <string name="product_detail_info_title">Thông tin chi tiết</string>
+    <string name="product_detail_info_name">Tên sản phẩm</string>
+    <string name="product_detail_info_weight">Trọng lượng</string>
+    <string name="product_detail_info_storage">Bảo quản</string>
+    <string name="product_detail_info_origin">Xuất xứ</string>
+    <string name="product_detail_info_topping">Topping nên dùng kèm:</string>
+    <string name="product_detail_info_weight_value">700ml (size M) / 1000ml (size L)</string>
+    <string name="product_detail_info_storage_value">1-2 ngày ở ngăn mát tủ lạnh</string>
+    <string name="product_detail_info_origin_value">Việt Nam</string>
+    <string name="product_detail_info_topping_value">Thạch dừa nguyên vị, hạt nổ củ năng</string>
+    <string name="product_detail_info_name_format">%1$s: %2$s</string>
+    <string name="product_detail_info_row_format">%1$s: %2$s</string>
+    <string name="product_detail_commitment_title">Cam kết chất lượng</string>
+    <string name="product_detail_commitment_1">Lá trà được chọn lọc kỹ lưỡng từ vùng núi cao, &lt;b&gt;không phẩm màu - không hương liệu tổng hợp&lt;/b&gt;, giữ trọn vị trà nguyên bản.</string>
+    <string name="product_detail_commitment_2">Mỗi mẻ trà đều được sao, ủ và lên hương theo &lt;b&gt;bí quyết gia truyền&lt;/b&gt;, đảm bảo hương thơm đậm đà, vị hậu ngọt tinh tế.</string>
+    <string name="product_detail_commitment_3">Mọi sản phẩm được &lt;b&gt;đóng gói kín, bảo quản đúng chuẩn&lt;/b&gt;, đảm bảo hương vị luôn tươi mới khi đến tay khách hàng.</string>
+    <string name="product_detail_commitment_4">Hồng Trà Ngô Gia luôn lắng nghe phản hồi và &lt;b&gt;đổi trả nếu sản phẩm không đạt chất lượng cam kết&lt;/b&gt;, mang đến trải nghiệm đáng tin cậy.</string>
+    <string name="product_detail_review_overall">Đánh giá tổng thể</string>
+    <string name="product_detail_review_count_format">%1$s đánh giá</string>
+    <string name="product_detail_review_form_title">Đánh giá sản phẩm</string>
+    <string name="product_detail_review_quality_label">Chất lượng sản phẩm:</string>
+    <string name="product_detail_review_detail_hint">Để lại đánh giá chi tiết tại đây</string>
+    <string name="product_detail_review_comment_hint">Hãy để lại nhận xét cho sản phẩm này bạn nhé! Ngô Gia xin chân thành cảm ơn.</string>
+    <string name="product_detail_review_submit">Đánh giá</string>
+    <string name="product_detail_star_desc">Đánh giá sao</string>
+    <string name="product_detail_no_reviews_icon_desc">Biểu tượng chưa có đánh giá</string>
+    <string name="product_detail_quantity">Số lượng</string>
+    <string name="product_detail_minus">Giảm số lượng</string>
+    <string name="product_detail_plus">Tăng số lượng</string>
+    <string name="product_detail_add_to_cart">THÊM VÀO GIỎ</string>
+    <string name="product_detail_buy_now">MUA NGAY</string>
+    <string name="product_detail_added_to_cart">Đã thêm vào giỏ</string>
+    <string name="product_detail_buy_now_message">Đang chuyển qua thanh toán</string>
+    <string name="product_detail_write_review">Viết đánh giá</string>
+    <string name="product_detail_empty_review">Chưa có đánh giá nào cho sản phẩm này.</string>
+    <string name="product_detail_related_title">Có thể bạn sẽ thích</string>
+    <string name="product_detail_related_image_desc">Ảnh sản phẩm liên quan</string>
+    <string name="product_detail_related_prices_format">M: %1$s  •  L: %2$s</string>
+    <string name="product_detail_related_vip_format">VIP: %1$s</string>
+    <string name="product_detail_note_title">Chú thích sản phẩm tại đây</string>
+    <string name="product_detail_toggle_customization">Thu gọn hoặc mở rộng tùy chỉnh sản phẩm</string>
+    <string name="product_detail_note_default">Chi tiết bổ sung về sản phẩm sẽ được cập nhật tại đây.</string>
+    <string name="product_detail_pick_size">Chọn size</string>
+    <string name="product_detail_size_m_price">M - 0đ</string>
+    <string name="product_detail_size_l_price">L - 0đ</string>
+    <string name="product_detail_size_m_price_format">M - %1$s</string>
+    <string name="product_detail_size_l_price_format">L - %1$s</string>
+    <string name="product_detail_sweetness">Đường (Sweetness)</string>
+    <string name="product_detail_ice_level">Đá (Ice level)</string>
+    <string name="product_detail_level_none">Không</string>
+    <string name="product_detail_level_less">Ít</string>
+    <string name="product_detail_level_medium">Vừa</string>
+    <string name="product_detail_level_high">Nhiều</string>
+    <string name="product_detail_toppings">Toppings (+)</string>
+    <string name="product_detail_topping_suong_sao">Sương sáo</string>
+    <string name="product_detail_topping_suong_sao_price">+ 5.000đ</string>
+    <string name="product_detail_topping_thach_dua">Thạch dừa</string>
+    <string name="product_detail_topping_thach_dua_price">+ 8.000đ</string>
+    <string name="product_detail_topping_kem_cheese">Kem cheese</string>
+    <string name="product_detail_topping_kem_cheese_price">+ 10.000đ</string>
+    <string name="pure_tea">Trà nguyên chất</string>
+    <string name="tea_latte">Trà Latte</string>
+    <string name="milk_tea">Trà sữa</string>
+    <string name="new_arrivals">Sản phẩm mới</string>
+    <string name="best_sellers">Bán chạy nhất</string>
+    <string name="fruit_tea">Trà trái cây</string>
 
-    <!-- Blog Detail -->
-    <string name="blog_detail_breadcrumb_path">Trang chủ / Diễn đàn / Chi tiết</string>
-    <string name="blog_detail_related_title">Có thể bạn sẽ quan tâm</string>
-    <string name="blog_detail_view_detail">Xem chi tiết</string>
+    <string name="login_logo_description">Logo Đăng nhập</string>
+    <string name="login_sign_in">Đăng nhập</string>
+    <string name="login_label_name">Tên đăng nhập*</string>
+    <string name="login_hint_name">Nhập tên đăng nhập của bạn</string>
+    <string name="login_label_password">Mật khẩu*</string>
+    <string name="login_hint_password">Nhập mật khẩu của bạn</string>
+    <string name="login_remember">Ghi nhớ đăng nhập?</string>
+    <string name="login_forgot_password">Quên mật khẩu?</string>
+    <string name="login_btn_login">Đăng nhập</string>
+    <string name="login_or">HOẶC</string>
+    <string name="login_btn_google">Đăng nhập với Google</string>
+    <string name="login_dont_have_account">Chưa có tài khoản? </string>
+    <string name="login_sign_up">Đăng ký ngay</string>
+    <string name="login_error_invalid">Lỗi đăng nhập! Tên đăng nhập hoặc mật khẩu không đúng.</string>
+    <string name="login_error_empty">Lỗi đăng nhập! Vui lòng điền đầy đủ các thông tin bắt buộc.</string>
 
-    <!-- About Us -->
-    <string name="about_hero_eyebrow">Hồng trà Ngô gia</string>
-    <string name="about_hero_title">Tự hào 74 năm hình thành và phát triển</string>
-    <string name="about_story_title">CÂU CHUYỆN THƯƠNG HIỆU</string>
-    <string name="about_story_desc">Năm 1951, giữa đất trà mộc mạc, thương hiệu ra đời với đam mê tạo nên những ly trà đậm vị. Từ đó, Ngô Gia đã trở thành một trong những thương hiệu trà được yêu thích nhờ chất lượng ổn định, dịch vụ tận tâm và không ngừng đổi mới để bắt kịp xu hướng của giới trẻ Việt.</string>
-    <string name="about_feature_quality_title">Chất lượng hàng đầu</string>
-    <string name="about_feature_quality_desc">An toàn, vệ sinh và ngon miệng. Việc sử dụng các nguyên liệu an toàn, tự nhiên và vệ sinh là ưu tiên hàng đầu của Hồng trà Ngô Gia.</string>
-    <string name="about_feature_service_title">Dịch vụ tận tâm</string>
-    <string name="about_feature_service_desc">Hồng trà Ngô Gia mong muốn làm hài lòng khách hàng tốt nhất với tác phong phục vụ chuyên nghiệp và thân thiện.</string>
-    <string name="about_feature_tradition_title">Truyền thống &amp; sáng tạo</string>
-    <string name="about_feature_tradition_desc">Dựa trên hai nền tảng cốt lõi là Chất Lượng và Dịch Vụ, Hồng trà Ngô gia luôn nỗ lực xây dựng thương hiệu đáng tin cậy.</string>
-    <string name="about_video_overlay">HỒNG TRÀ NGÔ GIA</string>
-    <string name="about_mission_title">SỨ MỆNH CỦA CHÚNG TÔI</string>
-    <string name="about_mission_desc">Hồng Trà Ngô Gia cam kết mang đến những thức uống tinh tế, lành mạnh và an toàn cho sức khỏe. Mỗi ly trà là tâm huyết của người làm nghề, gửi gắm niềm tự hào Việt.</string>
-    <string name="about_vision_title">TẦM NHÌN THƯƠNG HIỆU</string>
-    <string name="about_vision_desc">Trở thành thương hiệu tiên phong trong lĩnh vực đồ uống chất lượng cao tại Việt Nam, được người tiêu dùng tin cậy và yêu mến. Ngô Gia hướng đến phát triển bền vững.</string>
-    <string name="about_customer_centric_title">KHÁCH HÀNG LÀ TRỌNG TÂM</string>
-    <string name="about_customer_centric_desc">Hồng Trà Ngô Gia luôn lắng nghe, thấu hiểu và không ngừng hoàn thiện để mang đến trải nghiệm trà tốt nhất cho bạn. Mỗi ly trà được pha không chỉ bằng hương vị tinh tế, mà còn bằng sự trân trọng và tận tâm dành cho từng vị khách.</string>
-    <string name="about_greeting">NGÔ GIA XIN CHÀO</string>
-    <string name="about_greeting_marquee">NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO</string>
-    <string name="str_coming_soon">Tính năng đang phát triển</string>
-    <string name="about_drink_desc">Thức uống</string>
+    <string name="welcome_title">Chào mừng</string>
+    <string name="welcome_subtitle">Đăng nhập vào tài khoản đã đăng ký của bạn.</string>
+    <string name="welcome_get_started">Bắt đầu ngay</string>
+    <string name="welcome_logo_description">Logo</string>
+
+    <string name="register_sign_up">Đăng ký</string>
+    <string name="register_label_email">Email*</string>
+    <string name="register_hint_email">Nhập địa chỉ email của bạn</string>
+    <string name="register_label_confirm_password">Mật khẩu*</string>
+    <string name="register_hint_confirm_password">Xác nhận lại mật khẩu của bạn</string>
+    <string name="register_btn_register">Đăng ký</string>
+    <string name="register_already_have_account">Đã có tài khoản? </string>
+    <string name="register_error_empty">Lỗi đăng ký! Vui lòng điền đầy đủ các thông tin bắt buộc.</string>
+    <string name="register_error_mismatch">Mật khẩu không khớp. Vui lòng thử lại.</string>
+    <string name="register_terms_agreement">Bằng cách tiếp tục, bạn đồng ý với</string>
+    <string name="register_label_phone">Số điện thoại:</string>
+    <string name="register_hint_phone">Nhập số điện thoại của bạn</string>
+    <string name="register_terms_policy"><b>Điều khoản</b> &amp; <b>Chính sách bảo mật</b> của chúng tôi</string>
+
+    <string name="forgot_password_title">Quên mật khẩu</string>
+    <string name="forgot_password_content">Vui lòng nhập địa chỉ email của bạn để nhận mã OTP khôi phục mật khẩu.</string>
+    <string name="forgot_password_label_email">Email*</string>
+    <string name="forgot_password_hint_email">Nhập địa chỉ email của bạn</string>
+    <string name="forgot_password_btn_send_otp">Gửi mã OTP</string>
+    <string name="forgot_password_already_have_account">Bạn đã có tài khoản? </string>
+    <string name="forgot_password_sign_in">Đăng nhập</string>
+    <string name="forgot_password_error_empty">Vui lòng nhập địa chỉ email của bạn.</string>
+    <string name="forgot_password_error_not_found">Email không tồn tại. Vui lòng kiểm tra và thử lại.</string>
+
+    <string name="reset_password_title">Đặt lại mật khẩu</string>
+    <string name="reset_password_content">Vui lòng tạo mật khẩu mới cho tài khoản của bạn.</string>
+    <string name="reset_password_label_password">Mật khẩu mới*</string>
+    <string name="reset_password_hint_password">Nhập mật khẩu của bạn</string>
+    <string name="reset_password_label_confirm">Xác nhận mật khẩu*</string>
+    <string name="reset_password_hint_confirm">Xác nhận lại mật khẩu của bạn</string>
+    <string name="reset_password_btn_update">Cập nhật mật khẩu</string>
+    <string name="reset_password_go_back">Hoặc quay lại? </string>
+    <string name="reset_password_back_to_sign_in">Quay lại Đăng nhập</string>
+    <string name="reset_password_error_empty">Lỗi đặt lại! Vui lòng điền đầy đủ các thông tin bắt buộc.</string>
+    <string name="reset_password_error_mismatch">Mật khẩu không khớp. Vui lòng thử lại.</string>
+
+    <string name="success_password_title">Mật khẩu đã được thay đổi thành công!</string>
+    <string name="success_password_content">Bây giờ bạn có thể đăng nhập vào tài khoản của mình bằng mật khẩu mới. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. Vui lòng đăng nhập lại.</string>
+    <string name="success_password_btn_back">Quay lại Đăng nhập</string>
+    <string name="success_password_need_help">Cần giúp đỡ? </string>
+    <string name="success_password_contact_support">Liên hệ Hỗ trợ</string>
+    <string name="str_otp">-</string>
+    <string name="str_email_masked">ethan@gmail.com</string>
+    <string name="str_agency_location">Agency Location</string>
+    <string name="str_add_agency">+ Add New Agency</string>
+    <string name="str_agency_details">AGENCY DETAILS</string>
+    <string name="str_agency_id">Agency ID</string>
+    <string name="firebase_field_visible">visible</string>
+    <!-- Topbar -->
+    <string name="title_overview_dashboard">OVERVIEW DASHBOARD</string>
+    <string name="title_sales_analytics">SALES ANALYTICS</string>
+    <string name="btn_notification">Notification</string>
+    <string name="btn_account">Account</string>
+
+    <!-- Stat Cards -->
+    <string name="stat_revenue_title">REVENUE</string>
+    <string name="stat_orders_title">ORDERS THIS WEEK</string>
+    <string name="stat_sold_title">PRODUCTS SOLD</string>
+    <string name="stat_products_title">PRODUCTS</string>
+    <string name="stat_mom">MoM</string>
+    <string name="stat_active_trading">Active trading</string>
+
+    <!-- Chart titles -->
+    <string name="chart_performance_title">Performance (Revenue &amp; Expenses)</string>
+    <string name="chart_daily_trend_title">Daily Sales Trends</string>
+    <string name="chart_top_drinks_title">Top-selling Drinks</string>
+    <string name="btn_monthly">Monthly</string>
+    <string name="btn_weekly">Weekly</string>
+    <string name="btn_today">Today</string>
+    <string name="btn_last_7_days">Last 7 Days ▾</string>
+
+    <!-- Chart legend -->
+    <string name="legend_revenue">Revenue</string>
+    <string name="legend_expenses">Expenses</string>
+    <string name="legend_hot_drinks">Hot Drinks</string>
+    <string name="legend_pure_tea">Pure Tea</string>
+    <string name="legend_latte_tea">Latte Tea</string>
+    <string name="legend_fruit_tea">Fruit Tea</string>
+    <string name="legend_new_drinks">New Drinks</string>
+    <string name="legend_milk_tea">Milk Tea</string>
+    <string name="pie_center_unit">VND</string>
+
+    <!-- Recent Orders -->
+    <string name="section_recent_orders">Recent Orders</string>
+    <string name="btn_view_detail">View detail</string>
+    <string name="order_new_prefix">New Order</string>
+    <string name="order_ago_suffix">ago</string>
+
+    <!-- Branch Analysis -->
+    <string name="section_branch_analysis">Branch Analysis</string>
+    <string name="col_branch_address">Branch Address</string>
+    <string name="col_num_orders">Number of Orders</string>
+    <string name="col_revenue">Revenue</string>
+    <string name="loading_data">Loading...</string>
+
+    <!-- Product list -->
+    <string name="section_product_list">Product List</string>
+    <string name="btn_add_product">Add Product</string>
+    <string name="hint_search_product">Search products...</string>
+    <string name="btn_export_excel">Export Excel</string>
+    <string name="col_id">ID</string>
+    <string name="col_name">Name</string>
+    <string name="col_category">Category</string>
+    <string name="col_image">Image</string>
+    <string name="col_price">Price</string>
+    <string name="col_visible">Visible</string>
+    <string name="col_actions">Actions</string>
+
+    <!-- Category filter -->
+    <string name="title_product_management">PRODUCT MANAGEMENT</string>
+    <string name="filter_all">All categories</string>
+
+    <string name="msg_excel_init">Exporting to Excel is being initialized...</string>
+    <string name="error_firebase">Firebase Error: %1$s</string>
+    <string name="msg_under_development">Feature under development</string>
+    <string name="price_m_prefix">M: %1$sđ</string>
+    <string name="price_l_prefix">L: %1$sđ</string>
+    <string name="price_vip_prefix">VIP: %1$sđ</string>
+    <string name="msg_edit_update">Edit feature will be updated!</string>
+    <string name="msg_product_deleted">Product deleted successfully</string>
+    <string name="error_prefix">Error: %1$s</string>
+    <string name="confirm_delete_msg">Are you sure you want to delete this product?</string>
+
+    <string name="filter_pure_tea">Pure Tea</string>
+    <string name="filter_milk_tea">Milk Tea</string>
+    <string name="filter_latte">Tea Latte</string>
+    <string name="filter_hot">Hot Drinks</string>
+    <string name="filter_new">New Arrivals</string>
+    <string name="filter_fruit_tea">Fruit Tea</string>
+
+    <!-- Modal: Add Product -->
+    <string name="modal_add_title">ADD PRODUCT</string>
+    <string name="label_product_name">Product Name</string>
+    <string name="hint_product_name">Enter product name</string>
+    <string name="label_product_type">Category</string>
+    <string name="hint_select_type">Select product category</string>
+    <string name="label_status">Status</string>
+    <string name="check_visible">Show product</string>
+    <string name="check_special">Product has special offer</string>
+    <string name="label_current_price">Current price</string>
+    <string name="label_vip_price">VIP price</string>
+    <string name="hint_price">0 VND</string>
+    <string name="size_m">Size M</string>
+    <string name="size_l">Size L</string>
+    <string name="label_product_info">Product Info</string>
+    <string name="hint_product_info">Enter product info...</string>
+    <string name="label_product_desc">Product Description</string>
+    <string name="hint_product_desc">Enter product description...</string>
+    <string name="label_images">Product Images</string>
+    <string name="hint_max_images">(max 4 images)</string>
+    <string name="btn_upload_image">Upload Image</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_add">Add</string>
+
+    <!-- Modal: Edit Product -->
+    <string name="modal_edit_title">EDIT PRODUCT</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_save">Save</string>
+
+    <!-- Modal: Delete Confirm -->
+    <string name="modal_delete_title">Confirm Delete Product</string>
+    <string name="modal_delete_subtitle_prefix">Product</string>
+    <string name="modal_delete_subtitle_suffix">will be permanently deleted.</string>
+    <string name="modal_delete_no_recover">You will not be able to recover this product.</string>
+    <string name="btn_cancel_ghost">Cancel</string>
+    <string name="btn_confirm_delete">Delete Product</string>
+
+    <!-- Modal: Success -->
+    <string name="modal_success_title">SUCCESSFULLY EDITED</string>
+    <string name="modal_success_message">The operation was performed successfully.</string>
+    <string name="btn_close">Close</string>
+
+    <!-- Modal: Alert -->
+    <string name="modal_alert_title">Notification</string>
+    <string name="btn_ok">OK</string>
+
+    <!-- Modal: Order Detail -->
+    <string name="modal_order_detail_title">ORDER DETAIL</string>
+    <string name="section_order_info">Order Info</string>
+    <string name="label_order_code">ORDER CODE:</string>
+    <string name="label_order_date">ORDER DATE:</string>
+    <string name="label_order_time">TIME:</string>
+    <string name="label_order_status">ORDER STATUS:</string>
+    <string name="label_order_agency">SHIPPING BRANCH:</string>
+    <string name="section_recipient_address">Recipient Address:</string>
+    <string name="label_fullname">FULL NAME:</string>
+    <string name="label_phone">PHONE NUMBER:</string>
+    <string name="label_address">ADDRESS:</string>
+    <string name="section_order_items">Order Item List</string>
+    <string name="section_payment">Payment Info</string>
+    <string name="label_subtotal">Subtotal</string>
+    <string name="label_shipping">Shipping Fee</string>
+    <string name="label_discount">Discount Code</string>
+    <string name="label_total">Total</string>
+
+    <!-- Order status options -->
+    <string name="status_pending">Pending Confirmation</string>
+    <string name="status_processing">Preparing Order</string>
+    <string name="status_ready">Ready for Pickup</string>
+    <string name="status_shipping">Shipping</string>
+    <string name="status_completed">Completed</string>
+    <string name="status_cancelled">Cancelled</string>
+
+    <!-- Accessibility -->
+    <string name="cd_notification">Notification</string>
+    <string name="cd_account">Account</string>
+    <string name="cd_revenue_icon">Revenue Icon</string>
+    <string name="cd_orders_icon">Orders Icon</string>
+    <string name="cd_sold_icon">Sold Products Icon</string>
+    <string name="cd_products_icon">Products Icon</string>
+    <string name="cd_upload">Upload Image</string>
+    <string name="cd_remove_image">Remove Image</string>
+    <string name="cd_close_modal">Close</string>
+    <string name="cd_search">Search</string>
 </resources>

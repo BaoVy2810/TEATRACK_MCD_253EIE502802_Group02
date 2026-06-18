@@ -8,14 +8,136 @@
     <dimen name="header_profile_size">44dp</dimen>
     <dimen name="header_logo_height">48dp</dimen>
 
-    <dimen name="nav_bar_height">72dp</dimen>
+    <dimen name="nav_bar_height">75dp</dimen>
     <dimen name="nav_bar_corner_radius">20dp</dimen>
     <dimen name="nav_bar_elevation">6dp</dimen>
-    <dimen name="nav_item_icon_size">24dp</dimen>
-    <dimen name="nav_item_text_size">12sp</dimen>
+    <dimen name="nav_item_icon_size">22dp</dimen>
+    <dimen name="nav_item_text_size">10sp</dimen>
     <dimen name="nav_item_padding_vertical">10dp</dimen>
     <dimen name="nav_item_padding_horizontal">8dp</dimen>
 
     <dimen name="mosaic_w">100dp</dimen>
     <dimen name="mosaic_h">150dp</dimen>
+
+<!--    TEST FOR ADMIN DASHBOARD-->
+    <!-- Screen -->
+    <dimen name="screen_padding">16dp</dimen>
+    <dimen name="section_gap">16dp</dimen>
+
+    <!-- Topbar -->
+    <dimen name="topbar_height">56dp</dimen>
+    <dimen name="topbar_padding_h">16dp</dimen>
+    <dimen name="topbar_logo_height">36dp</dimen>
+    <dimen name="topbar_icon_size">28dp</dimen>
+    <dimen name="topbar_icon_gap">8dp</dimen>
+    <dimen name="topbar_elevation">4dp</dimen>
+
+    <!-- Section title -->
+    <dimen name="section_title_size">14sp</dimen>
+    <dimen name="section_title_margin_bottom">12dp</dimen>
+
+    <!-- Stat cards -->
+    <dimen name="stat_card_padding">16dp</dimen>
+    <dimen name="stat_card_corner">16dp</dimen>
+    <dimen name="stat_card_elevation">4dp</dimen>
+    <dimen name="stat_card_gap">12dp</dimen>
+    <dimen name="stat_icon_wrap_size">40dp</dimen>
+    <dimen name="stat_icon_size">22dp</dimen>
+    <dimen name="stat_value_size">20sp</dimen>
+    <dimen name="stat_title_size">10sp</dimen>
+    <dimen name="stat_desc_size">11sp</dimen>
+    <dimen name="stat_delta_icon_size">12dp</dimen>
+    <dimen name="stat_circle_overlay_size">90dp</dimen>
+
+    <!-- Chart cards -->
+    <dimen name="chart_card_padding">16dp</dimen>
+    <dimen name="chart_card_corner">16dp</dimen>
+    <dimen name="chart_card_elevation">2dp</dimen>
+    <dimen name="chart_line_height">220dp</dimen>
+    <dimen name="chart_bar_height">200dp</dimen>
+    <dimen name="chart_donut_height">200dp</dimen>
+    <dimen name="chart_legend_icon_size">12dp</dimen>
+    <dimen name="chart_legend_text_size">12sp</dimen>
+    <dimen name="chart_legend_gap">8dp</dimen>
+    <dimen name="toggle_btn_height">32dp</dimen>
+    <dimen name="toggle_btn_text_size">11sp</dimen>
+    <dimen name="toggle_btn_padding_h">12dp</dimen>
+    <dimen name="toggle_corner">999dp</dimen>
+
+    <!-- Recent Orders list -->
+    <dimen name="order_item_padding_v">12dp</dimen>
+    <dimen name="order_icon_size">36dp</dimen>
+    <dimen name="order_title_size">13sp</dimen>
+    <dimen name="order_subtitle_size">12sp</dimen>
+    <dimen name="order_link_color_size">13sp</dimen>
+    <dimen name="order_item_gap">4dp</dimen>
+    <dimen name="view_detail_text_size">13sp</dimen>
+
+    <!-- Branch table -->
+    <dimen name="table_header_padding_v">10dp</dimen>
+    <dimen name="table_header_padding_h">10dp</dimen>
+    <dimen name="table_row_padding_v">10dp</dimen>
+    <dimen name="table_row_padding_h">10dp</dimen>
+    <dimen name="table_text_size">13sp</dimen>
+    <dimen name="table_header_text_size">12sp</dimen>
+    <dimen name="table_corner">12dp</dimen>
+
+    <!-- Buttons -->
+    <dimen name="btn_corner">999dp</dimen>
+    <dimen name="btn_padding_h">16dp</dimen>
+    <dimen name="btn_padding_v">10dp</dimen>
+    <dimen name="btn_text_size">13sp</dimen>
+    <dimen name="btn_icon_size">16dp</dimen>
+    <dimen name="btn_icon_gap">6dp</dimen>
+
+    <!-- Bottom nav -->
+    <dimen name="nav_height">64dp</dimen>
+    <dimen name="nav_icon_size">24dp</dimen>
+    <dimen name="nav_label_size">10sp</dimen>
+    <dimen name="nav_elevation">8dp</dimen>
+
+    <!-- Modal -->
+    <dimen name="modal_corner">20dp</dimen>
+    <dimen name="modal_header_padding">20dp</dimen>
+    <dimen name="modal_body_padding">20dp</dimen>
+    <dimen name="modal_footer_padding">16dp</dimen>
+    <dimen name="modal_title_size">16sp</dimen>
+    <dimen name="delete_icon_size">64dp</dimen>
+    <dimen name="success_icon_size">52dp</dimen>
+
+    <!-- Form -->
+    <dimen name="form_gap">14dp</dimen>
+    <dimen name="form_label_size">13sp</dimen>
+    <dimen name="form_input_corner">10dp</dimen>
+    <dimen name="form_input_text_size">14sp</dimen>
+    <dimen name="form_textarea_min_lines">4</dimen>
+
+    <!-- Image upload slots -->
+    <dimen name="image_slot_height">80dp</dimen>
+    <dimen name="image_slot_corner">10dp</dimen>
+    <dimen name="image_slot_gap">6dp</dimen>
+    <dimen name="upload_icon_size">24dp</dimen>
+    <dimen name="upload_text_size">10sp</dimen>
+    <dimen name="remove_btn_size">20dp</dimen>
+
+    <!-- Status badge -->
+    <dimen name="badge_corner">999dp</dimen>
+    <dimen name="badge_padding_h">10dp</dimen>
+    <dimen name="badge_padding_v">3dp</dimen>
+    <dimen name="badge_text_size">11sp</dimen>
+
+    <!-- Card (generic white) -->
+    <dimen name="card_corner">16dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+
+    <!-- Spacing tokens -->
+    <dimen name="sp_4">4dp</dimen>
+    <dimen name="sp_6">6dp</dimen>
+    <dimen name="sp_8">8dp</dimen>
+    <dimen name="sp_10">10dp</dimen>
+    <dimen name="sp_12">12dp</dimen>
+    <dimen name="sp_16">16dp</dimen>
+    <dimen name="sp_20">20dp</dimen>
+    <dimen name="sp_24">24dp</dimen>
 </resources>

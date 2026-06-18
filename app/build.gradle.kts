@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    // Firebase
     id("com.google.gms.google-services")
 }
 
@@ -43,6 +42,10 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation(platform("com.google.firebase:firebase-bom:34.14.1"))
+    implementation("com.google.firebase:firebase-database")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -51,14 +54,22 @@ dependencies {
     // Firebase Authentication
     implementation("com.google.firebase:firebase-auth")
     // Firebase Realtime Database
-    implementation("com.google.firebase:firebase-database")
+    implementation("com.google.firebase:firebase-database:21.0.0")
+    // Firebase Storage
+    implementation("com.google.firebase:firebase-storage")
     // Firebase Analytics (không bắt buộc)
     implementation("com.google.firebase:firebase-analytics")
 
-    // Glide for image loading
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    // Glide
+    implementation(libs.glide)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
+    // Chart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    // Glide (load ảnh sản phẩm từ Firebase Storage)
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    // CircleImageView (avatar topbar)
+    implementation("de.hdodenhof:circleimageview:3.1.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

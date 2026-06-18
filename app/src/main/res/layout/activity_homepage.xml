@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -77,6 +78,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="12dp"
+                        android:autofillHints=""
                         android:layout_weight="1"
                         android:background="@null"
                         android:hint="@string/str_search_hint"
@@ -85,7 +87,7 @@
                         android:singleLine="true"
                         android:textColor="@color/nav_inactive"
                         android:textColorHint="@color/brand_blue"
-                        android:textSize="10sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -98,17 +100,16 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPagerBanners"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:visibility="gone" />
+                    android:layout_height="match_parent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imgBannerPreview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:contentDescription="Banner"
+                    android:contentDescription="@string/home_banner_desc"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/banner1"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:shapeAppearanceOverlay="@style/RoundedBanner"
                     tools:visibility="visible" />
 
@@ -150,7 +151,7 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="14dp"
-                android:layout_marginBottom="28dp"
+                android:layout_marginBottom="12dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp">
@@ -159,7 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="16dp"
+                    android:paddingTop="10dp"
                     android:paddingBottom="16dp">
 
                     <TextView
@@ -173,16 +174,20 @@
                         android:id="@+id/layoutBeverageCategories"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
                         android:baselineAligned="false"
                         android:gravity="center"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp">
 
                         <LinearLayout
+                            android:id="@+id/categoryPureTea"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -190,7 +195,7 @@
                                 android:layout_width="52dp"
                                 android:layout_height="58dp"
                                 android:adjustViewBounds="true"
-                                android:contentDescription="Pure Tea"
+                                android:contentDescription="@string/pure_tea"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/tra_yakult" />
 
@@ -207,9 +212,13 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/categoryTeaLatte"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -217,7 +226,7 @@
                                 android:layout_width="52dp"
                                 android:layout_height="58dp"
                                 android:adjustViewBounds="true"
-                                android:contentDescription="Tea Latte"
+                                android:contentDescription="@string/tea_latte"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/tra_latte" />
 
@@ -234,9 +243,13 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/categoryMilkTea"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -244,7 +257,7 @@
                                 android:layout_width="52dp"
                                 android:layout_height="58dp"
                                 android:adjustViewBounds="true"
-                                android:contentDescription="Milk Tea"
+                                android:contentDescription="@string/milk_tea"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/tra_sua" />
 
@@ -261,9 +274,13 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/categoryNewArrivals"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -271,7 +288,7 @@
                                 android:layout_width="52dp"
                                 android:layout_height="58dp"
                                 android:adjustViewBounds="true"
-                                android:contentDescription="New Arrivals"
+                                android:contentDescription="@string/new_arrivals"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/thuc_uong_moi" />
 
@@ -288,9 +305,13 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/categoryBestSellers"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -298,7 +319,7 @@
                                 android:layout_width="52dp"
                                 android:layout_height="58dp"
                                 android:adjustViewBounds="true"
-                                android:contentDescription="Best Sellers"
+                                android:contentDescription="@string/best_sellers"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/cac_mon_hot" />
 
@@ -315,9 +336,13 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/categoryFruitTea"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -325,7 +350,7 @@
                                 android:layout_width="52dp"
                                 android:layout_height="58dp"
                                 android:adjustViewBounds="true"
-                                android:contentDescription="Fruit Tea"
+                                android:contentDescription="@string/fruit_tea"
                                 android:scaleType="fitCenter"
                                 android:src="@mipmap/tra_dai_loan" />
 
@@ -353,7 +378,7 @@
                         android:paddingEnd="32dp"
                         android:text="@string/home_beverage_description"
                         android:textColor="@color/black"
-                        android:textSize="8sp" />
+                        android:textSize="7dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -371,7 +396,7 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:overScrollMode="never"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
@@ -385,8 +410,8 @@
                 android:layout_marginTop="18dp"
                 android:background="#E8F6FF"
                 android:orientation="vertical"
-                android:paddingTop="18dp"
-                android:paddingBottom="24dp">
+                android:paddingTop="10dp"
+                android:paddingBottom="18dp">
 
                 <TextView
                     style="@style/HomeSectionTitle"
@@ -433,6 +458,77 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_news_card" />
+
+            <TextView
+                style="@style/HomeSectionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="14dp"
+                android:text="@string/home_ngo_gia_story_title" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="14dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="4dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp">
+
+                    <ImageView
+                        android:id="@+id/imgNgoGiaStory"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/home_ngo_gia_story_image_desc"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/home_ngo_gia_story" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_story_scrim" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="vertical"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"
+                        android:paddingBottom="24dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/home_ngo_gia_story_description"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnNgoGiaStory"
+                            android:layout_width="140dp"
+                            android:layout_height="42dp"
+                            android:layout_marginTop="10dp"
+                            android:minWidth="0dp"
+                            android:text="@string/home_ngo_gia_story_cta"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/brand_blue"
+                            app:cornerRadius="24dp"
+                            app:strokeWidth="0dp" />
+                    </LinearLayout>
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

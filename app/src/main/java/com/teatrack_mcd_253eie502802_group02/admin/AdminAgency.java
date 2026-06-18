@@ -1,26 +1,518 @@
 package com.teatrack_mcd_253eie502802_group02.admin;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.adapter.AgencyAdapter;
+import com.teatrack_mcd_253eie502802_group02.model.Agency;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class AdminAgency extends AppCompatActivity {
+
+    private EditText etSearch;
+    private RecyclerView rvStores;
+    private Button btnAddAgency;
+
+    private static final int[] NAV_ITEM_IDS = {
+            R.id.nav_dashboard,
+            R.id.nav_products,
+            R.id.nav_orders,
+            R.id.nav_account,
+            R.id.nav_forum,
+            R.id.nav_branch,
+            R.id.nav_feedbacks,
+            R.id.nav_promotion
+    };
+
+    private AgencyAdapter agencyAdapter;
+    private List<Agency> agencyList;
+    private List<Agency> fullAgencyList;
+
+    private DatabaseReference databaseReference;
+    private StorageReference storageReference;
+
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
+    private EditText currentImageEditText;
+    private ShapeableImageView currentPreviewImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin_agency);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        if (imageUri != null) {
+                            if (currentPreviewImage != null) {
+                                currentPreviewImage.setImageURI(imageUri);
+                                currentPreviewImage.setVisibility(View.VISIBLE);
+                            }
+                            uploadImageToFirebase(imageUri);
+                        }
+                    }
+                }
+        );
+
+        initViews();
+        setupRecyclerView();
+        initFirebaseConnection();
+        setupNavBar();
+        setupHeader();
+
+        if (btnAddAgency != null) {
+            btnAddAgency.setOnClickListener(v -> showAddAgencyDialog());
+        }
+        setupSearch();
+    }
+
+    private void setupHeader() {
+        View btnProfile = findViewById(R.id.btn_profile);
+        if (btnProfile != null) {
+            btnProfile.setOnClickListener(v -> startActivity(new Intent(this, AdminProfile.class)));
+        }
+    }
+
+    private void setupNavBar() {
+        NavBarHelper.setupNavBar(this, NAV_ITEM_IDS, R.id.nav_branch, v -> {
+            int id = v.getId();
+            Class<?> destination = null;
+            if (id == R.id.nav_dashboard) destination = AdminDashboard.class;
+            else if (id == R.id.nav_products) destination = AdminProduct.class;
+            else if (id == R.id.nav_orders) destination = AdminOrders.class;
+            else if (id == R.id.nav_account) destination = AdminAccount.class;
+            else if (id == R.id.nav_forum) destination = AdminBlog.class;
+            else if (id == R.id.nav_branch) return; // Đang ở đây rồi
+            else if (id == R.id.nav_feedbacks) destination = AdminComplaints.class;
+            else if (id == R.id.nav_promotion) destination = AdminPromotion.class;
+
+            if (destination != null) {
+                startActivity(new Intent(this, destination));
+                finish();
+            }
+        });
+    }
+
+    private String generateNextAgencyId(List<Agency> currentList) {
+        int maxNumber = 0;
+        if (currentList != null && !currentList.isEmpty()) {
+            for (Agency agency : currentList) {
+                String id = agency.getId();
+                if (id != null && id.startsWith("CN")) {
+                    try {
+                        int number = Integer.parseInt(id.substring(2).trim());
+                        if (number > maxNumber) {
+                            maxNumber = number;
+                        }
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        int nextNumber = maxNumber + 1;
+        return String.format("CN%02d", nextNumber);
+    }
+
+    /**
+     * Dialog Thêm Mới Chi Nhánh
+     */
+    private void showAddAgencyDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_agency, null);
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        TextView tvDialogTitle = view.findViewById(R.id.tvDialogTitle);
+        ImageButton btnCloseDialog = view.findViewById(R.id.btnCloseDialog);
+        EditText etId = view.findViewById(R.id.etId);
+        EditText etName = view.findViewById(R.id.etName);
+        EditText etAddress = view.findViewById(R.id.etAddress);
+        EditText etPhone = view.findViewById(R.id.etPhone);
+        EditText etImage = view.findViewById(R.id.etImage);
+        EditText etMapEmbed = view.findViewById(R.id.etMapEmbed);
+        Button btnCancel = view.findViewById(R.id.btnCancel);
+        Button btnSubmit = view.findViewById(R.id.btnSubmit);
+        com.google.android.material.button.MaterialButton btnChooseImage = view.findViewById(R.id.btnChooseImage);
+        ShapeableImageView ivPreview = view.findViewById(R.id.ivPreview);
+
+        tvDialogTitle.setText("ADD NEW AGENCY");
+        if (btnSubmit != null) {
+            btnSubmit.setText("Create");
+        }
+
+        String nextId = generateNextAgencyId(agencyList);
+        if (etId != null) {
+            etId.setText(nextId);
+            etId.setEnabled(false);
+        }
+
+        if (btnCloseDialog != null) {
+            btnCloseDialog.setOnClickListener(v -> dialog.dismiss());
+        }
+        if (btnCancel != null) {
+            btnCancel.setOnClickListener(v -> dialog.dismiss());
+        }
+        if (btnChooseImage != null) {
+            btnChooseImage.setOnClickListener(v -> pickImage(etImage, ivPreview));
+        }
+
+        if (etImage != null && ivPreview != null) {
+            etImage.addTextChangedListener(new android.text.TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                @Override public void afterTextChanged(android.text.Editable s) {
+                    String input = s.toString().trim();
+                    if (!input.isEmpty()) {
+                        ivPreview.setVisibility(View.VISIBLE);
+                        if (input.startsWith("http")) {
+                            Glide.with(AdminAgency.this).load(input).into(ivPreview);
+                        } else {
+                            int resId = getResources().getIdentifier(input.replace(".png", "").replace(".jpg", ""), "mipmap", getPackageName());
+                            if (resId == 0) {
+                                resId = getResources().getIdentifier(input.replace(".png", "").replace(".jpg", ""), "drawable", getPackageName());
+                            }
+                            if (resId != 0) {
+                                ivPreview.setImageResource(resId);
+                            } else {
+                                ivPreview.setImageResource(android.R.drawable.ic_menu_gallery);
+                            }
+                        }
+                    } else {
+                        ivPreview.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+
+        if (btnSubmit != null) {
+            btnSubmit.setOnClickListener(v -> {
+                String id = etId != null ? etId.getText().toString().trim() : "";
+                String name = etName != null ? etName.getText().toString().trim() : "";
+                String address = etAddress != null ? etAddress.getText().toString().trim() : "";
+                String phone = etPhone != null ? etPhone.getText().toString().trim() : "";
+                String image = etImage != null ? etImage.getText().toString().trim() : "";
+                String mapEmbed = etMapEmbed != null ? etMapEmbed.getText().toString().trim() : "";
+
+                if (name.isEmpty() || address.isEmpty()) {
+                    Toast.makeText(this, "Vui lòng nhập đầy đủ Tên và Địa chỉ chi nhánh!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String currentTimestamp = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.US)
+                        .format(new java.util.Date());
+
+                Agency newAgency = new Agency(id, name, address, phone, image, currentTimestamp, mapEmbed, true);
+
+                databaseReference.child(id).setValue(newAgency).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Thêm chi nhánh thành công", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(this, "Lỗi: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+        }
+
+        dialog.show();
+    }
+
+    /**
+     * Dialog Cập Nhật / Sửa Chi Nhánh (Gọi từ Adapter)
+     */
+    public void showEditAgencyDialog(Agency agency) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_agency, null);
+        builder.setView(view);
+
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        TextView tvDialogTitle = view.findViewById(R.id.tvDialogTitle);
+        ImageButton btnCloseDialog = view.findViewById(R.id.btnCloseDialog);
+        EditText etId = view.findViewById(R.id.etId);
+        EditText etName = view.findViewById(R.id.etName);
+        EditText etAddress = view.findViewById(R.id.etAddress);
+        EditText etPhone = view.findViewById(R.id.etPhone);
+        EditText etImage = view.findViewById(R.id.etImage);
+        EditText etMapEmbed = view.findViewById(R.id.etMapEmbed);
+        Button btnCancel = view.findViewById(R.id.btnCancel);
+        Button btnSubmit = view.findViewById(R.id.btnSubmit);
+        com.google.android.material.button.MaterialButton btnChooseImage = view.findViewById(R.id.btnChooseImage);
+        ShapeableImageView ivPreview = view.findViewById(R.id.ivPreview);
+
+        if (tvDialogTitle != null) {
+            tvDialogTitle.setText("EDIT AGENCY");
+        }
+        if (btnSubmit != null) {
+            btnSubmit.setText("Save");
+        }
+
+        if (etId != null) {
+            etId.setText(agency.getId());
+            etId.setEnabled(false);
+        }
+        if (etName != null) {
+            etName.setText(agency.getName());
+        }
+        if (etAddress != null) {
+            etAddress.setText(agency.getAddress());
+        }
+        if (etPhone != null) {
+            etPhone.setText(agency.getPhone());
+        }
+        if (etImage != null) {
+            etImage.setText(agency.getImage());
+        }
+        if (etMapEmbed != null) {
+            etMapEmbed.setText(agency.getMapEmbed());
+        }
+
+        if (ivPreview != null && agency.getImage() != null && !agency.getImage().isEmpty()) {
+            ivPreview.setVisibility(View.VISIBLE);
+            if (agency.getImage().startsWith("http")) {
+                Glide.with(this).load(agency.getImage()).into(ivPreview);
+            } else {
+                int resId = getResources().getIdentifier(agency.getImage().replace(".png", "").replace(".jpg", ""), "mipmap", getPackageName());
+                if (resId == 0) {
+                    resId = getResources().getIdentifier(agency.getImage().replace(".png", "").replace(".jpg", ""), "drawable", getPackageName());
+                }
+                if (resId != 0) ivPreview.setImageResource(resId);
+            }
+        }
+
+        if (btnCloseDialog != null) {
+            btnCloseDialog.setOnClickListener(v -> dialog.dismiss());
+        }
+        if (btnCancel != null) {
+            btnCancel.setOnClickListener(v -> dialog.dismiss());
+        }
+        if (btnChooseImage != null) {
+            btnChooseImage.setOnClickListener(v -> pickImage(etImage, ivPreview));
+        }
+
+        if (etImage != null && ivPreview != null) {
+            etImage.addTextChangedListener(new android.text.TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                @Override public void afterTextChanged(android.text.Editable s) {
+                    String input = s.toString().trim();
+                    if (!input.isEmpty()) {
+                        ivPreview.setVisibility(View.VISIBLE);
+                        if (input.startsWith("http")) {
+                            Glide.with(AdminAgency.this).load(input).into(ivPreview);
+                        } else {
+                            int resId = getResources().getIdentifier(input.replace(".png", "").replace(".jpg", ""), "mipmap", getPackageName());
+                            if (resId == 0) {
+                                resId = getResources().getIdentifier(input.replace(".png", "").replace(".jpg", ""), "drawable", getPackageName());
+                            }
+                            if (resId != 0) {
+                                ivPreview.setImageResource(resId);
+                            } else {
+                                ivPreview.setImageResource(android.R.drawable.ic_menu_gallery);
+                            }
+                        }
+                    } else {
+                        ivPreview.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+
+        if (btnSubmit != null) {
+            btnSubmit.setOnClickListener(v -> {
+                String id = etId != null ? etId.getText().toString().trim() : "";
+                String name = etName != null ? etName.getText().toString().trim() : "";
+                String address = etAddress != null ? etAddress.getText().toString().trim() : "";
+                String phone = etPhone != null ? etPhone.getText().toString().trim() : "";
+                String image = etImage != null ? etImage.getText().toString().trim() : "";
+                String mapEmbed = etMapEmbed != null ? etMapEmbed.getText().toString().trim() : "";
+
+                if (name.isEmpty() || address.isEmpty()) {
+                    Toast.makeText(this, "Vui lòng nhập đầy đủ Tên và Địa chỉ chi nhánh!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Agency updatedAgency = new Agency(id, name, address, phone, image, agency.getCreatedAt(), mapEmbed, agency.isVisible());
+
+                databaseReference.child(id).setValue(updatedAgency).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Cập nhật chi nhánh thành công", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(this, "Lỗi: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
+        }
+
+        dialog.show();
+    }
+
+    /**
+     * Hàm xóa chi nhánh (Gọi từ Adapter)
+     */
+    public void deleteAgency(String agencyId) {
+        new AlertDialog.Builder(this)
+                .setTitle("Xóa chi nhánh")
+                .setMessage("Bạn có chắc chắn muốn xóa chi nhánh này không?")
+                .setPositiveButton("Xóa", (dialog, which) -> {
+                    databaseReference.child(agencyId).removeValue().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(AdminAgency.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(AdminAgency.this, "Lỗi khi xóa", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    private void setupSearch() {
+        if (etSearch == null) {
+            return;
+        }
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void filter(String text) {
+        if (agencyAdapter == null || fullAgencyList == null) {
+            return;
+        }
+        String query = text != null ? text.toLowerCase() : "";
+        List<Agency> filteredList = new ArrayList<>();
+        for (Agency item : fullAgencyList) {
+            if (item == null) {
+                continue;
+            }
+            if ((item.getName() != null && item.getName().toLowerCase().contains(query)) ||
+                    (item.getAddress() != null && item.getAddress().toLowerCase().contains(query))) {
+                filteredList.add(item);
+            }
+        }
+        agencyAdapter.updateList(filteredList);
+    }
+
+    public void pickImage(EditText targetEditText, ShapeableImageView previewImageView) {
+        this.currentImageEditText = targetEditText;
+        this.currentPreviewImage = previewImageView;
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        imagePickerLauncher.launch(intent);
+    }
+
+    private void uploadImageToFirebase(Uri imageUri) {
+        String fileName = UUID.randomUUID().toString() + ".jpg";
+        StorageReference fileRef = storageReference.child(fileName);
+
+        Toast.makeText(this, "Đang tải ảnh lên...", Toast.LENGTH_SHORT).show();
+
+        fileRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
+            fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                if (currentImageEditText != null) {
+                    currentImageEditText.setText(uri.toString());
+                }
+                Toast.makeText(AdminAgency.this, "Tải ảnh thành công", Toast.LENGTH_SHORT).show();
+            });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(AdminAgency.this, "Lỗi tải ảnh: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    private void initViews() {
+        etSearch = findViewById(R.id.etSearch);
+        rvStores = findViewById(R.id.rvStores);
+        btnAddAgency = findViewById(R.id.btnAddAgency);
+    }
+
+    private void setupRecyclerView() {
+        rvStores.setLayoutManager(new LinearLayoutManager(this));
+        agencyList = new ArrayList<>();
+        fullAgencyList = new ArrayList<>();
+        // Truyền context `this` vào Adapter để Adapter có thể tương tác gọi Dialog/Xóa
+        agencyAdapter = new AgencyAdapter(this, agencyList);
+        rvStores.setAdapter(agencyAdapter);
+    }
+
+    private void initFirebaseConnection() {
+        String firebaseUrl = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
+        databaseReference = FirebaseDatabase.getInstance(firebaseUrl).getReference("agencies");
+        storageReference = FirebaseStorage.getInstance().getReference("agency_images");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                agencyList.clear();
+                fullAgencyList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Agency agency = dataSnapshot.getValue(Agency.class);
+                    if (agency != null) {
+                        agencyList.add(agency);
+                        fullAgencyList.add(agency);
+                    }
+                }
+                agencyAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AdminAgency.this, "Lỗi tải dữ liệu: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
