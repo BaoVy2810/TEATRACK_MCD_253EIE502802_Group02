@@ -643,7 +643,6 @@
             </FrameLayout>
         </LinearLayout>
     </ScrollView>
-
     <include
         android:id="@+id/nav_bar"
         layout="@layout/activity_nav_bar_client"
