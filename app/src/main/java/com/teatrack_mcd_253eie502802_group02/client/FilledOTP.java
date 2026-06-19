@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:app/src/main/java/com/teatrack_mcd_253eie502802_group02/MainActivity.java
-package com.teatrack_mcd_253eie502802_group02;
-========
 package com.teatrack_mcd_253eie502802_group02.client;
->>>>>>>> main:app/src/main/java/com/teatrack_mcd_253eie502802_group02/client/Cart.java
 
 import android.os.Bundle;
 
@@ -14,17 +10,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 
-<<<<<<<< HEAD:app/src/main/java/com/teatrack_mcd_253eie502802_group02/MainActivity.java
-public class MainActivity extends AppCompatActivity {
-========
-public class Cart extends AppCompatActivity {
->>>>>>>> main:app/src/main/java/com/teatrack_mcd_253eie502802_group02/client/Cart.java
+public class FilledOTP extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_cart);
+        setContentView(R.layout.activity_filled_otp);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

@@ -3,11 +3,13 @@ package com.teatrack_mcd_253eie502802_group02.client;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.VideoView;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
@@ -15,15 +17,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 public class AboutUsActivity extends AppCompatActivity {
 
@@ -36,13 +34,13 @@ public class AboutUsActivity extends AppCompatActivity {
     private LinearLayout visionOverlay;
     private boolean visionAnimDone = false;
 
-    private LinearLayout mosaicCol1, mosaicCol2, mosaicCol3;
+    private LinearLayout mosaicCol1, mosaicCol2, mosaicCol3, mosaicCol4, mosaicCol5;
     private boolean mosaicAnimStarted = false;
 
     private TextView tvGreetGhostTop, tvGreetGhostBot;
     private boolean greetAnimStarted = false;
 
-    private final Handler handler = new Handler();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +48,8 @@ public class AboutUsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about_us);
 
         bindViews();
+        setupHeader();
+        setupNavBar();
         setupVideo();
         setupScrollListener();
 
@@ -69,8 +69,43 @@ public class AboutUsActivity extends AppCompatActivity {
         mosaicCol1      = findViewById(R.id.mosaicCol1);
         mosaicCol2      = findViewById(R.id.mosaicCol2);
         mosaicCol3      = findViewById(R.id.mosaicCol3);
+        mosaicCol4      = findViewById(R.id.mosaicCol4);
+        mosaicCol5      = findViewById(R.id.mosaicCol5);
         tvGreetGhostTop = findViewById(R.id.tvGreetGhostTop);
         tvGreetGhostBot = findViewById(R.id.tvGreetGhostBot);
+    }
+
+    private void setupHeader() {
+        findViewById(R.id.btn_cart).setOnClickListener(v ->
+                startActivity(new Intent(this, Cart.class)));
+
+        findViewById(R.id.btn_profile).setOnClickListener(v ->
+                startActivity(new Intent(this, UserProfile.class)));
+    }
+
+    private void setupNavBar() {
+        int[] navItemIds = {
+                R.id.nav_home,
+                R.id.nav_menu,
+                R.id.nav_orders,
+                R.id.nav_promotion,
+                R.id.nav_profile
+        };
+
+        NavBarHelper.setupNavBar(this, navItemIds, -1, v -> {
+            int id = v.getId();
+            if (id == R.id.nav_home) {
+                startActivity(new Intent(this, Homepage.class));
+            } else if (id == R.id.nav_menu) {
+                startActivity(new Intent(this, Menu.class));
+            } else if (id == R.id.nav_orders) {
+                startActivity(new Intent(this, OrderHistory.class));
+            } else if (id == R.id.nav_promotion) {
+                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, UserProfile.class));
+            }
+        });
     }
 
     private void setupVideo() {
@@ -129,7 +164,6 @@ public class AboutUsActivity extends AppCompatActivity {
         if (!isViewVisible(missionOverlay)) return;
         missionAnimDone = true;
 
-        // translateX: -screenWidth → 0
         float startX = -getResources().getDisplayMetrics().widthPixels - 100f;
         missionOverlay.setTranslationX(startX);
         missionOverlay.setAlpha(1f);
@@ -173,15 +207,22 @@ public class AboutUsActivity extends AppCompatActivity {
         if (!isViewVisible(sectionMosaic)) return;
         mosaicAnimStarted = true;
 
-        startMosaicColumn(mosaicCol1, true,  0);     // lên, delay 0
-        startMosaicColumn(mosaicCol2, false, 200);   // xuống, delay 200ms
-        startMosaicColumn(mosaicCol3, true,  400);   // lên, delay 400ms
+        // Cột 1, 3, 5: Trượt từ dưới lên
+        startMosaicColumn(mosaicCol1, true,  0);
+        startMosaicColumn(mosaicCol3, true,  400);
+        if (mosaicCol5 != null) startMosaicColumn(mosaicCol5, true, 800);
+
+        // Cột 2, 4: Trượt từ trên xuống
+        startMosaicColumn(mosaicCol2, false, 200);
+        if (mosaicCol4 != null) startMosaicColumn(mosaicCol4, false, 600);
     }
 
     private void startMosaicColumn(LinearLayout col, boolean scrollUp, long delayMs) {
+        if (col == null) return;
         float dpShift = 170f * getResources().getDisplayMetrics().density;
-        float from    = scrollUp ?  0f : -dpShift;
-        float to      = scrollUp ? -dpShift : 0f;
+
+        float from = 0f;
+        float to   = scrollUp ? -dpShift : dpShift;
 
         ObjectAnimator anim = ObjectAnimator.ofFloat(col, "translationY", from, to);
         anim.setDuration(3500);
@@ -192,12 +233,6 @@ public class AboutUsActivity extends AppCompatActivity {
         anim.start();
     }
 
-    // ═══════════════════════════════════════════════════════
-    // ANIMATION 4 — GREETING MARQUEE
-    // Ghost top: chạy từ phải → trái (translateX dương → âm)
-    // Ghost bot: chạy từ trái → phải (translateX âm → dương)
-    // Chữ xanh: đứng yên
-    // ═══════════════════════════════════════════════════════
     private void checkGreetVisible() {
         if (greetAnimStarted) return;
         FrameLayout sectionGreet = findViewById(R.id.sectionGreet);
@@ -205,22 +240,23 @@ public class AboutUsActivity extends AppCompatActivity {
         greetAnimStarted = true;
 
         tvGreetGhostTop.post(() -> {
+            float screenWidth = getResources().getDisplayMetrics().widthPixels;
             float textW = tvGreetGhostTop.getWidth();
-            if (textW == 0) textW = 1800f;
+            if (textW == 0) textW = screenWidth;
 
             ObjectAnimator animTop = ObjectAnimator.ofFloat(
-                    tvGreetGhostTop, "translationX", textW * 0.3f, -textW
+                    tvGreetGhostTop, "translationX", -textW, screenWidth
             );
-            animTop.setDuration(9000);
+            animTop.setDuration(10000);
             animTop.setInterpolator(new android.view.animation.LinearInterpolator());
             animTop.setRepeatCount(ValueAnimator.INFINITE);
             animTop.setRepeatMode(ValueAnimator.RESTART);
             animTop.start();
 
             ObjectAnimator animBot = ObjectAnimator.ofFloat(
-                    tvGreetGhostBot, "translationX", -textW, textW * 0.3f
+                    tvGreetGhostBot, "translationX", screenWidth, -textW
             );
-            animBot.setDuration(9000);
+            animBot.setDuration(10000);
             animBot.setInterpolator(new android.view.animation.LinearInterpolator());
             animBot.setRepeatCount(ValueAnimator.INFINITE);
             animBot.setRepeatMode(ValueAnimator.RESTART);

@@ -5,6 +5,256 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.teatrack_mcd_253eie502802_group02.client.BlogDetail">
+    android:background="@drawable/bg_blog_detail">
+
+    <!-- Header Include -->
+    <include
+        android:id="@+id/header"
+        layout="@layout/activity_header_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/nav_bar"
+        app:layout_constraintTop_toBottomOf="@id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Breadcrumb Banner -->
+            <LinearLayout
+                android:id="@+id/breadcrumb_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#D4EDFC"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/txtDetailBreadcrumbTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:textColor="#0B1320"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    tools:text="Blog Title" />
+
+                <TextView
+                    android:id="@+id/txtBreadcrumbPath"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:gravity="center"
+                    android:text="@string/blog_detail_breadcrumb_path"
+                    android:textColor="#808080"
+                    android:textSize="7sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <!-- Ngày đăng -->
+                <TextView
+                    android:id="@+id/txtDetailDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:gravity="center"
+                    android:textColor="#808080"
+                    android:textSize="7sp"
+                    android:textStyle="normal"
+                    tools:text="09/10/2023" />
+
+                <!-- Heading -->
+                <TextView
+                    android:id="@+id/txtDetailHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.25"
+                    android:textColor="#224b61"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    tools:text="KEM CHEESE &amp; XÍ MUỘI - BỘ ĐÔI KHUẤY ĐẢO" />
+
+                <!-- Subheading -->
+                <TextView
+                    android:id="@+id/txtDetailSubheading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="@font/inter"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.25"
+                    android:textColor="#224b61"
+                    android:textSize="8sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="Subheading text here"
+                    tools:visibility="visible" />
+
+                <!-- Divider -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="15dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="2dp"
+                        android:background="#808080" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginHorizontal="8dp"
+                        android:scaleType="fitCenter"
+                        android:src="@mipmap/logo_ngo_gia"
+                        android:contentDescription="@string/app_name" />
+
+                    <View
+                        android:layout_width="80dp"
+                        android:layout_height="2dp"
+                        android:background="#808080" />
+                </LinearLayout>
+
+                <!-- Single Image -->
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgDetailSingle"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="12dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/RoundedImage8dp"
+                    android:visibility="gone"
+                    tools:src="@drawable/ic_launcher_background"
+                    android:layout_gravity="center"
+                    tools:visibility="visible" />
+
+                <!-- Gallery Layout -->
+                <LinearLayout
+                    android:id="@+id/layoutDetailGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="gone">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imgGalleryLeft"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/RoundedImage8dp"
+                        android:contentDescription="@string/blog_image_desc" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imgGalleryRight1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_weight="1"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/RoundedImage8dp"
+                            android:contentDescription="@string/blog_image_desc" />
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/imgGalleryRight2"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:scaleType="centerCrop"
+                            app:shapeAppearanceOverlay="@style/RoundedImage8dp"
+                            android:contentDescription="@string/blog_image_desc" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Blog Content -->
+                <TextView
+                    android:id="@+id/txtDetailContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:lineSpacingMultiplier="1.6"
+                    android:paddingHorizontal="4dp"
+                    android:textColor="#6b7280"
+                    android:textSize="7sp"
+                    tools:text="Mỗi ly trà là một hành trình nhỏ, nơi vị và hương hòa quyện, mang lại cảm giác tươi mới và thư giãn trọn vẹn.\n\nHôm nay, hẹn nhau ở Hồng Trà Ngô Gia nhé!" />
+
+            </LinearLayout>
+
+            <!-- Related Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="#FFFFFF"
+                android:orientation="vertical"
+                android:paddingTop="25dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:paddingHorizontal="16dp"
+                    android:text="@string/blog_detail_related_title"
+                    android:textColor="#0088FF"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRelatedBlogs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="12dp"
+                    android:paddingBottom="16dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_related_blog" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Navigation Bar Include -->
+    <include
+        android:id="@+id/nav_bar"
+        layout="@layout/activity_nav_bar_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
+        tools:context="com.teatrack_mcd_253eie502802_group02.client.BlogDetail">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
