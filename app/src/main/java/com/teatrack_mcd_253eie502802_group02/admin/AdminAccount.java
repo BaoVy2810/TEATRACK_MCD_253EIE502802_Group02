@@ -9,13 +9,16 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -44,9 +47,9 @@ import java.util.regex.Pattern;
 
 public class AdminAccount extends AppCompatActivity implements AccountAdapter.AccountActionListener {
 
-    private static final String[] ROLE_FILTERS = {"All", "Admin", "Customer", "Customer Vip"};
-    private static final String[] ROLES = {"Admin", "Customer", "Customer Vip"};
-    private static final String[] STATUSES = {"Active", "Inactive", "Locked"};
+    private String[] ROLE_FILTERS;
+    private String[] ROLES;
+    private String[] STATUSES;
 
     private ActivityAdminAccountBinding binding;
     private AccountAdapter adapter;
@@ -54,14 +57,31 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
     private ValueEventListener usersListener;
     private final List<User> allUsers = new ArrayList<>();
     private String currentQuery = "";
-    private String currentRoleFilter = "All";
+    private String currentRoleFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         binding = ActivityAdminAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        ROLE_FILTERS = new String[]{
+                getString(R.string.filter_account_all),
+                getString(R.string.role_admin),
+                getString(R.string.role_customer),
+                getString(R.string.role_customer_vip)
+        };
+        ROLES = new String[]{
+                getString(R.string.role_admin),
+                getString(R.string.role_customer),
+                getString(R.string.role_customer_vip)
+        };
+        STATUSES = new String[]{
+                getString(R.string.status_active),
+                getString(R.string.status_inactive),
+                getString(R.string.status_locked)
+        };
+        currentRoleFilter = ROLE_FILTERS[0];
 
         String firebaseUrl = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
         usersRef = FirebaseDatabase.getInstance(firebaseUrl).getReference("Users");
@@ -102,20 +122,46 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
             public void afterTextChanged(Editable s) {}
         });
 
-        ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, ROLE_FILTERS);
-        binding.spinnerRoleFilter.setAdapter(roleAdapter);
-        binding.spinnerRoleFilter.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
-                currentRoleFilter = ROLE_FILTERS[position];
-                applyFilters();
-            }
+        binding.btnRoleFilter.setText(currentRoleFilter);
+        binding.btnRoleFilter.setOnClickListener(this::showRoleFilterPopup);
+    }
 
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {
-            }
-        });
+    private void showRoleFilterPopup(View anchor) {
+        View popupView = LayoutInflater.from(this).inflate(R.layout.layout_role_filter_popup, null);
+        int halfScreenWidth = getResources().getDisplayMetrics().widthPixels / 2;
+        PopupWindow popup = new PopupWindow(
+                popupView,
+                halfScreenWidth,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
+        popup.setElevation(8f);
+        popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        // Show checkmark on currently selected item
+        int[][] iconIds = {
+                {R.id.icFilterAll},
+                {R.id.icFilterAdmin},
+                {R.id.icFilterCustomer},
+                {R.id.icFilterCustomerVip}
+        };
+        for (int i = 0; i < ROLE_FILTERS.length; i++) {
+            ImageView icon = popupView.findViewById(iconIds[i][0]);
+            icon.setVisibility(currentRoleFilter.equals(ROLE_FILTERS[i]) ? View.VISIBLE : View.GONE);
+        }
+
+        // Click handlers
+        int[] itemIds = {R.id.btnFilterAll, R.id.btnFilterAdmin, R.id.btnFilterCustomer, R.id.btnFilterCustomerVip};
+        for (int i = 0; i < ROLE_FILTERS.length; i++) {
+            final String role = ROLE_FILTERS[i];
+            popupView.findViewById(itemIds[i]).setOnClickListener(v -> {
+                currentRoleFilter = role;
+                binding.btnRoleFilter.setText(role);
+                applyFilters();
+                popup.dismiss();
+            });
+        }
+
+        popup.showAsDropDown(anchor, 0, 4);
     }
 
     private void setupActions() {
@@ -129,7 +175,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         });
 
         binding.btnExportExcel.setOnClickListener(v ->
-                Toast.makeText(this, "Xuất Excel", Toast.LENGTH_SHORT).show());
+                Toast.makeText(this, getString(R.string.msg_export_excel), Toast.LENGTH_SHORT).show());
     }
 
     private void setupBottomNav() {
@@ -184,7 +230,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminAccount.this, "Load users failed: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminAccount.this, getString(R.string.error_load_users, error.getMessage()), Toast.LENGTH_SHORT).show();
             }
         };
         usersRef.addValueEventListener(usersListener);
@@ -198,34 +244,97 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
             String fullName = safe(user.getFullName()).toLowerCase(Locale.getDefault());
             String username = safe(user.getUsername()).toLowerCase(Locale.getDefault());
             boolean matchesSearch = query.isEmpty() || fullName.contains(query) || username.contains(query);
-            boolean matchesRole = "All".equals(currentRoleFilter) || currentRoleFilter.equalsIgnoreCase(user.getRole());
+            boolean matchesRole = getString(R.string.filter_account_all).equals(currentRoleFilter) || currentRoleFilter.equalsIgnoreCase(user.getRole());
 
             if (matchesSearch && matchesRole) {
                 filteredUsers.add(user);
             }
         }
 
+        filteredUsers.sort((a, b) -> {
+            String idA = safe(a.getId()).toUpperCase(Locale.getDefault());
+            String idB = safe(b.getId()).toUpperCase(Locale.getDefault());
+            // Extract numeric part (e.g. "CS01" → 1) for natural sort
+            try {
+                int numA = Integer.parseInt(idA.replaceAll("[^0-9]", ""));
+                int numB = Integer.parseInt(idB.replaceAll("[^0-9]", ""));
+                return Integer.compare(numA, numB);
+            } catch (NumberFormatException e) {
+                return idA.compareTo(idB);
+            }
+        });
         adapter.submitList(filteredUsers);
         binding.tvEmptyState.setVisibility(filteredUsers.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
     }
 
     @Override
     public void onView(User user) {
-        String message = "ID: " + safe(user.getId())
-                + "\nFull name: " + safe(user.getFullName())
-                + "\nUsername: " + safe(user.getUsername())
-                + "\nEmail: " + safe(user.getEmail())
-                + "\nRole: " + safe(user.getRole())
-                + "\nStatus: " + safe(user.getStatus())
-                + "\nPhone: " + safe(user.getPhoneNumber())
-                + "\nAddress: " + safe(user.getAddress())
-                + "\nCreated: " + safe(user.getCreatedAt());
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        View detailView = LayoutInflater.from(this).inflate(R.layout.dialog_account_detail, null);
+        dialog.setContentView(detailView);
 
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("Account Detail")
-                .setMessage(message)
-                .setPositiveButton("Close", null)
-                .show();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.92);
+            dialog.getWindow().setAttributes(params);
+        }
+
+        String initial = getInitial(user.getFullName(), user.getUsername());
+        ((TextView) detailView.findViewById(R.id.tvDetailInitial)).setText(initial);
+        ((TextView) detailView.findViewById(R.id.tvDetailFullName)).setText(safe(user.getFullName()));
+        ((TextView) detailView.findViewById(R.id.tvDetailUsername)).setText("@" + safe(user.getUsername()));
+        ((TextView) detailView.findViewById(R.id.tvDetailId)).setText(safe(user.getId()));
+        ((TextView) detailView.findViewById(R.id.tvDetailRole)).setText(safe(user.getRole()));
+        ((TextView) detailView.findViewById(R.id.tvDetailEmail)).setText(safe(user.getEmail()));
+        ((TextView) detailView.findViewById(R.id.tvDetailPhone)).setText(
+                safe(user.getPhoneNumber()).isEmpty() ? getString(R.string.text_na) : user.getPhoneNumber());
+        ((TextView) detailView.findViewById(R.id.tvDetailAddress)).setText(
+                safe(user.getAddress()).isEmpty() ? getString(R.string.text_na) : user.getAddress());
+        ((TextView) detailView.findViewById(R.id.tvDetailCreatedAt)).setText(safe(user.getCreatedAt()));
+
+        // Status badge with colour
+        TextView tvStatus = detailView.findViewById(R.id.tvDetailStatus);
+        tvStatus.setText(safe(user.getStatus()));
+        bindDetailStatus(tvStatus, user.getStatus());
+
+        detailView.findViewById(R.id.btnClose).setOnClickListener(v -> dialog.dismiss());
+        detailView.findViewById(R.id.btnCloseDetail).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }
+
+    private void bindDetailStatus(TextView tvStatus, String status) {
+        int textColor;
+        int bgColor;
+        if (getString(R.string.status_locked).equalsIgnoreCase(status)) {
+            textColor = ContextCompat.getColor(this, R.color.danger);
+            bgColor = ContextCompat.getColor(this, R.color.danger_bg);
+        } else if (getString(R.string.status_inactive).equalsIgnoreCase(status)) {
+            textColor = ContextCompat.getColor(this, R.color.text_secondary);
+            bgColor = ContextCompat.getColor(this, R.color.divider);
+        } else {
+            textColor = ContextCompat.getColor(this, R.color.success);
+            bgColor = ContextCompat.getColor(this, R.color.success_bg);
+        }
+        tvStatus.setTextColor(textColor);
+        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+        bg.setColor(bgColor);
+        bg.setCornerRadius(999 * getResources().getDisplayMetrics().density);
+        bg.setStroke(1, adjustAlpha(textColor, 0.35f));
+        tvStatus.setBackground(bg);
+    }
+
+    private int adjustAlpha(int color, float factor) {
+        int alpha = Math.round(android.graphics.Color.alpha(color) * factor);
+        return (color & 0x00FFFFFF) | (alpha << 24);
+    }
+
+    private String getInitial(String fullName, String username) {
+        String source = !safe(fullName).isEmpty() ? fullName : username;
+        source = safe(source).trim();
+        return source.isEmpty() ? "?" : source.substring(0, 1).toUpperCase();
     }
 
     @Override
@@ -235,14 +344,82 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
 
     @Override
     public void onDelete(User user) {
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("Delete account")
-                .setMessage("Are you sure you want to delete this account?")
-                .setNegativeButton("Cancel", null)
-                .setPositiveButton("Delete", (dialog, which) -> usersRef.child(user.getId()).removeValue()
-                        .addOnSuccessListener(unused -> Toast.makeText(this, "Delete successfully", Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(e -> Toast.makeText(this, "Delete failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()))
-                .show();
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_delete_confirm);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            dialog.getWindow().setAttributes(params);
+        }
+
+        TextView tvMessage = dialog.findViewById(R.id.tvDeleteMessage);
+        String name = safe(user.getFullName()).isEmpty() ? safe(user.getUsername()) : user.getFullName();
+        String html = getString(R.string.confirm_delete_account_message) + " <b>" + name + "</b>?";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            tvMessage.setText(android.text.Html.fromHtml(html, android.text.Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvMessage.setText(android.text.Html.fromHtml(html));
+        }
+
+        dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
+            usersRef.child(user.getId()).removeValue()
+                    .addOnSuccessListener(unused -> {
+                        Toast.makeText(this, getString(R.string.msg_delete_success), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(this, getString(R.string.error_delete_failed, e.getMessage()), Toast.LENGTH_SHORT).show());
+        });
+
+        dialog.show();
+    }
+
+    @Override
+    public void onUpgradeVip(User user) {
+        boolean isVip = getString(R.string.role_customer_vip).equalsIgnoreCase(user.getRole());
+        String newRole = isVip ? getString(R.string.role_customer) : getString(R.string.role_customer_vip);
+        String title = isVip ? getString(R.string.dialog_downgrade_vip_title) : getString(R.string.dialog_upgrade_vip_title);
+        String name = safe(user.getFullName()).isEmpty() ? safe(user.getUsername()) : user.getFullName();
+        String message = isVip
+                ? "Are you sure you want to downgrade <b>" + name + "</b> to Customer?"
+                : "Are you sure you want to upgrade <b>" + name + "</b> to Customer VIP?";
+
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_upgrade_vip);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            dialog.getWindow().setAttributes(params);
+        }
+
+        ((TextView) dialog.findViewById(R.id.tvVipTitle)).setText(title);
+        TextView tvMsg = dialog.findViewById(R.id.tvVipMessage);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            tvMsg.setText(android.text.Html.fromHtml(message, android.text.Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvMsg.setText(android.text.Html.fromHtml(message));
+        }
+
+        dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btnConfirmVip).setOnClickListener(v ->
+                usersRef.child(user.getId()).child("role").setValue(newRole)
+                        .addOnSuccessListener(unused -> {
+                            // Update local object immediately — don't wait for Firebase listener
+                            user.setRole(newRole);
+                            applyFilters();
+                            Toast.makeText(this,
+                                    isVip ? getString(R.string.msg_downgrade_vip_success) : getString(R.string.msg_upgrade_vip_success),
+                                    Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        })
+                        .addOnFailureListener(e -> Toast.makeText(this,
+                                getString(R.string.error_save_failed, e.getMessage()), Toast.LENGTH_SHORT).show()));
+        dialog.show();
     }
 
     private void showAccountDialog(User editingUser) {
@@ -261,6 +438,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         setupDialogDropdowns(dialogBinding);
         bindDialogData(dialogBinding, editingUser);
 
+        dialogBinding.btnClose.setOnClickListener(v -> dialog.dismiss());
         dialogBinding.btnCancel.setOnClickListener(v -> dialog.dismiss());
         dialogBinding.btnSave.setOnClickListener(v -> saveAccount(dialog, dialogBinding, editingUser));
 
@@ -268,16 +446,102 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
     }
 
     private void setupDialogDropdowns(DialogAddEditAccountBinding dialogBinding) {
-        ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, ROLES);
-        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, STATUSES);
-        dialogBinding.actRole.setAdapter(roleAdapter);
-        dialogBinding.actStatus.setAdapter(statusAdapter);
+        dialogBinding.btnRoleSelect.setOnClickListener(v ->
+                showRolePickerDialog(dialogBinding.btnRoleSelect));
+        dialogBinding.btnStatusSelect.setOnClickListener(v ->
+                showStatusPickerDialog(dialogBinding.btnStatusSelect));
+    }
+
+    private void showRolePickerDialog(TextView targetView) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_dialog_role_popup, null);
+        dialog.setContentView(view);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.78);
+            dialog.getWindow().setAttributes(params);
+        }
+        // Rounded white card background
+        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+        bg.setColor(android.graphics.Color.WHITE);
+        bg.setCornerRadius(20 * getResources().getDisplayMetrics().density);
+        view.setBackground(bg);
+
+        String current = targetView.getText() != null ? targetView.getText().toString() : "";
+        int[] rowIds = {R.id.btnPopupAdmin, R.id.btnPopupCustomer, R.id.btnPopupCustomerVip};
+        int[] rbIds  = {R.id.rbAdmin, R.id.rbCustomer, R.id.rbCustomerVip};
+        for (int i = 0; i < ROLES.length; i++) {
+            boolean selected = ROLES[i].equalsIgnoreCase(current);
+            ((android.widget.RadioButton) view.findViewById(rbIds[i])).setChecked(selected);
+            highlightPickerRow(view.findViewById(rowIds[i]), selected);
+        }
+        for (int i = 0; i < ROLES.length; i++) {
+            final String role = ROLES[i];
+            view.findViewById(rowIds[i]).setOnClickListener(v -> { targetView.setText(role); dialog.dismiss(); });
+        }
+        dialog.show();
+    }
+
+    private void showStatusPickerDialog(TextView targetView) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        View view = LayoutInflater.from(this).inflate(R.layout.layout_dialog_status_popup, null);
+        dialog.setContentView(view);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.78);
+            dialog.getWindow().setAttributes(params);
+        }
+        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+        bg.setColor(android.graphics.Color.WHITE);
+        bg.setCornerRadius(20 * getResources().getDisplayMetrics().density);
+        view.setBackground(bg);
+
+        String current = targetView.getText() != null ? targetView.getText().toString() : "";
+        int[] rowIds = {R.id.btnPopupActive, R.id.btnPopupInactive, R.id.btnPopupLocked};
+        int[] rbIds  = {R.id.rbActive, R.id.rbInactive, R.id.rbLocked};
+        for (int i = 0; i < STATUSES.length; i++) {
+            boolean selected = STATUSES[i].equalsIgnoreCase(current);
+            ((android.widget.RadioButton) view.findViewById(rbIds[i])).setChecked(selected);
+            highlightPickerRow(view.findViewById(rowIds[i]), selected);
+        }
+        for (int i = 0; i < STATUSES.length; i++) {
+            final String status = STATUSES[i];
+            view.findViewById(rowIds[i]).setOnClickListener(v -> { targetView.setText(status); dialog.dismiss(); });
+        }
+        dialog.show();
+    }
+
+    private void highlightPickerRow(android.view.ViewGroup row, boolean selected) {
+        float density = getResources().getDisplayMetrics().density;
+        if (selected) {
+            android.graphics.drawable.GradientDrawable rowBg = new android.graphics.drawable.GradientDrawable();
+            rowBg.setColor(0xFF0088FF);
+            rowBg.setCornerRadius(10 * density);
+            row.setBackground(rowBg);
+            // tint text + radio white
+            for (int i = 0; i < row.getChildCount(); i++) {
+                android.view.View child = row.getChildAt(i);
+                if (child instanceof android.widget.TextView) {
+                    ((android.widget.TextView) child).setTextColor(android.graphics.Color.WHITE);
+                }
+                if (child instanceof android.widget.RadioButton) {
+                    ((android.widget.RadioButton) child).setButtonTintList(
+                            android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
+                }
+            }
+        } else {
+            row.setBackground(null);
+        }
     }
 
     private void bindDialogData(DialogAddEditAccountBinding dialogBinding, User user) {
         boolean isEdit = user != null;
-        dialogBinding.tvDialogTitle.setText(isEdit ? "Edit Account" : "Add Account");
-        dialogBinding.btnSave.setText(isEdit ? "Update" : "Save");
+        dialogBinding.tvDialogTitle.setText(isEdit ? getString(R.string.dialog_edit_account_title) : getString(R.string.dialog_add_account_title));
+        dialogBinding.btnSave.setText(isEdit ? getString(R.string.btn_update) : getString(R.string.btn_save));
 
         if (isEdit) {
             dialogBinding.etFullName.setText(user.getFullName());
@@ -285,11 +549,11 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
             dialogBinding.etEmail.setText(user.getEmail());
             dialogBinding.etPhoneNumber.setText(user.getPhoneNumber());
             dialogBinding.etAddress.setText(user.getAddress());
-            dialogBinding.actRole.setText(user.getRole(), false);
-            dialogBinding.actStatus.setText(user.getStatus(), false);
+            dialogBinding.btnRoleSelect.setText(user.getRole());
+            dialogBinding.btnStatusSelect.setText(user.getStatus());
         } else {
-            dialogBinding.actRole.setText(ROLES[1], false);
-            dialogBinding.actStatus.setText(STATUSES[0], false);
+            dialogBinding.btnRoleSelect.setText(ROLES[1]);
+            dialogBinding.btnStatusSelect.setText(STATUSES[0]);
         }
 
         TextWatcher clearErrorsWatcher = new TextWatcher() {
@@ -299,10 +563,10 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                dialogBinding.tilFullName.setError(null);
-                dialogBinding.tilUsername.setError(null);
-                dialogBinding.tilEmail.setError(null);
-                dialogBinding.tilPhoneNumber.setError(null);
+                dialogBinding.etFullName.setError(null);
+                dialogBinding.etUsername.setError(null);
+                dialogBinding.etEmail.setError(null);
+                dialogBinding.etPhoneNumber.setError(null);
             }
 
             @Override
@@ -322,8 +586,8 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         String email = textOf(dialogBinding.etEmail);
         String phoneNumber = textOf(dialogBinding.etPhoneNumber);
         String address = textOf(dialogBinding.etAddress);
-        String role = textOf(dialogBinding.actRole);
-        String status = textOf(dialogBinding.actStatus);
+        String role = textOf(dialogBinding.btnRoleSelect);
+        String status = textOf(dialogBinding.btnStatusSelect);
 
         if (!validate(dialogBinding, editingUser, fullName, username, email, phoneNumber)) {
             return;
@@ -331,7 +595,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
 
         String id = editingUser == null ? generateNextAccountId() : editingUser.getId();
         if (id == null) {
-            Toast.makeText(this, "Cannot create account id", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_cannot_create_account_id), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -346,10 +610,24 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
 
         usersRef.child(id).setValue(user)
                 .addOnSuccessListener(unused -> {
-                    Toast.makeText(this, editingUser == null ? "Save successfully" : "Update successfully", Toast.LENGTH_SHORT).show();
+                    // Update local list immediately — don't wait for Firebase listener
+                    if (editingUser != null) {
+                        // Edit: find and update existing entry in-place
+                        for (int i = 0; i < allUsers.size(); i++) {
+                            if (id.equals(safe(allUsers.get(i).getId()))) {
+                                allUsers.set(i, user);
+                                break;
+                            }
+                        }
+                    } else {
+                        // Add: append new user
+                        allUsers.add(user);
+                    }
+                    applyFilters();
+                    Toast.makeText(this, getString(editingUser == null ? R.string.msg_save_success : R.string.msg_update_success), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Save failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(this, getString(R.string.error_save_failed, e.getMessage()), Toast.LENGTH_SHORT).show());
     }
 
     private boolean validate(DialogAddEditAccountBinding dialogBinding, User editingUser,
@@ -357,31 +635,31 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         boolean valid = true;
 
         if (fullName.isEmpty()) {
-            dialogBinding.tilFullName.setError("Full Name is required");
+            dialogBinding.etFullName.setError(getString(R.string.error_fullname_required));
             valid = false;
         }
 
         if (username.isEmpty()) {
-            dialogBinding.tilUsername.setError("Username is required");
+            dialogBinding.etUsername.setError(getString(R.string.error_username_required));
             valid = false;
         } else if (isUsernameExists(username, editingUser == null ? null : editingUser.getId())) {
-            dialogBinding.tilUsername.setError("Username already exists");
+            dialogBinding.etUsername.setError(getString(R.string.error_username_exists));
             valid = false;
         }
 
         if (email.isEmpty()) {
-            dialogBinding.tilEmail.setError("Email is required");
+            dialogBinding.etEmail.setError(getString(R.string.error_email_required));
             valid = false;
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            dialogBinding.tilEmail.setError("Invalid email format");
+            dialogBinding.etEmail.setError(getString(R.string.error_email_invalid));
             valid = false;
         }
 
         if (phoneNumber.isEmpty()) {
-            dialogBinding.tilPhoneNumber.setError("Phone Number is required");
+            dialogBinding.etPhoneNumber.setError(getString(R.string.error_phone_required));
             valid = false;
         } else if (!phoneNumber.matches("^[0-9]{10}$")) {
-            dialogBinding.tilPhoneNumber.setError("Phone Number must be exactly 10 digits");
+            dialogBinding.etPhoneNumber.setError(getString(R.string.error_phone_format));
             valid = false;
         }
 
@@ -417,7 +695,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         int nextNumber = maxNumber + 1;
         String candidate;
         do {
-            candidate = String.format(Locale.getDefault(), "CS%02d", nextNumber++);
+            candidate = String.format(Locale.getDefault(), "CS%03d", nextNumber++);
         } while (isAccountIdExists(candidate));
 
         return candidate;
@@ -437,7 +715,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
      * Hàm này sẽ quét toàn bộ node "Users" và bổ sung các trường thiếu.
      */
     private void migrateUserData() {
-        Toast.makeText(this, "Đang bắt đầu chuẩn hóa dữ liệu...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.msg_migration_start), Toast.LENGTH_SHORT).show();
         usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -480,11 +758,11 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
 
                     // 5. Khởi tạo Role/Status mặc định nếu trống
                     if (TextUtils.isEmpty(user.getRole())) {
-                        user.setRole("Customer");
+                        user.setRole(getString(R.string.role_customer));
                         isModified = true;
                     }
                     if (TextUtils.isEmpty(user.getStatus())) {
-                        user.setStatus("Active");
+                        user.setStatus(getString(R.string.status_active));
                         isModified = true;
                     }
 
@@ -500,15 +778,15 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
                     }
                 }
                 new MaterialAlertDialogBuilder(AdminAccount.this)
-                        .setTitle("Migration Hoàn Tất")
-                        .setMessage("Đã chuẩn hóa thành công " + updatedCount + " tài khoản cũ.")
-                        .setPositiveButton("OK", null)
+                        .setTitle(getString(R.string.dialog_migration_complete_title))
+                        .setMessage(getString(R.string.msg_migration_success_format, updatedCount))
+                        .setPositiveButton(getString(R.string.btn_ok), null)
                         .show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminAccount.this, "Lỗi migration: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminAccount.this, getString(R.string.error_migration_failed, error.getMessage()), Toast.LENGTH_SHORT).show();
             }
         });
     }

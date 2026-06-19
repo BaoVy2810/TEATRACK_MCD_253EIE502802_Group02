@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
         void onView(User user);
         void onEdit(User user);
         void onDelete(User user);
+        void onUpgradeVip(User user);
     }
 
     private final Context context;
@@ -78,6 +80,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
 
             bindRole(user.getRole());
             bindStatus(user.getStatus());
+            bindVipButton(user);
 
             binding.btnView.setOnClickListener(v -> listener.onView(user));
             binding.btnEdit.setOnClickListener(v -> listener.onEdit(user));
@@ -86,9 +89,37 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
 
         private void bindRole(String role) {
             binding.tvRole.setText(safe(role));
-            binding.tvRole.setTypeface(Typeface.DEFAULT, "Customer Vip".equalsIgnoreCase(role) ? Typeface.BOLD : Typeface.NORMAL);
+            binding.tvRole.setTypeface(Typeface.DEFAULT, context.getString(R.string.role_customer_vip).equalsIgnoreCase(role) ? Typeface.BOLD : Typeface.NORMAL);
             binding.tvRole.setTextColor(ContextCompat.getColor(context, R.color.text_primary));
             binding.tvRole.setBackground(null);
+        }
+
+        private void bindVipButton(User user) {
+            String role = safe(user.getRole());
+            if (context.getString(R.string.role_admin).equalsIgnoreCase(role)) {
+                binding.btnUpgradeVip.setVisibility(View.GONE);
+                return;
+            }
+            binding.btnUpgradeVip.setVisibility(View.VISIBLE);
+            binding.btnUpgradeVip.setOnClickListener(v -> listener.onUpgradeVip(user));
+
+            if (context.getString(R.string.role_customer_vip).equalsIgnoreCase(role)) {
+                // Already VIP → show downgrade option
+                binding.btnUpgradeVip.setText(context.getString(R.string.btn_downgrade_vip));
+                binding.btnUpgradeVip.setTextColor(ContextCompat.getColor(context, R.color.address_amber));
+                binding.btnUpgradeVip.setIconTint(
+                        android.content.res.ColorStateList.valueOf(ContextCompat.getColor(context, R.color.address_amber)));
+                binding.btnUpgradeVip.setStrokeColor(
+                        android.content.res.ColorStateList.valueOf(ContextCompat.getColor(context, R.color.downgrade_amber_light)));
+            } else {
+                // Customer → show upgrade option
+                binding.btnUpgradeVip.setText(context.getString(R.string.btn_upgrade_vip));
+                binding.btnUpgradeVip.setTextColor(ContextCompat.getColor(context, R.color.vip_purple));
+                binding.btnUpgradeVip.setIconTint(
+                        android.content.res.ColorStateList.valueOf(ContextCompat.getColor(context, R.color.vip_purple)));
+                binding.btnUpgradeVip.setStrokeColor(
+                        android.content.res.ColorStateList.valueOf(ContextCompat.getColor(context, R.color.vip_purple_light)));
+            }
         }
 
         private void bindStatus(String status) {
@@ -96,10 +127,10 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
 
             int textColor;
             int bgColor;
-            if ("Locked".equalsIgnoreCase(status)) {
+            if (context.getString(R.string.status_locked).equalsIgnoreCase(status)) {
                 textColor = ContextCompat.getColor(context, R.color.danger);
                 bgColor = ContextCompat.getColor(context, R.color.danger_bg);
-            } else if ("Inactive".equalsIgnoreCase(status)) {
+            } else if (context.getString(R.string.status_inactive).equalsIgnoreCase(status)) {
                 textColor = ContextCompat.getColor(context, R.color.text_secondary);
                 bgColor = ContextCompat.getColor(context, R.color.divider);
             } else {
