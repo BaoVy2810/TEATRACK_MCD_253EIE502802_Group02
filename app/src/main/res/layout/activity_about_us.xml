@@ -36,7 +36,8 @@
                     android:text="Hồng trà Ngô gia"
                     android:textColor="#0088FF"
                     android:textSize="12sp"
-                    android:fontFamily="@font/inter"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:textStyle="bold" />
 
                 <TextView
@@ -47,7 +48,8 @@
                     android:text="Tự hào 74 năm hình thành và phát triển"
                     android:textColor="#0F172A"
                     android:textSize="10sp"
-                    android:fontFamily="@font/inter"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:textStyle="bold"
                     android:lineSpacingMultiplier="1.25" />
             </LinearLayout>
@@ -79,7 +81,8 @@
                 android:text="CÂU CHUYỆN THƯƠNG HIỆU"
                 android:textColor="#D11515"
                 android:textSize="10sp"
-                android:fontFamily="@font/inter"
+                android:fontFamily="@font/inter_family"
+                android:fontWeight="700"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:letterSpacing="0.05" />
@@ -91,7 +94,8 @@
                 android:text="Năm 1951, giữa đất trà mộc mạc, thương hiệu ra đời với đam mê tạo nên những ly trà đậm vị. Từ đó, Ngô Gia đã trở thành một trong những thương hiệu trà được yêu thích nhờ chất lượng ổn định, dịch vụ tận tâm và không ngừng đổi mới để bắt kịp xu hướng của giới trẻ Việt."
                 android:textColor="#475569"
                 android:textSize="7sp"
-                android:fontFamily="@font/inter_semibold"
+                android:fontFamily="@font/inter_family"
+                android:fontWeight="600"
                 android:gravity="center"
                 android:lineSpacingMultiplier="1.7" />
 
@@ -133,7 +137,8 @@
                             android:text="Chất lượng hàng đầu"
                             android:textColor="#D11515"
                             android:textSize="10sp"
-                            android:fontFamily="@font/inter"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:textStyle="bold" />
 
                         <TextView
@@ -143,7 +148,8 @@
                             android:text="An toàn, vệ sinh và ngon miệng. Việc sử dụng các nguyên liệu an toàn, tự nhiên và vệ sinh là ưu tiên hàng đầu của Hồng trà Ngô Gia."
                             android:textColor="#64748B"
                             android:textSize="7sp"
-                            android:fontFamily="@font/inter_semibold"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="600"
                             android:lineSpacingMultiplier="1.6" />
                     </LinearLayout>
                 </LinearLayout>
@@ -187,7 +193,8 @@
                             android:text="Dịch vụ tận tâm"
                             android:textColor="#D11515"
                             android:textSize="10sp"
-                            android:fontFamily="@font/inter"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:textStyle="bold" />
 
                         <TextView
@@ -197,7 +204,8 @@
                             android:text="Hồng trà Ngô Gia mong muốn làm hài lòng khách hàng tốt nhất với tác phong phục vụ chuyên nghiệp và thân thiện."
                             android:textColor="#64748B"
                             android:textSize="7sp"
-                            android:fontFamily="@font/inter_semibold"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="600"
                             android:lineSpacingMultiplier="1.6" />
                     </LinearLayout>
                 </LinearLayout>
@@ -241,7 +249,8 @@
                             android:text="Truyền thống &amp; sáng tạo"
                             android:textColor="#D11515"
                             android:textSize="10sp"
-                            android:fontFamily="@font/inter"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:textStyle="bold" />
 
                         <TextView
@@ -251,7 +260,8 @@
                             android:text="Dựa trên hai nền tảng cốt lõi là Chất Lượng và Dịch Vụ, Hồng trà Ngô gia luôn nỗ lực xây dựng thương hiệu đáng tin cậy."
                             android:textColor="#64748B"
                             android:textSize="7sp"
-                            android:fontFamily="@font/inter_semibold"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="600"
                             android:lineSpacingMultiplier="1.6" />
                     </LinearLayout>
                 </LinearLayout>
@@ -286,7 +296,8 @@
                     android:text="HỒNG TRÀ NGÔ GIA"
                     android:textColor="#FFFFFF"
                     android:textSize="12sp"
-                    android:fontFamily="@font/inter"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:textStyle="bold"
                     android:letterSpacing="0.08"
                     android:gravity="center" />
@@ -328,7 +339,8 @@
                     android:text="SỨ MỆNH CỦA CHÚNG TÔI"
                     android:textColor="#FFF8E9"
                     android:textSize="10sp"
-                    android:fontFamily="@font/inter"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:textStyle="bold"
                     android:gravity="center" />
 
@@ -346,7 +358,8 @@
                     android:text="Hồng Trà Ngô Gia cam kết mang đến những thức uống tinh tế, lành mạnh và an toàn cho sức khỏe. Mỗi ly trà là tâm huyết của người làm nghề, gửi gắm niềm tự hào Việt."
                     android:textColor="#FFF8E9"
                     android:textSize="7sp"
-                    android:fontFamily="@font/inter_semibold"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="600"
                     android:gravity="center"
                     android:lineSpacingMultiplier="1.8" />
             </LinearLayout>
@@ -385,7 +398,8 @@
                     android:text="TẦM NHÌN THƯƠNG HIỆU"
                     android:textColor="#FFFFFF"
                     android:textSize="10sp"
-                    android:fontFamily="@font/inter"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:textStyle="bold"
                     android:gravity="center" />
 
@@ -403,7 +417,8 @@
                     android:text="Trở thành thương hiệu tiên phong trong lĩnh vực đồ uống chất lượng cao tại Việt Nam, được người tiêu dùng tin cậy và yêu mến. Ngô Gia hướng đến phát triển bền vững."
                     android:textColor="#FFFFFF"
                     android:textSize="7sp"
-                    android:fontFamily="@font/inter_semibold"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="600"
                     android:gravity="center"
                     android:lineSpacingMultiplier="1.7" />
             </LinearLayout>
@@ -565,7 +580,8 @@
                     android:text="KHÁCH HÀNG LÀ TRỌNG TÂM"
                     android:textColor="#D11515"
                     android:textSize="12sp"
-                    android:fontFamily="@font/inter"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:textStyle="bold"
                     android:gravity="center" />
 
@@ -576,7 +592,8 @@
                     android:text="Hồng Trà Ngô Gia luôn lắng nghe, thấu hiểu và không ngừng hoàn thiện để mang đến trải nghiệm trà tốt nhất cho bạn. Mỗi ly trà được pha không chỉ bằng hương vị tinh tế, mà còn bằng sự trân trọng và tận tâm dành cho từng vị khách."
                     android:textColor="#374151"
                     android:textSize="7sp"
-                    android:fontFamily="@font/inter_semibold"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="600"
                     android:gravity="center"
                     android:lineSpacingMultiplier="1.6" />
             </LinearLayout>
@@ -598,7 +615,8 @@
                 android:text="NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO"
                 android:textColor="#1A163557"
                 android:textSize="18sp"
-                android:fontFamily="@font/inter"
+                android:fontFamily="@font/inter_family"
+                android:fontWeight="700"
                 android:textStyle="bold"
                 android:letterSpacing="0.04"
                 android:singleLine="true" />
@@ -611,7 +629,8 @@
                 android:text="NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO"
                 android:textColor="#1A163557"
                 android:textSize="18sp"
-                android:fontFamily="@font/inter"
+                android:fontFamily="@font/inter_family"
+                android:fontWeight="700"
                 android:textStyle="bold"
                 android:letterSpacing="0.04"
                 android:singleLine="true" />
@@ -623,7 +642,8 @@
                 android:text="NGÔ GIA XIN CHÀO"
                 android:textColor="#0088FF"
                 android:textSize="20sp"
-                android:fontFamily="@font/inter"
+                android:fontFamily="@font/inter_family"
+                android:fontWeight="700"
                 android:textStyle="bold"
                 android:letterSpacing="0.05"
                 android:gravity="center" />
