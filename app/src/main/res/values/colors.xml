@@ -150,4 +150,11 @@
     <color name="star_rating_active">#FFB21A</color>
     <color name="Red_pressed">#B01010</color>
     <color name="otp_error_bg">#FFF0F0</color>
+
+    <!-- Account management -->
+    <color name="vip_purple">#9C27B0</color>
+    <color name="vip_purple_light">#BA68C8</color>
+    <color name="phone_green">#10B981</color>
+    <color name="address_amber">#F59E0B</color>
+    <color name="downgrade_amber_light">#FCD34D</color>
 </resources>
