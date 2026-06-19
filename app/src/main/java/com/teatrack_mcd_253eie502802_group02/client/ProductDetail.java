@@ -474,11 +474,20 @@ public class ProductDetail extends AppCompatActivity {
     }
 
     private String safePrice(Object price) {
+        if (price == null) return "0đ";
         String p = String.valueOf(price);
-        if (p == null || p.isEmpty() || p.equals("null")) {
+        if (p.isEmpty() || p.equalsIgnoreCase("null")) {
             return "0đ";
         }
-        return p.endsWith("đ") ? p : p + "đ";
+
+        try {
+            String clean = p.replaceAll("[^0-9]", "");
+            if (clean.isEmpty()) return p.endsWith("đ") ? p : p + "đ";
+            long val = Long.parseLong(clean);
+            return String.format(java.util.Locale.US, "%,d", val).replace(',', '.') + "đ";
+        } catch (Exception e) {
+            return p.endsWith("đ") ? p : p + "đ";
+        }
     }
 
     private void bindCustomizationPrice(String priceM, String priceL) {

@@ -61,6 +61,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/inter_family"
+                android:fontWeight="700"
                 android:gravity="center"
                 android:text="@string/product_detail_title"
                 android:textColor="@color/brand_blue"
@@ -109,6 +111,8 @@
                     android:id="@+id/breadcrumbHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:text="@string/nav_home"
                     android:textColor="@color/nav_inactive"
                     android:textSize="12sp"
@@ -126,6 +130,8 @@
                     android:id="@+id/breadcrumbMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:text="@string/nav_menu"
                     android:textColor="@color/nav_inactive"
                     android:textSize="12sp"
@@ -143,6 +149,8 @@
                     android:id="@+id/breadcrumbTeaLatte"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:text="@string/firebase_category_tea_latte"
                     android:textColor="@color/brand_blue"
                     android:textSize="12sp"
@@ -273,6 +281,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/inter_family"
+                        android:fontWeight="700"
                         android:letterSpacing="0.1"
                         android:text="@string/product_detail_category_default"
                         android:textAllCaps="true"
@@ -303,6 +313,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="3dp"
+                        android:fontFamily="@font/inter_family"
+                        android:fontWeight="700"
                         android:text="4.9"
                         android:textColor="@color/black"
                         android:textSize="12sp"
@@ -325,9 +337,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/inter_semibold"
+                android:fontFamily="@font/inter_family"
+                android:fontWeight="800"
                 android:textColor="@color/brand_blue"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 tools:text="Trà Sữa Socola" />
             </LinearLayout>
 
@@ -366,11 +380,13 @@
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_size_tag"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="700"
                                 android:gravity="center"
                                 android:text="@string/home_price_medium"
                                 android:textColor="@color/brand_blue"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/tvPriceM"
@@ -378,10 +394,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="700"
                                 android:text="@string/product_detail_price_m_default"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -395,11 +413,13 @@
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_vip_tag"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="700"
                                 android:gravity="center"
                                 android:text="@string/home_vip_badge"
                                 android:textColor="@color/white"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="10sp" />
 
                             <TextView
                                 android:id="@+id/tvVipPriceM"
@@ -407,10 +427,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="700"
                                 android:text="@string/product_detail_vip_price_m_default"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -444,11 +466,13 @@
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_size_tag"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="700"
                                 android:gravity="center"
                                 android:text="@string/home_price_large"
                                 android:textColor="@color/brand_blue"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/tvPriceL"
@@ -456,10 +480,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="700"
                                 android:text="@string/product_detail_price_l_default"
+                                android:textStyle="bold"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textSize="12sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -473,11 +499,13 @@
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_vip_tag"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="700"
                                 android:gravity="center"
                                 android:text="@string/home_vip_badge"
                                 android:textColor="@color/white"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="10sp" />
 
                             <TextView
                                 android:id="@+id/tvVipPriceL"
@@ -485,10 +513,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="700"
                                 android:text="@string/product_detail_vip_price_l_default"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -542,6 +572,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="700"
                                 android:text="@string/product_detail_promo_title"
                                 android:textColor="@color/brand_blue"
                                 android:textSize="14sp"
@@ -642,10 +674,12 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:text="@string/product_detail_note_title"
                             android:textColor="@color/on_surface"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/tvNoteChevron"
@@ -670,12 +704,14 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:letterSpacing="0.08"
                             android:text="@string/product_detail_pick_size"
                             android:textAllCaps="true"
                             android:textColor="@color/nav_inactive"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="10sp" />
 
                         <!-- Size buttons: M / L -->
                         <LinearLayout
@@ -727,12 +763,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:letterSpacing="0.08"
                             android:text="@string/product_detail_sweetness"
                             android:textAllCaps="true"
                             android:textColor="@color/nav_inactive"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="10sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -799,12 +837,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:letterSpacing="0.08"
                             android:text="@string/product_detail_ice_level"
                             android:textAllCaps="true"
                             android:textColor="@color/nav_inactive"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="10sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -871,12 +911,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:letterSpacing="0.08"
                             android:text="@string/product_detail_toppings"
                             android:textAllCaps="true"
                             android:textColor="@color/nav_inactive"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="10sp" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
@@ -933,10 +975,12 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/inter_family"
+                        android:fontWeight="700"
                         android:text="@string/product_detail_quantity"
                         android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="12sp" />
 
                     <!-- Stepper pill — light lavender capsule with dark symbols -->
                     <LinearLayout
@@ -963,11 +1007,13 @@
                             android:id="@+id/tvQuantity"
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:gravity="center"
                             android:text="1"
                             android:textColor="@color/on_surface"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="14sp" />
 
                         <ImageButton
                             android:id="@+id/btnQtyPlus"
@@ -995,17 +1041,19 @@
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:text="@string/product_detail_add_to_cart"
                     android:textAllCaps="false"
                     android:textColor="@color/selector_btn_add_to_cart_text"
                     android:textSize="12sp"
-                    android:textStyle="bold"
                     app:backgroundTint="@color/selector_btn_add_to_cart_bg"
                     app:cornerRadius="20dp"
                     app:icon="@drawable/ic_cart"
                     app:iconGravity="textStart"
                     app:iconPadding="8dp"
                     app:iconSize="16dp"
+                    android:textStyle="bold"
                     app:iconTint="@color/selector_btn_add_to_cart_text"
                     app:strokeColor="#0088ff"
                     app:strokeWidth="2dp" />
@@ -1016,13 +1064,15 @@
                     android:layout_height="56dp"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     app:backgroundTint="@color/selector_btn_buy_now_bg"
                     android:text="@string/product_detail_buy_now"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    android:textStyle="bold"
                     app:cornerRadius="20dp"
+                    android:textStyle="bold"
                     app:elevation="6dp" />
             </LinearLayout>
 
@@ -1037,7 +1087,10 @@
                     android:id="@+id/tabDescription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|center_horizontal|center_vertical"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:gravity="center"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
@@ -1050,7 +1103,10 @@
                     android:id="@+id/tabReview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|center_horizontal|center_vertical"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:gravity="center"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
@@ -1063,7 +1119,10 @@
                     android:id="@+id/tabCommitment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center|center_horizontal|center_vertical"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
+                    android:fontWeight="700"
                     android:gravity="center"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
@@ -1124,16 +1183,18 @@
                             android:layout_width="22dp"
                             android:layout_height="22dp"
                             android:contentDescription="@string/product_detail_info_title"
+                            android:textStyle="bold"
                             android:src="@drawable/ic_info" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:text="@string/product_detail_info_title"
                             android:textColor="@color/brand_blue"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <View
@@ -1226,10 +1287,11 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_family"
+                        android:fontWeight="700"
                         android:text="@string/product_detail_commitment_title"
                         android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:textSize="12sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1361,10 +1423,11 @@
                                 android:id="@+id/tvReviewAverage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="800"
                                 android:text="5.0"
                                 android:textColor="@color/brand_blue"
-                                android:textSize="36sp"
-                                android:textStyle="bold" />
+                                android:textSize="36sp" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -1561,12 +1624,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_marginTop="16dp"
+                        android:fontFamily="@font/inter_family"
+                        android:fontWeight="700"
                         android:text="@string/product_detail_write_review"
                         app:backgroundTint="@color/selector_btn_add_to_cart_bg"
                         android:textAllCaps="false"
                         android:textColor="@color/brand_blue"
                         android:textSize="12sp"
-                        android:textStyle="bold"
                         app:cornerRadius="12dp"
                         app:icon="@drawable/ic_write_review"
                         app:iconGravity="textStart"
@@ -1589,10 +1653,11 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:text="@string/product_detail_review_form_title"
                             android:textColor="@color/on_surface"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="12sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -1705,12 +1770,13 @@
                             android:layout_height="40dp"
                             android:layout_gravity="end"
                             android:layout_marginTop="12dp"
+                            android:fontFamily="@font/inter_family"
+                            android:fontWeight="700"
                             android:paddingHorizontal="24dp"
                             android:text="@string/product_detail_review_submit"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textSize="12sp"
-                            android:textStyle="bold"
                             app:backgroundTint="@color/brand_blue"
                             app:cornerRadius="20dp" />
                     </LinearLayout>
@@ -1766,6 +1832,8 @@
                 android:layout_marginStart="-16dp"
                 android:layout_marginTop="24dp"
                 android:background="@color/ic_launcher_background"
+                android:fontFamily="@font/inter_family"
+                android:fontWeight="700"
                 android:gravity="center"
                 android:paddingStart="18dp"
                 android:paddingTop="10dp"

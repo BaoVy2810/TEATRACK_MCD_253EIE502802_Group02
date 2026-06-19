@@ -177,13 +177,14 @@
                         android:baselineAligned="false"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp">
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp">
 
                         <LinearLayout
                             android:id="@+id/categoryPureTea"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
                             android:layout_weight="1"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
@@ -204,17 +205,19 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:includeFontPadding="false"
-                                android:maxLines="1"
+                                android:maxLines="2"
                                 android:paddingTop="7dp"
                                 android:text="@string/pure_tea"
                                 android:textColor="@color/Red"
-                                android:textSize="7sp" />
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/categoryTeaLatte"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
                             android:layout_weight="1"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
@@ -235,17 +238,19 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:includeFontPadding="false"
-                                android:maxLines="1"
+                                android:maxLines="2"
                                 android:paddingTop="7dp"
                                 android:text="@string/tea_latte"
                                 android:textColor="@color/Red"
-                                android:textSize="7sp" />
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/categoryMilkTea"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
                             android:layout_weight="1"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
@@ -266,17 +271,19 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:includeFontPadding="false"
-                                android:maxLines="1"
+                                android:maxLines="2"
                                 android:paddingTop="7dp"
                                 android:text="@string/milk_tea"
                                 android:textColor="@color/Red"
-                                android:textSize="7sp" />
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/categoryNewArrivals"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
                             android:layout_weight="1"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
@@ -295,19 +302,22 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
+                                android:layout_gravity="center"
+                                android:gravity="center|center_horizontal|center_vertical"
                                 android:includeFontPadding="false"
-                                android:maxLines="1"
+                                android:maxLines="2"
                                 android:paddingTop="7dp"
                                 android:text="@string/new_arrivals"
                                 android:textColor="@color/Red"
-                                android:textSize="7sp" />
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/categoryBestSellers"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
                             android:layout_weight="1"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
@@ -326,13 +336,14 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
+                                android:gravity="center|center_horizontal|center_vertical"
                                 android:includeFontPadding="false"
-                                android:maxLines="1"
+                                android:maxLines="2"
                                 android:paddingTop="7dp"
                                 android:text="@string/best_sellers"
                                 android:textColor="@color/Red"
-                                android:textSize="7sp" />
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -359,11 +370,12 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:includeFontPadding="false"
-                                android:maxLines="1"
+                                android:maxLines="2"
                                 android:paddingTop="7dp"
                                 android:text="@string/fruit_tea"
                                 android:textColor="@color/Red"
-                                android:textSize="7sp" />
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -372,13 +384,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:lineSpacingMultiplier="1.25"
-                        android:paddingStart="32dp"
+                        android:justificationMode="inter_word"
+                        android:paddingStart="20dp"
                         android:paddingTop="6dp"
-                        android:paddingEnd="32dp"
+                        android:paddingEnd="20dp"
                         android:text="@string/home_beverage_description"
                         android:textColor="@color/black"
-                        android:textSize="7dp" />
+                        android:textSize="10sp"
+                        android:textStyle="normal" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -487,8 +500,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/home_ngo_gia_story_image_desc"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/home_ngo_gia_story" />
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/banner_aboutus" />
 
                     <View
                         android:layout_width="match_parent"
