@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">TEATRACK</string>
 
+    <!-- Navigation & Main Menu System -->
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_products">Products</string>
     <string name="nav_orders">Orders</string>
@@ -14,29 +16,33 @@
     <string name="nav_menu">Menu</string>
     <string name="nav_promotion">Promotion</string>
     <string name="nav_profile">Profile</string>
-    <string name="str_search_hint">Find products...</string>
+    <string name="str_search_hint">Search products&#8230;</string>
     <string name="home_search">Search</string>
+
+    <!-- Home & Brand Story -->
     <string name="home_our_beverages">OUR BEVERAGES</string>
-    <string name="home_beverage_description">Special beverage creations that blend premium pure tea with rich milk and a signature hint of salt, offering a creative twist on a familiar favorite.</string>
+    <string name="home_beverage_description">A special creation combining premium pure tea with rich creamer and a signature pinch of salt, bringing a unique twist to a familiar drink.</string>
     <string name="home_featured_products">FEATURED PRODUCTS</string>
     <string name="home_exciting_promotions">EXCITING PROMOTIONS</string>
     <string name="home_whats_new">WHAT\'S NEW</string>
     <string name="home_ngo_gia_story_title">NGO GIA STORY</string>
-    <string name="home_ngo_gia_story_description">Discover the 74-year heritage journey and dedication in every tea leaf.</string>
-    <string name="home_ngo_gia_story_cta">Learn More</string>
+    <string name="home_ngo_gia_story_description">Discover a 74-year journey of heritage and dedication in every tea leaf.</string>
+    <string name="home_ngo_gia_story_cta">Learn more</string>
     <string name="home_ngo_gia_story_image_desc">Ngo Gia story image</string>
-    <string name="home_banner_desc">Home banner</string>
+    <string name="home_banner_desc">Home banner image</string>
     <string name="home_price_medium">M</string>
     <string name="home_price_large">L</string>
     <string name="home_vip_badge">VIP</string>
-    <string name="home_rating_suffix">rating</string>
+    <string name="home_rating_suffix">reviews</string>
+
+    <!-- Menu & Filters -->
     <string name="menu_title">DRINK MENU</string>
-    <string name="menu_subtitle">Choose your favorite drink freely</string>
-    <string name="menu_description">From traditional teas and milk teas to innovative new recipes - every flavor is freshly brewed every day.</string>
-    <string name="menu_search_hint">Find your drink...</string>
+    <string name="menu_subtitle">Feel free to choose your favorite drinks</string>
+    <string name="menu_description">From traditional tea, milk tea to innovative recipes &#8211; every flavor is freshly brewed daily.</string>
+    <string name="menu_search_hint">Find your drink&#8230;</string>
     <string name="menu_search_desc">Search menu</string>
-    <string name="menu_hero_image_desc">Menu hero image</string>
-    <string name="menu_filter_desc">Open filter options</string>
+    <string name="menu_hero_image_desc">Main menu hero image</string>
+    <string name="menu_filter_desc">Open filters</string>
     <string name="menu_filter_category_title">Category</string>
     <string name="menu_filter_sort_title">Sort by</string>
     <string name="menu_sort_label">Sort:</string>
@@ -45,18 +51,19 @@
     <string name="menu_sort_name_desc">Name Z-A</string>
     <string name="menu_sort_price_asc">Price low-high</string>
     <string name="menu_sort_price_desc">Price high-low</string>
-    <string name="menu_section_subtitle_default">Full drink list at Hong Tra Ngo Gia.</string>
-    <string name="menu_section_subtitle_search">Results for "%1$s".</string>
-    <string name="menu_section_subtitle_pure_tea">Fresh and light pure tea options.</string>
-    <string name="menu_section_subtitle_milk_tea">Rich and creamy milk tea selection.</string>
-    <string name="menu_section_subtitle_tea_latte">Smooth tea latte drinks crafted daily.</string>
-    <string name="menu_section_subtitle_fruit_tea">Refreshing fruit tea for every mood.</string>
-    <string name="menu_section_subtitle_new_arrivals">Latest drinks newly added to the menu.</string>
-    <string name="menu_section_subtitle_best_sellers">Most loved drinks chosen by customers.</string>
+    <string name="menu_section_subtitle_default">Full list of beverages at Hong Tra Ngo Gia.</string>
+    <string name="menu_section_subtitle_search">Search results for \"%1$s\".</string>
+    <string name="menu_section_subtitle_pure_tea">Refreshing and light pure tea selections.</string>
+    <string name="menu_section_subtitle_milk_tea">Rich and flavorful milk tea options.</string>
+    <string name="menu_section_subtitle_tea_latte">Smooth tea lattes, freshly prepared every day.</string>
+    <string name="menu_section_subtitle_fruit_tea">Fresh fruit tea for every mood.</string>
+    <string name="menu_section_subtitle_new_arrivals">Newly added drinks on the menu.</string>
+    <string name="menu_section_subtitle_best_sellers">Most loved items chosen by customers.</string>
     <string name="menu_result_count_format">%1$d products</string>
     <string name="menu_result_count_default">0 products</string>
     <string name="menu_all_categories">All categories</string>
     <string name="menu_all_products_title">All drinks</string>
+
     <string-array name="menu_sort_options">
         <item>Featured</item>
         <item>Name A-Z</item>
@@ -71,6 +78,8 @@
         <item>price_asc</item>
         <item>price_desc</item>
     </string-array>
+
+    <!-- Firebase Data Structure Mapping -->
     <string name="firebase_collection_products">products</string>
     <string name="firebase_collection_blogs">blogs</string>
     <string name="firebase_collection_vouchers">vouchers</string>
@@ -92,36 +101,34 @@
     <string name="new_arrivals">New Arrivals</string>
     <string name="best_sellers">Best Sellers</string>
     <string name="fruit_tea">Fruit Tea</string>
-    <!-- Topbar -->
+
+    <!-- Admin Dashboard Context -->
     <string name="title_overview_dashboard">OVERVIEW DASHBOARD</string>
     <string name="title_sales_analytics">SALES ANALYTICS</string>
     <string name="btn_notification">Notification</string>
     <string name="btn_account">Account</string>
 
-    <!-- Stat Cards -->
     <string name="stat_revenue_title">REVENUE</string>
     <string name="stat_orders_title">ORDERS THIS WEEK</string>
-    <string name="stat_sold_title">PRODUCTS SOLD</string>
+    <string name="stat_sold_title">ITEMS SOLD</string>
     <string name="stat_products_title">PRODUCTS</string>
-    <string name="stat_mom">MoM</string>
-    <string name="stat_dod">DoD</string>
-    <string name="stat_wow">WoW</string>
+    <string name="stat_mom">Month over Month (MoM)</string>
+    <string name="stat_dod">Day over Day (DoD)</string>
+    <string name="stat_wow">Week over Week (WoW)</string>
     <string name="stat_active_trading">Active trading</string>
 
-    <!-- Chart titles -->
     <string name="chart_performance_title">Performance (Revenue &amp; Expenses)</string>
-    <string name="chart_daily_trend_title">Daily Sales Trends</string>
-    <string name="chart_top_drinks_title">Top-selling Drinks</string>
+    <string name="chart_daily_trend_title">Daily Revenue Trend</string>
+    <string name="chart_top_drinks_title">Best Selling Products</string>
     <string name="btn_monthly">Monthly</string>
     <string name="btn_weekly">Weekly</string>
     <string name="btn_today">Today</string>
-    <string name="btn_last_7_days">Last 7 Days</string>
-    <string name="btn_last_30_days">Last 30 Days</string>
-    <string name="btn_last_90_days">Last 90 Days</string>
+    <string name="btn_last_7_days">Last 7 days</string>
+    <string name="btn_last_30_days">Last 30 days</string>
+    <string name="btn_last_90_days">Last 90 days</string>
     <string name="btn_year_to_date">Year to Date</string>
     <string name="btn_custom_range">Custom Range</string>
 
-    <!-- Chart legend -->
     <string name="legend_revenue">Revenue</string>
     <string name="legend_expenses">Expenses</string>
     <string name="legend_hot_drinks">Hot Drinks</string>
@@ -132,43 +139,40 @@
     <string name="legend_milk_tea">Milk Tea</string>
     <string name="pie_center_unit">VND</string>
 
-    <!-- Recent Orders -->
     <string name="section_recent_orders">Recent Orders</string>
-    <string name="btn_view_detail">View detail</string>
+    <string name="btn_view_detail">View Details</string>
     <string name="order_new_prefix">New Order</string>
     <string name="order_ago_suffix">ago</string>
 
-    <!-- Branch Analysis -->
     <string name="section_branch_analysis">Branch Analysis</string>
     <string name="col_branch_address">Branch Address</string>
     <string name="col_num_orders">Number of Orders</string>
     <string name="col_revenue">Revenue</string>
-    <string name="loading_data">Loading...</string>
+    <string name="loading_data">Loading data&#8230;</string>
 
-    <!-- Product list -->
+    <!-- Admin Product List -->
     <string name="section_product_list">Product List</string>
     <string name="btn_add_product">Add Product</string>
-    <string name="hint_search_product">Search products...</string>
+    <string name="hint_search_product">Search products&#8230;</string>
     <string name="btn_export_excel">Export Excel</string>
     <string name="col_id">ID</string>
-    <string name="col_name">Name</string>
+    <string name="col_name">Product Name</string>
     <string name="col_category">Category</string>
     <string name="col_image">Image</string>
     <string name="col_price">Price</string>
     <string name="col_visible">Visible</string>
     <string name="col_actions">Actions</string>
 
-    <!-- Category filter -->
     <string name="title_product_management">PRODUCT MANAGEMENT</string>
-    <string name="filter_all">All categories</string>
+    <string name="filter_all">All Categories</string>
 
-    <string name="msg_excel_init">Exporting to Excel is being initialized...</string>
+    <string name="msg_excel_init">Initializing Excel export&#8230;</string>
     <string name="error_firebase">Firebase Error: %1$s</string>
     <string name="msg_under_development">Feature under development</string>
     <string name="price_m_prefix">M: %1$sđ</string>
     <string name="price_l_prefix">L: %1$sđ</string>
     <string name="price_vip_prefix">VIP: %1$sđ</string>
-    <string name="msg_edit_update">Edit feature will be updated!</string>
+    <string name="msg_edit_update">Edit feature will be updated later!</string>
     <string name="msg_product_deleted">Product deleted successfully</string>
     <string name="error_prefix">Error: %1$s</string>
     <string name="confirm_delete_msg">Are you sure you want to delete this product?</string>
@@ -180,109 +184,110 @@
     <string name="filter_new">New Arrivals</string>
     <string name="filter_fruit_tea">Fruit Tea</string>
 
-    <!-- Modal: Add Product -->
+    <!-- Modal Form: Add Product -->
     <string name="modal_add_title">ADD PRODUCT</string>
     <string name="label_product_id">Product ID</string>
     <string name="hint_product_id">Enter product ID</string>
     <string name="label_product_name">Product Name</string>
     <string name="hint_product_name">Enter product name</string>
     <string name="label_product_type">Category</string>
-    <string name="hint_select_type">Select product category</string>
+    <string name="hint_select_type">Select type</string>
     <string name="label_status">Status</string>
-    <string name="check_visible">Show product</string>
-    <string name="check_special">Product has special offer</string>
-    <string name="label_current_price">Current price</string>
-    <string name="label_vip_price">VIP price</string>
+    <string name="check_visible">Product Visible</string>
+    <string name="check_special">Product with special deal</string>
+    <string name="label_current_price">Current Price</string>
+    <string name="label_vip_price">VIP Price</string>
     <string name="hint_price">0 VND</string>
     <string name="size_m">Size M</string>
     <string name="size_l">Size L</string>
     <string name="label_product_info">Product Info</string>
-    <string name="hint_product_info">Enter product info...</string>
+    <string name="hint_product_info">Enter product info&#8230;</string>
     <string name="label_product_desc">Product Description</string>
-    <string name="hint_product_desc">Enter product description...</string>
+    <string name="hint_product_desc">Enter product description&#8230;</string>
     <string name="label_product_images_max">Product Images (max 4 images)</string>
     <string name="label_images">Product Images</string>
     <string name="hint_max_images">(max 4 images)</string>
     <string name="btn_upload_image">Upload Image</string>
-    <string name="label_image_uploaded">Image Uploaded</string>
+    <string name="label_image_uploaded">Image uploaded</string>
     <string name="btn_cancel">Cancel</string>
-    <string name="btn_add">Add</string>
+    <string name="btn_add">Add New</string>
 
-    <!-- Modal: Edit Product -->
+    <!-- Modal Form: Edit Product -->
     <string name="modal_edit_title">EDIT PRODUCT</string>
     <string name="btn_delete">Delete</string>
     <string name="btn_save">Save</string>
     <string name="btn_edit">Edit</string>
 
-    <!-- Modal: Delete Confirm -->
-    <string name="modal_delete_title">Confirm Delete Product</string>
+    <!-- Modal Form: Delete Confirmation -->
+    <string name="modal_delete_title">Confirm Delete</string>
     <string name="modal_delete_message">Are you sure you want to delete this product?</string>
     <string name="modal_delete_subtitle_prefix">Product</string>
-    <string name="modal_delete_subtitle_suffix">will be permanently deleted.</string>
-    <string name="modal_delete_no_recover">You will not be able to recover this product.</string>
+    <string name="modal_delete_subtitle_suffix">will be permanently removed from system.</string>
+    <string name="modal_delete_no_recover">You won\'t be able to recover this item.</string>
     <string name="btn_cancel_ghost">Cancel</string>
     <string name="btn_confirm_delete">Delete Product</string>
 
-    <!-- Modal: Success -->
-    <string name="modal_success_title">SUCCESSFULLY EDITED</string>
-    <string name="modal_success_message">The operation was performed successfully.</string>
+    <!-- Modal Form: Success Alert -->
+    <string name="modal_success_title">UPDATE SUCCESSFUL</string>
+    <string name="modal_success_message">The operation was completed successfully.</string>
     <string name="btn_close">Close</string>
-
-    <!-- Modal: Alert -->
     <string name="modal_alert_title">Notification</string>
     <string name="btn_ok">OK</string>
 
-    <!-- Modal: Order Detail -->
-    <string name="modal_order_detail_title">ORDER DETAIL</string>
-    <string name="section_order_info">Order Info</string>
+    <!-- Modal Form: Order Details -->
+    <string name="modal_order_detail_title">ORDER DETAILS</string>
+    <string name="section_order_info">Order Information</string>
     <string name="label_order_code">ORDER CODE:</string>
     <string name="label_order_date">ORDER DATE:</string>
     <string name="label_order_time">TIME:</string>
     <string name="label_order_status">ORDER STATUS:</string>
-    <string name="label_order_agency">SHIPPING BRANCH:</string>
-    <string name="section_recipient_address">Recipient Address:</string>
+    <string name="label_order_agency">DELIVERY AGENCY:</string>
+    <string name="section_recipient_address">Recipient\'s Address:</string>
     <string name="label_fullname">FULL NAME:</string>
     <string name="label_phone">PHONE NUMBER:</string>
     <string name="label_address">ADDRESS:</string>
-    <string name="section_order_items">Order Item List</string>
-    <string name="section_payment">Payment Info</string>
+    <string name="section_order_items">Ordered Items List</string>
+    <string name="section_payment">Payment Details</string>
     <string name="label_subtotal">Subtotal</string>
     <string name="label_shipping">Shipping Fee</string>
-    <string name="label_discount">Discount Code</string>
+    <string name="label_discount">Discount Voucher</string>
     <string name="label_total">Total</string>
 
-    <!-- Order status options -->
-    <string name="status_pending">Pending Confirmation</string>
-    <string name="status_processing">Preparing Order</string>
+    <!-- Order Statuses -->
+    <string name="status_pending">Pending</string>
+    <string name="status_processing">Processing</string>
     <string name="status_ready">Ready for Pickup</string>
     <string name="status_shipping">Shipping</string>
     <string name="status_completed">Completed</string>
     <string name="status_cancelled">Cancelled</string>
 
-    <!-- Accessibility -->
+    <!-- Content Accessibility Descriptions -->
     <string name="cd_notification">Notification</string>
     <string name="cd_account">Account</string>
     <string name="cd_revenue_icon">Revenue Icon</string>
     <string name="cd_orders_icon">Orders Icon</string>
-    <string name="cd_sold_icon">Sold Products Icon</string>
+    <string name="cd_sold_icon">Sold Items Icon</string>
     <string name="cd_products_icon">Products Icon</string>
     <string name="cd_delete_icon">Delete Icon</string>
-    <string name="cd_upload">Upload Image</string>
-    <string name="cd_remove_image">Remove Image</string>
-    <string name="cd_close_modal">Close</string>
-    <string name="cd_search">Search</string>
-    <string name="firebase_category_pure_tea">Loại Thuần Trà</string>
-    <string name="firebase_category_tea_latte">Loại Trà Latte</string>
-    <string name="firebase_category_milk_tea">Loại Trà Sữa</string>
-    <string name="firebase_category_new_arrivals">Thức Uống Mới</string>
-    <string name="firebase_category_best_sellers">Thức Uống Hot</string>
-    <string name="firebase_category_fruit_tea">Loại Trà Trái Cây</string>
-    <string name="category_products_empty">No products found for this category.</string>
-    <string name="category_products_load_error">Unable to load products. Please try again.</string>
+    <string name="cd_upload">Upload image button</string>
+    <string name="cd_remove_image">Remove this image</string>
+    <string name="cd_close_modal">Close dialog window</string>
+    <string name="cd_search">Search button</string>
+
+    <string name="firebase_category_pure_tea">Pure Tea Category</string>
+    <string name="firebase_category_tea_latte">Tea Latte Category</string>
+    <string name="firebase_category_milk_tea">Milk Tea Category</string>
+    <string name="firebase_category_new_arrivals">New Drinks Category</string>
+    <string name="firebase_category_best_sellers">Hot Drinks Category</string>
+    <string name="firebase_category_fruit_tea">Fruit Tea Category</string>
+    <string name="category_products_empty">No products found in this category.</string>
+    <string name="category_products_load_error">Failed to load product list. Please try again.</string>
+
+    <!-- Customer Product Detail Screen -->
     <string name="product_detail_title">Product Details</string>
     <string name="product_detail_back">Back</string>
     <string name="product_detail_share">Share</string>
-    <string name="product_detail_category_default">Beverage Category</string>
+    <string name="product_detail_category_default">Beverage type</string>
     <string name="product_detail_rating">Rating</string>
     <string name="product_detail_rating_default">(1k reviews)</string>
     <string name="product_detail_views_format">(%1$s views)</string>
@@ -296,167 +301,200 @@
     <string name="product_detail_size_price_format">%1$s: %2$s</string>
     <string name="product_detail_vip_price_format">VIP: %1$s</string>
     <string name="product_detail_rating_summary_format">%1$s | %2$s reviews)</string>
-    <string name="product_detail_promo_title">Special Offers</string>
-    <string name="product_detail_promo_body">• Buy 5 get 1 free milk tea of the same size\n• Collect points: size L earns 1 point, 8 points = 1 free cup worth 16,000đ.</string>
-    <string name="product_detail_promo_line1">Buy 5 get 1 free milk tea of the same size</string>
-    <string name="product_detail_promo_line2">Collect points: size L earns 1 point, 8 points = 1 free cup worth 16,000đ.</string>
-    <string name="product_detail_description_default">Rich cocoa milk tea with a creamy and smooth finish.</string>
-    <string name="product_detail_tab_description">Product Description</string>
+    <string name="product_detail_promo_title">Special Offer</string>
+    <string name="product_detail_promo_body">• Buy 5 get 1 free milk tea of same size\n• Points accumulation: Size L gains 1 point, reach 8 points to get 1 free cup valued at 16.000đ.</string>
+    <string name="product_detail_promo_line1">Buy 5 get 1 free milk tea of same size</string>
+    <string name="product_detail_promo_line2">Points accumulation: Size L gains 1 point, reach 8 points to get 1 free cup valued at 16.000đ.</string>
+    <string name="product_detail_description_default">Rich chocolate milk tea perfectly blended with a creamy, smooth finish.</string>
+    <string name="product_detail_tab_description">Description</string>
     <string name="product_detail_tab_review">Reviews</string>
     <string name="product_detail_tab_commitment">Commitment</string>
-    <string name="product_detail_tab_description_content">Rich cocoa milk tea with a creamy and smooth finish.</string>
-    <string name="product_detail_tab_commitment_content">Ngô Gia commits to quality ingredients, transparent origin, and consistent taste in every cup.</string>
-    <string name="product_detail_info_title">Detail Information</string>
+    <string name="product_detail_tab_description_content">Rich chocolate milk tea perfectly blended with a creamy, smooth finish.</string>
+    <string name="product_detail_tab_commitment_content">Ngo Gia commits to using high-quality ingredients, clear origins and keeping uniform flavor in every single cup.</string>
+    <string name="product_detail_info_title">Specifications</string>
     <string name="product_detail_info_name">Product name</string>
-    <string name="product_detail_info_weight">Weight</string>
+    <string name="product_detail_info_weight">Volume</string>
     <string name="product_detail_info_storage">Storage</string>
     <string name="product_detail_info_origin">Origin</string>
-    <string name="product_detail_info_topping">Recommended toppings:</string>
+    <string name="product_detail_info_topping">Recommended Toppings:</string>
     <string name="product_detail_info_weight_value">700ml (size M) / 1000ml (size L)</string>
-    <string name="product_detail_info_storage_value">1-2 days in refrigerator</string>
+    <string name="product_detail_info_storage_value">1-2 days in refrigerator cool compartment</string>
     <string name="product_detail_info_origin_value">Vietnam</string>
-    <string name="product_detail_info_topping_value">Original coconut jelly, water chestnut popping pearls</string>
+    <string name="product_detail_info_topping_value">Traditional coconut jelly, water chestnut popping pearls</string>
     <string name="product_detail_info_name_format">%1$s: %2$s</string>
     <string name="product_detail_info_row_format">%1$s: %2$s</string>
-    <string name="product_detail_commitment_title">Quality commitment</string>
-    <string name="product_detail_commitment_1">Tea leaves are carefully selected from high mountains, &lt;b&gt;no artificial colors - no synthetic flavors&lt;/b&gt;, keeping the original tea flavor intact.</string>
-    <string name="product_detail_commitment_2">Each batch of tea is roasted, brewed and flavored according to a &lt;b&gt;traditional secret&lt;/b&gt;, ensuring a rich aroma and a delicate sweet aftertaste.</string>
-    <string name="product_detail_commitment_3">All products are &lt;b&gt;tightly packed, properly preserved&lt;/b&gt;, ensuring the flavor is always fresh when reaching customers.</string>
-    <string name="product_detail_commitment_4">Hong Tra Ngo Gia always listens to feedback and &lt;b&gt;returns if the product does not meet the committed quality&lt;/b&gt;, providing a reliable experience.</string>
-    <string name="product_detail_review_overall">Overall rating</string>
+    <string name="product_detail_commitment_title">Quality Commitment</string>
+    <string name="product_detail_commitment_1">Tea leaves are strictly selected from high mountains, <b>no artificial colorings - no synthetic flavorings</b>, keeping the original authentic tea taste.</string>
+    <string name="product_detail_commitment_2">Every batch of tea is carefully roasted and scented according to <b>family traditional secrets</b>, ensuring deep fragrance and refined sweet aftertaste.</string>
+    <string name="product_detail_commitment_3">All products are <b>tightly sealed and stored under proper standards</b>, maintaining absolute freshness when delivered to customers.</string>
+    <string name="product_detail_commitment_4">Hong Tra Ngo Gia always listens and is ready to <b>return/exchange if the product does not meet the committed quality</b>, providing the most reassuring experience.</string>
+    <string name="product_detail_review_overall">Overall Rating</string>
     <string name="product_detail_review_count_format">%1$s reviews</string>
-    <string name="product_detail_review_form_title">Product review</string>
-    <string name="product_detail_review_quality_label">Product quality:</string>
-    <string name="product_detail_review_detail_hint">Leave a detailed review here</string>
-    <string name="product_detail_review_comment_hint">Please leave a comment for this product! Ngo Gia sincerely thanks you.</string>
-    <string name="product_detail_review_submit">Review</string>
+    <string name="product_detail_review_form_title">Review Product</string>
+    <string name="product_detail_review_quality_label">Product Quality:</string>
+    <string name="product_detail_review_detail_hint">Write detailed review here</string>
+    <string name="product_detail_review_comment_hint">Please leave your feedback for this drink! Ngo Gia sincerely thanks you.</string>
+    <string name="product_detail_review_submit">Submit Review</string>
     <string name="product_detail_star_desc">Star rating</string>
     <string name="product_detail_no_reviews_icon_desc">No reviews icon</string>
     <string name="product_detail_quantity">Quantity</string>
     <string name="product_detail_minus">Decrease quantity</string>
     <string name="product_detail_plus">Increase quantity</string>
-    <string name="product_detail_add_to_cart">Add to cart</string>
+    <string name="product_detail_add_to_cart">Add to Cart</string>
     <string name="product_detail_buy_now">Buy Now</string>
-    <string name="product_detail_added_to_cart">Added to cart</string>
-    <string name="product_detail_buy_now_message">Proceeding to checkout</string>
-    <string name="product_detail_write_review">Write a review</string>
-    <string name="product_detail_empty_review">No reviews for this product yet.</string>
+    <string name="product_detail_added_to_cart">Successfully added to cart!</string>
+    <string name="product_detail_buy_now_message">Redirecting to checkout screen</string>
+    <string name="product_detail_write_review">Write a Review</string>
+    <string name="product_detail_empty_review">There are no reviews for this product yet.</string>
     <string name="product_detail_related_title">You may also like</string>
     <string name="product_detail_related_image_desc">Related product image</string>
     <string name="product_detail_related_prices_format">M: %1$s  •  L: %2$s</string>
     <string name="product_detail_related_vip_format">VIP: %1$s</string>
-    <string name="product_detail_note_title">Product customization</string>
-    <string name="product_detail_toggle_customization">Toggle customization section</string>
-    <string name="product_detail_note_default">Extra product details will be updated here.</string>
-    <string name="product_detail_pick_size">Choose size</string>
+    <string name="product_detail_note_title">Customize Beverage</string>
+    <string name="product_detail_toggle_customization">Toggle customization options view</string>
+    <string name="product_detail_note_default">Additional custom info choices will display here.</string>
+    <string name="product_detail_pick_size">Choose Size</string>
     <string name="product_detail_size_m_price">M - 0đ</string>
     <string name="product_detail_size_l_price">L - 0đ</string>
     <string name="product_detail_size_m_price_format">M - %1$s</string>
     <string name="product_detail_size_l_price_format">L - %1$s</string>
-    <string name="product_detail_sweetness">Sweetness</string>
-    <string name="product_detail_ice_level">Ice level</string>
-    <string name="product_detail_level_none">None</string>
-    <string name="product_detail_level_less">Less</string>
-    <string name="product_detail_level_medium">Medium</string>
-    <string name="product_detail_level_high">High</string>
-    <string name="product_detail_toppings">Toppings (+)</string>
-    <string name="product_detail_topping_suong_sao">Grass jelly</string>
+    <string name="product_detail_sweetness">Sweetness Level</string>
+    <string name="product_detail_ice_level">Ice Level</string>
+    <string name="product_detail_level_none">No Sugar/Ice</string>
+    <string name="product_detail_level_less">Less Sugar/Ice</string>
+    <string name="product_detail_level_medium">Normal</string>
+    <string name="product_detail_level_high">More Sugar/Ice</string>
+    <string name="product_detail_toppings">Add Toppings (+)</string>
+    <string name="product_detail_topping_suong_sao">Grass Jelly</string>
     <string name="product_detail_topping_suong_sao_price">+ 5.000đ</string>
-    <string name="product_detail_topping_thach_dua">Coconut jelly</string>
+    <string name="product_detail_topping_thach_dua">Coconut Jelly</string>
     <string name="product_detail_topping_thach_dua_price">+ 8.000đ</string>
-    <string name="product_detail_topping_kem_cheese">Cheese cream</string>
+    <string name="product_detail_topping_kem_cheese">Cream Cheese</string>
     <string name="product_detail_topping_kem_cheese_price">+ 10.000đ</string>
 
-    <string name="login_logo_description">Login Logo</string>
-    <string name="login_sign_in">Sign in</string>
-    <string name="login_label_name">Login name*</string>
-    <string name="login_hint_name">Enter your login name</string>
+    <!-- Sign In / Sign Up Auth Context -->
+    <string name="login_logo_description">Login Screen Logo</string>
+    <string name="login_sign_in">Sign In</string>
+    <string name="login_label_name">Username*</string>
+    <string name="login_hint_name">Enter your username</string>
     <string name="login_label_password">Password*</string>
     <string name="login_hint_password">Enter your password</string>
-    <string name="login_remember">Remember?</string>
+    <string name="login_remember">Remember password?</string>
     <string name="login_forgot_password">Forgot password?</string>
-    <string name="login_btn_login">Log In</string>
+    <string name="login_btn_login">Login</string>
     <string name="login_or">OR</string>
-    <string name="login_btn_google">Log in with Google</string>
+    <string name="login_btn_google">Sign in with Google</string>
     <string name="login_dont_have_account">Don\'t have an account? </string>
-    <string name="login_sign_up">Sign Up</string>
-    <string name="login_error_invalid">Login Error! Invalid username or password.</string>
-    <string name="login_error_empty">Login Error! Please complete all required fields.</string>
+    <string name="login_sign_up">Sign up now</string>
+    <string name="login_error_invalid">Login failed! Incorrect username or password.</string>
+    <string name="login_error_empty">Login failed! Please fill out all required fields.</string>
 
-    <string name="welcome_title">Welcome</string>
-    <string name="welcome_subtitle">Sign in to your registered account.</string>
-    <string name="welcome_get_started">Get started</string>
-    <string name="welcome_logo_description">Logo</string>
+    <string name="welcome_title">Welcome back</string>
+    <string name="welcome_subtitle">Log in to your existing registered account.</string>
+    <string name="welcome_get_started">Get Started</string>
+    <string name="welcome_logo_description">App main identity logo</string>
 
-    <string name="register_sign_up">Sign up</string>
+    <string name="register_sign_up">Sign Up</string>
     <string name="register_label_email">Email*</string>
     <string name="register_hint_email">Enter your email address</string>
-    <string name="register_label_confirm_password">Confirm password*</string>
-    <string name="register_hint_confirm_password">Confirm your password</string>
-    <string name="register_btn_register">Sign up</string>
+    <string name="register_label_confirm_password">Confirm Password*</string>
+    <string name="register_hint_confirm_password">Re-enter your password</string>
+    <string name="register_btn_register">Register Now</string>
     <string name="register_already_have_account">Already have an account? </string>
-    <string name="register_error_empty">Sign Up Error! Please complete all required fields.</string>
-    <string name="register_error_mismatch">Passwords do not match. Please try again.</string>
-    <string name="register_terms_agreement">By continue you agree with our</string>
+    <string name="register_error_empty">Registration failed! Please fill all required fields.</string>
+    <string name="register_error_mismatch">Confirmation password does not match. Please verify.</string>
+    <string name="register_terms_agreement">By proceeding forward, you totally agree with our</string>
     <string name="register_label_phone">Phone Number:</string>
     <string name="register_hint_phone">Enter your phone number</string>
-    <string name="register_terms_policy"><b>Terms</b> &amp; <b>Privacy Policy</b></string>
+    <string name="register_terms_policy"><b>Terms of Service</b> &amp; <b>Privacy Policy</b></string>
 
     <string name="forgot_password_title">Forgot Password</string>
-    <string name="forgot_password_content">Please enter your email address to receive the OTP code for password recovery.</string>
+    <string name="forgot_password_content">Please provide your registered email address to receive an OTP password recovery code.</string>
     <string name="forgot_password_label_email">Email*</string>
     <string name="forgot_password_hint_email">Enter your email address</string>
-    <string name="forgot_password_btn_send_otp">Send OTP</string>
-    <string name="forgot_password_already_have_account">Do you already have an account? </string>
-    <string name="forgot_password_sign_in">Sign in</string>
-    <string name="forgot_password_error_empty">Please enter your email address.</string>
-    <string name="forgot_password_error_not_found">Email not found. Please check and try again.</string>
+    <string name="forgot_password_btn_send_otp">Send OTP Code</string>
+    <string name="forgot_password_already_have_account">Ready have an account? </string>
+    <string name="forgot_password_sign_in">Sign In</string>
+    <string name="forgot_password_error_empty">Please input your complete email address.</string>
+    <string name="forgot_password_error_not_found">No profile linked with this email found. Please check again.</string>
 
     <string name="reset_password_title">Reset Password</string>
-    <string name="reset_password_content">Please create a new password for your account.</string>
+    <string name="reset_password_content">Please create a new secure password for your user profile.</string>
     <string name="reset_password_label_password">New Password*</string>
-    <string name="reset_password_hint_password">Enter your password</string>
-    <string name="reset_password_label_confirm">Confirm password*</string>
-    <string name="reset_password_hint_confirm">Confirm your password</string>
+    <string name="reset_password_hint_password">Enter your new password</string>
+    <string name="reset_password_label_confirm">Confirm New Password*</string>
+    <string name="reset_password_hint_confirm">Re-enter your new password precisely</string>
     <string name="reset_password_btn_update">Update Password</string>
-    <string name="reset_password_go_back">Or go back? </string>
-    <string name="reset_password_back_to_sign_in">Back to Sign in</string>
-    <string name="reset_password_error_empty">Reset error! Please complete all required fields.</string>
-    <string name="reset_password_error_mismatch">Passwords do not match. Please try again.</string>
+    <string name="reset_password_go_back">Or go backward? </string>
+    <string name="reset_password_back_to_sign_in">Back to Sign In screen</string>
+    <string name="reset_password_error_empty">Update failed! Please fill out all required fields.</string>
+    <string name="reset_password_error_mismatch">The new passwords do not match. Please input again.</string>
 
-    <string name="success_password_title">Password Changed Successfully!</string>
-    <string name="success_password_content">You can now log in to your account with your new password. Thank you for choosing our service. Please sign in again.</string>
-    <string name="success_password_btn_back">Back to Sign in</string>
+    <string name="success_password_title">Password Reset Successfully!</string>
+    <string name="success_password_content">You can now use your newly set credentials to gain access to system. Thank you for your trust. Please sign in again.</string>
+    <string name="success_password_btn_back">Back to Login</string>
     <string name="success_password_need_help">Need help? </string>
-    <string name="success_password_contact_support">Contact Support</string>
+    <string name="success_password_contact_support">Contact Customer Support Helpdesk</string>
 
-    <string name="otp_title">Xác Thực Email</string>
-    <string name="otp_subtitle">Mã xác thực đã được gửi đến email của bạn</string>
-    <string name="otp_resend_countdown">Gửi lại sau 60s</string>
-    <string name="otp_resend_countdown_format">Gửi lại sau %ds</string>
-    <string name="otp_resend">Gửi lại mã OTP</string>
-    <string name="otp_verify_btn">XÁC NHẬN</string>
-    <string name="otp_back">← Quay lại</string>
+    <string name="otp_title">Email Verification</string>
+    <string name="otp_subtitle">Verification code has been dispatched to your email</string>
+    <string name="otp_resend_countdown">Resend after 60s</string>
+    <string name="otp_resend_countdown_format">Resend after %ds</string>
+    <string name="otp_resend">Resend OTP Code</string>
+    <string name="otp_verify_btn">VERIFY NOW</string>
+    <string name="otp_back">&#8592; Go Back</string>
     <string name="str_otp">-</string>
     <string name="str_email_masked">ethan@gmail.com</string>
-    <string name="str_agency_location">Agency Location</string>
-    <string name="str_agency_search">Search agencies by name or district...</string>
-    <string name="str_add_agency">+ Add New Agency</string>
-    <string name="str_agency_details">AGENCY DETAILS</string>
-    <string name="str_agency_id">Agency ID</string>
+
+    <!-- Agency / Branch Management Area -->
+    <string name="str_agency_location">Branch Location</string>
+    <string name="str_agency_search">Search branches by name or district&#8230;</string>
+    <string name="str_add_agency">+ Add new branch</string>
+    <string name="str_agency_details">BRANCH DETAILS</string>
+    <string name="str_agency_id">Branch ID</string>
     <string name="str_close">Close</string>
-    <string name="str_agency_name">Agency Name</string>
+    <string name="str_agency_name">Branch Name</string>
     <string name="str_address">Address</string>
     <string name="str_phone_number">Phone Number</string>
     <string name="str_image_source_file">Image Source File</string>
     <string name="str_google_maps_url">Google Maps URL</string>
 
-    <string name="hint_agency_id_example">e.g., CN01</string>
-    <string name="hint_enter_agency_name">Enter agency name</string>
-    <string name="hint_enter_full_address">Enter full address</string>
-    <string name="hint_phone_example">e.g., 0999.888.777</string>
-    <string name="hint_image_url_or_upload">Image URL or upload</string>
-    <string name="hint_maps_url_example">http://maps.google.com/...</string>
+    <string name="hint_agency_id_example">Example: CN01</string>
+    <string name="hint_enter_agency_name">Enter branch name</string>
+    <string name="hint_enter_full_address">Enter precise full address</string>
+    <string name="hint_phone_example">Example: 0999.888.777</string>
+    <string name="hint_image_url_or_upload">Image link URL or upload file</string>
+    <string name="hint_maps_url_example">http://maps.google.com/&#8230;</string>
 
-    <string name="btn_choose">Choose</string>
+    <string name="btn_choose">Choose file</string>
+
+    <!-- About Us Page Context -->
+    <string name="about_hero_eyebrow">Hong Tra Ngo Gia</string>
+    <string name="about_hero_title">Proud of our 74-year journey of formulation and scaling</string>
+    <string name="about_logo_content_desc">Hong Tra Ngo Gia identity branding logo</string>
+    <string name="about_story_title">BRAND STORY</string>
+    <string name="about_story_desc">In 1951, amidst rustic tea fields rich with nature fragrance, our brand was born out of genuine love for bold tea flavors. Over a lengthy path, Ngo Gia has grown into one of the most familiar and favored names by retaining consistent quality, hospitality and constant innovation to conquer modern trends of Vietnamese youth.</string>
+    <string name="about_feature_quality_content_desc">Core Quality Aspect</string>
+    <string name="about_feature_quality_title">Top-Tier Quality</string>
+    <string name="about_feature_quality_desc">Safe, hygienic and fully flavorful. Utilizing natural, safe ingredients while guaranteeing absolute sanitation is always our highest paramount priority across Hong Tra Ngo Gia networks.</string>
+    <string name="about_feature_service_content_desc">Customer Care Service</string>
+    <string name="about_feature_service_title">Dedicated Service</string>
+    <string name="about_feature_service_desc">Hong Tra Ngo Gia always thrives to bring ultimate satisfaction to customers via professional, warm and extremely friendly serving attitudes.</string>
+    <string name="about_feature_tradition_content_desc">Inheritance and Evolution</string>
+    <string name="about_feature_tradition_title">Tradition &amp; Innovation</string>
+    <string name="about_feature_tradition_desc">Grounded firmly on dual core values of Quality and Service, Hong Tra Ngo Gia seamlessly updates itself to establish an enduring trustworthy brand name.</string>
+    <string name="about_video_overlay">HONG TRA NGO GIA</string>
+    <string name="about_mission_title">OUR MISSION</string>
+    <string name="about_mission_desc">Hong Tra Ngo Gia is committed to delivering refined, wholesome and entirely safe drinks. Every single refreshing cup served encapsulates all the passion and high respect of our artisan tea brewers.</string>
+    <string name="about_mission_banner_content_desc">Ngo Gia mission statement visual</string>
+    <string name="about_vision_banner_content_desc">Ngo Gia vision statement visual</string>
+    <string name="about_vision_title">BRAND VISION</string>
+    <string name="about_vision_desc">To become the pioneer leading brand in premium tea industry across Vietnam market, gaining total trust from consumers through absolute transparency regarding raw ingredient supplies&#8230;</string>
+    <string name="about_drink_content_desc">Product beverage photography display</string>
+    <string name="about_customer_centric_title">CUSTOMER CENTRICITY</string>
+    <string name="about_customer_centric_desc">Hong Tra Ngo Gia always empathizes, deeply listens and constantly elevates daily workflows to offer you unparalleled tea journeys. Every cup served is not just full of delicate aroma, but also a heartful greeting pack sent to every valued visitor.</string>
+    <string name="about_greeting">WELCOME TO NGO GIA</string>
+    <string name="about_greeting_marquee">WELCOME TO NGO GIA&#160;&#160;&#160;WELCOME TO NGO GIA&#160;&#160;&#160;WELCOME TO NGO GIA</string>
+    <string name="about_background_content_desc">Display layout background vector image</string>
+    <string name="str_coming_soon">Feature under development</string>
 </resources>
