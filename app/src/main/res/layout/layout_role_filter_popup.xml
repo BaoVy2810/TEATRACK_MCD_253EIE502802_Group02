@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="160dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_white_rounded_16"
     android:elevation="6dp"
@@ -12,7 +12,7 @@
     <RelativeLayout
         android:id="@+id/btnFilterAll"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="@dimen/filter_menu_item_height"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
         <TextView
@@ -22,13 +22,13 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/icFilterAll"
             android:layout_alignParentStart="true"
-            android:text="All"
+            android:text="@string/filter_account_all"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
         <ImageView
             android:id="@+id/icFilterAll"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="@dimen/filter_check_icon_size"
+            android:layout_height="@dimen/filter_check_icon_size"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check_circle"
@@ -41,7 +41,7 @@
     <RelativeLayout
         android:id="@+id/btnFilterAdmin"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="@dimen/filter_menu_item_height"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
         <TextView
@@ -51,13 +51,13 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/icFilterAdmin"
             android:layout_alignParentStart="true"
-            android:text="Admin"
+            android:text="@string/role_admin"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
         <ImageView
             android:id="@+id/icFilterAdmin"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="@dimen/filter_check_icon_size"
+            android:layout_height="@dimen/filter_check_icon_size"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check_circle"
@@ -70,7 +70,7 @@
     <RelativeLayout
         android:id="@+id/btnFilterCustomer"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="@dimen/filter_menu_item_height"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
         <TextView
@@ -80,13 +80,13 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/icFilterCustomer"
             android:layout_alignParentStart="true"
-            android:text="Customer"
+            android:text="@string/role_customer"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
         <ImageView
             android:id="@+id/icFilterCustomer"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="@dimen/filter_check_icon_size"
+            android:layout_height="@dimen/filter_check_icon_size"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check_circle"
@@ -99,7 +99,7 @@
     <RelativeLayout
         android:id="@+id/btnFilterCustomerVip"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="@dimen/filter_menu_item_height"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
         <TextView
@@ -109,13 +109,13 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/icFilterCustomerVip"
             android:layout_alignParentStart="true"
-            android:text="Customer Vip"
+            android:text="@string/role_customer_vip"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
         <ImageView
             android:id="@+id/icFilterCustomerVip"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="@dimen/filter_check_icon_size"
+            android:layout_height="@dimen/filter_check_icon_size"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check_circle"
