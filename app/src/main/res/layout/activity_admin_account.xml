@@ -37,19 +37,19 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="14dp"
+                android:layout_marginTop="@dimen/sp_16"
+                android:layout_marginBottom="@dimen/sp_14"
                 android:background="@color/white"
                 android:elevation="1dp"
-                android:paddingVertical="10dp">
+                android:paddingVertical="@dimen/sp_10">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/sp_16"
                     android:text="@string/title_account_management"
                     android:textColor="@color/brand_blue"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/sp_14"
                     android:textStyle="bold" />
             </FrameLayout>
 
@@ -62,12 +62,12 @@
                 <EditText
                     android:id="@+id/etSearch"
                     android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginBottom="12dp"
+                    android:layout_height="@dimen/search_input_height"
+                    android:layout_marginHorizontal="@dimen/sp_16"
+                    android:layout_marginBottom="@dimen/sp_12"
                     android:background="@drawable/bg_input_rounded"
                     android:drawableStart="@drawable/search"
-                    android:drawablePadding="10dp"
+                    android:drawablePadding="@dimen/sp_10"
                     android:hint="@string/str_search_hint_account"
                     android:paddingHorizontal="15dp"
                     android:singleLine="true"
@@ -85,20 +85,38 @@
                         android:layout_marginBottom="@dimen/sp_10"
                         android:orientation="horizontal">
 
-                        <Spinner
-                            android:id="@+id/spinnerRoleFilter"
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRoleFilter"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
-                            android:layout_height="42dp"
+                            android:layout_height="@dimen/filter_button_height"
                             android:layout_marginEnd="@dimen/sp_8"
                             android:layout_weight="1"
-                            android:background="@drawable/bg_input_rounded"
-                            android:paddingHorizontal="12dp" />
+                            android:minWidth="0dp"
+                            android:minHeight="@dimen/filter_button_height"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:text="@string/filter_account_all"
+                            android:textAllCaps="false"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="12sp"
+                            android:letterSpacing="-0.04"
+                            android:gravity="center_vertical|start"
+                            app:backgroundTint="@color/white"
+                            app:cornerRadius="@dimen/filter_button_radius"
+                            app:strokeColor="@color/brand_blue"
+                            app:strokeWidth="1dp"
+                            app:icon="@drawable/down"
+                            app:iconGravity="end"
+                            app:iconPadding="4dp"
+                            app:iconSize="@dimen/filter_icon_size"
+                            app:iconTint="@color/brand_blue" />
 
                         <!-- Export Excel Button -->
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnExportExcel"
                             android:layout_width="wrap_content"
-                            android:layout_height="38dp"
+                            android:layout_height="@dimen/filter_button_height"
                             android:backgroundTint="@color/brand_blue"
                             android:insetTop="0dp"
                             android:insetBottom="0dp"
@@ -107,6 +125,7 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"
                             android:textSize="12sp"
+                            android:letterSpacing="-0.04"
                             app:cornerRadius="19dp"
                             app:elevation="0dp" />
                     </LinearLayout>
@@ -120,35 +139,49 @@
                             android:id="@+id/btnAddAccount"
                             style="@style/Widget.TeaTrack.Button.Primary"
                             android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_marginEnd="@dimen/sp_8"
+                            android:layout_height="@dimen/filter_button_height"
+                            android:layout_marginEnd="4dp"
                             android:layout_weight="1"
                             android:minWidth="0dp"
-                            android:minHeight="48dp"
-                            android:text="Add Account"
+                            android:minHeight="@dimen/filter_button_height"
+                            android:text="@string/btn_add_account"
                             android:textAllCaps="false"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="-0.05"
                             android:maxLines="1"
                             android:ellipsize="end"
                             android:insetTop="0dp"
-                            android:insetBottom="0dp" />
+                            android:insetBottom="0dp"
+                            app:icon="@drawable/plus"
+                            app:iconGravity="textStart"
+                            app:iconPadding="6dp"
+                            app:iconSize="16dp"
+                            app:iconTint="@color/white" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnRefresh"
                             style="@style/Widget.TeaTrack.Button.Primary"
                             android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_marginStart="@dimen/sp_8"
+                            android:layout_height="@dimen/filter_button_height"
+                            android:layout_marginStart="4dp"
                             android:layout_weight="1"
                             android:minWidth="0dp"
-                            android:minHeight="48dp"
-                            android:text="Refresh"
+                            android:minHeight="@dimen/filter_button_height"
+                            android:text="@string/btn_refresh"
                             android:textAllCaps="false"
-                            android:textSize="12sp"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="-0.05"
                             android:maxLines="1"
                             android:ellipsize="end"
                             android:insetTop="0dp"
-                            android:insetBottom="0dp" />
+                            android:insetBottom="0dp"
+                            app:icon="@drawable/swap_3"
+                            app:iconGravity="textStart"
+                            app:iconPadding="6dp"
+                            app:iconSize="16dp"
+                            app:iconTint="@color/white" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -166,9 +199,9 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="24dp"
-                    android:text="No accounts found"
+                    android:text="@string/empty_accounts_message"
                     android:textColor="@color/text_secondary"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/sp_14"
                     android:visibility="gone"
                     tools:visibility="visible" />
 
