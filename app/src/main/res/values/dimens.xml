@@ -132,12 +132,34 @@
     <dimen name="card_padding">16dp</dimen>
 
     <!-- Spacing tokens -->
+    <dimen name="sp_2">2dp</dimen>
+    <dimen name="sp_3">3dp</dimen>
     <dimen name="sp_4">4dp</dimen>
     <dimen name="sp_6">6dp</dimen>
     <dimen name="sp_8">8dp</dimen>
     <dimen name="sp_10">10dp</dimen>
     <dimen name="sp_12">12dp</dimen>
+    <dimen name="sp_14">14dp</dimen>
     <dimen name="sp_16">16dp</dimen>
     <dimen name="sp_20">20dp</dimen>
     <dimen name="sp_24">24dp</dimen>
+
+    <!-- Account management -->
+    <dimen name="search_input_height">42dp</dimen>
+    <dimen name="filter_button_height">38dp</dimen>
+    <dimen name="filter_button_radius">19dp</dimen>
+    <dimen name="filter_icon_size">14dp</dimen>
+    <dimen name="account_card_radius">14dp</dimen>
+    <dimen name="avatar_size">52dp</dimen>
+    <dimen name="avatar_text_size">22sp</dimen>
+    <dimen name="vip_button_height">30dp</dimen>
+    <dimen name="vip_button_text_size">11sp</dimen>
+    <dimen name="vip_icon_size">11dp</dimen>
+    <dimen name="role_icon_size">26dp</dimen>
+    <dimen name="label_text_size">11sp</dimen>
+    <dimen name="detail_value_text_size">13sp</dimen>
+    <dimen name="action_icon_size">40dp</dimen>
+    <dimen name="action_buttons_height">44dp</dimen>
+    <dimen name="filter_menu_item_height">36dp</dimen>
+    <dimen name="filter_check_icon_size">12dp</dimen>
 </resources>

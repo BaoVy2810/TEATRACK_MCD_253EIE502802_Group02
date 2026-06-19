@@ -7,6 +7,30 @@
 
     <style name="Theme.TEATRACK_MCD_253EIE502802_Group02" parent="Base.Theme.TEATRACK_MCD_253EIE502802_Group02" />
 
+    <!-- Picker dialog: Sạch sẽ, hiện đại, chuẩn Material 3 -->
+    <style name="Theme.TeaTrack.PickerDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:colorBackground">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorSurfaceContainerHigh">@color/white</item>
+        <item name="colorSurfaceContainerHighest">@color/white</item>
+        <item name="colorSurfaceContainer">@color/white</item>
+        <item name="colorPrimary">@color/brand_blue</item>
+        <item name="colorControlActivated">@color/brand_blue</item>
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TeaTrack.PickerDialogTitle</item>
+        <item name="android:listPreferredItemHeightSmall">56dp</item>
+    </style>
+
+    <style name="TeaTrack.PickerDialogTitle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/brand_blue</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
     <style name="NavBarItem">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>

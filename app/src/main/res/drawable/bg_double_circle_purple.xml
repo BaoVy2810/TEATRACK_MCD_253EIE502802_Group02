@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Vòng tròn ngoài cùng (rất nhạt) -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#F5F0FF" />
+        </shape>
+    </item>
+    <!-- Vòng tròn bên trong (nhạt vừa) -->
+    <item
+        android:bottom="12dp"
+        android:left="12dp"
+        android:right="12dp"
+        android:top="12dp">
+        <shape android:shape="oval">
+            <solid android:color="#EDE7F6" />
+        </shape>
+    </item>
+</layer-list>

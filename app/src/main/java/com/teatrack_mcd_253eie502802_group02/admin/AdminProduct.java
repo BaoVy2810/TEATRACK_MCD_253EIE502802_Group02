@@ -142,8 +142,9 @@ public class AdminProduct extends AppCompatActivity {
     }
 
     private void setupFirebase() {
-        // Sử dụng instance mặc định để tự động lấy cấu hình từ google-services.json
-        productsRef = FirebaseDatabase.getInstance().getReference(getString(R.string.firebase_collection_products));
+        // Sử dụng URL tường minh cho khu vực asia-southeast1
+        String dbUrl = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
+        productsRef = FirebaseDatabase.getInstance(dbUrl).getReference(getString(R.string.firebase_collection_products));
 
         productsRef.addValueEventListener(new ValueEventListener() {
             @Override

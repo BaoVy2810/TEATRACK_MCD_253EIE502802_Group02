@@ -15,6 +15,7 @@
     <string name="nav_promotion">Promotion</string>
     <string name="nav_profile">Profile</string>
     <string name="str_search_hint">Find products...</string>
+    <string name="str_search_hint_account">Find usernames...</string>
     <string name="home_search">Search</string>
     <string name="home_our_beverages">OUR BEVERAGES</string>
     <string name="home_beverage_description">Special beverage creations that blend premium pure tea with rich milk and a signature hint of salt, offering a creative twist on a familiar favorite.</string>
@@ -459,4 +460,85 @@
     <string name="hint_maps_url_example">http://maps.google.com/...</string>
 
     <string name="btn_choose">Choose</string>
+
+
+    <!-- Account management - layout strings -->
+    <string name="btn_add_account">Add Account</string>
+    <string name="btn_refresh">Refresh</string>
+    <string name="filter_account_all">All</string>
+    <string name="role_admin">Admin</string>
+    <string name="role_customer">Customer</string>
+    <string name="role_customer_vip">Customer Vip</string>
+    <string name="status_active">Active</string>
+    <string name="status_inactive">Inactive</string>
+    <string name="status_locked">Locked</string>
+    <string name="empty_accounts_message">No accounts found</string>
+    <string name="btn_upgrade_vip">Upgrade VIP</string>
+    <string name="btn_downgrade_vip">Downgrade VIP</string>
+    <string name="label_role">Role</string>
+    <string name="label_phone_account">Phone Number</string>
+    <string name="label_address_account">Address</string>
+    <string name="label_created_date">Created at</string>
+    <string name="cd_view_account">View account</string>
+    <string name="cd_edit_account">Edit account</string>
+    <string name="cd_delete_account">Delete account</string>
+    <string name="cd_role">Role</string>
+    <string name="cd_phone">Phone Number</string>
+    <string name="cd_address">Address</string>
+    <string name="cd_created_date">Created at</string>
+
+    <!-- Account management - dialog/Java strings -->
+    <string name="dialog_account_detail_title">Account Detail</string>
+    <string name="dialog_delete_account_title">Delete account</string>
+    <string name="confirm_delete_account_message">Are you sure you want to delete the account</string>
+    <string name="btn_cancel_vn">Cancel</string>
+    <string name="btn_confirm_vn">Confirm</string>
+    <string name="dialog_upgrade_vip_title">Upgrade VIP</string>
+    <string name="dialog_downgrade_vip_title">Downgrade Account</string>
+    <string name="msg_delete_success">Delete successfully</string>
+    <string name="msg_upgrade_vip_success">Upgraded to VIP Customer</string>
+    <string name="msg_downgrade_vip_success">Downgraded to Customer</string>
+    <string name="dialog_add_account_title">Add Account</string>
+    <string name="dialog_edit_account_title">Edit Account</string>
+    <string name="btn_update">Update</string>
+    <string name="error_fullname_required">Full Name is required</string>
+    <string name="error_username_required">Username is required</string>
+    <string name="error_username_exists">Username already exists</string>
+    <string name="error_email_required">Email is required</string>
+    <string name="error_email_invalid">Invalid email format</string>
+    <string name="error_phone_required">Phone Number is required</string>
+    <string name="error_phone_format">Phone Number must be exactly 10 digits</string>
+    <string name="msg_export_excel">Export to Excel</string>
+    <string name="msg_migration_start">Starting data migration...</string>
+    <string name="dialog_migration_complete_title">Migration Completed</string>
+    <string name="msg_migration_success_format">Successfully migrated %d legacy accounts.</string>
+    <string name="text_na">N/A</string>
+    <string name="msg_save_success">Saved successfully</string>
+    <string name="msg_update_success">Updated successfully</string>
+    <string name="error_load_users">Failed to load users: %1$s</string>
+    <string name="error_delete_failed">Delete failed: %1$s</string>
+    <string name="error_save_failed">Save failed: %1$s</string>
+    <string name="error_migration_failed">Migration failed: %1$s</string>
+    <string name="error_cannot_create_account_id">Cannot create account ID</string>
+
+    <!-- Account dialog field labels & hints -->
+    <string name="label_full_name">Full Name</string>
+    <string name="hint_full_name">Enter full name</string>
+    <string name="label_username">Username</string>
+    <string name="hint_username">Enter username</string>
+    <string name="label_email">Email</string>
+    <string name="hint_email">Enter email address</string>
+    <string name="label_phone_number">Phone Number</string>
+    <string name="hint_phone">Enter phone number (10 digits)</string>
+    <string name="hint_address_account">Enter address</string>
+    <string name="label_account_id">Account ID</string>
+    <string name="label_created_at_detail">Created at</string>
+
+    <!-- Admin Section Titles -->
+    <string name="title_account_management">ACCOUNT MANAGEMENT</string>
+    <string name="title_orders_management">ORDERS MANAGEMENT</string>
+    <string name="title_forum_management">FORUM MANAGEMENT</string>
+    <string name="title_branch_management">BRANCH MANAGEMENT</string>
+    <string name="title_feedback_management">FEEDBACK MANAGEMENT</string>
+    <string name="title_promotion_management">PROMOTION MANAGEMENT</string>
 </resources>
