@@ -30,7 +30,8 @@
                 android:layout_height="28dp"
                 android:layout_gravity="center"
                 android:src="@drawable/trash_can"
-                app:tint="#D32F2F" />
+                android:contentDescription="@string/cd_delete_icon"
+                app:tint="@color/danger" />
         </FrameLayout>
 
         <!-- Title -->
@@ -38,8 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Confirm Deletion"
-            android:textColor="#D32F2F"
+            android:text="@string/modal_delete_title"
+            android:textColor="@color/danger"
             android:textSize="18sp"
             android:textStyle="bold"
             android:gravity="center" />
@@ -52,16 +53,16 @@
             android:layout_marginTop="12dp"
             android:gravity="center"
             android:lineSpacingExtra="4dp"
-            android:text="The product Trà Ô Long Mộc Hương will be permanently deleted."
-            android:textColor="#424242"
+            android:text="@string/modal_delete_message"
+            android:textColor="@color/text_primary"
             android:textSize="14sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="This action cannot be undone."
-            android:textColor="#9E9E9E"
+            android:text="@string/modal_delete_no_recover"
+            android:textColor="@color/text_muted"
             android:textSize="11sp" />
 
         <!-- Buttons Row -->
@@ -78,29 +79,22 @@
                 android:layout_height="48dp"
                 android:layout_marginEnd="6dp"
                 android:layout_weight="1"
-
                 android:backgroundTint="@android:color/transparent"
-
-                android:text="Cancel"
+                android:text="@string/btn_cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:letterSpacing="-0.04"
-
                 android:paddingStart="0dp"
                 android:paddingEnd="0dp"
-
                 android:insetLeft="0dp"
                 android:insetRight="0dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-
                 app:cornerRadius="24dp"
-
                 app:strokeColor="@color/black"
                 app:strokeWidth="1.2dp"
-
                 app:icon="@drawable/ic_close_circle_custom"
                 app:iconGravity="textStart"
                 app:iconSize="18dp"
@@ -114,26 +108,20 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
-
-                android:backgroundTint="#D32F2F"
-
-                android:text="Delete"
+                android:backgroundTint="@color/danger"
+                android:text="@string/btn_delete"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="13sp"
                 android:textStyle="bold"
                 android:letterSpacing="-0.04"
-
                 android:paddingStart="0dp"
                 android:paddingEnd="0dp"
-
                 android:insetLeft="0dp"
                 android:insetRight="0dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-
                 app:cornerRadius="24dp"
-
                 app:icon="@drawable/ic_trash_circle_custom"
                 app:iconGravity="textStart"
                 app:iconSize="18dp"

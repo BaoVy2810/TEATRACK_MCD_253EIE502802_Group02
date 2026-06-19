@@ -69,7 +69,8 @@ public class AdminDashboard extends AppCompatActivity {
         binding = ActivityAdminDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String dbUrl = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
+        mDatabase = FirebaseDatabase.getInstance(dbUrl).getReference();
 
         setupStatCards();
         setupLineChart();
@@ -84,7 +85,7 @@ public class AdminDashboard extends AppCompatActivity {
 
         // Setup Time Range Picker for Bar Chart
         binding.btnBarChartRange.setOnClickListener(this::showTimeRangePicker);
-        
+
         // Fetch real data from Firebase
         fetchDashboardData();
     }
@@ -130,10 +131,10 @@ public class AdminDashboard extends AppCompatActivity {
                 sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
                 String startDate = sdf.format(new Date(selection.first));
                 String endDate = sdf.format(new Date(selection.second));
-                
+
                 String rangeLabel = startDate + " - " + endDate;
                 binding.btnBarChartRange.setText(rangeLabel);
-                
+
                 // Cập nhật dữ liệu dựa trên khoảng ngày đã chọn
                 filterAndDisplayData("Custom: " + rangeLabel);
             }
@@ -143,12 +144,12 @@ public class AdminDashboard extends AppCompatActivity {
     private void setupPickerItem(View root, int viewId, String rangeName, String currentRange, PopupWindow popup) {
         View itemView = root.findViewById(viewId);
         if (itemView == null) return;
-        
+
         boolean isActive = rangeName.equalsIgnoreCase(currentRange);
 
         android.widget.TextView tv = null;
         android.widget.ImageView iv = null;
-        
+
         if (viewId == R.id.btnToday) { tv = root.findViewById(R.id.tvToday); iv = root.findViewById(R.id.icToday); }
         else if (viewId == R.id.btnLast7Days) { tv = root.findViewById(R.id.tvLast7Days); iv = root.findViewById(R.id.icLast7Days); }
         else if (viewId == R.id.btnLast30Days) { tv = root.findViewById(R.id.tvLast30Days); iv = root.findViewById(R.id.icLast30Days); }
@@ -225,24 +226,31 @@ public class AdminDashboard extends AppCompatActivity {
 
         NavBarHelper.setupNavBar(this, navItemIds, R.id.nav_dashboard, v -> {
             int id = v.getId();
-            Class<?> destination = null;
             if (id == R.id.nav_dashboard) return;
+
+            Class<?> destination = null;
             if (id == R.id.nav_products) destination = AdminProduct.class;
             else if (id == R.id.nav_orders) destination = AdminOrders.class;
             else if (id == R.id.nav_account) destination = AdminAccount.class;
+            else if (id == R.id.nav_forum) destination = AdminBlog.class;
+            else if (id == R.id.nav_branch) destination = AdminAgency.class;
+            else if (id == R.id.nav_feedbacks) destination = AdminComplaints.class;
             else if (id == R.id.nav_promotion) destination = AdminPromotion.class;
-            // Add other mappings as needed
 
             if (destination != null) {
                 startActivity(new Intent(this, destination));
+                finish();
             }
         });
     }
 
     private void fetchDashboardData() {
+        android.util.Log.d("AdminDashboard", "Fetching data from Firebase...");
+
         mDatabase.child("branches").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                android.util.Log.d("AdminDashboard", "Branches count: " + snapshot.getChildrenCount());
                 List<Branch> branches = new ArrayList<>();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Branch branch = data.getValue(Branch.class);
@@ -252,21 +260,28 @@ public class AdminDashboard extends AppCompatActivity {
                 binding.rvBranchAnalysis.setAdapter(new BranchAnalysisAdapter(branches));
             }
             @Override
-            public void onCancelled(DatabaseError error) {}
+            public void onCancelled(DatabaseError error) {
+                android.util.Log.e("AdminDashboard", "Branches error: " + error.getMessage());
+            }
         });
 
         mDatabase.child("products").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                binding.cardProducts.tvStatValue.setText(String.valueOf(snapshot.getChildrenCount()));
+                long count = snapshot.getChildrenCount();
+                android.util.Log.d("AdminDashboard", "Products count: " + count);
+                binding.cardProducts.tvStatValue.setText(String.valueOf(count));
             }
             @Override
-            public void onCancelled(DatabaseError error) {}
+            public void onCancelled(DatabaseError error) {
+                android.util.Log.e("AdminDashboard", "Products error: " + error.getMessage());
+            }
         });
 
         mDatabase.child("orders").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                android.util.Log.d("AdminDashboard", "Orders count: " + snapshot.getChildrenCount());
                 allOrders.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Order order = data.getValue(Order.class);
@@ -275,49 +290,117 @@ public class AdminDashboard extends AppCompatActivity {
                 filterAndDisplayData("Monthly");
             }
             @Override
-            public void onCancelled(DatabaseError error) {}
+            public void onCancelled(DatabaseError error) {
+                android.util.Log.e("AdminDashboard", "Orders error: " + error.getMessage());
+            }
         });
     }
 
     private void filterAndDisplayData(String range) {
-        double totalRevenue = 0;
-        int productsSold = 0;
+        double currentRevenue = 0, prevRevenue = 0;
+        int currentOrders = 0, prevOrders = 0;
+        int currentSold = 0, prevSold = 0;
         List<Order> filteredOrders = new ArrayList<>();
 
+        int periodDays = 30;
+        int labelRes = R.string.stat_mom;
+
+        if (range.contains("Today") || range.contains("Hôm nay") || range.contains("Today_Toggle")) {
+            periodDays = 1;
+            labelRes = R.string.stat_dod;
+        } else if (range.contains("Weekly") || range.contains("7 Days") || range.contains("7 ngày") || range.contains("Hàng tuần")) {
+            periodDays = 7;
+            labelRes = R.string.stat_wow;
+        } else if (range.contains("Monthly") || range.contains("30 Days") || range.contains("30 ngày") || range.contains("Hàng tháng")) {
+            periodDays = 30;
+            labelRes = R.string.stat_mom;
+        } else if (range.contains("90 Days") || range.contains("90 ngày")) {
+            periodDays = 90;
+            labelRes = R.string.stat_mom;
+        } else if (range.contains("Year to Date") || range.contains("đầu năm")) {
+            periodDays = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+            labelRes = R.string.stat_mom;
+        }
+
         for (Order order : allOrders) {
-            boolean matches = false;
             String meta = order.getMeta();
             if (meta == null) continue;
 
-            if (range.equalsIgnoreCase("Today") || range.equalsIgnoreCase("Today_Toggle")) {
-                matches = meta.contains("min") || meta.contains("hour");
-            } else if (range.equalsIgnoreCase("Weekly") || range.equalsIgnoreCase("Last 7 Days")) {
-                matches = meta.contains("min") || meta.contains("hour") || (meta.contains("day") && !meta.contains("30"));
-            } else {
-                matches = true;
+            int daysAgo = getDaysAgo(meta);
+            double val = 0;
+            if (meta.contains("•")) {
+                try {
+                    String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
+                            .replace("đ", "").replace(".", "");
+                    val = Double.parseDouble(priceStr);
+                } catch (Exception e) {}
             }
 
-            if (matches) {
+            if (daysAgo >= 0 && daysAgo < periodDays) {
+                // Current period
+                currentRevenue += val;
+                currentOrders++;
+                currentSold++; // Placeholder: assuming 1 product per order
                 filteredOrders.add(order);
-                if (meta.contains("•")) {
-                    try {
-                        String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                .replace("đ", "").replace(".", "");
-                        totalRevenue += Double.parseDouble(priceStr);
-                        productsSold++;
-                    } catch (Exception e) {}
-                }
+            } else if (daysAgo >= periodDays && daysAgo < periodDays * 2) {
+                // Previous period
+                prevRevenue += val;
+                prevOrders++;
+                prevSold++;
             }
         }
 
         DecimalFormat df = new DecimalFormat("#,###");
-        binding.cardRevenue.tvStatValue.setText(df.format(totalRevenue) + "đ");
-        binding.cardOrders.tvStatValue.setText(String.valueOf(filteredOrders.size()));
-        binding.cardSold.tvStatValue.setText(String.valueOf(productsSold));
+        binding.cardRevenue.tvStatValue.setText(df.format(currentRevenue) + "đ");
+        binding.cardOrders.tvStatValue.setText(String.valueOf(currentOrders));
+        binding.cardSold.tvStatValue.setText(String.valueOf(currentSold));
 
-        List<Order> displayList = filteredOrders.subList(0, Math.min(filteredOrders.size(), 5));
-        binding.rvRecentOrders.setAdapter(new RecentOrderAdapter(displayList));
-        updateLineChartWithData(totalRevenue);
+        // Update Deltas and Labels
+        updateStatComparison(binding.cardRevenue.getRoot(), currentRevenue, prevRevenue, labelRes);
+        updateStatComparison(binding.cardOrders.getRoot(), currentOrders, prevOrders, labelRes);
+        updateStatComparison(binding.cardSold.getRoot(), currentSold, prevSold, labelRes);
+
+        if (!filteredOrders.isEmpty()) {
+            List<Order> displayList = filteredOrders.subList(0, Math.min(filteredOrders.size(), 5));
+            binding.rvRecentOrders.setAdapter(new RecentOrderAdapter(displayList));
+        }
+        updateLineChartWithData(currentRevenue);
+    }
+
+    private int getDaysAgo(String meta) {
+        if (meta == null) return 100;
+        if (meta.contains("min") || meta.contains("hour")) return 0;
+        if (meta.contains("day")) {
+            String numeric = meta.replaceAll("[^0-9]", "");
+            return numeric.isEmpty() ? 1 : Integer.parseInt(numeric);
+        }
+        return 100;
+    }
+
+    private void updateStatComparison(View cardView, double current, double prev, int labelRes) {
+        android.widget.TextView tvDelta = cardView.findViewById(R.id.tvStatDelta);
+        android.widget.TextView tvLabel = cardView.findViewById(R.id.tvStatLabel);
+        android.widget.ImageView ivTrend = cardView.findViewById(R.id.ivTrendIcon);
+
+        tvLabel.setText(getString(labelRes));
+
+        if (prev == 0) {
+            tvDelta.setText(current > 0 ? "+100%" : "0%");
+        } else {
+            double percent = ((current - prev) / prev) * 100;
+            String sign = percent >= 0 ? "+" : "";
+            tvDelta.setText(sign + new DecimalFormat("#.#").format(percent) + "%");
+
+            if (ivTrend != null) {
+                if (percent < 0) {
+                    ivTrend.setRotation(180);
+                    tvDelta.setTextColor(Color.parseColor("#FF3B30")); // Red for decrease
+                } else {
+                    ivTrend.setRotation(0);
+                    tvDelta.setTextColor(Color.WHITE);
+                }
+            }
+        }
     }
 
     private void updateLineChartWithData(double totalRevenue) {
@@ -339,13 +422,13 @@ public class AdminDashboard extends AppCompatActivity {
     }
 
     private void setupStatCards() {
-        setupStatCard(binding.cardRevenue.getRoot(), getString(R.string.stat_revenue_title), "0đ", "+5.2%", getString(R.string.stat_mom), R.drawable.chart, R.color.stat_revenue_start, R.color.stat_revenue_end);
-        setupStatCard(binding.cardOrders.getRoot(), getString(R.string.stat_orders_title), "0", "+5.2%", getString(R.string.stat_mom), R.drawable.cart, R.color.stat_orders_start, R.color.stat_orders_end);
-        setupStatCard(binding.cardSold.getRoot(), getString(R.string.stat_sold_title), "0", "+5.2%", getString(R.string.stat_mom), R.drawable.coins, R.color.stat_sold_start, R.color.stat_sold_end);
-        
+        setupStatCard(binding.cardRevenue.getRoot(), getString(R.string.stat_revenue_title), "0đ", "0%", getString(R.string.stat_mom), R.drawable.chart, R.color.stat_revenue_start, R.color.stat_revenue_end);
+        setupStatCard(binding.cardOrders.getRoot(), getString(R.string.stat_orders_title), "0", "0%", getString(R.string.stat_mom), R.drawable.cart, R.color.stat_orders_start, R.color.stat_orders_end);
+        setupStatCard(binding.cardSold.getRoot(), getString(R.string.stat_sold_title), "0", "0%", getString(R.string.stat_mom), R.drawable.coins, R.color.stat_sold_start, R.color.stat_sold_end);
+
         // Cập nhật icon cho Products tại đây (Ví dụ dùng box1 hoặc bag1)
         setupStatCard(binding.cardProducts.getRoot(), getString(R.string.stat_products_title), "0", "", getString(R.string.stat_active_trading), R.drawable.coffee, R.color.stat_products_start, R.color.stat_products_end);
-        
+
         binding.cardProducts.ivTrendIcon.setVisibility(View.GONE);
     }
 

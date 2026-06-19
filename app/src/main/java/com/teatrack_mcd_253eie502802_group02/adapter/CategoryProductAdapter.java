@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
+import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product item = products.get(position);
-        holder.imgProduct.setImageResource(item.getImageRes(holder.itemView.getContext()));
+        ProductImageHelper.load(holder.imgProduct, item);
         holder.tvName.setText(item.getName());
 
         holder.imgProduct.setAlpha(position == selectedPosition ? 1f : 0.7f);

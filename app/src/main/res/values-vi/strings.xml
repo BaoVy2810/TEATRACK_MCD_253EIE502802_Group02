@@ -267,16 +267,22 @@
     <string name="stat_sold_title">PRODUCTS SOLD</string>
     <string name="stat_products_title">PRODUCTS</string>
     <string name="stat_mom">MoM</string>
+    <string name="stat_dod">DoD</string>
+    <string name="stat_wow">WoW</string>
     <string name="stat_active_trading">Active trading</string>
 
     <!-- Chart titles -->
     <string name="chart_performance_title">Performance (Revenue &amp; Expenses)</string>
     <string name="chart_daily_trend_title">Daily Sales Trends</string>
     <string name="chart_top_drinks_title">Top-selling Drinks</string>
-    <string name="btn_monthly">Monthly</string>
-    <string name="btn_weekly">Weekly</string>
-    <string name="btn_today">Today</string>
-    <string name="btn_last_7_days">Last 7 Days ▾</string>
+    <string name="btn_monthly">Hàng tháng</string>
+    <string name="btn_weekly">Hàng tuần</string>
+    <string name="btn_today">Hôm nay</string>
+    <string name="btn_last_7_days">7 ngày qua ▾</string>
+    <string name="btn_last_30_days">30 ngày qua</string>
+    <string name="btn_last_90_days">90 ngày qua</string>
+    <string name="btn_year_to_date">Từ đầu năm đến nay</string>
+    <string name="btn_custom_range">Khoảng thời gian tùy chỉnh</string>
 
     <!-- Chart legend -->
     <string name="legend_revenue">Revenue</string>
@@ -339,6 +345,8 @@
 
     <!-- Modal: Add Product -->
     <string name="modal_add_title">ADD PRODUCT</string>
+    <string name="label_product_id">Mã sản phẩm</string>
+    <string name="hint_product_id">Nhập mã sản phẩm</string>
     <string name="label_product_name">Product Name</string>
     <string name="hint_product_name">Enter product name</string>
     <string name="label_product_type">Category</string>
@@ -355,6 +363,7 @@
     <string name="hint_product_info">Enter product info...</string>
     <string name="label_product_desc">Product Description</string>
     <string name="hint_product_desc">Enter product description...</string>
+    <string name="label_product_images_max">Hình ảnh sản phẩm (tối đa 4 ảnh)</string>
     <string name="label_images">Product Images</string>
     <string name="hint_max_images">(max 4 images)</string>
     <string name="btn_upload_image">Upload Image</string>
@@ -362,12 +371,14 @@
     <string name="btn_add">Add</string>
 
     <!-- Modal: Edit Product -->
-    <string name="modal_edit_title">EDIT PRODUCT</string>
-    <string name="btn_delete">Delete</string>
-    <string name="btn_save">Save</string>
+    <string name="modal_edit_title">SỬA SẢN PHẨM</string>
+    <string name="btn_delete">Xóa</string>
+    <string name="btn_save">Lưu</string>
+    <string name="btn_edit">Sửa</string>
 
     <!-- Modal: Delete Confirm -->
-    <string name="modal_delete_title">Confirm Delete Product</string>
+    <string name="modal_delete_title">Xác nhận xóa sản phẩm</string>
+    <string name="modal_delete_message">Bạn có chắc chắn muốn xóa sản phẩm này không?</string>
     <string name="modal_delete_subtitle_prefix">Product</string>
     <string name="modal_delete_subtitle_suffix">will be permanently deleted.</string>
     <string name="modal_delete_no_recover">You will not be able to recover this product.</string>
@@ -417,6 +428,7 @@
     <string name="cd_orders_icon">Orders Icon</string>
     <string name="cd_sold_icon">Sold Products Icon</string>
     <string name="cd_products_icon">Products Icon</string>
+    <string name="cd_delete_icon">Biểu tượng xóa</string>
     <string name="cd_upload">Upload Image</string>
     <string name="cd_remove_image">Remove Image</string>
     <string name="cd_close_modal">Close</string>

@@ -20,7 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Today"
+            android:layout_toStartOf="@+id/icToday"
+            android:layout_alignParentStart="true"
+            android:text="@string/btn_today"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
         <ImageView
@@ -31,7 +33,8 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check_circle"
             android:visibility="gone"
-            app:tint="#FFFFFF" />
+            android:contentDescription="@null"
+            app:tint="@color/white" />
     </RelativeLayout>
 
     <!-- Last 7 Days -->
@@ -46,7 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Last 7 Days"
+            android:layout_toStartOf="@+id/icLast7Days"
+            android:layout_alignParentStart="true"
+            android:text="@string/btn_last_7_days"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
         <ImageView
@@ -57,7 +62,8 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check_circle"
             android:visibility="gone"
-            app:tint="#FFFFFF" />
+            android:contentDescription="@null"
+            app:tint="@color/white" />
     </RelativeLayout>
 
     <!-- Last 30 Days -->
@@ -72,7 +78,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Last 30 Days"
+            android:layout_toStartOf="@+id/icLast30Days"
+            android:layout_alignParentStart="true"
+            android:text="@string/btn_last_30_days"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
         <ImageView
@@ -83,7 +91,8 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check_circle"
             android:visibility="gone"
-            app:tint="#FFFFFF" />
+            android:contentDescription="@null"
+            app:tint="@color/white" />
     </RelativeLayout>
 
     <!-- Last 90 Days -->
@@ -98,7 +107,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Last 90 Days"
+            android:layout_toStartOf="@+id/icLast90Days"
+            android:layout_alignParentStart="true"
+            android:text="@string/btn_last_90_days"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
         <ImageView
@@ -109,7 +120,8 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check_circle"
             android:visibility="gone"
-            app:tint="#FFFFFF" />
+            android:contentDescription="@null"
+            app:tint="@color/white" />
     </RelativeLayout>
 
     <!-- Year to Date -->
@@ -124,7 +136,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Year to Date"
+            android:layout_toStartOf="@+id/icYearToDate"
+            android:layout_alignParentStart="true"
+            android:text="@string/btn_year_to_date"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
         <ImageView
@@ -135,7 +149,8 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_check_circle"
             android:visibility="gone"
-            app:tint="#FFFFFF" />
+            android:contentDescription="@null"
+            app:tint="@color/white" />
     </RelativeLayout>
 
     <View
@@ -143,7 +158,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
-        android:background="#E5E5EA" />
+        android:background="@color/divider" />
 
     <!-- Custom Range -->
     <RelativeLayout
@@ -152,20 +167,26 @@
         android:layout_height="36dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="Custom Range"
-            android:textColor="@color/brand_blue"
-            android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/icChevron"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:contentDescription="@null"
             android:src="@drawable/ic_chevron_right"
             app:tint="@color/brand_blue" />
+
+        <TextView
+            android:id="@+id/tvCustomRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/icChevron"
+            android:text="@string/btn_custom_range"
+            android:textColor="@color/brand_blue"
+            android:textSize="12sp" />
     </RelativeLayout>
 </LinearLayout>

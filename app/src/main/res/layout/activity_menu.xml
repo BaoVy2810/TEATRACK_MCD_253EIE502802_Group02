@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_baby_blue"
-    android:paddingEnd="5dp"
     tools:context="com.teatrack_mcd_253eie502802_group02.client.Menu">
 
     <include
