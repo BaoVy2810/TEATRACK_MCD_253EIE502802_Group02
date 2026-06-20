@@ -7,6 +7,104 @@
     android:layout_height="match_parent"
     android:background="@color/bg_baby_blue">
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/headerClient"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/header_height"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="@dimen/header_elevation"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.BottomRounded"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="20dp"
+            android:paddingEnd="16dp">
+
+            <ImageButton
+                android:id="@+id/btnCartBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/product_detail_back"
+                android:padding="4dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/brand_blue" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/layoutCartIcon"
+                app:layout_constraintStart_toEndOf="@id/btnCartBack"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_family"
+                    android:text="@string/cart_title"
+                    android:textColor="@color/on_surface"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvItemsSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_family"
+                    android:textColor="@color/secondary"
+                    android:textSize="11sp"
+                    tools:text="2 Items Selected" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/layoutCartIcon"
+                android:layout_width="@dimen/header_profile_size"
+                android:layout_height="@dimen/header_profile_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/btnCartHeaderIcon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/cart_title"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/cart"
+                    app:tint="@color/brand_blue" />
+
+                <TextView
+                    android:id="@+id/tvCartHeaderBadge"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/bg_cart_badge_red"
+                    android:fontFamily="@font/inter_family"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="2"
+                    tools:visibility="visible" />
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
@@ -17,104 +115,14 @@
         app:layout_constraintBottom_toTopOf="@id/layoutCartFooter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/headerClient">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="12dp"
-            android:paddingBottom="8dp">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="2dp"
-                app:strokeColor="#0F1D4ED8"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
-
-                    <ImageButton
-                        android:id="@+id/btnCartBack"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_circle_brand_blue"
-                        android:contentDescription="@string/product_detail_back"
-                        android:padding="4dp"
-                        android:src="@drawable/ic_arrow_back"
-                        app:tint="@color/white" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_family"
-                            android:fontWeight="900"
-                            android:text="@string/cart_title"
-                            android:textColor="@color/on_surface"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvItemsSelected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_family"
-                            android:textColor="@color/secondary"
-                            android:textSize="12sp"
-                            tools:text="2 Items Selected" />
-                    </LinearLayout>
-
-                    <FrameLayout
-                        android:layout_width="@dimen/header_profile_size"
-                        android:layout_height="@dimen/header_profile_size">
-
-                        <ImageButton
-                            android:id="@+id/btnCartHeaderIcon"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@android:color/transparent"
-                            android:clickable="false"
-                            android:contentDescription="@string/cart_title"
-                            android:focusable="false"
-                            android:padding="8dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/cart"
-                            app:tint="@color/brand_blue" />
-
-                        <TextView
-                            android:id="@+id/tvCartHeaderBadge"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_gravity="top|end"
-                            android:background="@drawable/bg_cart_badge_red"
-                            android:fontFamily="@font/inter_family"
-                            android:gravity="center"
-                            android:includeFontPadding="false"
-                            android:textColor="@color/white"
-                            android:textSize="10sp"
-                            android:textStyle="bold"
-                            android:visibility="gone"
-                            tools:text="2"
-                            tools:visibility="visible" />
-                    </FrameLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            android:paddingBottom="40dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"

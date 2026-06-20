@@ -7,8 +7,8 @@
     <string name="nav_products">Sản phẩm</string>
     <string name="nav_orders">Đơn hàng</string>
     <string name="nav_account">Tài khoản</string>
-    <string name="blog_breadcrumb">Trang chủ / Diễn đàn</string>
-    <string name="blog_page_title">Diễn đàn</string>
+    <string name="blog_breadcrumb_forum">Trang chủ / Diễn đàn</string>
+    <string name="blog_page_title_forum">Diễn đàn</string>
     <string name="nav_branch">Chi nhánh</string>
     <string name="nav_feedbacks">Phản hồi</string>
     <string name="next">Tiếp theo</string>
