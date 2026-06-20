@@ -18,7 +18,8 @@ import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 public class UserProfile extends BaseActivity {
 
     private LinearLayout btnPersonalInfo, btnLanguage, btnPoints, btnReviews, btnPolicies;
-    private static final int[] NAV_ITEM_IDS = {
+
+    private static final int[] NAV_IDS = {
             R.id.nav_home,
             R.id.nav_menu,
             R.id.nav_orders,
@@ -31,12 +32,15 @@ public class UserProfile extends BaseActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_user_profile);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        initViews();
+        setupClickListeners();
         setupBottomNav();
         CartBadgeHelper.setup(this);
     }
@@ -45,77 +49,53 @@ public class UserProfile extends BaseActivity {
     protected void onResume() {
         super.onResume();
         CartBadgeHelper.updateBadge(this);
-
-        initViews();
-        setupClickListeners();
-        setupNavBar();
     }
 
     private void initViews() {
         btnPersonalInfo = findViewById(R.id.btnPersonalInfo);
-        btnLanguage = findViewById(R.id.btnLanguage);
-        btnPoints = findViewById(R.id.btnPoints);
-        btnReviews = findViewById(R.id.btnReviews);
-        btnPolicies = findViewById(R.id.btnPolicies);
+        btnLanguage     = findViewById(R.id.btnLanguage);
+        btnPoints       = findViewById(R.id.btnPoints);
+        btnReviews      = findViewById(R.id.btnReviews);
+        btnPolicies     = findViewById(R.id.btnPolicies);
     }
 
     private void setupClickListeners() {
-        btnPersonalInfo.setOnClickListener(v -> {
-            startActivity(new Intent(this, PersonalInformationActivity.class));
-        });
-
-        btnLanguage.setOnClickListener(v -> {
-            startActivity(new Intent(this, ChangeLanguageActivity.class));
-        });
-
-        btnPoints.setOnClickListener(v -> {
-            startActivity(new Intent(this, EarnedPointHistoryActivity.class));
-        });
-
-        btnReviews.setOnClickListener(v -> {
-            startActivity(new Intent(this, MyReviewsActivity.class));
-        });
-
-        btnPolicies.setOnClickListener(v -> {
-            startActivity(new Intent(this, PolicyandTermActivity.class));
-        });
+        btnPersonalInfo.setOnClickListener(v ->
+                startActivity(new Intent(this, PersonalInformationActivity.class)));
+        btnLanguage.setOnClickListener(v ->
+                startActivity(new Intent(this, ChangeLanguageActivity.class)));
+        btnPoints.setOnClickListener(v ->
+                startActivity(new Intent(this, EarnedPointHistoryActivity.class)));
+        btnReviews.setOnClickListener(v ->
+                startActivity(new Intent(this, MyReviewsActivity.class)));
+        btnPolicies.setOnClickListener(v ->
+                startActivity(new Intent(this, PolicyandTermActivity.class)));
     }
 
-    private void setupNavBar() {
-        NavBarHelper.setupNavBar(this, NAV_ITEM_IDS, R.id.nav_profile, v -> {
+    private void setupBottomNav() {
+        NavBarHelper.setupNavBar(this, NAV_IDS, R.id.nav_profile, v -> {
             int id = v.getId();
-            if (id == R.id.nav_home) {
-                startActivity(new Intent(this, Homepage.class));
-            } else if (id == R.id.nav_menu) {
-                startActivity(new Intent(this, Menu.class));
-            } else if (id == R.id.nav_orders) {
-                startActivity(new Intent(this, OrderHistory.class));
-            } else if (id == R.id.nav_promotion) {
-                // TODO: Chờ màn hình Promotion
-            } else if (id == R.id.nav_profile) {
-                // Đang ở UserProfile, không cần chuyển trang
+            if (id == R.id.nav_profile) return; // đang ở đây rồi
+
+            Intent intent = null;
+            if (id == R.id.nav_home)      intent = new Intent(this, Homepage.class);
+            else if (id == R.id.nav_menu) intent = new Intent(this, Menu.class);
+            else if (id == R.id.nav_orders)    intent = new Intent(this, OrderHistory.class);
+            else if (id == R.id.nav_promotion) intent = new Intent(this, BlogGeneral.class);
+
+            if (intent != null) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
     }
 
-    private void setupBottomNav() {
-        NavBarHelper.setupNavBar(this, NAV_ITEM_IDS, R.id.nav_profile, this::onNavItemClicked);
-    }
-
-    private void onNavItemClicked(View view) {
-        int id = view.getId();
-        if (id == R.id.nav_profile) {
-            return;
-        }
-        if (id == R.id.nav_home) {
-            startActivity(new Intent(this, Homepage.class));
-        } else if (id == R.id.nav_menu) {
-            startActivity(new Intent(this, Menu.class));
-        } else if (id == R.id.nav_orders) {
-            startActivity(new Intent(this, OrderHistory.class));
-        } else if (id == R.id.nav_promotion) {
-            startActivity(new Intent(this, BlogGeneral.class));
-        }
-        finish();
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, Homepage.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 }

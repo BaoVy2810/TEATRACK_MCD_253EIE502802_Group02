@@ -15,7 +15,7 @@ import android.view.ViewTreeObserver;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import androidx.core.widget.NestedScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +29,7 @@ import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 public class AboutUsActivity extends BaseActivity {
 
     private VideoView videoView;
-    private ScrollView scrollView;
+    private NestedScrollView scrollView;
 
     private LinearLayout missionOverlay;
     private boolean missionAnimDone = false;
@@ -65,7 +65,7 @@ public class AboutUsActivity extends BaseActivity {
     }
 
     private void bindViews() {
-        scrollView      = findViewById(R.id.scrollView);
+        scrollView      = findViewById(R.id.nestedScrollView);
         videoView       = findViewById(R.id.videoView);
         missionOverlay  = findViewById(R.id.missionOverlay);
         visionOverlay   = findViewById(R.id.visionOverlay);
@@ -136,6 +136,7 @@ public class AboutUsActivity extends BaseActivity {
 
 
     private void setupScrollListener() {
+        if (scrollView == null) return;
         scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
             checkMissionVisible();
             checkVisionVisible();

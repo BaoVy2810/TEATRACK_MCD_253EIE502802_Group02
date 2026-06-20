@@ -14,10 +14,10 @@
         android:fillViewport="true"
         android:overScrollMode="never"
         android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@id/navBar"
+        app:layout_constraintBottom_toTopOf="@id/navBarClient"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/headerClient">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:id="@+id/imgLogo"
                 android:layout_width="147dp"
                 android:layout_height="92dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="12dp"
                 android:contentDescription="@string/login_logo_description"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/logo_ngo_gia"
@@ -425,15 +425,6 @@
     </ScrollView>
 
     <include
-        android:id="@+id/navBar"
-        layout="@layout/activity_nav_bar_client"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <include
         android:id="@+id/headerClient"
         layout="@layout/activity_header_client"
         android:layout_width="0dp"
@@ -450,18 +441,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/inter_family"
-        android:text="@string/nav_profile"
-        android:textColor="@color/on_surface"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/navBarClient"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerClient" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

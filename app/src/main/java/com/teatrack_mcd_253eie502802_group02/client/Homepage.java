@@ -143,14 +143,20 @@ public class Homepage extends BaseActivity {
         if (id == R.id.nav_home) {
             return;
         }
+        Intent intent = null;
         if (id == R.id.nav_menu) {
-            startActivity(new Intent(this, Menu.class));
+            intent = new Intent(this, Menu.class);
         } else if (id == R.id.nav_orders) {
-            startActivity(new Intent(this, OrderHistory.class));
+            intent = new Intent(this, OrderHistory.class);
         } else if (id == R.id.nav_promotion) {
-            startActivity(new Intent(this, BlogGeneral.class));
+            intent = new Intent(this, BlogGeneral.class);
         } else if (id == R.id.nav_profile) {
-            startActivity(new Intent(this, UserProfile.class));
+            intent = new Intent(this, UserProfile.class);
+        }
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
         }
     }
 

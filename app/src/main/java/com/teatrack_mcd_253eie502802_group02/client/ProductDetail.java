@@ -586,7 +586,6 @@ public class ProductDetail extends BaseActivity {
     protected void onResume() {
         super.onResume();
         CartBadgeHelper.updateBadge(this);
-        setupToppingRows();
     }
 
     private void fetchRecommendedProducts(String category) {
@@ -686,35 +685,33 @@ public class ProductDetail extends BaseActivity {
         NavBarHelper.setupNavBar(this, navIds, R.id.nav_menu, v -> {
             int id = v.getId();
             if (id == R.id.nav_home) {
-                startActivity(new Intent(this, Homepage.class));
+                Intent intent = new Intent(this, Homepage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             } else if (id == R.id.nav_menu) {
                 openMainTab(MainActivity.TAB_MENU, null);
+                overridePendingTransition(0, 0);
             } else if (id == R.id.nav_orders) {
-                startActivity(new Intent(this, OrderHistory.class));
+                Intent intent = new Intent(this, OrderHistory.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             } else if (id == R.id.nav_promotion) {
-                startActivity(new Intent(this, BlogGeneral.class));
+                Intent intent = new Intent(this, BlogGeneral.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             } else if (id == R.id.nav_profile) {
-                startActivity(new Intent(this, UserProfile.class));
+                Intent intent = new Intent(this, UserProfile.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
 
         if (navMenu != null) {
             NavBarHelper.updateItemState(this, navMenu, true);
-        }
-        if (navHome != null) {
-            navHome.setOnClickListener(v -> startActivity(new Intent(this, Homepage.class)));
-        }
-        if (navMenu != null) {
-            navMenu.setOnClickListener(v -> openMainTab(MainActivity.TAB_MENU, null));
-        }
-        if (navOrders != null) {
-            navOrders.setOnClickListener(v -> startActivity(new Intent(this, OrderHistory.class)));
-        }
-        if (navPromotion != null) {
-            navPromotion.setOnClickListener(v -> startActivity(new Intent(this, BlogGeneral.class)));
-        }
-        if (navProfile != null) {
-            navProfile.setOnClickListener(v -> startActivity(new Intent(this, UserProfile.class)));
         }
     }
 
@@ -728,6 +725,9 @@ public class ProductDetail extends BaseActivity {
     }
 
     private void selectTab(TextView selectedTab) {
+        if (tabDescription == null || tabReview == null || tabCommitment == null) {
+            return;
+        }
         int activeColor = ContextCompat.getColor(this, R.color.brand_blue);
         int inactiveColor = ContextCompat.getColor(this, R.color.nav_inactive);
 
@@ -954,7 +954,6 @@ public class ProductDetail extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         backToMenu();
     }
 }

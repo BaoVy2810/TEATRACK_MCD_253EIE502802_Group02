@@ -902,7 +902,6 @@
                             <androidx.core.widget.NestedScrollView
                                 android:layout_width="match_parent"
                                 android:layout_height="300dp"
-                                android:nestedScrollingEnabled="true"
                                 android:scrollbars="vertical">
 
                                 <LinearLayout

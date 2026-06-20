@@ -429,18 +429,38 @@ public class Menu extends BaseActivity {
         NavBarHelper.setupNavBar(this, NAV_IDS, R.id.nav_menu, v -> {
             int id = v.getId();
             if (id == R.id.nav_home) {
-                startActivity(new Intent(this, Homepage.class));
+                Intent intent = new Intent(this, Homepage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             } else if (id == R.id.nav_menu) {
                 selectedCategory = null;
                 applyFilter();
             } else if (id == R.id.nav_orders) {
-                startActivity(new Intent(this, OrderHistory.class));
+                Intent intent = new Intent(this, OrderHistory.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             } else if (id == R.id.nav_promotion) {
-                startActivity(new Intent(this, BlogGeneral.class));
+                Intent intent = new Intent(this, BlogGeneral.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             } else if (id == R.id.nav_profile) {
-                startActivity(new Intent(this, UserProfile.class));
+                Intent intent = new Intent(this, UserProfile.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, Homepage.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     @Override
