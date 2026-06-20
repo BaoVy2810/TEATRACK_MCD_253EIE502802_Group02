@@ -43,21 +43,15 @@ public class BlogDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blog_detail);
 
+        // Lấy ID bài viết từ Intent
         blogId = getIntent().getStringExtra("blog_id");
         if (blogId == null) {
-            Toast.makeText(this, "Không tìm thấy ID bài viết", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.msg_under_development, Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
         initViews();
-        // Clear hardcoded/tools text before loading
-        txtBreadcrumbTitle.setText("");
-        txtDate.setText("");
-        txtHeading.setText("");
-        txtSubheading.setText("");
-        txtContent.setText("");
-
         mDatabase = FirebaseDatabase.getInstance().getReference("blogs");
         
         loadBlogDetail();
@@ -82,6 +76,13 @@ public class BlogDetail extends AppCompatActivity {
         
         rvRelatedBlogs = findViewById(R.id.rvRelatedBlogs);
         rvRelatedBlogs.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        // Xóa text mặc định ban đầu
+        txtBreadcrumbTitle.setText("");
+        txtDate.setText("");
+        txtHeading.setText("");
+        txtSubheading.setText("");
+        txtContent.setText("");
     }
 
     private void loadBlogDetail() {
@@ -91,12 +92,14 @@ public class BlogDetail extends AppCompatActivity {
                 Blog blog = snapshot.getValue(Blog.class);
                 if (blog != null) {
                     displayBlog(blog);
+                } else {
+                    Toast.makeText(BlogDetail.this, "Không tìm thấy nội dung bài viết", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(BlogDetail.this, "Lỗi tải chi tiết bài viết", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BlogDetail.this, "Lỗi kết nối Firebase", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -105,16 +108,18 @@ public class BlogDetail extends AppCompatActivity {
         txtBreadcrumbTitle.setText(blog.getTitle());
         txtDate.setText(blog.getDate());
         
-        // Heading & Subheading
+        // Xử lý tiêu đề chính (Heading)
         String heading = (blog.getHeading() != null) ? blog.getHeading() : blog.getTitle();
         txtHeading.setText(Html.fromHtml(heading, Html.FROM_HTML_MODE_COMPACT));
         
+        // Áp dụng màu sắc nếu có từ Firebase
         if (blog.getHeadingColor() != null) {
             try {
                 txtHeading.setTextColor(Color.parseColor(blog.getHeadingColor()));
             } catch (Exception ignored) {}
         }
 
+        // Xử lý tiêu đề phụ (Subheading)
         if (blog.getSubheading() != null && !blog.getSubheading().isEmpty()) {
             txtSubheading.setVisibility(View.VISIBLE);
             txtSubheading.setText(blog.getSubheading());
@@ -127,7 +132,7 @@ public class BlogDetail extends AppCompatActivity {
             txtSubheading.setVisibility(View.GONE);
         }
 
-        // Images logic
+        // Xử lý hiển thị hình ảnh (Single vs Gallery)
         if ("gallery".equals(blog.getLayoutType()) && blog.getImages() != null && blog.getImages().size() >= 2) {
             layoutGallery.setVisibility(View.VISIBLE);
             imgSingle.setVisibility(View.GONE);
@@ -145,7 +150,7 @@ public class BlogDetail extends AppCompatActivity {
             loadImage(blog.getImage() != null ? blog.getImage() : blog.getDisplayImage(), imgSingle);
         }
 
-        // Content
+        // Hiển thị nội dung chính bài viết (Hỗ trợ định dạng HTML)
         if (blog.getContent() != null) {
             txtContent.setText(Html.fromHtml(blog.getContent(), Html.FROM_HTML_MODE_COMPACT));
         }
@@ -155,18 +160,24 @@ public class BlogDetail extends AppCompatActivity {
         if (imageSource == null || imageSource.isEmpty()) return;
 
         if (imageSource.startsWith("http")) {
-            Glide.with(this).load(imageSource).into(imageView);
+            Glide.with(this)
+                    .load(imageSource)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .into(imageView);
         } else {
             String resourceName = imageSource;
             if (resourceName.contains(".")) {
                 resourceName = resourceName.substring(0, resourceName.lastIndexOf("."));
             }
             int resId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
-            Glide.with(this).load(resId != 0 ? resId : R.drawable.ic_launcher_background).into(imageView);
+            Glide.with(this)
+                    .load(resId != 0 ? resId : R.drawable.ic_launcher_background)
+                    .into(imageView);
         }
     }
 
     private void loadRelatedBlogs() {
+        // Tải tối đa 10 bài viết liên quan
         mDatabase.limitToFirst(10).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -212,7 +223,7 @@ public class BlogDetail extends AppCompatActivity {
             } else if (id == R.id.nav_orders) {
                 startActivity(new Intent(this, OrderHistory.class));
             } else if (id == R.id.nav_promotion) {
-                // startActivity(new Intent(this, Promotion.class));
+                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_profile) {
                 startActivity(new Intent(this, UserProfile.class));
             }
