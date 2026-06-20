@@ -44,21 +44,11 @@ public class RelatedBlogAdapter extends RecyclerView.Adapter<RelatedBlogAdapter.
         holder.txtDesc.setText(blog.getDescription());
 
         String imageSource = blog.getDisplayImage();
-        if (imageSource != null && (imageSource.startsWith("http://") || imageSource.startsWith("https://"))) {
-            Glide.with(context)
-                    .load(imageSource)
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .into(holder.imgThumbnail);
-        } else if (imageSource != null) {
-            String resourceName = imageSource;
-            if (resourceName.contains(".")) {
-                resourceName = resourceName.substring(0, resourceName.lastIndexOf("."));
-            }
-            int resId = context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
-            Glide.with(context)
-                    .load(resId != 0 ? resId : R.drawable.ic_launcher_background)
-                    .into(holder.imgThumbnail);
-        }
+        Glide.with(context)
+                .load(resolveImageRes(context, imageSource))
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(holder.imgThumbnail);
 
         View.OnClickListener clickListener = v -> {
             Intent intent = new Intent(context, BlogDetail.class);
@@ -73,6 +63,17 @@ public class RelatedBlogAdapter extends RecyclerView.Adapter<RelatedBlogAdapter.
     @Override
     public int getItemCount() {
         return blogList.size();
+    }
+
+    private static int resolveImageRes(Context context, String filename) {
+        if (filename == null || filename.isEmpty()) return R.drawable.ic_launcher_background;
+        if (filename.startsWith("http://") || filename.startsWith("https://")) return 0;
+        String name = filename.contains(".")
+                ? filename.substring(0, filename.lastIndexOf("."))
+                : filename;
+        name = name.replace(".", "_");
+        int resId = context.getResources().getIdentifier(name, "mipmap", context.getPackageName());
+        return resId != 0 ? resId : R.drawable.ic_launcher_background;
     }
 
     public static class RelatedViewHolder extends RecyclerView.ViewHolder {

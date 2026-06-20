@@ -51,25 +51,13 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
             holder.txtDesc.setVisibility(View.GONE);
         }
 
-        // Tải hình ảnh (Thumbnail)
+        // Tải hình ảnh thumbnail từ mipmap
         String imageSource = blog.getDisplayImage();
-        if (imageSource != null && (imageSource.startsWith("http://") || imageSource.startsWith("https://"))) {
-            Glide.with(context)
-                    .load(imageSource)
-                    .placeholder(R.drawable.ic_launcher_background)
-                    .into(holder.imgThumbnail);
-        } else if (imageSource != null) {
-            String resourceName = imageSource;
-            if (resourceName.contains(".")) {
-                resourceName = resourceName.substring(0, resourceName.lastIndexOf("."));
-            }
-            int resId = context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
-            Glide.with(context)
-                    .load(resId != 0 ? resId : R.drawable.ic_launcher_background)
-                    .into(holder.imgThumbnail);
-        } else {
-            holder.imgThumbnail.setImageResource(R.drawable.ic_launcher_background);
-        }
+        Glide.with(context)
+                .load(resolveImageRes(context, imageSource))
+                .placeholder(R.drawable.ic_launcher_background)
+                .error(R.drawable.ic_launcher_background)
+                .into(holder.imgThumbnail);
 
         // CHỨC NĂNG: Bấm vào thẻ để mở BlogDetail tương ứng
         holder.itemView.setOnClickListener(v -> {
@@ -82,6 +70,19 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
     @Override
     public int getItemCount() {
         return blogList.size();
+    }
+
+    /** Chuyển tên file Firebase ("blog_1.1.jpeg") → R.mipmap.blog_1_1 */
+    private static int resolveImageRes(Context context, String filename) {
+        if (filename == null || filename.isEmpty()) return R.drawable.ic_launcher_background;
+        if (filename.startsWith("http://") || filename.startsWith("https://")) return 0; // URL, không dùng resId
+        // Bỏ phần mở rộng, thay dấu "." còn lại bằng "_"
+        String name = filename.contains(".")
+                ? filename.substring(0, filename.lastIndexOf("."))
+                : filename;
+        name = name.replace(".", "_");
+        int resId = context.getResources().getIdentifier(name, "mipmap", context.getPackageName());
+        return resId != 0 ? resId : R.drawable.ic_launcher_background;
     }
 
     public static class BlogViewHolder extends RecyclerView.ViewHolder {

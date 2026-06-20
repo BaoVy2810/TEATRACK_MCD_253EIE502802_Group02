@@ -158,20 +158,21 @@ public class BlogDetail extends AppCompatActivity {
 
     private void loadImage(String imageSource, ImageView imageView) {
         if (imageSource == null || imageSource.isEmpty()) return;
-
-        if (imageSource.startsWith("http")) {
-            Glide.with(this)
-                    .load(imageSource)
+        if (imageSource.startsWith("http://") || imageSource.startsWith("https://")) {
+            Glide.with(this).load(imageSource)
                     .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
                     .into(imageView);
         } else {
-            String resourceName = imageSource;
-            if (resourceName.contains(".")) {
-                resourceName = resourceName.substring(0, resourceName.lastIndexOf("."));
-            }
-            int resId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
+            // Bỏ phần mở rộng, thay dấu "." còn lại bằng "_" → lookup mipmap
+            String name = imageSource.contains(".")
+                    ? imageSource.substring(0, imageSource.lastIndexOf("."))
+                    : imageSource;
+            name = name.replace(".", "_");
+            int resId = getResources().getIdentifier(name, "mipmap", getPackageName());
             Glide.with(this)
                     .load(resId != 0 ? resId : R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.ic_launcher_background)
                     .into(imageView);
         }
     }
@@ -214,19 +215,36 @@ public class BlogDetail extends AppCompatActivity {
                 R.id.nav_profile
         };
 
-        NavBarHelper.setupNavBar(this, navItemIds, -1, v -> {
+        NavBarHelper.setupNavBar(this, navItemIds, R.id.nav_promotion, v -> {
             int id = v.getId();
-            if (id == R.id.nav_home) {
-                startActivity(new Intent(this, Homepage.class));
-            } else if (id == R.id.nav_menu) {
-                startActivity(new Intent(this, Menu.class));
-            } else if (id == R.id.nav_orders) {
-                startActivity(new Intent(this, OrderHistory.class));
-            } else if (id == R.id.nav_promotion) {
-                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.nav_profile) {
-                startActivity(new Intent(this, UserProfile.class));
+            if (id == R.id.nav_promotion) {
+                // Quay về danh sách blog
+                Intent intent = new Intent(this, BlogGeneral.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                return;
+            }
+
+            Intent intent = null;
+            if (id == R.id.nav_home)           intent = new Intent(this, Homepage.class);
+            else if (id == R.id.nav_menu)      intent = new Intent(this, Menu.class);
+            else if (id == R.id.nav_orders)    intent = new Intent(this, OrderHistory.class);
+            else if (id == R.id.nav_profile)   intent = new Intent(this, UserProfile.class);
+
+            if (intent != null) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, BlogGeneral.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 }
