@@ -1,5 +1,6 @@
 package com.teatrack_mcd_253eie502802_group02;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
@@ -12,9 +13,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.client.LoginActivity;
-import com.teatrack_mcd_253eie502802_group02.client.SucessfullyChangePasswordActivity;
+import com.teatrack_mcd_253eie502802_group02.client.UserProfile;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

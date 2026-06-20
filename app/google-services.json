@@ -13,7 +13,20 @@
           "package_name": "com.teatrack_mcd_253eie502802_group02"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "276172473565-p4u1jbigi6cijs2os8j1ltcg9bnopmhf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teatrack_mcd_253eie502802_group02",
+            "certificate_hash": "cc1e2af91c87b1ac7b13d80ffd060b9626eb6533"
+          }
+        },
+        {
+          "client_id": "276172473565-phfvd53bvqqpdqd1cs1r49ki201ag8td.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyADhfaFqO3x6kmfF4nX3QLIuekCK5Z1Mw0"
@@ -21,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276172473565-phfvd53bvqqpdqd1cs1r49ki201ag8td.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
