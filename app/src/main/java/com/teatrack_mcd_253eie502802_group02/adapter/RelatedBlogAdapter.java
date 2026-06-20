@@ -74,7 +74,6 @@ public class RelatedBlogAdapter extends RecyclerView.Adapter<RelatedBlogAdapter.
     public int getItemCount() {
         return blogList.size();
     }
-
     public static class RelatedViewHolder extends RecyclerView.ViewHolder {
         ImageView imgThumbnail;
         TextView txtTitle, txtDate, txtDesc, btnViewDetail;
