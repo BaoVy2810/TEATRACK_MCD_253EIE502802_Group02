@@ -39,27 +39,30 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
     public void onBindViewHolder(@NonNull BlogViewHolder holder, int position) {
         Blog blog = blogList.get(position);
 
-        // Lấy tiêu đề từ trường 'heading' theo Firebase của bạn
-        holder.txtTitle.setText(blog.getHeading());
+        // Binding dữ liệu: Ưu tiên title cho danh sách tổng quát
+        holder.txtTitle.setText(blog.getTitle());
         holder.txtDate.setText(blog.getDate());
-
-        // Load ảnh: Hỗ trợ cả URL và tên resource drawable
-        String imageSource = blog.getDisplayImage();
         
+        // Hiển thị mô tả ngắn (snippet)
+        if (blog.getDescription() != null && !blog.getDescription().isEmpty()) {
+            holder.txtDesc.setVisibility(View.VISIBLE);
+            holder.txtDesc.setText(blog.getDescription());
+        } else {
+            holder.txtDesc.setVisibility(View.GONE);
+        }
+
+        // Tải hình ảnh (Thumbnail)
+        String imageSource = blog.getDisplayImage();
         if (imageSource != null && (imageSource.startsWith("http://") || imageSource.startsWith("https://"))) {
-            // Nếu là URL (Firebase Storage hoặc web)
             Glide.with(context)
                     .load(imageSource)
                     .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.drawable.ic_launcher_background)
                     .into(holder.imgThumbnail);
         } else if (imageSource != null) {
-            // Nếu là tên file (ví dụ: "blog_1.jpg"), ta bỏ phần mở rộng để lấy trong drawable
             String resourceName = imageSource;
             if (resourceName.contains(".")) {
                 resourceName = resourceName.substring(0, resourceName.lastIndexOf("."));
             }
-            
             int resId = context.getResources().getIdentifier(resourceName, "drawable", context.getPackageName());
             Glide.with(context)
                     .load(resId != 0 ? resId : R.drawable.ic_launcher_background)
@@ -68,10 +71,10 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
             holder.imgThumbnail.setImageResource(R.drawable.ic_launcher_background);
         }
 
-        // Click → mở BlogDetail
+        // CHỨC NĂNG: Bấm vào thẻ để mở BlogDetail tương ứng
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, BlogDetail.class);
-            intent.putExtra("blog_id", blog.getId());
+            intent.putExtra("blog_id", blog.getId()); // Truyền đúng ID bài viết
             context.startActivity(intent);
         });
     }
@@ -83,13 +86,14 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
 
     public static class BlogViewHolder extends RecyclerView.ViewHolder {
         ImageView imgThumbnail;
-        TextView txtTitle, txtDate;
+        TextView txtTitle, txtDate, txtDesc;
 
         public BlogViewHolder(@NonNull View itemView) {
             super(itemView);
             imgThumbnail = itemView.findViewById(R.id.imgBlogThumbnail);
             txtTitle = itemView.findViewById(R.id.txtBlogTitle);
             txtDate = itemView.findViewById(R.id.txtBlogDate);
+            txtDesc = itemView.findViewById(R.id.txtBlogDesc);
         }
     }
 }

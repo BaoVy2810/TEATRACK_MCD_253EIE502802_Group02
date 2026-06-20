@@ -1,17 +1,14 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.BlogAdapter;
 import com.teatrack_mcd_253eie502802_group02.model.Blog;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,31 +31,70 @@ public class BlogGeneral extends AppCompatActivity {
     private ProgressBar progressBar;
     private List<Blog> allBlogs = new ArrayList<>();
     private DatabaseReference mDatabase;
+    private BlogAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blog_general);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        rvBlogList = findViewById(R.id.rvBlogList);
-        progressBar = findViewById(R.id.progressBar);
+        initViews();
+        setupHeader();
+        setupNavBar();
 
-        rvBlogList.setLayoutManager(new LinearLayoutManager(this));
-
-        // Khởi tạo Firebase - Trỏ vào node 'blogs'
+        // Khởi tạo Firebase - Node 'blogs'
         mDatabase = FirebaseDatabase.getInstance().getReference("blogs");
 
         loadBlogsFromFirebase();
     }
 
+    private void initViews() {
+        rvBlogList = findViewById(R.id.rvBlogList);
+        progressBar = findViewById(R.id.progressBar);
+        
+        rvBlogList.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new BlogAdapter(this, allBlogs);
+        rvBlogList.setAdapter(adapter);
+    }
+
+    private void setupHeader() {
+        findViewById(R.id.btn_cart).setOnClickListener(v ->
+                startActivity(new Intent(this, Cart.class)));
+
+        findViewById(R.id.btn_profile).setOnClickListener(v ->
+                startActivity(new Intent(this, UserProfile.class)));
+    }
+
+    private void setupNavBar() {
+        int[] navItemIds = {
+                R.id.nav_home,
+                R.id.nav_menu,
+                R.id.nav_orders,
+                R.id.nav_promotion,
+                R.id.nav_profile
+        };
+
+        // Gán chức năng điều hướng cho Navbar
+        NavBarHelper.setupNavBar(this, navItemIds, -1, v -> {
+            int id = v.getId();
+            if (id == R.id.nav_home) {
+                startActivity(new Intent(this, Homepage.class));
+            } else if (id == R.id.nav_menu) {
+                startActivity(new Intent(this, Menu.class));
+            } else if (id == R.id.nav_orders) {
+                startActivity(new Intent(this, OrderHistory.class));
+            } else if (id == R.id.nav_promotion) {
+                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
+            } else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, UserProfile.class));
+            }
+        });
+    }
+
     private void loadBlogsFromFirebase() {
         progressBar.setVisibility(View.VISIBLE);
+        
+        // Lấy danh sách bài viết từ Firebase
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -69,20 +106,19 @@ public class BlogGeneral extends AppCompatActivity {
                     }
                 }
                 
-                if (!allBlogs.isEmpty()) {
-                    BlogAdapter adapter = new BlogAdapter(BlogGeneral.this, allBlogs);
-                    rvBlogList.setAdapter(adapter);
-                } else {
-                    Toast.makeText(BlogGeneral.this, "Không có dữ liệu bài viết", Toast.LENGTH_SHORT).show();
-                }
+                adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
+
+                if (allBlogs.isEmpty()) {
+                    Toast.makeText(BlogGeneral.this, "Hiện chưa có bài viết nào trong Diễn đàn", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressBar.setVisibility(View.GONE);
                 Log.e("Firebase", "Error: " + error.getMessage());
-                Toast.makeText(BlogGeneral.this, "Lỗi tải dữ liệu", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BlogGeneral.this, "Lỗi tải dữ liệu Diễn đàn", Toast.LENGTH_SHORT).show();
             }
         });
     }

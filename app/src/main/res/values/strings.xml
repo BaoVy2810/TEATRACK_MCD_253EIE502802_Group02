@@ -7,7 +7,8 @@
     <string name="nav_products">Products</string>
     <string name="nav_orders">Orders</string>
     <string name="nav_account">Account</string>
-    <string name="nav_forum">Forum</string>
+    <string name="blog_breadcrumb">Home / Forum</string>
+    <string name="blog_page_title">Forum</string>
     <string name="nav_branch">Branch</string>
     <string name="nav_feedbacks">Feedbacks</string>
     <string name="next">Next</string>
@@ -497,4 +498,11 @@
     <string name="about_greeting_marquee">WELCOME TO NGO GIA&#160;&#160;&#160;WELCOME TO NGO GIA&#160;&#160;&#160;WELCOME TO NGO GIA</string>
     <string name="about_background_content_desc">Display layout background vector image</string>
     <string name="str_coming_soon">Feature under development</string>
+
+    <!-- Blog Detail Section -->
+    <string name="blog_detail_breadcrumb_path">Home / Forum / Detail</string>
+    <string name="blog_detail_related_title">You may also be interested in</string>
+    <string name="blog_detail_view_detail">View detail</string>
+    <string name="blog_detail_image_desc">Blog post main image</string>
+    <string name="blog_related_image_desc">Related blog image</string>
 </resources>

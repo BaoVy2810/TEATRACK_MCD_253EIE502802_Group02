@@ -7,7 +7,8 @@
     <string name="nav_products">Sản phẩm</string>
     <string name="nav_orders">Đơn hàng</string>
     <string name="nav_account">Tài khoản</string>
-    <string name="nav_forum">Diễn đàn</string>
+    <string name="blog_breadcrumb">Trang chủ / Diễn đàn</string>
+    <string name="blog_page_title">Diễn đàn</string>
     <string name="nav_branch">Chi nhánh</string>
     <string name="nav_feedbacks">Phản hồi</string>
     <string name="next">Tiếp theo</string>
@@ -495,4 +496,11 @@
     <string name="about_greeting_marquee">NGÔ GIA XIN CHÀO&#160;&#160;&#160;NGÔ GIA XIN CHÀO&#160;&#160;&#160;NGÔ GIA XIN CHÀO</string>
     <string name="about_background_content_desc">Hình nền hiển thị</string>
     <string name="str_coming_soon">Tính năng đang được phát triển</string>
+
+    <!-- Blog Detail Section -->
+    <string name="blog_detail_breadcrumb_path">Trang chủ / Diễn đàn / Chi tiết</string>
+    <string name="blog_detail_related_title">Có thể bạn quan tâm</string>
+    <string name="blog_detail_view_detail">Xem chi tiết</string>
+    <string name="blog_detail_image_desc">Ảnh chính bài viết</string>
+    <string name="blog_related_image_desc">Ảnh bài viết liên quan</string>
 </resources>
