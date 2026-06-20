@@ -274,12 +274,12 @@
     <string name="cd_remove_image">Remove Image</string>
     <string name="cd_close_modal">Close</string>
     <string name="cd_search">Search</string>
-    <string name="firebase_category_pure_tea">Pure Tea Category</string>
-    <string name="firebase_category_tea_latte">Tea Latte Category</string>
-    <string name="firebase_category_milk_tea">Milk Tea Category</string>
-    <string name="firebase_category_new_arrivals">New Drinks Category</string>
-    <string name="firebase_category_best_sellers">Hot Drinks Category</string>
-    <string name="firebase_category_fruit_tea">Fruit Tea Category</string>
+    <string name="firebase_category_pure_tea">Pure Tea</string>
+    <string name="firebase_category_tea_latte">Tea Latte</string>
+    <string name="firebase_category_milk_tea">Milk Tea</string>
+    <string name="firebase_category_new_arrivals">New Drinks</string>
+    <string name="firebase_category_best_sellers">Hot Drinks</string>
+    <string name="firebase_category_fruit_tea">Fruit Tea</string>
     <string name="category_products_empty">No products found for this category.</string>
     <string name="category_products_load_error">Unable to load products. Please try again.</string>
     <string name="product_detail_title">Product Details</string>
@@ -455,6 +455,17 @@
     <string name="str_image_source_file">Image Source File</string>
     <string name="str_google_maps_url">Google Maps URL</string>
 
+    <!-- Blog & Chatbot -->
+    <string name="blog_detail_breadcrumb_path">Blogs / Detail</string>
+    <string name="blog_image_desc">Blog post image</string>
+    <string name="blog_detail_related_title">Related posts</string>
+    <string name="blog_page_title">LATEST NEWS</string>
+    <string name="blog_breadcrumb">Home / Blogs</string>
+    <string name="str_contact_success_title">Sent successfully!</string>
+    <string name="str_contact_success_msg">Thank you for your feedback. We will get back to you soon.</string>
+    <string name="blog_related_image_desc">Related blog image</string>
+    <string name="blog_detail_view_detail">View detail</string>
+
     <string name="hint_agency_id_example">e.g., CN01</string>
     <string name="hint_enter_agency_name">Enter agency name</string>
     <string name="hint_enter_full_address">Enter full address</string>
@@ -572,4 +583,21 @@
     <string name="about_greeting_marquee">WELCOME TO NGO GIA&#160;&#160;&#160;WELCOME TO NGO GIA&#160;&#160;&#160;WELCOME TO NGO GIA</string>
     <string name="about_background_content_desc">Display layout background vector image</string>
     <string name="str_coming_soon">Feature under development</string>
+
+    <!-- Contact With Us -->
+    <string name="str_contact_title">Contact With Us</string>
+    <string name="str_full_name_label">Full Name</string>
+    <string name="str_email_label">Email</string>
+    <string name="str_phone_label">Phone Number</string>
+    <string name="str_select_branch">Select Branch</string>
+    <string name="str_branch_prompt">-- Choose a branch --</string>
+    <string name="str_topic_label">Topic</string>
+    <string name="str_topic_quality">Quality</string>
+    <string name="str_topic_service">Service</string>
+    <string name="str_topic_other">Other</string>
+    <string name="str_content_label">Content</string>
+    <string name="str_submit">Submit</string>
+    <string name="err_required">This field is required</string>
+    <string name="err_invalid_email">Invalid email address</string>
+    <string name="str_feedback_topic">Please select a topic</string>
 </resources>

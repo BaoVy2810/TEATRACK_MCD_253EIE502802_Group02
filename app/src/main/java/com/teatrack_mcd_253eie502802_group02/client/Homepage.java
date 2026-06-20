@@ -1,9 +1,13 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.content.Intent;
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -63,15 +67,26 @@ public class Homepage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_homepage);
+
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
+
         bindViews();
-        safeInit(this::setupBottomNav);
-        safeInit(this::setupBanners);
-        safeInit(this::setupFeaturedProducts);
-        safeInit(this::setupPromotions);
-        safeInit(this::setupNews);
-        safeInit(this::setupCategoryActions);
-        safeInit(this::setupStoryAction);
+        setupBottomNav();
+        setupBanners();
+        setupFeaturedProducts();
+        setupPromotions();
+        setupNews();
+        setupCategoryActions();
+        setupStoryAction();
     }
 
     @Override

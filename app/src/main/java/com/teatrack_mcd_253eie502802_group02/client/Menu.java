@@ -2,6 +2,7 @@ package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -65,7 +66,17 @@ public class Menu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_menu);
+
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
 
         selectedCategory = getIntent() != null
                 ? getIntent().getStringExtra(MainActivity.EXTRA_MENU_CATEGORY)
@@ -238,8 +249,8 @@ public class Menu extends AppCompatActivity {
             return;
         }
         option.setBackgroundResource(selected ? R.drawable.bg_filter_option_selected : android.R.color.transparent);
-        option.setTextColor(ContextCompat.getColor(this, selected ? R.color.brand_dark_blue : R.color.black));
-        option.setTextSize(selected ? 13f : 12f);
+        option.setTextColor(ContextCompat.getColor(this, selected ? R.color.brand_blue : R.color.black));
+        option.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
     }
 
     private void loadProductsFromFirebase() {

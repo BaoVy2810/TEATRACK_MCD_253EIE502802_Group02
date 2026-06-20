@@ -30,6 +30,7 @@ public class FirebaseProductRepository {
 
     public FirebaseProductRepository() {
         productsRef = FirebaseDatabase.getInstance().getReference("products");
+        productsRef.keepSynced(true);
     }
 
     public void getProductsByCategory(String category, ProductsCallback callback) {

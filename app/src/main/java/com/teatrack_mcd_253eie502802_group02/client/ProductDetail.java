@@ -17,8 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -95,7 +99,17 @@ public class ProductDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_detail);
+
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
 
         ImageView btnBack = findViewById(R.id.btnBack);
         imgDetail = findViewById(R.id.imgDetail);
@@ -158,11 +172,11 @@ public class ProductDetail extends AppCompatActivity {
         btnWriteReview = findViewById(R.id.btnWriteReview);
         View logo = findViewById(R.id.img_logo);
         if (logo != null) {
-            logo.setOnClickListener(v -> openMainTab(MainActivity.TAB_HOME, null));
+            logo.setOnClickListener(v -> startActivity(new Intent(this, Homepage.class)));
         }
 
         btnBack.setOnClickListener(v -> backToMenu());
-        breadcrumbHome.setOnClickListener(v -> openMainTab(MainActivity.TAB_HOME, null));
+        breadcrumbHome.setOnClickListener(v -> startActivity(new Intent(this, Homepage.class)));
         breadcrumbMenu.setOnClickListener(v -> openMainTab(MainActivity.TAB_MENU, null));
         breadcrumbTeaLatte.setOnClickListener(v ->
                 openMainTab(MainActivity.TAB_MENU, getString(R.string.firebase_category_tea_latte)));
@@ -179,7 +193,11 @@ public class ProductDetail extends AppCompatActivity {
         String category = getIntent().getStringExtra("category");
 
         bindFromIntent(name, category, priceM, priceL, vipM, vipL, imageRes, rating, reviewCount);
-        fetchFromFirebase(name);
+        if (name != null) {
+            fetchFromFirebase(name);
+        } else {
+            selectTab(tabDescription);
+        }
 
         Product dummy = new Product();
         dummy.setImageRes(imageRes);
@@ -391,6 +409,7 @@ public class ProductDetail extends AppCompatActivity {
         ProductImageHelper.load(imgDetail, product);
         setupDescriptionInfo(product.getName());
         setupThumbs(product);
+        selectTab(tabDescription);
     }
 
     private void setupThumbs(Product product) {
@@ -641,7 +660,7 @@ public class ProductDetail extends AppCompatActivity {
         NavBarHelper.setupNavBar(this, navIds, R.id.nav_menu, v -> {
             int id = v.getId();
             if (id == R.id.nav_home) {
-                openMainTab(MainActivity.TAB_HOME, null);
+                startActivity(new Intent(this, Homepage.class));
             } else if (id == R.id.nav_menu) {
                 openMainTab(MainActivity.TAB_MENU, null);
             } else if (id == R.id.nav_orders) {
@@ -657,7 +676,7 @@ public class ProductDetail extends AppCompatActivity {
             NavBarHelper.updateItemState(this, navMenu, true);
         }
         if (navHome != null) {
-            navHome.setOnClickListener(v -> openMainTab(MainActivity.TAB_HOME, null));
+            navHome.setOnClickListener(v -> startActivity(new Intent(this, Homepage.class)));
         }
         if (navMenu != null) {
             navMenu.setOnClickListener(v -> openMainTab(MainActivity.TAB_MENU, null));
@@ -680,7 +699,6 @@ public class ProductDetail extends AppCompatActivity {
         tabDescription.setOnClickListener(v -> selectTab(tabDescription));
         tabReview.setOnClickListener(v -> selectTab(tabReview));
         tabCommitment.setOnClickListener(v -> selectTab(tabCommitment));
-        tabDescription.post(() -> selectTab(tabDescription));
     }
 
     private void selectTab(TextView selectedTab) {
