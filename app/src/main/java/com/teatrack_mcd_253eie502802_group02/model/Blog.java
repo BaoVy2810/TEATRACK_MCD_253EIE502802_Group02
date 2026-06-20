@@ -37,17 +37,29 @@ public class Blog {
     }
 
     public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
     public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
     public String getHeading() { return heading; }
+    public void setHeading(String heading) { this.heading = heading; }
     public String getSubheading() { return subheading; }
+    public void setSubheading(String subheading) { this.subheading = subheading; }
     public String getDate() { return date; }
+    public void setDate(String date) { this.date = date; }
     public String getThumbnailImage() { return thumbnailImage; }
+    public void setThumbnailImage(String thumbnailImage) { this.thumbnailImage = thumbnailImage; }
     public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
     public List<String> getImages() { return images; }
+    public void setImages(List<String> images) { this.images = images; }
     public String getHeadingColor() { return headingColor; }
+    public void setHeadingColor(String headingColor) { this.headingColor = headingColor; }
     public String getLayoutType() { return layoutType; }
+    public void setLayoutType(String layoutType) { this.layoutType = layoutType; }
     public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
     public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
     public String getDisplayImage() {
         if (thumbnailImage != null && !thumbnailImage.isEmpty()) return thumbnailImage;

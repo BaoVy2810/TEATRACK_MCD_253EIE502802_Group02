@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +32,7 @@ import java.util.List;
 
 public class BlogDetail extends AppCompatActivity {
 
+    private static final String DATABASE_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
     private TextView txtBreadcrumbTitle, txtDate, txtHeading, txtSubheading, txtContent;
     private ImageView imgSingle, imgGalleryLeft, imgGalleryRight1, imgGalleryRight2;
     private LinearLayout layoutGallery;
@@ -52,7 +54,7 @@ public class BlogDetail extends AppCompatActivity {
         }
 
         initViews();
-        mDatabase = FirebaseDatabase.getInstance().getReference("blogs");
+        mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference("blogs");
         
         loadBlogDetail();
         loadRelatedBlogs();
@@ -89,11 +91,19 @@ public class BlogDetail extends AppCompatActivity {
         mDatabase.child(blogId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Blog blog = snapshot.getValue(Blog.class);
-                if (blog != null) {
-                    displayBlog(blog);
-                } else {
-                    Toast.makeText(BlogDetail.this, "Không tìm thấy nội dung bài viết", Toast.LENGTH_SHORT).show();
+                try {
+                    Blog blog = snapshot.getValue(Blog.class);
+                    if (blog != null) {
+                        if (blog.getId() == null || blog.getId().isEmpty()) {
+                            blog.setId(snapshot.getKey());
+                        }
+                        displayBlog(blog);
+                    } else {
+                        parseManualAndDisplay(snapshot);
+                    }
+                } catch (Exception e) {
+                    Log.e("FirebaseBlog", "Manual parse needed for: " + snapshot.getKey());
+                    parseManualAndDisplay(snapshot);
                 }
             }
 
@@ -102,6 +112,32 @@ public class BlogDetail extends AppCompatActivity {
                 Toast.makeText(BlogDetail.this, "Lỗi kết nối Firebase", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void parseManualAndDisplay(DataSnapshot snapshot) {
+        if (!snapshot.exists()) {
+            Toast.makeText(this, "Không tìm thấy nội dung bài viết", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Blog manualBlog = new Blog();
+        manualBlog.setId(snapshot.getKey());
+        manualBlog.setTitle(readString(snapshot, "title"));
+        manualBlog.setHeading(readString(snapshot, "heading"));
+        manualBlog.setSubheading(readString(snapshot, "subheading"));
+        manualBlog.setContent(readString(snapshot, "content"));
+        manualBlog.setDate(readString(snapshot, "date"));
+        manualBlog.setImage(readString(snapshot, "image"));
+        manualBlog.setThumbnailImage(readString(snapshot, "thumbnailImage"));
+        manualBlog.setHeadingColor(readString(snapshot, "headingColor"));
+        manualBlog.setLayoutType(readString(snapshot, "layoutType"));
+        manualBlog.setDescription(readString(snapshot, "description"));
+        
+        displayBlog(manualBlog);
+    }
+
+    private String readString(DataSnapshot snapshot, String key) {
+        Object val = snapshot.child(key).getValue();
+        return val != null ? String.valueOf(val) : "";
     }
 
     private void displayBlog(Blog blog) {

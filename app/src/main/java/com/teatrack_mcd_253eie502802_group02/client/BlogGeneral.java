@@ -27,6 +27,7 @@ import java.util.List;
 
 public class BlogGeneral extends AppCompatActivity {
 
+    private static final String DATABASE_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
     private RecyclerView rvBlogList;
     private ProgressBar progressBar;
     private List<Blog> allBlogs = new ArrayList<>();
@@ -42,8 +43,8 @@ public class BlogGeneral extends AppCompatActivity {
         setupHeader();
         setupNavBar();
 
-        // Khởi tạo Firebase - Node 'blogs'
-        mDatabase = FirebaseDatabase.getInstance().getReference("blogs");
+        // Khởi tạo Firebase với URL cụ thể cho vùng asia-southeast1
+        mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference("blogs");
 
         loadBlogsFromFirebase();
     }
@@ -55,6 +56,11 @@ public class BlogGeneral extends AppCompatActivity {
         rvBlogList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BlogAdapter(this, allBlogs);
         rvBlogList.setAdapter(adapter);
+    }
+
+    private String readString(DataSnapshot snapshot, String key) {
+        Object val = snapshot.child(key).getValue();
+        return val != null ? String.valueOf(val) : "";
     }
 
     private void setupHeader() {
@@ -93,32 +99,61 @@ public class BlogGeneral extends AppCompatActivity {
 
     private void loadBlogsFromFirebase() {
         progressBar.setVisibility(View.VISIBLE);
+        Log.d("FirebaseBlog", "Starting fetch from path: " + mDatabase.toString());
+        Toast.makeText(this, "Đang kết nối Firebase...", Toast.LENGTH_SHORT).show();
         
-        // Lấy danh sách bài viết từ Firebase
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("FirebaseBlog", "onDataChange triggered. Exists: " + snapshot.exists() + ", Children: " + snapshot.getChildrenCount());
                 allBlogs.clear();
+                
+                if (!snapshot.exists()) {
+                    Log.e("FirebaseBlog", "No data found at 'blogs' node");
+                }
+
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    Blog blog = postSnapshot.getValue(Blog.class);
-                    if (blog != null) {
-                        allBlogs.add(blog);
+                    try {
+                        Blog blog = postSnapshot.getValue(Blog.class);
+                        if (blog != null) {
+                            if (blog.getId() == null || blog.getId().isEmpty()) {
+                                blog.setId(postSnapshot.getKey());
+                            }
+                            allBlogs.add(blog);
+                        }
+                    } catch (Exception e) {
+                        Log.e("FirebaseBlog", "Error parsing blog: " + postSnapshot.getKey(), e);
+                        // Manual parse fallback
+                        Blog manualBlog = new Blog();
+                        manualBlog.setId(postSnapshot.getKey());
+                        manualBlog.setTitle(readString(postSnapshot, "title"));
+                        manualBlog.setHeading(readString(postSnapshot, "heading"));
+                        manualBlog.setSubheading(readString(postSnapshot, "subheading"));
+                        manualBlog.setContent(readString(postSnapshot, "content"));
+                        manualBlog.setDate(readString(postSnapshot, "date"));
+                        manualBlog.setImage(readString(postSnapshot, "image"));
+                        manualBlog.setThumbnailImage(readString(postSnapshot, "thumbnailImage"));
+                        manualBlog.setDescription(readString(postSnapshot, "description"));
+                        allBlogs.add(manualBlog);
                     }
                 }
                 
+                Log.d("FirebaseBlog", "Total blogs loaded: " + allBlogs.size());
                 adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
 
                 if (allBlogs.isEmpty()) {
-                    Toast.makeText(BlogGeneral.this, "Hiện chưa có bài viết nào trong Diễn đàn", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BlogGeneral.this, "Danh sách bài viết trống", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(BlogGeneral.this, "Tải thành công " + allBlogs.size() + " bài viết", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressBar.setVisibility(View.GONE);
-                Log.e("Firebase", "Error: " + error.getMessage());
-                Toast.makeText(BlogGeneral.this, "Lỗi tải dữ liệu Diễn đàn", Toast.LENGTH_SHORT).show();
+                Log.e("FirebaseBlog", "Firebase Error: " + error.getMessage() + ", Details: " + error.getDetails());
+                Toast.makeText(BlogGeneral.this, "Lỗi Firebase: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
