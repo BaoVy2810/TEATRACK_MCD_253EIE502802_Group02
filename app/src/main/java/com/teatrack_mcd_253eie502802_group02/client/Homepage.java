@@ -27,7 +27,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.model.NewsItem;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.model.Promotion;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
+import com.teatrack_mcd_253eie502802_group02.util.CartActions;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -87,6 +89,7 @@ public class Homepage extends AppCompatActivity {
         setupNews();
         setupCategoryActions();
         setupStoryAction();
+        CartBadgeHelper.setup(this);
     }
 
     @Override
@@ -99,6 +102,7 @@ public class Homepage extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startAutoScroll();
+        CartBadgeHelper.updateBadge(this);
     }
 
     private void startAutoScroll() {
@@ -214,7 +218,11 @@ public class Homepage extends AppCompatActivity {
             return;
         }
         rvFeaturedProducts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        featuredAdapter = new ProductCardAdapter(featuredProducts, this::openProductDetail);
+        featuredAdapter = new ProductCardAdapter(
+                featuredProducts,
+                this::openProductDetail,
+                this::onAddToCart
+        );
         rvFeaturedProducts.setAdapter(featuredAdapter);
         loadFeaturedProducts();
     }
@@ -239,6 +247,10 @@ public class Homepage extends AppCompatActivity {
                 featuredAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void onAddToCart(Product product) {
+        CartActions.addDefaultProduct(this, product);
     }
 
     private void openProductDetail(Product product) {

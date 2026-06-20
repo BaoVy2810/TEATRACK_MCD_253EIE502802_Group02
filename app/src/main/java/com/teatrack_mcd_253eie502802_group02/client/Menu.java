@@ -30,7 +30,9 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.MenuProductAdapter;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
+import com.teatrack_mcd_253eie502802_group02.util.CartActions;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -92,6 +94,13 @@ public class Menu extends AppCompatActivity {
         applyFilter();
         loadProductsFromFirebase();
         setupBottomNav();
+        CartBadgeHelper.setup(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CartBadgeHelper.updateBadge(this);
     }
 
     private void bindViews() {
@@ -411,8 +420,7 @@ public class Menu extends AppCompatActivity {
     }
 
     private void onAddToCart(Product product) {
-        Toast.makeText(this, getString(R.string.product_detail_added_to_cart), Toast.LENGTH_SHORT).show();
-        openProductDetail(product);
+        CartActions.addDefaultProduct(this, product);
     }
 
     private void setupBottomNav() {

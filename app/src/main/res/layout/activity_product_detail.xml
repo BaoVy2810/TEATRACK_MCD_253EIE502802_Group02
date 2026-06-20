@@ -1048,7 +1048,7 @@
                     android:text="@string/product_detail_add_to_cart"
                     android:textAllCaps="false"
                     android:textColor="@color/selector_btn_add_to_cart_text"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     app:backgroundTint="@color/selector_btn_add_to_cart_bg"
                     app:cornerRadius="20dp"
                     app:icon="@drawable/ic_cart"
@@ -1072,7 +1072,7 @@
                     android:text="@string/product_detail_buy_now"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     app:cornerRadius="20dp"
                     android:textStyle="bold"
                     app:elevation="6dp" />

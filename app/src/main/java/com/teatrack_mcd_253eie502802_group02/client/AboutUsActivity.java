@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 public class AboutUsActivity extends AppCompatActivity {
@@ -76,11 +77,17 @@ public class AboutUsActivity extends AppCompatActivity {
     }
 
     private void setupHeader() {
-        findViewById(R.id.btn_cart).setOnClickListener(v ->
-                startActivity(new Intent(this, Cart.class)));
+        CartBadgeHelper.setup(this);
 
         findViewById(R.id.btn_profile).setOnClickListener(v ->
                 startActivity(new Intent(this, UserProfile.class)));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CartBadgeHelper.updateBadge(this);
+        if (videoView != null && !videoView.isPlaying()) videoView.start();
     }
 
     private void setupNavBar() {
@@ -262,12 +269,6 @@ public class AboutUsActivity extends AppCompatActivity {
             animBot.setRepeatMode(ValueAnimator.RESTART);
             animBot.start();
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (videoView != null && !videoView.isPlaying()) videoView.start();
     }
 
     @Override

@@ -33,9 +33,13 @@ import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.ProductCardAdapter;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
+import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
+import com.teatrack_mcd_253eie502802_group02.util.CartActions;
 import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
+import com.teatrack_mcd_253eie502802_group02.util.ToppingPriceHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -95,6 +99,7 @@ public class ProductDetail extends AppCompatActivity {
     private boolean isCustomizationExpanded = true;
     private final Map<String, Integer> toppingQuantities = new LinkedHashMap<>();
     private final FirebaseProductRepository repository = new FirebaseProductRepository();
+    private Product currentProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,6 +198,7 @@ public class ProductDetail extends AppCompatActivity {
         String category = getIntent().getStringExtra("category");
 
         bindFromIntent(name, category, priceM, priceL, vipM, vipL, imageRes, rating, reviewCount);
+        CartBadgeHelper.setup(this);
         if (name != null) {
             fetchFromFirebase(name);
         } else {
@@ -212,14 +218,20 @@ public class ProductDetail extends AppCompatActivity {
             tvQuantity.setText(String.valueOf(quantity));
         });
 
-        btnAddToCart.setOnClickListener(v ->
-                Toast.makeText(this, R.string.product_detail_added_to_cart, Toast.LENGTH_SHORT).show());
-        btnBuyNow.setOnClickListener(v ->
-                Toast.makeText(this, R.string.product_detail_buy_now_message, Toast.LENGTH_SHORT).show());
+        btnAddToCart.setOnClickListener(v -> CartActions.addItem(this, buildCartItem()));
+        btnBuyNow.setOnClickListener(v -> {
+            CartActions.addItem(this, buildCartItem());
+            startActivity(new Intent(this, Cart.class));
+        });
 
         if (rvRecommended != null) {
             rvRecommended.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-            rvRecommended.setAdapter(new ProductCardAdapter(new ArrayList<>(), R.layout.item_product_card, ProductDetail.this::openRelatedDetail));
+            rvRecommended.setAdapter(new ProductCardAdapter(
+                    new ArrayList<>(),
+                    R.layout.item_product_card,
+                    ProductDetail.this::openRelatedDetail,
+                    product -> CartActions.addDefaultProduct(ProductDetail.this, product)
+            ));
         }
 
         setupBottomNavigation();
@@ -361,6 +373,7 @@ public class ProductDetail extends AppCompatActivity {
                 reviewCount == null ? "1k" : reviewCount));
         tvDescription.setText(getString(R.string.product_detail_description_default));
         imgDetail.setImageResource(imageRes);
+        currentProduct = buildProductFromIntent(name, category, priceM, priceL, vipM, vipL, imageRes, rating, reviewCount);
     }
 
     private void fetchFromFirebase(String name) {
@@ -384,6 +397,7 @@ public class ProductDetail extends AppCompatActivity {
     }
 
     private void bindFromProduct(Product product) {
+        currentProduct = product;
         tvDetailName.setText(product.getName());
         if (tvTopTitle != null) {
             tvTopTitle.setText(product.getName());
@@ -569,7 +583,7 @@ public class ProductDetail extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Ensure topping rows are always present after config changes/returning to screen.
+        CartBadgeHelper.updateBadge(this);
         setupToppingRows();
     }
 
@@ -591,7 +605,12 @@ public class ProductDetail extends AppCompatActivity {
                 }
                 RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
                 if (rvRecommended != null) {
-                    ProductCardAdapter adapter = new ProductCardAdapter(limited, R.layout.item_product_card, ProductDetail.this::openRelatedDetail);
+                    ProductCardAdapter adapter = new ProductCardAdapter(
+                            limited,
+                            R.layout.item_product_card,
+                            ProductDetail.this::openRelatedDetail,
+                            product -> CartActions.addDefaultProduct(ProductDetail.this, product)
+                    );
                     rvRecommended.setAdapter(adapter);
                 }
             }
@@ -600,7 +619,12 @@ public class ProductDetail extends AppCompatActivity {
             public void onError(String message) {
                 RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
                 if (rvRecommended != null) {
-                    rvRecommended.setAdapter(new ProductCardAdapter(getRecommendedProducts(), R.layout.item_product_card, ProductDetail.this::openRelatedDetail));
+                    rvRecommended.setAdapter(new ProductCardAdapter(
+                            getRecommendedProducts(),
+                            R.layout.item_product_card,
+                            ProductDetail.this::openRelatedDetail,
+                            product -> CartActions.addDefaultProduct(ProductDetail.this, product)
+                    ));
                 }
             }
         });
@@ -822,6 +846,101 @@ public class ProductDetail extends AppCompatActivity {
         });
 
         toppingRowsContainer.addView(row);
+    }
+
+    private CartItem buildCartItem() {
+        CartItem item = currentProduct != null
+                ? CartItem.fromProduct(this, currentProduct)
+                : new CartItem();
+
+        if ((item.getProductName() == null || item.getProductName().isEmpty()) && tvDetailName != null) {
+            item.setProductName(tvDetailName.getText().toString());
+        }
+
+        String size = getSelectedSize();
+        item.setSize(size);
+        item.setSugar(getSelectedSugar());
+        item.setIce(getSelectedIce());
+        item.setQuantity(quantity);
+
+        if (currentProduct != null) {
+            if ("L".equals(size)) {
+                item.setUnitPrice(currentProduct.getPriceL());
+                item.setVipUnitPrice(currentProduct.getVipPriceL());
+            } else {
+                item.setUnitPrice(currentProduct.getPriceM());
+                item.setVipUnitPrice(currentProduct.getVipPriceM());
+            }
+            item.setImageRes(currentProduct.getImageRes(this));
+            item.setImage(currentProduct.getImage());
+        }
+
+        for (Map.Entry<String, Integer> entry : toppingQuantities.entrySet()) {
+            if (entry.getValue() != null && entry.getValue() > 0) {
+                item.addTopping(entry.getKey(), ToppingPriceHelper.getPrice(entry.getKey()), entry.getValue());
+            }
+        }
+        return item;
+    }
+
+    private Product buildProductFromIntent(String name, String category, String priceM, String priceL,
+                                           String vipM, String vipL, int imageRes, float rating, String reviewCount) {
+        Product product = new Product();
+        product.setName(name);
+        product.setCategory(category);
+        product.setImageRes(imageRes);
+        product.setRating(rating);
+        product.setReviewCount(reviewCount);
+        product.setPrice(parsePriceInt(priceM));
+        product.setPriceL(parsePriceInt(priceL));
+        product.setVipPriceM(parsePriceInt(vipM));
+        product.setVipPriceL(parsePriceInt(vipL));
+        return product;
+    }
+
+    private int parsePriceInt(String value) {
+        if (value == null || value.isEmpty()) {
+            return 0;
+        }
+        try {
+            String clean = value.replaceAll("[^0-9]", "");
+            return clean.isEmpty() ? 0 : Integer.parseInt(clean);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    private String getSelectedSize() {
+        if (btnSizeOptionL != null && btnSizeOptionL.isSelected()) {
+            return "L";
+        }
+        return "M";
+    }
+
+    private String getSelectedSugar() {
+        if (btnSweetnessLess != null && btnSweetnessLess.isSelected()) {
+            return btnSweetnessLess.getText().toString();
+        }
+        if (btnSweetnessHigh != null && btnSweetnessHigh.isSelected()) {
+            return btnSweetnessHigh.getText().toString();
+        }
+        if (btnSweetnessNormal != null) {
+            return btnSweetnessNormal.getText().toString();
+        }
+        return getString(R.string.product_detail_level_medium);
+    }
+
+    private String getSelectedIce() {
+        if (btnIceLess != null && btnIceLess.isSelected()) {
+            return btnIceLess.getText().toString();
+        }
+        if (btnIceHigh != null && btnIceHigh.isSelected()) {
+            return btnIceHigh.getText().toString();
+        }
+        if (btnIceNormal != null) {
+            return btnIceNormal.getText().toString();
+        }
+        return getString(R.string.product_detail_level_medium);
     }
 
     private int dp(int value) {
