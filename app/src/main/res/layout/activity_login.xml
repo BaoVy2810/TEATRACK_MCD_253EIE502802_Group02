@@ -18,13 +18,13 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/imgLogo"
-        android:layout_width="184dp"
-        android:layout_height="204dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="179dp"
+        android:layout_height="183dp"
+        android:layout_marginTop="12dp"
         android:contentDescription="@string/login_logo_description"
         android:scaleType="fitCenter"
         android:src="@mipmap/logo_ngo_gia"
@@ -36,7 +36,7 @@
         android:id="@+id/tvSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="24dp"
         android:fontFamily="@font/inter_semibold"
         android:shadowColor="#000000"
         android:shadowDx="0"
@@ -49,7 +49,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.402" />
+        app:layout_constraintVertical_bias="0.332" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/viewUnderline"
@@ -68,15 +68,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="24dp"
         android:background="@drawable/bg_error_login"
         android:padding="10dp"
         android:textColor="#784848"
-        android:textSize="10sp"
+        android:textSize="14sp"
         android:paddingStart="20dp"
         android:textStyle="bold"
         android:visibility="gone"
+        android:elevation="15dp"
+        android:translationZ="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +94,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/login_label_name"
         android:textColor="#D11515"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvErrorMessage" />
@@ -101,7 +103,7 @@
         android:id="@+id/tilLoginName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
-        android:layout_height="37dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="24dp"
@@ -115,8 +117,9 @@
         app:boxStrokeWidthFocused="1dp"
         app:boxStrokeErrorColor="@color/Red"
         app:errorIconTint="@color/Red"
-        app:errorEnabled="true"
         app:hintEnabled="false"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@style/ErrorTextZeroSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelLoginName"
@@ -136,7 +139,7 @@
             android:textColorHint="#8B8B8B"
             android:textColor="#0088FF"
 
-            android:textSize="10sp" />
+            android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,10 +148,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="8dp"
         android:text="@string/login_label_password"
         android:textColor="#D11515"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tilLoginName" />
@@ -157,7 +160,7 @@
         android:id="@+id/tilPassword"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
-        android:layout_height="37dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="24dp"
@@ -172,9 +175,10 @@
         app:boxStrokeErrorColor="@color/Red"
         app:errorIconTint="@color/Red"
         app:hintEnabled="false"
-        app:errorEnabled="true"
         app:endIconMode="password_toggle"
         app:endIconTint="#D9D9D9"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@style/ErrorTextZeroSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLabelPassword"
@@ -193,7 +197,7 @@
             android:paddingBottom="11dp"
             android:textColor="#0088FF"
             android:textColorHint="#8B8B8B"
-            android:textSize="10sp" />
+            android:textSize="14sp" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -206,7 +210,7 @@
         android:checked="true"
         android:text="@string/login_remember"
         android:textColor="#D11515"
-        android:textSize="10sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:theme="@style/CheckBoxTheme"
         app:layout_constraintStart_toStartOf="parent"
@@ -219,24 +223,27 @@
         android:layout_marginEnd="24dp"
         android:text="@string/login_forgot_password"
         android:textColor="#8B8B8B"
-        android:textSize="10sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/cbRemember"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/cbRemember" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogIn"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="44dp"
-        android:layout_marginTop="4dp"
-        android:text="@string/login_btn_login"
+        android:layout_marginTop="5dp"
+        android:elevation="10dp"
         android:shadowColor="#33000000"
         android:shadowDx="0"
         android:shadowDy="2"
         android:shadowRadius="4"
+        android:stateListAnimator="@null"
+        android:text="@string/login_btn_login"
         android:textColor="#FFFFFF"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textStyle="bold"
+        android:translationZ="10dp"
         app:backgroundTint="#0088ff"
         app:cornerRadius="22dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -248,23 +255,23 @@
         android:id="@+id/tvOr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
         android:text="@string/login_or"
         android:textColor="#8B8B8B"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnLogIn" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGoogle"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="44dp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="@font/inter_semibold"
         android:text="@string/login_btn_google"
         android:textColor="#000000"
-        android:textSize="13sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:backgroundTint="#FFFFFF"
         app:cornerRadius="22dp"
@@ -291,14 +298,16 @@
         app:layout_constraintTop_toBottomOf="@id/btnGoogle"
         app:layout_constraintVertical_bias="1.0">
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_light"
             android:text="@string/login_dont_have_account"
             android:textColor="#8B8B8B"
-            android:textSize="10sp" />
-
+            android:textSize="14sp"
+            tools:layout_editor_absoluteX="100dp"
+            tools:layout_editor_absoluteY="700dp" />
         <TextView
             android:id="@+id/tvSignUp"
             android:layout_width="wrap_content"
@@ -307,7 +316,11 @@
             android:fontFamily="@font/inter_light"
             android:text="@string/login_sign_up"
             android:textColor="#0088ff"
-            android:textSize="10sp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="263dp"
+            tools:layout_editor_absoluteY="691dp" />
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 
-public class Homepage extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class Homepage extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

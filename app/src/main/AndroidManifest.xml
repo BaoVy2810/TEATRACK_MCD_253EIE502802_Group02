@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />  <!-- Android 13+ -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />  <!-- Android 12 trở xuống -->
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,6 +17,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02">
+        <activity
+            android:name=".client.PolicyandTermActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.MyReviewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.EarnedPointHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.RefundPolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.MembershipPolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.PrivacyPolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.TermAndConditionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.ChangeLanguageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.EditingPerInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.PersonalInformationActivity"
+            android:exported="false" />
         <activity
             android:name=".client.SucessfullyChangePasswordActivity"
             android:exported="false" />
@@ -131,6 +167,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <meta-data

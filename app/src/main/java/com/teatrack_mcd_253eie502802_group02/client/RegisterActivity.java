@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -18,10 +18,13 @@ import com.teatrack_mcd_253eie502802_group02.model.User;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class RegisterActivity extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
-    private com.google.android.material.textfield.TextInputEditText etName, etEmail, etPhone, etPassword, etConfirmPassword;
-    private TextInputLayout tilName, tilPassword, tilConfirmPassword; // chỉ validate 3 ô bắt buộc
+public class RegisterActivity extends BaseActivity {
+
+    private com.google.android.material.textfield.TextInputEditText etFullName, etName, etEmail, etPhone, etPassword, etConfirmPassword;
+    // ĐÃ SỬA: Thay dấu ";" bằng dấu "," để khai báo tilEmail đúng cú pháp Java
+    private TextInputLayout tilFullName, tilName, tilEmail, tilPassword, tilConfirmPassword;
     private android.widget.TextView tvErrorMessage;
     private com.google.android.material.button.MaterialButton btnRegister;
 
@@ -30,6 +33,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
+
+        // Đảm bảo R.id.main tồn tại trong file layout XML của bạn
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -44,13 +49,16 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        tilFullName = findViewById(R.id.tilFullName);
         tilName = findViewById(R.id.tilName);
+        tilEmail = findViewById(R.id.tilEmail);
         tilPassword = findViewById(R.id.tilPassword);
         tilConfirmPassword = findViewById(R.id.tilConfirmPassword);
 
+        etFullName = findViewById(R.id.etFullName);
         etName = findViewById(R.id.etName);
-        etEmail = findViewById(R.id.etEmail);         // optional, chỉ lấy giá trị
-        etPhone = findViewById(R.id.etPhone);         // optional, chỉ lấy giá trị
+        etEmail = findViewById(R.id.etEmail);         // Bây giờ là bắt buộc (Required)
+        etPhone = findViewById(R.id.etPhone);         // Optional (Tùy chọn)
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         tvErrorMessage = findViewById(R.id.tvErrorMessage);
@@ -58,19 +66,29 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void handleRegister() {
+        String fullName = etFullName.getText().toString().trim();
         String name = etName.getText().toString().trim();
-        String email = etEmail.getText().toString().trim();     // optional
+        String email = etEmail.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();     // optional
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-        // Reset trạng thái trước khi validate
+        // Reset trạng thái báo đỏ trước khi validate lại
         resetFieldErrors();
 
         boolean hasError = false;
 
+        if (fullName.isEmpty()) {
+            setFieldError(tilFullName, true);
+            hasError = true;
+        }
         if (name.isEmpty()) {
             setFieldError(tilName, true);
+            hasError = true;
+        }
+        // Email bắt buộc nhập
+        if (email.isEmpty()) {
+            setFieldError(tilEmail, true);
             hasError = true;
         }
         if (password.isEmpty()) {
@@ -87,6 +105,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
+        // Kiểm tra khớp mật khẩu
         if (!password.equals(confirmPassword)) {
             setFieldError(tilPassword, true);
             setFieldError(tilConfirmPassword, true);
@@ -94,28 +113,32 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Clear error if everything is valid
+        // Ẩn thông báo lỗi nếu dữ liệu hợp lệ
         tvErrorMessage.setVisibility(android.view.View.GONE);
-        
-        // Hash password and save to Firebase
+
+        // Mã hóa mật khẩu và tiến hành lưu dữ liệu
         String hashedPassword = hashPassword(password);
-        saveUserToFirebase(name, email, phone, hashedPassword);
+        saveUserToFirebase(name, fullName, email, phone, hashedPassword);
     }
 
-    private void saveUserToFirebase(String name, String email, String phone, String hashedPassword) {
+    private void saveUserToFirebase(String name, String fullName, String email, String phone, String hashedPassword) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
         String userId = usersRef.push().getKey();
 
         if (userId != null) {
-            User newUser = new User(userId, name, email, phone, hashedPassword);
+            User newUser = new User(userId, name, fullName, email, phone, hashedPassword);
             usersRef.child(userId).setValue(newUser)
                     .addOnSuccessListener(aVoid -> {
+                        // Lưu lại trạng thái đăng nhập vào Preferences
+                        android.content.SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+                        android.content.SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("userId", userId);
+                        editor.apply();
+
                         Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
                         finish();
                     })
-                    .addOnFailureListener(e -> {
-                        showError("Đăng ký thất bại: " + e.getMessage());
-                    });
+                    .addOnFailureListener(e -> showError("Đăng ký thất bại: " + e.getMessage()));
         }
     }
 
@@ -132,18 +155,19 @@ public class RegisterActivity extends AppCompatActivity {
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return password; // Fallback
+            return password;
         }
     }
 
     private void setFieldError(TextInputLayout til, boolean isError) {
+        if (til == null) return;
         if (isError) {
             til.setBoxStrokeColor(android.graphics.Color.RED);
             til.setBoxStrokeErrorColor(
                     android.content.res.ColorStateList.valueOf(android.graphics.Color.RED)
             );
             til.setErrorEnabled(true);
-            til.setError(" "); // space để kích hoạt stroke đỏ mà không hiện text lỗi dưới ô
+            til.setError(" ");
         } else {
             til.setError(null);
             til.setErrorEnabled(false);
@@ -151,7 +175,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void resetFieldErrors() {
+        setFieldError(tilFullName, false);
         setFieldError(tilName, false);
+        setFieldError(tilEmail, false);
         setFieldError(tilPassword, false);
         setFieldError(tilConfirmPassword, false);
     }
@@ -160,4 +186,5 @@ public class RegisterActivity extends AppCompatActivity {
         tvErrorMessage.setText(message);
         tvErrorMessage.setVisibility(android.view.View.VISIBLE);
     }
+
 }

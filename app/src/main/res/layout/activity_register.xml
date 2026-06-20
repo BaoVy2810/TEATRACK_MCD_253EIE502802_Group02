@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="320dp" />
+                app:layout_constraintGuide_begin="250dp" />
 
             <TextView
                 android:id="@+id/tvSignUpTitle"
@@ -96,7 +96,7 @@
                 android:paddingStart="20dp"
                 android:text="@string/register_error_empty"
                 android:textColor="#784848"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -104,26 +104,81 @@
                 app:layout_constraintTop_toBottomOf="@id/viewUnderline"
                 tools:visibility="visible" />
 
+            <!-- Full Name Section -->
+            <TextView
+                android:id="@+id/tvLabelFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/inter_semibold"
+                android:text="@string/register_label_fullname"
+                android:textColor="#D11515"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvErrorMessage" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilFullName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="24dp"
+                app:boxBackgroundColor="#0D0088FF"
+                app:boxCornerRadiusBottomEnd="25dp"
+                app:boxCornerRadiusBottomStart="25dp"
+                app:boxCornerRadiusTopEnd="25dp"
+                app:boxCornerRadiusTopStart="25dp"
+                app:boxStrokeColor="@color/til_stroke_color"
+                app:boxStrokeWidth="1dp"
+                app:boxStrokeWidthFocused="1dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelFullName"
+                app:startIconDrawable="@drawable/ic_username"
+                app:startIconTint="#6279FF">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_light"
+                    android:hint="@string/register_hint_fullname"
+                    android:inputType="textPersonName"
+                    app:errorTextAppearance="@style/ErrorTextZeroSize"
+                    app:errorEnabled="true"
+                    app:errorIconTint="@color/Red"
+                    android:paddingVertical="12dp"
+                    android:textColor="#0088FF"
+                    android:textColorHint="#8B8B8B"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Name Section -->
             <TextView
                 android:id="@+id/tvLabelName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="12dp"
                 android:fontFamily="@font/inter_semibold"
                 android:text="@string/login_label_name"
                 android:textColor="#D11515"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvErrorMessage" />
+                app:layout_constraintTop_toBottomOf="@id/tilFullName" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilName"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="24dp"
@@ -149,11 +204,14 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_light"
                     android:hint="@string/login_hint_name"
+                    app:errorTextAppearance="@style/ErrorTextZeroSize"
+                    app:errorEnabled="true"
+                    app:errorIconTint="@color/Red"
                     android:inputType="text"
                     android:paddingVertical="12dp"
                     android:textColor="#0088FF"
                     android:textColorHint="#8B8B8B"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Email Section -->
@@ -166,7 +224,7 @@
                 android:fontFamily="@font/inter_semibold"
                 android:text="@string/register_label_email"
                 android:textColor="#D11515"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilName" />
@@ -175,7 +233,7 @@
                 android:id="@+id/tilEmail"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="4dp"
                 app:boxBackgroundColor="#0D0088FF"
@@ -201,11 +259,14 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_light"
                     android:hint="@string/register_hint_email"
+                    app:errorTextAppearance="@style/ErrorTextZeroSize"
+                    app:errorEnabled="true"
+                    app:errorIconTint="@color/Red"
                     android:inputType="textEmailAddress"
                     android:paddingVertical="12dp"
                     android:textColor="#0088FF"
                     android:textColorHint="#8B8B8B"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Phone Section -->
@@ -218,7 +279,7 @@
                 android:fontFamily="@font/inter_semibold"
                 android:text="@string/register_label_phone"
                 android:textColor="#D11515"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilEmail" />
@@ -227,7 +288,7 @@
                 android:id="@+id/tilPhone"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="4dp"
                 app:boxBackgroundColor="#0D0088FF"
@@ -254,11 +315,14 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_light"
                     android:hint="@string/register_hint_phone"
+                    app:errorTextAppearance="@style/ErrorTextZeroSize"
+                    app:errorEnabled="true"
+                    app:errorIconTint="@color/Red"
                     android:inputType="phone"
                     android:paddingVertical="12dp"
                     android:textColor="#0088FF"
                     android:textColorHint="#8B8B8B"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Password Section -->
@@ -271,7 +335,7 @@
                 android:fontFamily="@font/inter_semibold"
                 android:text="@string/login_label_password"
                 android:textColor="#D11515"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilPhone" />
@@ -280,7 +344,7 @@
                 android:id="@+id/tilPassword"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="4dp"
                 app:boxBackgroundColor="#0D0088FF"
@@ -308,11 +372,14 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_light"
                     android:hint="@string/login_hint_password"
+                    app:errorTextAppearance="@style/ErrorTextZeroSize"
+                    app:errorEnabled="true"
+                    app:errorIconTint="@color/Red"
                     android:inputType="textPassword"
                     android:paddingVertical="12dp"
                     android:textColor="#0088FF"
                     android:textColorHint="#8B8B8B"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Confirm Password Section -->
@@ -325,7 +392,7 @@
                 android:fontFamily="@font/inter_semibold"
                 android:text="@string/register_label_confirm_password"
                 android:textColor="#D11515"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilPassword" />
@@ -334,7 +401,7 @@
                 android:id="@+id/tilConfirmPassword"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="4dp"
                 app:boxBackgroundColor="#0D0088FF"
@@ -362,33 +429,37 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_light"
                     android:hint="@string/register_hint_confirm_password"
+                    app:errorTextAppearance="@style/ErrorTextZeroSize"
+                    app:errorEnabled="true"
+                    app:errorIconTint="@color/Red"
                     android:inputType="textPassword"
                     android:paddingVertical="12dp"
                     android:textColor="#0088FF"
                     android:textColorHint="#8B8B8B"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Register Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRegister"
-                android:layout_width="220dp"
-                android:layout_height="44dp"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="60dp"
                 android:layout_marginTop="32dp"
                 android:backgroundTint="#0086FF"
                 android:fontFamily="@font/inter_semibold"
-                android:text="@string/register_btn_register"
-                android:textAllCaps="false"
-                android:textSize="15sp"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="25dp"
                 android:shadowColor="#33000000"
                 android:shadowDx="0"
                 android:shadowDy="2"
                 android:shadowRadius="4"
-                app:layout_constraintHorizontal_bias="0.497"
+                android:text="@string/register_btn_register"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="25dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tilConfirmPassword" />
 
@@ -409,7 +480,7 @@
                     android:fontFamily="@font/inter_light"
                     android:text="@string/register_already_have_account"
                     android:textColor="#8B8B8B"
-                    android:textSize="10sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tvSignInLink"
@@ -419,7 +490,7 @@
                     android:fontFamily="@font/inter_light"
                     android:text="@string/login_sign_in"
                     android:textColor="#0088ff"
-                    android:textSize="10sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -433,7 +504,7 @@
                 android:gravity="center"
                 android:text="@string/register_terms_agreement"
                 android:textColor="#8B8B8B"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layoutLoginLink" />
@@ -447,7 +518,7 @@
                 android:gravity="center"
                 android:text="@string/register_terms_policy"
                 android:textColor="#8B8B8B"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTermsAgreement" />

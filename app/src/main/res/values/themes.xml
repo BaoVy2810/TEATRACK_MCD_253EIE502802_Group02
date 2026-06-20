@@ -76,4 +76,13 @@
         <item name="colorControlNormal">#979797</item>
         <item name="colorControlActivated">#0088FF</item>
     </style>
+
+    <style name="ZeroErrorText">
+        <item name="android:textSize">0sp</item>
+    </style>
+    <!-- Style ẩn hoàn toàn không gian của chữ báo lỗi -->
+    <style name="ErrorTextZeroSize" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">0sp</item>
+        <item name="android:lineHeight">0dp</item>
+    </style>
 </resources>
