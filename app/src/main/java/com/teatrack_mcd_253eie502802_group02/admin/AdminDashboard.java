@@ -57,7 +57,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class AdminDashboard extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class AdminDashboard extends BaseActivity {
 
     private ActivityAdminDashboardBinding binding;
     private DatabaseReference mDatabase;

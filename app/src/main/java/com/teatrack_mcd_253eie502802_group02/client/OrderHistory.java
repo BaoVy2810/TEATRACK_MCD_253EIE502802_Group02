@@ -10,7 +10,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 
-public class OrderHistory extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class OrderHistory extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

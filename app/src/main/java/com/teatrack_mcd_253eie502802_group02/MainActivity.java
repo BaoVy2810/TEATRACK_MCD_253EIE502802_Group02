@@ -28,7 +28,27 @@ public class MainActivity extends AppCompatActivity {
     private void routeToTarget(Intent intent) {
         // Kiểm tra xem có yêu cầu chuyển hướng đến tab cụ thể (ví dụ: Menu) không
         String selectedTab = intent != null ? intent.getStringExtra(EXTRA_SELECTED_TAB) : null;
-        
+
+        if (TAB_MENU.equals(selectedTab)) {
+            navigateToMenu(intent.getStringExtra(EXTRA_MENU_CATEGORY));
+            finish(); // Chỉ đóng MainActivity nếu đã chuyển hướng sang màn hình khác
+            return;
+        }
+
+        // Nếu không có yêu cầu chuyển hướng, hiển thị màn hình chính (Get Started)
+        routeToTarget(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        routeToTarget(intent);
+    }
+
+    private void routeToTarget(Intent intent) {
+        // Kiểm tra xem có yêu cầu chuyển hướng đến tab cụ thể (ví dụ: Menu) không
+        String selectedTab = intent != null ? intent.getStringExtra(EXTRA_SELECTED_TAB) : null;
+
         if (TAB_MENU.equals(selectedTab)) {
             navigateToMenu(intent.getStringExtra(EXTRA_MENU_CATEGORY));
             finish(); // Chỉ đóng MainActivity nếu đã chuyển hướng sang màn hình khác
@@ -37,8 +57,23 @@ public class MainActivity extends AppCompatActivity {
 
         // Nếu không có yêu cầu chuyển hướng, hiển thị màn hình chính (Get Started)
         setContentView(R.layout.activity_main);
-        
+
+
         LinearLayout layoutGetStarted = findViewById(R.id.layoutGetStarted);
+        if (layoutGetStarted != null) {
+            layoutGetStarted.setOnClickListener(v -> {
+                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+            });
+        }
+    }
+
+    public void navigateToMenu(String category) {
+        Intent menuIntent = new Intent(this, Menu.class);
+        if (category != null) {
+            menuIntent.putExtra(EXTRA_MENU_CATEGORY, category);
+        }
+        startActivity(menuIntent);
         if (layoutGetStarted != null) {
             layoutGetStarted.setOnClickListener(v -> {
                 Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);

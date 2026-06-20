@@ -129,6 +129,14 @@
         <item name="colorControlActivated">#0088FF</item>
     </style>
 
+    <style name="ZeroErrorText">
+        <item name="android:textSize">0sp</item>
+    </style>
+    <style name="ErrorTextZeroSize" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">0sp</item>
+        <item name="android:lineHeight">0dp</item>
+    </style>
+
     <style name="RoundedImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>

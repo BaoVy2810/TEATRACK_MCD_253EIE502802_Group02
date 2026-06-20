@@ -58,6 +58,9 @@ public class Cart extends AppCompatActivity implements CartManager.CartChangeLis
     private View paymentOverlayScrim;
     private int selectedPaymentMethod = PAYMENT_CASH_ON_HAND;
     private final Handler bannerHandler = new Handler(Looper.getMainLooper());
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class Cart extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

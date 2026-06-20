@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    // Firebase
     id("com.google.gms.google-services")
 }
 
@@ -59,6 +60,9 @@ dependencies {
     implementation("com.google.firebase:firebase-storage")
     // Firebase Analytics (không bắt buộc)
     implementation("com.google.firebase:firebase-analytics")
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
 
     // Glide
     implementation(libs.glide)
@@ -77,4 +81,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    // Firebase Storage
+    implementation("com.google.firebase:firebase-storage:20.3.0")
+// Glide - hiển thị ảnh từ URL
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+// CircleImageView (tùy chọn, đẹp hơn)
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

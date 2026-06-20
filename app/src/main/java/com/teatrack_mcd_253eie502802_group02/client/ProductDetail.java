@@ -46,7 +46,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductDetail extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class ProductDetail extends BaseActivity {
 
     private int quantity = 1;
     private ImageView imgDetail;

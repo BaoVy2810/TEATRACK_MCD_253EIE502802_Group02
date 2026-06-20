@@ -4,6 +4,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />  <!-- Android 13+ -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />  <!-- Android 12 trở xuống -->
+
     <application
         android:name=".TeaTrackApplication"
         android:allowBackup="true"
@@ -15,49 +21,142 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02">
+        <activity
+            android:name=".client.PolicyandTermActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.MyReviewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.EarnedPointHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.RefundPolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.MembershipPolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.PrivacyPolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.TermAndConditionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.ChangeLanguageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.EditingPerInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.PersonalInformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.SucessfullyChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".shared.ui.NavBarClient"
+            android:exported="false" />
+        <activity
+            android:name=".shared.ui.NavBarAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".shared.ui.HeaderAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".shared.ui.HeaderClient"
+            android:exported="false" />
+        <activity
+            android:name=".client.ChatbotBubble"
+            android:exported="false" />
+        <activity
+            android:name=".client.ContactWithUs"
+            android:exported="false" />
+        <activity
+            android:name=".client.FilledOTP"
+            android:exported="false" />
+        <activity
+            android:name=".client.BlogDetail"
+            android:exported="false" />
+        <activity
+            android:name=".client.BlogGeneral"
+            android:exported="false" />
+        <activity
+            android:name=".client.AboutUsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.Payment"
+            android:exported="false" />
+        <activity
+            android:name=".client.Checkout"
+            android:exported="false" />
+        <activity
+            android:name=".client.Cart"
+            android:exported="false" />
+        <activity
+            android:name=".client.ProductDetail"
+            android:exported="false" />
+        <activity
+            android:name=".client.Menu"
+            android:exported="false" />
+        <activity
+            android:name=".client.PageNotFound"
+            android:exported="false" />
+        <activity
+            android:name=".client.OrderTracking"
+            android:exported="false" />
+        <activity
+            android:name=".client.OrderHistory"
+            android:exported="false" />
+        <activity
+            android:name=".client.UserProfile"
+            android:exported="false" />
+        <activity
+            android:name=".client.ForgotPassword"
+            android:exported="false" />
+        <activity
+            android:name=".client.RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminOrders"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminPromotion"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminComplaints"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminBlog"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminAgency"
+            android:exported="false" />
+        <activity
+            android:name=".client.Agency"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminProduct"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminProfile"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminAccount"
+            android:exported="false" />
+        <activity
+            android:name=".client.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.Homepage"
+            android:exported="false" />
+        <activity
+            android:name=".admin.AdminDashboard"
+            android:exported="false" />
 
-        <!-- Client Activities -->
-        <activity android:name=".client.SucessfullyChangePasswordActivity" android:exported="false" />
-        <activity android:name=".client.ResetPasswordActivity" android:exported="false" />
-        <activity android:name=".client.LoginActivity" android:exported="false" />
-        <activity android:name=".client.RegisterActivity" android:exported="false" />
-        <activity android:name=".client.ForgotPassword" android:exported="false" />
-        <activity android:name=".client.UserProfile" android:exported="false" />
-        <activity android:name=".client.Homepage" android:exported="false" />
-        <activity android:name=".client.Menu" android:exported="false" />
-        <activity android:name=".client.ProductDetail" android:exported="false" />
-        <activity android:name=".client.Cart" android:exported="false" />
-        <activity android:name=".client.Checkout" android:exported="false" />
-        <activity android:name=".client.Payment" android:exported="false" />
-        <activity android:name=".client.OrderTracking" android:exported="false" />
-        <activity android:name=".client.OrderHistory" android:exported="false" />
-        <activity android:name=".client.Agency" android:exported="false" />
-        <activity android:name=".client.AboutUsActivity" android:exported="false" />
-        <activity android:name=".client.BlogGeneral" android:exported="false" />
-        <activity android:name=".client.BlogDetail" android:exported="false" />
-        <activity android:name=".client.ContactWithUs" android:exported="false" />
-        <activity android:name=".client.ChatbotBubble" android:exported="false" />
-        <activity android:name=".client.FilledOtpActivity" android:exported="false" />
-        <activity android:name=".client.PageNotFound" android:exported="false" />
-
-        <!-- Admin Activities -->
-        <activity android:name=".admin.AdminDashboard" android:exported="false" />
-        <activity android:name=".admin.AdminProduct" android:exported="false" />
-        <activity android:name=".admin.AdminOrders" android:exported="false" />
-        <activity android:name=".admin.AdminAccount" android:exported="false" />
-        <activity android:name=".admin.AdminBlog" android:exported="false" />
-        <activity android:name=".admin.AdminAgency" android:exported="false" />
-        <activity android:name=".admin.AdminComplaints" android:exported="false" />
-        <activity android:name=".admin.AdminPromotion" android:exported="false" />
-        <activity android:name=".admin.AdminProfile" android:exported="false" />
-
-        <!-- Shared/UI Components (Declared as Activities) -->
-        <activity android:name=".shared.ui.NavBarClient" android:exported="false" />
-        <activity android:name=".shared.ui.NavBarAdmin" android:exported="false" />
-        <activity android:name=".shared.ui.HeaderAdmin" android:exported="false" />
-        <activity android:name=".shared.ui.HeaderClient" android:exported="false" />
-
-        <!-- Main/Launcher -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -65,6 +164,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <meta-data

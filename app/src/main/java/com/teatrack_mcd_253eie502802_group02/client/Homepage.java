@@ -41,6 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class Homepage extends BaseActivity {
 public class Homepage extends AppCompatActivity {
     private static final int[] NAV_IDS = {
             R.id.nav_home,

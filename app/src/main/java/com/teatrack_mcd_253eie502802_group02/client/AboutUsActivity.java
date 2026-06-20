@@ -24,7 +24,9 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
-public class AboutUsActivity extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class AboutUsActivity extends BaseActivity {
 
     private VideoView videoView;
     private ScrollView scrollView;
