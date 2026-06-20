@@ -32,11 +32,13 @@ import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class Cart extends AppCompatActivity implements CartManager.CartChangeListener {
+public class Cart extends BaseActivity implements CartManager.CartChangeListener {
 
     private static final int PAYMENT_CASH_ON_HAND = 0;
     private static final int PAYMENT_CASH_IN_BANK = 1;
@@ -58,9 +60,6 @@ public class Cart extends AppCompatActivity implements CartManager.CartChangeLis
     private View paymentOverlayScrim;
     private int selectedPaymentMethod = PAYMENT_CASH_ON_HAND;
     private final Handler bannerHandler = new Handler(Looper.getMainLooper());
-import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
-
-public class Cart extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -411,9 +411,6 @@
     <string name="register_label_terms_service">Điều khoản dịch vụ</string>
     <string name="register_label_privacy_policy">Chính sách bảo mật</string>
     <string name="register_btn_close">Đóng</string>
-    <string name="register_error_empty">Lỗi đăng ký! Vui lòng điền đầy đủ các thông tin bắt buộc.</string>
-    <string name="register_error_mismatch">Mật khẩu không khớp. Vui lòng thử lại.</string>
-    <string name="register_terms_agreement">Bằng cách tiếp tục, bạn đồng ý với</string>
     <string name="register_label_phone">Số điện thoại:</string>
     <string name="register_hint_phone">Nhập số điện thoại của bạn</string>
     <string name="register_terms_policy"><b>Điều khoản dịch vụ</b> &amp; <b>Chính sách bảo mật</b> của chúng tôi</string>
@@ -445,12 +442,6 @@
     <string name="success_password_btn_back">Quay lại trang Đăng nhập</string>
     <string name="success_password_need_help">Cần hỗ trợ? </string>
     <string name="success_password_contact_support">Liên hệ bộ phận Chăm sóc khách hàng</string>
-
-    <string name="success_password_title">Mật khẩu đã được thay đổi thành công!</string>
-    <string name="success_password_content">Bây giờ bạn có thể đăng nhập vào tài khoản của mình bằng mật khẩu mới. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi. Vui lòng đăng nhập lại.</string>
-    <string name="success_password_btn_back">Quay lại Đăng nhập</string>
-    <string name="success_password_need_help">Cần giúp đỡ? </string>
-    <string name="success_password_contact_support">Liên hệ Hỗ trợ</string>
 
     <string name="profile_title">Cá nhân</string>
     <string name="profile_label_account">Tài khoản</string>

@@ -43,7 +43,6 @@ import java.util.Map;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
 public class Menu extends BaseActivity {
-public class Menu extends AppCompatActivity {
     private static final int[] NAV_IDS = {
             R.id.nav_home,
             R.id.nav_menu,

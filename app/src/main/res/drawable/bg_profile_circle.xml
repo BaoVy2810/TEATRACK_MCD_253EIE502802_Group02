@@ -25,11 +25,9 @@
         android:bottom="10dp"
         android:left="10dp"
         android:right="10dp"
-        android:top="10dp">
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/user"
-            android:tint="#FFFFFF" />
+        android:top="10dp"
+        android:drawable="@drawable/user"
+        android:gravity="center">
     </item>
 
 </layer-list>

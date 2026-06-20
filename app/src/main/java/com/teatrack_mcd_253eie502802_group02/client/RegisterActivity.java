@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,7 +26,6 @@ import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 public class RegisterActivity extends BaseActivity {
 
     private com.google.android.material.textfield.TextInputEditText etFullName, etName, etEmail, etPhone, etPassword, etConfirmPassword;
-    // ĐÃ SỬA: Thay dấu ";" bằng dấu "," để khai báo tilEmail đúng cú pháp Java
     private TextInputLayout tilFullName, tilName, tilEmail, tilPassword, tilConfirmPassword;
     private android.widget.TextView tvErrorMessage;
     private com.google.android.material.button.MaterialButton btnRegister;
@@ -59,8 +57,8 @@ public class RegisterActivity extends BaseActivity {
 
         etFullName = findViewById(R.id.etFullName);
         etName = findViewById(R.id.etName);
-        etEmail = findViewById(R.id.etEmail);         // Bây giờ là bắt buộc (Required)
-        etPhone = findViewById(R.id.etPhone);         // Optional (Tùy chọn)
+        etEmail = findViewById(R.id.etEmail);
+        etPhone = findViewById(R.id.etPhone);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
         tvErrorMessage = findViewById(R.id.tvErrorMessage);
@@ -71,11 +69,10 @@ public class RegisterActivity extends BaseActivity {
         String fullName = etFullName.getText().toString().trim();
         String name = etName.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
-        String phone = etPhone.getText().toString().trim();     // optional
+        String phone = etPhone.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
 
-        // Reset trạng thái trước khi validate
         resetFieldErrors();
 
         boolean hasError = false;
@@ -88,7 +85,6 @@ public class RegisterActivity extends BaseActivity {
             setFieldError(tilName, true);
             hasError = true;
         }
-        // Email bắt buộc nhập
         if (email.isEmpty()) {
             setFieldError(tilEmail, true);
             hasError = true;
@@ -114,17 +110,14 @@ public class RegisterActivity extends BaseActivity {
             return;
         }
 
-        // Ẩn thông báo lỗi nếu dữ liệu hợp lệ
         tvErrorMessage.setVisibility(android.view.View.GONE);
 
-        // Mã hóa mật khẩu và tiến hành lưu dữ liệu
         String hashedPassword = hashPassword(password);
-        saveUserToFirebase(name, fullName, email, phone, hashedPassword);
         String createdAt = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(new Date());
         saveUserToFirebase(name, email, phone, hashedPassword, createdAt);
     }
 
-    private void saveUserToFirebase(String name, String fullName, String email, String phone, String hashedPassword) {
+    private void saveUserToFirebase(String name, String email, String phone, String hashedPassword, String createdAt) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
         String userId = usersRef.push().getKey();
 
@@ -132,7 +125,6 @@ public class RegisterActivity extends BaseActivity {
             User newUser = new User(userId, name, email, phone, hashedPassword, createdAt);
             usersRef.child(userId).setValue(newUser)
                     .addOnSuccessListener(aVoid -> {
-                        // Lưu lại trạng thái đăng nhập vào Preferences
                         android.content.SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
                         android.content.SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("userId", userId);

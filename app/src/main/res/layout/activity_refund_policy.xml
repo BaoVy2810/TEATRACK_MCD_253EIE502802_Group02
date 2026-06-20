@@ -152,7 +152,7 @@
                             android:layout_height="16dp"
                             android:layout_marginTop="2dp"
                             android:contentDescription="@string/refund_reversals_note"
-                            android:src="@drawable/infocircle"
+                            android:src="@drawable/info_circle"
                             app:tint="@color/Gray" />
 
                         <TextView

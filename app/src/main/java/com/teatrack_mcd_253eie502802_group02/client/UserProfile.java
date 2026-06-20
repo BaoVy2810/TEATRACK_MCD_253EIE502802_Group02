@@ -99,7 +99,7 @@ public class UserProfile extends BaseActivity {
     }
 
     private void setupBottomNav() {
-        NavBarHelper.setupNavBar(this, NAV_IDS, R.id.nav_profile, this::onNavItemClicked);
+        NavBarHelper.setupNavBar(this, NAV_ITEM_IDS, R.id.nav_profile, this::onNavItemClicked);
     }
 
     private void onNavItemClicked(View view) {

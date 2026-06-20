@@ -3,7 +3,6 @@ package com.teatrack_mcd_253eie502802_group02.client;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
@@ -12,16 +11,20 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.credentials.Credential;
+import androidx.credentials.CredentialManager;
+import androidx.credentials.GetCredentialRequest;
+import androidx.credentials.GetCredentialResponse;
+import androidx.credentials.exceptions.GetCredentialException;
 
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -36,41 +39,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard;
-import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
-// Các thư viện Credential Manager mới
-import androidx.credentials.Credential;
-import androidx.credentials.CredentialManager;
-import androidx.credentials.CustomCredential;
-import androidx.credentials.GetCredentialRequest;
-import androidx.credentials.GetCredentialResponse;
-import androidx.credentials.exceptions.GetCredentialException;
-import androidx.credentials.CredentialManagerCallback;
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import androidx.core.content.ContextCompat;
 
 public class LoginActivity extends BaseActivity {
 
     private static final String TAG = "LoginActivity_Log";
     private static final String DATABASE_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-    // Khai báo thêm các biến phục vụ đăng nhập Google
     private FirebaseAuth mAuth;
     private CredentialManager credentialManager;
     private DatabaseReference databaseReference;
 
     private TextInputEditText edtLoginName, edtPassword;
     private TextInputLayout tilLoginName, tilPassword;
-    private MaterialButton btnLogIn, btnGoogleSignIn; // Thêm biến cho nút Google
+    private MaterialButton btnLogIn, btnGoogleSignIn;
     private TextView tvErrorMessage, tvSignUp, tvForgotPassword;
     private CheckBox cbRemember;
     private SharedPreferences sharedPreferences;
@@ -84,99 +73,82 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: Activity started");
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
-        // Khởi tạo Firebase Auth và Credential Manager
         mAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("Users");
         credentialManager = CredentialManager.create(this);
-
-        View mainView = findViewById(R.id.main);
-        if (mainView != null) {
-            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;
-            });
-        }
+        databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("Users");
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
         initViews();
         setupListeners();
-        // Đảm bảo tài khoản admin tồn tại trên Firebase
+        loadRememberedData();
+
+        if (mAuth.getCurrentUser() != null) {
+            String savedUserId = sharedPreferences.getString(KEY_USER_ID, null);
+            if (savedUserId != null) {
+                startActivity(new Intent(this, Homepage.class));
+                finish();
+            }
+        }
+
         ensureAdminAccount();
     }
 
     private void ensureAdminAccount() {
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
-        usersRef.orderByChild("name").equalTo("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.orderByChild("name").equalTo("admin").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (!snapshot.exists()) {
-                    String hashedPw = "240be518fabd2724ddb6f0403fd3d3588e6c2c1a0c115bd34d7d1f14e9c06519";
-                    String adminId = "admin_fixed";
-                    User adminUser = new User(adminId, "admin", "admin@teatrack.com", "0000000000", hashedPw);
-                    usersRef.child(adminId).setValue(adminUser);
+                    String adminId = databaseReference.push().getKey();
+                    Map<String, Object> adminData = new HashMap<>();
+                    adminData.put("id", adminId);
+                    adminData.put("name", "admin");
+                    adminData.put("fullName", "System Administrator");
+                    adminData.put("email", "admin@teatrack.com");
+                    adminData.put("role", "Admin");
+                    adminData.put("status", "Active");
+                    adminData.put("password", hashPassword("admin123"));
+                    adminData.put("createdAt", String.valueOf(System.currentTimeMillis()));
+
+                    if (adminId != null) {
+                        databaseReference.child(adminId).setValue(adminData);
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Admin check cancelled: " + error.getMessage());
             }
         });
-        if (btnLogIn != null) {
-            btnLogIn.post(() -> {
-                btnLogIn.setOnClickListener(v -> {
-                    Log.d(TAG, "Log In Button Clicked (Post)!");
-                    handleLogin();
-                });
-            });
-        }
     }
 
-
     private void initViews() {
-        Log.d(TAG, "initViews: Mapping views");
-        tilLoginName = findViewById(R.id.tilLoginName);
-        tilPassword = findViewById(R.id.tilPassword);
         edtLoginName = findViewById(R.id.edtLoginName);
         edtPassword = findViewById(R.id.edtPassword);
+        tilLoginName = findViewById(R.id.tilLoginName);
+        tilPassword = findViewById(R.id.tilPassword);
         btnLogIn = findViewById(R.id.btnLogIn);
-        btnGoogleSignIn = findViewById(R.id.btnGoogle); // Ánh xạ nút Google từ XML
+        btnGoogleSignIn = findViewById(R.id.btnGoogle);
         tvErrorMessage = findViewById(R.id.tvErrorMessage);
         tvSignUp = findViewById(R.id.tvSignUp);
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         cbRemember = findViewById(R.id.cbRemember);
-
-        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        loadRememberedData();
     }
 
     private void setupListeners() {
-        btnLogIn.setOnClickListener(v -> handleLogin());
-        tvSignUp.setOnClickListener(v -> startActivity(new Intent(this, RegisterActivity.class)));
-        tvForgotPassword.setOnClickListener(v -> startActivity(new Intent(this, ForgotPassword.class)));
-        if (btnLogIn != null) {
-            btnLogIn.setOnClickListener(v -> {
-                Log.d(TAG, "Log In Button Clicked!");
-                handleLogin();
-            });
-        } else {
-            Log.e(TAG, "btnLogIn is NULL. Check activity_login.xml");
-        }
+        if (btnLogIn != null) btnLogIn.setOnClickListener(v -> handleLogin());
+        if (btnGoogleSignIn != null) btnGoogleSignIn.setOnClickListener(v -> signInWithGoogle());
 
-        // Đăng ký sự kiện click cho nút Google Sign-In
-        if (btnGoogleSignIn != null) {
-            btnGoogleSignIn.setOnClickListener(v -> {
-                Log.d(TAG, "Google Sign In Clicked");
-                signInWithGoogle();
+        if (tvForgotPassword != null) {
+            tvForgotPassword.setOnClickListener(v -> {
+                startActivity(new Intent(this, ForgotPasswordActivity.class));
             });
         }
 
         if (tvSignUp != null) {
             tvSignUp.setOnClickListener(v -> {
-                Log.d(TAG, "Sign Up Clicked");
                 startActivity(new Intent(this, RegisterActivity.class));
             });
         }
@@ -189,16 +161,10 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {}
         };
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { hideError(); }
-            @Override public void afterTextChanged(Editable s) {}
-        };
 
         if (edtLoginName != null) edtLoginName.addTextChangedListener(clearErrorWatcher);
         if (edtPassword != null) edtPassword.addTextChangedListener(clearErrorWatcher);
     }
-
-    // --- LOGIC ĐĂNG NHẬP GOOGLE CỦA BẠN ĐÃ ĐƯỢC TÍCH HỢP ---
 
     private void signInWithGoogle() {
         GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
@@ -209,15 +175,16 @@ public class LoginActivity extends BaseActivity {
 
         GetCredentialRequest request = new GetCredentialRequest.Builder()
                 .addCredentialOption(googleIdOption)
-                .setPreferImmediatelyAvailableCredentials(false)
                 .build();
+
+        Executor mainExecutor = ContextCompat.getMainExecutor(this);
 
         credentialManager.getCredentialAsync(
                 this,
                 request,
-                new CancellationSignal(),
-                ContextCompat.getMainExecutor(this),
-                new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
+                null,
+                mainExecutor,
+                new androidx.credentials.CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
                     @Override
                     public void onResult(GetCredentialResponse result) {
                         handleSignIn(result.getCredential());
@@ -225,23 +192,18 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onError(GetCredentialException e) {
-                        Log.e(TAG, "Lỗi đăng nhập Google", e);
-                        Toast.makeText(LoginActivity.this,
-                                "Đăng nhập Google không thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Google Sign-In failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
         );
     }
 
     private void handleSignIn(Credential credential) {
-        if (credential instanceof CustomCredential
-                && credential.getType().equals(GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL)) {
-            Bundle credentialData = ((CustomCredential) credential).getData();
-            GoogleIdTokenCredential googleIdTokenCredential =
-                    GoogleIdTokenCredential.createFrom(credentialData);
+        if (credential instanceof GoogleIdTokenCredential) {
+            GoogleIdTokenCredential googleIdTokenCredential = (GoogleIdTokenCredential) credential;
             firebaseAuthWithGoogle(googleIdTokenCredential.getIdToken());
         } else {
-            Log.w(TAG, "Credential không phải Google ID Token");
+            Log.e(TAG, "Unexpected credential type");
         }
     }
 
@@ -253,8 +215,7 @@ public class LoginActivity extends BaseActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         saveUserToDatabase(user);
                     } else {
-                        Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        Toast.makeText(this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -262,27 +223,24 @@ public class LoginActivity extends BaseActivity {
     private void saveUserToDatabase(FirebaseUser user) {
         if (user == null) return;
         String uid = user.getUid();
-
         databaseReference.child(uid).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && !task.getResult().exists()) {
                 Map<String, Object> userMap = new HashMap<>();
-                userMap.put("id", uid); // Nên lưu thêm ID của user luôn nhé
+                userMap.put("id", uid);
                 userMap.put("name", user.getDisplayName());
                 userMap.put("email", user.getEmail());
+                userMap.put("role", "Customer");
+                userMap.put("status", "Active");
                 userMap.put("provider", "google");
                 databaseReference.child(uid).setValue(userMap);
             }
-            // Điều hướng về Homepage giống luồng đăng nhập thường của bạn
             startActivity(new Intent(LoginActivity.this, Homepage.class));
             finish();
         });
     }
 
     private void handleLogin() {
-        if (edtLoginName == null || edtPassword == null) {
-            Log.e(TAG, "EditTexts are null");
-            return;
-        }
+        if (edtLoginName == null || edtPassword == null) return;
 
         String loginName = edtLoginName.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
@@ -290,25 +248,16 @@ public class LoginActivity extends BaseActivity {
         hideError();
 
         if (TextUtils.isEmpty(loginName) || TextUtils.isEmpty(password)) {
-            Log.w(TAG, "Empty fields");
-            if (TextUtils.isEmpty(loginName)) {
-                tilLoginName.setErrorEnabled(true);
-                tilLoginName.setError("!");
-            }
-            if (TextUtils.isEmpty(password)) {
-                tilPassword.setErrorEnabled(true);
-                tilPassword.setError("!");
-            }
-            showError(getString(R.string.login_error_empty));
+            showError("Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!");
+            if (TextUtils.isEmpty(loginName)) tilLoginName.setError("!");
+            if (TextUtils.isEmpty(password)) tilPassword.setError("!");
             return;
         }
 
-        Log.d(TAG, "Attempting login for: " + loginName);
         btnLogIn.setEnabled(false);
-
         Handler timeoutHandler = new Handler(Looper.getMainLooper());
         Runnable timeoutRunnable = () -> {
-            if (!btnLogIn.isEnabled()) {
+            if (!isFinishing()) {
                 btnLogIn.setEnabled(true);
                 showError("Kết nối quá lâu, vui lòng kiểm tra mạng!");
                 Log.e(TAG, "Login timeout reached");
@@ -316,18 +265,14 @@ public class LoginActivity extends BaseActivity {
         };
         timeoutHandler.postDelayed(timeoutRunnable, 10000);
 
-        // CƠ CHẾ ƯU TIÊN ADMIN CỤC BỘ: Cho phép vào ngay nếu đúng admin/admin123
         if (loginName.equalsIgnoreCase("admin") && password.equals("admin123")) {
-            saveLoginData(loginName, password);
+            timeoutHandler.removeCallbacks(timeoutRunnable);
             hideError();
             Toast.makeText(this, "Chào mừng Admin!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, AdminDashboard.class));
             finish();
             return;
         }
-
-        // ĐĂNG NHẬP THÔNG QUA FIREBASE CHO NGƯỜI DÙNG KHÁC
-        String hashedPassword = hashPassword(password);
 
         try {
             FirebaseDatabase db = FirebaseDatabase.getInstance(DATABASE_URL);
@@ -340,35 +285,39 @@ public class LoginActivity extends BaseActivity {
                     btnLogIn.setEnabled(true);
 
                     if (!snapshot.exists()) {
-                        showError(getString(R.string.login_error_invalid));
+                        showError("Tên đăng nhập hoặc mật khẩu không đúng!");
                         tilLoginName.setError("!");
                         tilPassword.setError("!");
                         return;
                     }
 
-                    boolean loginSuccess = false;
                     String userId = null;
+                    boolean passwordMatched = false;
+                    String hashedInput = hashPassword(password);
 
                     for (DataSnapshot userSnap : snapshot.getChildren()) {
-                        User user = userSnap.getValue(User.class);
-                        if (user != null && user.getPassword() != null) {
-                            if (user.getPassword().equals(hashedPassword)) {
-                                loginSuccess = true;
-                                userId = user.getId();
-                                break;
+                        String storedPassword = userSnap.child("password").getValue(String.class);
+                        if (hashedInput.equals(storedPassword)) {
+                            passwordMatched = true;
+                            userId = userSnap.getKey();
+                            String role = userSnap.child("role").getValue(String.class);
+
+                            if (cbRemember.isChecked()) {
+                                saveLoginData(loginName, password, userId);
                             }
+
+                            if ("Admin".equalsIgnoreCase(role)) {
+                                startActivity(new Intent(LoginActivity.this, AdminDashboard.class));
+                            } else {
+                                startActivity(new Intent(LoginActivity.this, Homepage.class));
+                            }
+                            finish();
+                            break;
                         }
                     }
 
-                    if (loginSuccess) {
-                        saveLoginData(loginName, password, userId);
-                        startActivity(new Intent(LoginActivity.this, Homepage.class));
-                        finish();
-                    } else {
-                        showError(getString(R.string.login_error_invalid));
-                        tilLoginName.setErrorEnabled(true);
-                        tilLoginName.setError("!");
-                        tilPassword.setErrorEnabled(true);
+                    if (!passwordMatched) {
+                        showError("Tên đăng nhập hoặc mật khẩu không đúng!");
                         tilPassword.setError("!");
                     }
                 }
@@ -377,34 +326,30 @@ public class LoginActivity extends BaseActivity {
                 public void onCancelled(@NonNull DatabaseError error) {
                     timeoutHandler.removeCallbacks(timeoutRunnable);
                     btnLogIn.setEnabled(true);
-                    showError("Lỗi kết nối Firebase: " + error.getMessage());
+                    showError("Lỗi hệ thống: " + error.getMessage());
                 }
             });
         } catch (Exception e) {
+            timeoutHandler.removeCallbacks(timeoutRunnable);
             btnLogIn.setEnabled(true);
-            showError("Lỗi khởi tạo hệ thống.");
+            showError("Lỗi kết nối Firebase!");
         }
     }
 
     private void loadRememberedData() {
-        if (sharedPreferences.getBoolean(KEY_REMEMBER, false)) {
-            if (edtLoginName != null) edtLoginName.setText(sharedPreferences.getString(KEY_USERNAME, ""));
-            if (edtPassword != null) edtPassword.setText(sharedPreferences.getString(KEY_PASSWORD, ""));
-            if (cbRemember != null) cbRemember.setChecked(true);
+        boolean remember = sharedPreferences.getBoolean(KEY_REMEMBER, false);
+        if (remember) {
+            cbRemember.setChecked(true);
+            edtLoginName.setText(sharedPreferences.getString(KEY_USERNAME, ""));
+            edtPassword.setText(sharedPreferences.getString(KEY_PASSWORD, ""));
         }
     }
 
     private void saveLoginData(String username, String password, String userId) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (cbRemember != null && cbRemember.isChecked()) {
-            editor.putBoolean(KEY_REMEMBER, true);
-            editor.putString(KEY_USERNAME, username);
-            editor.putString(KEY_PASSWORD, password);
-        } else {
-            editor.putBoolean(KEY_REMEMBER, false);
-            editor.remove(KEY_USERNAME);
-            editor.remove(KEY_PASSWORD);
-        }
+        editor.putBoolean(KEY_REMEMBER, true);
+        editor.putString(KEY_USERNAME, username);
+        editor.putString(KEY_PASSWORD, password);
         editor.putString(KEY_USER_ID, userId);
         editor.apply();
     }
@@ -430,19 +375,16 @@ public class LoginActivity extends BaseActivity {
         if (tvErrorMessage != null) {
             tvErrorMessage.setText(message);
             tvErrorMessage.setVisibility(View.VISIBLE);
-            tvErrorMessage.bringToFront();
+        } else {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void hideError() {
-        if (tvErrorMessage != null) tvErrorMessage.setVisibility(View.GONE);
-        if (tilLoginName != null) {
-            tilLoginName.setError(null);
-            tilLoginName.setErrorEnabled(false);
+        if (tvErrorMessage != null) {
+            tvErrorMessage.setVisibility(View.GONE);
         }
-        if (tilPassword != null) {
-            tilPassword.setError(null);
-            tilPassword.setErrorEnabled(false);
-        }
+        if (tilLoginName != null) tilLoginName.setError(null);
+        if (tilPassword != null) tilPassword.setError(null);
     }
 }
