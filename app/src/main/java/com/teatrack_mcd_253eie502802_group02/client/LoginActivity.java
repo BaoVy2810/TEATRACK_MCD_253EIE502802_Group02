@@ -40,6 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+import com.teatrack_mcd_253eie502802_group02.util.UserIdGenerator;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -223,20 +224,54 @@ public class LoginActivity extends BaseActivity {
     private void saveUserToDatabase(FirebaseUser user) {
         if (user == null) return;
         String uid = user.getUid();
-        databaseReference.child(uid).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && !task.getResult().exists()) {
-                Map<String, Object> userMap = new HashMap<>();
-                userMap.put("id", uid);
-                userMap.put("name", user.getDisplayName());
-                userMap.put("email", user.getEmail());
-                userMap.put("role", "Customer");
-                userMap.put("status", "Active");
-                userMap.put("provider", "google");
-                databaseReference.child(uid).setValue(userMap);
-            }
-            startActivity(new Intent(LoginActivity.this, Homepage.class));
-            finish();
-        });
+
+        // Kiểm tra user đã tồn tại chưa (theo firebaseUid field)
+        databaseReference.orderByChild("firebaseUid").equalTo(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            // Đã có tài khoản → đăng nhập luôn
+                            startActivity(new Intent(LoginActivity.this, Homepage.class));
+                            finish();
+                            return;
+                        }
+                        // User mới → sinh CS ID và tạo tài khoản
+                        UserIdGenerator.next(databaseReference, new UserIdGenerator.Callback() {
+                            @Override
+                            public void onGenerated(String csId) {
+                                Map<String, Object> userMap = new HashMap<>();
+                                userMap.put("id", csId);
+                                userMap.put("firebaseUid", uid);
+                                userMap.put("name", user.getDisplayName());
+                                userMap.put("fullName", user.getDisplayName());
+                                userMap.put("email", user.getEmail());
+                                userMap.put("role", "Customer");
+                                userMap.put("status", "Active");
+                                userMap.put("provider", "google");
+                                databaseReference.child(csId).setValue(userMap);
+
+                                sharedPreferences.edit().putString(KEY_USER_ID, csId).apply();
+
+                                startActivity(new Intent(LoginActivity.this, Homepage.class));
+                                finish();
+                            }
+
+                            @Override
+                            public void onError(String message) {
+                                // Fallback: vẫn cho vào app
+                                startActivity(new Intent(LoginActivity.this, Homepage.class));
+                                finish();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        startActivity(new Intent(LoginActivity.this, Homepage.class));
+                        finish();
+                    }
+                });
     }
 
     private void handleLogin() {

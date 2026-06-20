@@ -22,6 +22,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+import com.teatrack_mcd_253eie502802_group02.util.UserIdGenerator;
 
 public class RegisterActivity extends BaseActivity {
 
@@ -119,22 +120,29 @@ public class RegisterActivity extends BaseActivity {
 
     private void saveUserToFirebase(String name, String email, String phone, String hashedPassword, String createdAt) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
-        String userId = usersRef.push().getKey();
 
-        if (userId != null) {
-            User newUser = new User(userId, name, email, phone, hashedPassword, createdAt);
-            usersRef.child(userId).setValue(newUser)
-                    .addOnSuccessListener(aVoid -> {
-                        android.content.SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-                        android.content.SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("userId", userId);
-                        editor.apply();
+        // Sinh ID theo quy luật CS01, CS02, CS03...
+        UserIdGenerator.next(usersRef, new UserIdGenerator.Callback() {
+            @Override
+            public void onGenerated(String userId) {
+                User newUser = new User(userId, name, email, phone, hashedPassword, createdAt);
+                usersRef.child(userId).setValue(newUser)
+                        .addOnSuccessListener(aVoid -> {
+                            android.content.SharedPreferences sharedPreferences =
+                                    getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+                            sharedPreferences.edit().putString("userId", userId).apply();
 
-                        Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                        finish();
-                    })
-                    .addOnFailureListener(e -> showError("Đăng ký thất bại: " + e.getMessage()));
-        }
+                            Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        })
+                        .addOnFailureListener(e -> showError("Đăng ký thất bại: " + e.getMessage()));
+            }
+
+            @Override
+            public void onError(String message) {
+                showError("Không thể tạo tài khoản: " + message);
+            }
+        });
     }
 
     private String hashPassword(String password) {

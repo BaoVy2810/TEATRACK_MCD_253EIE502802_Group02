@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "276172473565-c0kboc5qqpi7smfrsjrbtm4s9fetudgv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teatrack_mcd_253eie502802_group02",
+            "certificate_hash": "8651b50691094cb32123ae6f014470d0bc502b95"
+          }
+        },
+        {
           "client_id": "276172473565-p4u1jbigi6cijs2os8j1ltcg9bnopmhf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
