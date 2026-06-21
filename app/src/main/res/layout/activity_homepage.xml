@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_baby_blue"
-    tools:context="com.teatrack_mcd_253eie502802_group02.client.Homepage">
+    tools:contexxyagyytyyyuuyt="com.teatrack_mcd_253eie502802_group02.client.Homepage">
 
     <include
         android:id="@+id/headerClient"
@@ -485,7 +485,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginEnd="14dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="28dp"

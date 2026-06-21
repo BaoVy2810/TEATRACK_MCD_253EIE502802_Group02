@@ -45,6 +45,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:foregroundTint="@color/card_bg"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -55,7 +56,7 @@
                     android:layout_gravity="center"
                     android:contentDescription="@string/nav_account"
                     android:src="@drawable/user"
-                    app:tint="@color/darkgreen" />
+                    app:tint="@color/brand_blue" />
             </FrameLayout>
 
             <FrameLayout
