@@ -7,4 +7,18 @@
     android:layout_height="match_parent"
     tools:context="com.teatrack_mcd_253eie502802_group02.client.Agency">
 
+    <ImageView
+        android:id="@+id/btnProfileBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_profile_back_button"
+        android:contentDescription="@string/product_detail_back"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

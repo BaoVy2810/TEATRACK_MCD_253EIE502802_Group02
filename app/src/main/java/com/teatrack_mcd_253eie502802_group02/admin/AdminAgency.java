@@ -105,7 +105,7 @@ public class AdminAgency extends AppCompatActivity {
     private void setupHeader() {
         View btnProfile = findViewById(R.id.btn_profile);
         if (btnProfile != null) {
-            btnProfile.setOnClickListener(v -> startActivity(new Intent(this, AdminProfile.class)));
+            com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper.setupProfileMenu(this);
         }
     }
 

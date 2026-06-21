@@ -3,6 +3,7 @@ package com.teatrack_mcd_253eie502802_group02.shared.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,10 +32,23 @@ public class HeaderClient extends AppCompatActivity {
         findViewById(R.id.btn_cart).setOnClickListener(v ->
                 startActivity(new Intent(this, Cart.class)));
 
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, UserProfile.class)));
+        findViewById(R.id.btn_profile).setOnClickListener(v -> {
+            PopupMenu popup = new PopupMenu(this, v);
+            popup.getMenuInflater().inflate(R.menu.menu_profile_header, popup.getMenu());
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.menu_signout) {
+                    com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(this, com.teatrack_mcd_253eie502802_group02.MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                    return true;
+                }
+                return false;
+            });
+            popup.show();
+        });
     }
-
     public void openClientHomepage(View view) {
         startActivity(new Intent(this, Homepage.class));
     }

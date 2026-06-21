@@ -17,6 +17,15 @@ import java.util.List;
 public class NewsCardAdapter extends RecyclerView.Adapter<NewsCardAdapter.NewsViewHolder> {
 
     private final List<NewsItem> newsItems;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(NewsItem item);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public NewsCardAdapter(List<NewsItem> newsItems) {
         this.newsItems = newsItems;
@@ -45,6 +54,12 @@ public class NewsCardAdapter extends RecyclerView.Adapter<NewsCardAdapter.NewsVi
         }
 
         holder.tvNewsDate.setText(item.getDateRange());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(item);
+            }
+        });
     }
 
     @Override

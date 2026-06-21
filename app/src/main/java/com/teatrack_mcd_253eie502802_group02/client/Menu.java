@@ -90,13 +90,27 @@ public class Menu extends BaseActivity {
         setupProducts();
         setupSearch();
         setupFilterPopupTrigger();
-        // Show a stable UI immediately; Firebase data will replace it when loaded.
-        allProducts.clear();
-        allProducts.addAll(getFallbackMenuProducts());
-        applyFilter();
+        loadInitialProducts();
         loadProductsFromFirebase();
         setupBottomNav();
         CartBadgeHelper.setup(this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        selectedCategory = intent != null
+                ? intent.getStringExtra(MainActivity.EXTRA_MENU_CATEGORY)
+                : null;
+        loadInitialProducts();
+        loadProductsFromFirebase();
+    }
+
+    private void loadInitialProducts() {
+        allProducts.clear();
+        allProducts.addAll(getInitialMenuProducts());
+        applyFilter();
     }
 
     @Override
@@ -293,7 +307,7 @@ public class Menu extends BaseActivity {
         for (Product product : allProducts) {
             boolean categoryMatch = selectedCategory == null
                     || selectedCategory.isEmpty()
-                    || (product.getCategory() != null && product.getCategory().equalsIgnoreCase(selectedCategory));
+                    || matchesCategory(product, selectedCategory);
             boolean searchMatch = searchQuery.isEmpty() || matchesSearch(product, searchQuery);
             if (categoryMatch && searchMatch) {
                 filteredProducts.add(product);
@@ -396,6 +410,56 @@ public class Menu extends BaseActivity {
         }
     }
 
+    private boolean matchesCategory(Product product, String filterCategory) {
+        String productCategory = safeString(product.getCategory());
+        if (productCategory.isEmpty()) {
+            return false;
+        }
+        if (productCategory.equalsIgnoreCase(filterCategory)) {
+            return true;
+        }
+        String normalizedFilter = normalizeCategoryKey(filterCategory);
+        String normalizedProduct = normalizeCategoryKey(productCategory);
+        return !normalizedFilter.isEmpty() && normalizedFilter.equalsIgnoreCase(normalizedProduct);
+    }
+
+    private String normalizeCategoryKey(String category) {
+        if (category == null) {
+            return "";
+        }
+        if (equalsCategory(category, R.string.firebase_category_new_arrivals)) {
+            return "New Arrivals";
+        }
+        if (equalsCategory(category, R.string.firebase_category_best_sellers)) {
+            return "Best Sellers";
+        }
+        return category;
+    }
+
+    private List<Product> getInitialMenuProducts() {
+        if (selectedCategory != null && !selectedCategory.isEmpty()) {
+            List<Product> categoryProducts = resolveCategoryFallback(selectedCategory);
+            if (!categoryProducts.isEmpty()) {
+                for (Product product : categoryProducts) {
+                    product.setCategory(selectedCategory);
+                }
+                return categoryProducts;
+            }
+        }
+        return getFallbackMenuProducts();
+    }
+
+    private List<Product> resolveCategoryFallback(String category) {
+        Map<String, List<Product>> map = CategoryProductData.getCategoryProductsMap();
+        List<Product> products = map.get(category);
+        if (products != null && !products.isEmpty()) {
+            return new ArrayList<>(products);
+        }
+        String normalized = normalizeCategoryKey(category);
+        products = map.get(normalized);
+        return products != null ? new ArrayList<>(products) : new ArrayList<>();
+    }
+
     private List<Product> getFallbackMenuProducts() {
         List<Product> products = new ArrayList<>();
         products.add(new Product("Trà Ô Long Mộc Hương", R.mipmap.traolongmochuong, 4.8f, "500", 19000, 22000, 16000, 19000));
@@ -442,10 +506,7 @@ public class Menu extends BaseActivity {
                 startActivity(intent);
                 overridePendingTransition(0, 0);
             } else if (id == R.id.nav_promotion) {
-                Intent intent = new Intent(this, BlogGeneral.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
+                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_profile) {
                 Intent intent = new Intent(this, UserProfile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

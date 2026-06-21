@@ -6,7 +6,6 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Toast;
 import android.widget.VideoView;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,11 +17,12 @@ import android.widget.LinearLayout;
 import androidx.core.widget.NestedScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.EdgeToEdge;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
-import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
-import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
@@ -48,11 +48,20 @@ public class AboutUsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_about_us);
 
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
+
         bindViews();
-        setupHeader();
-        setupNavBar();
+        setupTopBar();
         setupVideo();
         setupScrollListener();
 
@@ -78,43 +87,32 @@ public class AboutUsActivity extends BaseActivity {
         tvGreetGhostBot = findViewById(R.id.tvGreetGhostBot);
     }
 
-    private void setupHeader() {
-        CartBadgeHelper.setup(this);
+    private void setupTopBar() {
+        View btnBack = findViewById(R.id.btnBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> {
+                Intent intent = new Intent(this, Homepage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            });
+        }
 
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, UserProfile.class)));
+        View btnShare = findViewById(R.id.btnShare);
+        if (btnShare != null) {
+            btnShare.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.about_page_title));
+                startActivity(Intent.createChooser(intent, getString(R.string.blog_detail_share)));
+            });
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        CartBadgeHelper.updateBadge(this);
         if (videoView != null && !videoView.isPlaying()) videoView.start();
-    }
-
-    private void setupNavBar() {
-        int[] navItemIds = {
-                R.id.nav_home,
-                R.id.nav_menu,
-                R.id.nav_orders,
-                R.id.nav_promotion,
-                R.id.nav_profile
-        };
-
-        NavBarHelper.setupNavBar(this, navItemIds, -1, v -> {
-            int id = v.getId();
-            if (id == R.id.nav_home) {
-                startActivity(new Intent(this, Homepage.class));
-            } else if (id == R.id.nav_menu) {
-                startActivity(new Intent(this, Menu.class));
-            } else if (id == R.id.nav_orders) {
-                startActivity(new Intent(this, OrderHistory.class));
-            } else if (id == R.id.nav_promotion) {
-                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.nav_profile) {
-                startActivity(new Intent(this, UserProfile.class));
-            }
-        });
     }
 
     private void setupVideo() {
@@ -217,12 +215,10 @@ public class AboutUsActivity extends BaseActivity {
         if (!isViewVisible(sectionMosaic)) return;
         mosaicAnimStarted = true;
 
-        // Cột 1, 3, 5: Trượt từ dưới lên
         startMosaicColumn(mosaicCol1, true,  0);
         startMosaicColumn(mosaicCol3, true,  400);
         if (mosaicCol5 != null) startMosaicColumn(mosaicCol5, true, 800);
 
-        // Cột 2, 4: Trượt từ trên xuống
         startMosaicColumn(mosaicCol2, false, 200);
         if (mosaicCol4 != null) startMosaicColumn(mosaicCol4, false, 600);
     }

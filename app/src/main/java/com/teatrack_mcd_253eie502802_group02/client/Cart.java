@@ -55,9 +55,9 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private View cardItemRemoved;
     private View cartRoot;
     private View layoutCartFooter;
-    private View overlayPaymentPicker;
-    private View paymentPickerBottomContainer;
     private View paymentOverlayScrim;
+    private View cardOrderSummary;
+    private View cardPaymentPicker;
     private int selectedPaymentMethod = PAYMENT_CASH_ON_HAND;
     private final Handler bannerHandler = new Handler(Looper.getMainLooper());
 
@@ -69,9 +69,9 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
         cartRoot = findViewById(R.id.cartRoot);
         layoutCartFooter = findViewById(R.id.layoutCartFooter);
-        overlayPaymentPicker = findViewById(R.id.overlayPaymentPicker);
-        paymentPickerBottomContainer = findViewById(R.id.paymentPickerBottomContainer);
         paymentOverlayScrim = findViewById(R.id.paymentOverlayScrim);
+        cardOrderSummary = findViewById(R.id.cardOrderSummary);
+        cardPaymentPicker = findViewById(R.id.cardPaymentPicker);
         setupWindowInsets();
 
         tvItemsSelected = findViewById(R.id.tvItemsSelected);
@@ -170,14 +170,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                         layoutCartFooter.getPaddingRight(),
                         bottomPadding
                 );
-                if (paymentPickerBottomContainer != null) {
-                    paymentPickerBottomContainer.setPadding(
-                            paymentPickerBottomContainer.getPaddingLeft(),
-                            paymentPickerBottomContainer.getPaddingTop(),
-                            paymentPickerBottomContainer.getPaddingRight(),
-                            bottomPadding + dp(64)
-                    );
-                }
             }
             return insets;
         });
@@ -201,7 +193,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
         String prefix = getString(R.string.cart_terms_prefix);
         String link = getString(R.string.cart_terms_link);
-        SpannableString spannable = new SpannableString(prefix + link);
+        SpannableString spannable = new SpannableString(prefix + " " + link);
 
         int linkColor = ContextCompat.getColor(this, R.color.brand_blue);
         spannable.setSpan(new ForegroundColorSpan(linkColor), prefix.length(), spannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -234,8 +226,8 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (paymentOverlayScrim != null) {
             paymentOverlayScrim.setOnClickListener(v -> hidePaymentPicker());
         }
-        if (paymentPickerBottomContainer != null) {
-            paymentPickerBottomContainer.setClickable(true);
+        if (cardPaymentPicker != null) {
+            cardPaymentPicker.setClickable(true);
         }
         if (optionCashOnHand != null) {
             optionCashOnHand.setOnClickListener(v -> selectPaymentMethod(PAYMENT_CASH_ON_HAND));
@@ -246,14 +238,26 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     }
 
     private void showPaymentPicker() {
-        if (overlayPaymentPicker != null) {
-            overlayPaymentPicker.setVisibility(View.VISIBLE);
+        if (paymentOverlayScrim != null) {
+            paymentOverlayScrim.setVisibility(View.VISIBLE);
+        }
+        if (cardOrderSummary != null) {
+            cardOrderSummary.setVisibility(View.INVISIBLE);
+        }
+        if (cardPaymentPicker != null) {
+            cardPaymentPicker.setVisibility(View.VISIBLE);
         }
     }
 
     private void hidePaymentPicker() {
-        if (overlayPaymentPicker != null) {
-            overlayPaymentPicker.setVisibility(View.GONE);
+        if (paymentOverlayScrim != null) {
+            paymentOverlayScrim.setVisibility(View.GONE);
+        }
+        if (cardPaymentPicker != null) {
+            cardPaymentPicker.setVisibility(View.GONE);
+        }
+        if (cardOrderSummary != null) {
+            cardOrderSummary.setVisibility(View.VISIBLE);
         }
     }
 
@@ -273,7 +277,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     }
 
     private void openProfileTab() {
-        Intent intent = new Intent(this, UserProfile.class);
+        Intent intent = new Intent(this, PolicyandTermActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();

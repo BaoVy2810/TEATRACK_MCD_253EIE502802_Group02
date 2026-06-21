@@ -20,6 +20,7 @@ import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.LocaleHelper;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.ProfileBackHelper;
 
 import java.util.Locale;
 
@@ -39,6 +40,7 @@ public class ChangeLanguageActivity extends BaseActivity {
             return insets;
         });
 
+        ProfileBackHelper.setupBackToProfile(this);
         initViews();
     }
 

@@ -1,6 +1,7 @@
 package com.teatrack_mcd_253eie502802_group02.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
+import com.teatrack_mcd_253eie502802_group02.client.ProductDetail;
 import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 import java.util.List;
@@ -53,19 +55,13 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         holder.tvPrice.setText(formatPrice(item.getLineUnitPrice()));
         holder.tvQty.setText(String.valueOf(item.getQuantity()));
 
-        int vipDiscount = item.getVipDiscountTotal();
-        if (vipDiscount > 0) {
-            holder.tvVip.setVisibility(View.VISIBLE);
-            holder.tvVip.setText(context.getString(R.string.cart_vip_discount_format, formatPrice(vipDiscount)));
-        } else {
-            holder.tvVip.setVisibility(View.GONE);
-        }
-
         Product product = new Product();
         product.setName(item.getProductName());
         product.setImage(item.getImage());
         product.setImageRes(item.getImageRes());
         ProductImageHelper.load(holder.imgProduct, product);
+
+        holder.imgProduct.setOnClickListener(v -> openProductDetail(context, item));
 
         updateStepperState(holder, item.getQuantity());
 
@@ -113,11 +109,22 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         return String.format(Locale.US, "%,d", price).replace(',', '.') + "đ";
     }
 
+    private void openProductDetail(Context context, CartItem item) {
+        Intent intent = new Intent(context, ProductDetail.class);
+        intent.putExtra("name", item.getProductName());
+        intent.putExtra("category", item.getCategory());
+        intent.putExtra("priceM", String.valueOf(item.getUnitPrice()));
+        intent.putExtra("priceL", String.valueOf(item.getUnitPrice()));
+        intent.putExtra("vipM", String.valueOf(item.getVipUnitPrice()));
+        intent.putExtra("vipL", String.valueOf(item.getVipUnitPrice()));
+        intent.putExtra("imageRes", item.getImageRes());
+        context.startActivity(intent);
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         final ShapeableImageView imgProduct;
         final TextView tvName;
         final TextView tvOptions;
-        final TextView tvVip;
         final TextView tvPrice;
         final TextView tvQty;
         final ImageButton btnMinus;
@@ -129,7 +136,6 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
             imgProduct = itemView.findViewById(R.id.imgCartItem);
             tvName = itemView.findViewById(R.id.tvCartItemName);
             tvOptions = itemView.findViewById(R.id.tvCartItemOptions);
-            tvVip = itemView.findViewById(R.id.tvCartItemVip);
             tvPrice = itemView.findViewById(R.id.tvCartItemPrice);
             tvQty = itemView.findViewById(R.id.tvCartQty);
             btnMinus = itemView.findViewById(R.id.btnCartQtyMinus);

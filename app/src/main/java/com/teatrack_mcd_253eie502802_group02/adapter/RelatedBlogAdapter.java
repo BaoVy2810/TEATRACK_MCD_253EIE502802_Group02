@@ -41,7 +41,14 @@ public class RelatedBlogAdapter extends RecyclerView.Adapter<RelatedBlogAdapter.
 
         holder.txtTitle.setText(blog.getTitle());
         holder.txtDate.setText(blog.getDate());
-        holder.txtDesc.setText(blog.getDescription());
+
+        String description = blog.getDescription();
+        if (description == null || description.trim().isEmpty()) {
+            holder.txtDesc.setVisibility(View.GONE);
+        } else {
+            holder.txtDesc.setVisibility(View.VISIBLE);
+            holder.txtDesc.setText(description.trim());
+        }
 
         String imageSource = blog.getDisplayImage();
         Glide.with(context)

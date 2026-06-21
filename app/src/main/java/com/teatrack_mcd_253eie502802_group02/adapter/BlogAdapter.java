@@ -51,13 +51,21 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
             holder.txtDesc.setVisibility(View.GONE);
         }
 
-        // Tải hình ảnh thumbnail từ mipmap
+        // Tải hình ảnh thumbnail
         String imageSource = blog.getDisplayImage();
-        Glide.with(context)
-                .load(resolveImageRes(context, imageSource))
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background)
-                .into(holder.imgThumbnail);
+        if (imageSource != null && (imageSource.startsWith("http://") || imageSource.startsWith("https://"))) {
+            Glide.with(context)
+                    .load(imageSource)
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .into(holder.imgThumbnail);
+        } else {
+            Glide.with(context)
+                    .load(resolveImageRes(context, imageSource))
+                    .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
+                    .into(holder.imgThumbnail);
+        }
 
         // CHỨC NĂNG: Bấm vào thẻ để mở BlogDetail tương ứng
         holder.itemView.setOnClickListener(v -> {
@@ -74,14 +82,22 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
 
     /** Chuyển tên file Firebase ("blog_1.1.jpeg") → R.mipmap.blog_1_1 */
     private static int resolveImageRes(Context context, String filename) {
-        if (filename == null || filename.isEmpty()) return R.drawable.ic_launcher_background;
-        if (filename.startsWith("http://") || filename.startsWith("https://")) return 0; // URL, không dùng resId
-        // Bỏ phần mở rộng, thay dấu "." còn lại bằng "_"
-        String name = filename.contains(".")
-                ? filename.substring(0, filename.lastIndexOf("."))
-                : filename;
-        name = name.replace(".", "_");
+        if (filename == null || filename.trim().isEmpty()) return R.drawable.ic_launcher_background;
+        if (filename.startsWith("http")) return 0;
+        
+        String name = filename.trim();
+        // Remove file extension
+        int dot = name.lastIndexOf('.');
+        if (dot > 0) {
+            name = name.substring(0, dot);
+        }
+        // Standardize separators: replace '.' and '-' with '_'
+        name = name.replace(".", "_").replace("-", "_");
+        
         int resId = context.getResources().getIdentifier(name, "mipmap", context.getPackageName());
+        if (resId == 0) {
+            resId = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
+        }
         return resId != 0 ? resId : R.drawable.ic_launcher_background;
     }
 

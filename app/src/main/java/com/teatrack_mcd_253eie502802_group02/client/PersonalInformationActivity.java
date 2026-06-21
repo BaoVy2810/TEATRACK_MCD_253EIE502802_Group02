@@ -26,6 +26,7 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.databinding.ActivityPersonalInformationBinding;
 import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.ProfileBackHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -55,6 +56,8 @@ public class PersonalInformationActivity extends BaseActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        ProfileBackHelper.setupBackToProfile(this);
 
         binding.btnEditInfo.setOnClickListener(v -> {
             startActivity(new Intent(this, EditingPerInfoActivity.class));

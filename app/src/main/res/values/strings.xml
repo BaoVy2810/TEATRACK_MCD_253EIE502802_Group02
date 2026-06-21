@@ -372,8 +372,8 @@
     <string name="cart_cash_on_hand">Cash on hand</string>
     <string name="cart_cash_in_bank">Cash in bank</string>
     <string name="cart_terms">By placing your order, you agree to Hồng Trà Ngô Gia\'s Terms of Service and Policies.</string>
-    <string name="cart_terms_prefix">By placing your order, you agree to Hồng Trà Ngô Gia\'s </string>
-    <string name="cart_terms_link">Terms of Service and Policies.</string>
+    <string name="cart_terms_prefix">By placing your order, you agree to Hồng Trà Ngô Gia\'s</string>
+    <string name="cart_terms_link"> Terms of Service and Policies.</string>
     <string name="cart_save_payment_details">Save payment details for future use.</string>
     <string name="product_detail_write_review">Write a Review</string>
     <string name="product_detail_empty_review">There are no reviews for this product yet.</string>
@@ -592,6 +592,7 @@
     <string name="btn_choose">Choose file</string>
 
     <!-- About Us Page Context -->
+    <string name="about_page_title">About Us</string>
     <string name="about_hero_eyebrow">Hong Tra Ngo Gia</string>
     <string name="about_hero_title">Proud of our 74-year journey of formulation and scaling</string>
     <string name="about_logo_content_desc">Hong Tra Ngo Gia identity branding logo</string>
@@ -766,7 +767,9 @@
     <string name="history_dummy_store3_addr">184 Xô Viết Nghệ Tĩnh, Phường 19, Thành Phố Hồ Chí Minh</string>
     <string name="history_dummy_store4_name">H086 - 125 Đặng Văn Bi, Phường Thủ Đức, Hồ Chí Minh</string>
     <string name="history_dummy_store4_addr">125 Đặng Văn Bi, Phường Thủ Đức, Thành Phố Hồ Chí Minh</string>
+    <string name="blog_detail_title">Blog Detail</string>
     <string name="reviews_title">My Reviews</string>
+    <string name="blog_detail_share">Share Blog</string>
     <string name="reviews_dummy_date1">Oct 12, 2025</string>
     <string name="reviews_dummy_content1">Absolutely fantastic service and the drink was incredible. Will definitely be coming back!</string>
     <string name="reviews_dummy_date2">Sep 28, 2025</string>
@@ -775,4 +778,13 @@
     <string name="reviews_dummy_content3">Best shop drinks in town. The drinks are a must-try.</string>
     <string name="reviews_dummy_date4">Sep 12, 2026</string>
     <string name="reviews_dummy_content4">Nice location, but the beverage quality could be improved.</string>
+    <string name="home_view_all">View all</string>
+    <string name="home_agency_title">HỆ THỐNG CHI NHÁNH</string>
+    <string name="home_find_branch_title">Tìm cửa hàng gần bạn nhất</string>
+    <string name="home_find_branch_subtitle">Hơn 50 chi nhánh trên toàn quốc</string>
+    <string name="home_contact_title">Liên hệ &amp; Góp ý</string>
+    <string name="home_contact_subtitle">Chúng tôi luôn lắng nghe ý kiến của bạn để hoàn thiện hơn mỗi ngày.</string>
+    <string name="home_hotline">Hotline</string>
+    <string name="home_email">Email</string>
+    <string name="header_sign_out">Sign out</string>
 </resources>

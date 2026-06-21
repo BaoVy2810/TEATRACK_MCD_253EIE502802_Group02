@@ -90,6 +90,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         setupActions();
         setupBottomNav();
         listenUsers();
+        com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper.setupProfileMenu(this);
     }
 
     @Override

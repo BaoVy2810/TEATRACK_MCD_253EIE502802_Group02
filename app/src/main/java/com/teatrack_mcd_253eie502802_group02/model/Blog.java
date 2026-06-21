@@ -49,6 +49,19 @@ public class Blog {
     public String getContent() { return content; }
     public String getDescription() { return description; }
 
+    public void setId(String id) { this.id = id; }
+    public void setTitle(String title) { this.title = title; }
+    public void setHeading(String heading) { this.heading = heading; }
+    public void setSubheading(String subheading) { this.subheading = subheading; }
+    public void setDate(String date) { this.date = date; }
+    public void setThumbnailImage(String thumbnailImage) { this.thumbnailImage = thumbnailImage; }
+    public void setImage(String image) { this.image = image; }
+    public void setImages(List<String> images) { this.images = images; }
+    public void setHeadingColor(String headingColor) { this.headingColor = headingColor; }
+    public void setLayoutType(String layoutType) { this.layoutType = layoutType; }
+    public void setContent(String content) { this.content = content; }
+    public void setDescription(String description) { this.description = description; }
+
     public String getDisplayImage() {
         if (thumbnailImage != null && !thumbnailImage.isEmpty()) return thumbnailImage;
         if (image != null && !image.isEmpty()) return image;

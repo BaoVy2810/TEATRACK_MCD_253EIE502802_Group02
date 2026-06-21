@@ -11,11 +11,9 @@
     app:strokeColor="#0F1D4ED8"
     app:strokeWidth="1dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
         android:padding="12dp">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -24,127 +22,126 @@
             android:layout_height="72dp"
             android:contentDescription="@string/product_detail_related_image_desc"
             android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearanceOverlay="@style/RoundedImage12dp"
             tools:src="@mipmap/traxanhbidao" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvCartItemName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="@font/inter_family"
-                android:maxLines="2"
-                android:textColor="@color/on_surface"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                tools:text="Sữa tươi trân châu đường đen" />
-
-            <TextView
-                android:id="@+id/tvCartItemOptions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:fontFamily="@font/inter_family"
-                android:textColor="@color/secondary"
-                android:textSize="11sp"
-                tools:text="Size M, Medium sugar, Medium ice" />
-
-            <TextView
-                android:id="@+id/tvCartItemVip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:fontFamily="@font/inter_family"
-                android:textColor="@color/secondary"
-                android:textSize="11sp"
-                android:visibility="gone"
-                tools:text="VIP discount: -3.000đ"
-                tools:visibility="visible" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvCartItemPrice"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/inter_family"
-                    android:textColor="@color/star_rating_active"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    tools:text="31.000đ" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="@color/outline_variant"
-                    app:strokeWidth="1dp">
-
-                    <LinearLayout
-                        android:layout_width="90dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="4dp">
-
-                        <ImageButton
-                            android:id="@+id/btnCartQtyMinus"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:background="@android:color/transparent"
-                            android:contentDescription="@string/product_detail_minus"
-                            android:src="@drawable/ic_minus_line"
-                            app:tint="@color/nav_inactive" />
-
-                        <TextView
-                            android:id="@+id/tvCartQty"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_family"
-                            android:gravity="center"
-                            android:text="1"
-                            android:textColor="@color/nav_inactive"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <ImageButton
-                            android:id="@+id/btnCartQtyPlus"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:background="@drawable/bg_circle_brand_blue"
-                            android:contentDescription="@string/product_detail_plus"
-                            android:src="@drawable/ic_plus_line"
-                            app:tint="@color/white" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </LinearLayout>
-        </LinearLayout>
 
         <ImageButton
             android:id="@+id/btnCartDelete"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_gravity="top"
-            android:layout_marginStart="8dp"
-            android:background="@android:color/transparent"
+            android:background="@drawable/bg_delete_circle_soft"
             android:contentDescription="@string/cart_remove_item"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_delete_outline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/Red" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvCartItemName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter_family"
+            android:maxLines="2"
+            android:textColor="#001A3F"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/btnCartDelete"
+            app:layout_constraintStart_toEndOf="@id/imgCartItem"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Trà Xanh Kem Cheese" />
+
+        <TextView
+            android:id="@+id/tvCartItemOptions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/inter_family"
+            android:lineSpacingExtra="2dp"
+            android:maxLines="6"
+            android:textColor="#5A6D8C"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toStartOf="@id/qtyStepperCard"
+            app:layout_constraintStart_toEndOf="@id/imgCartItem"
+            app:layout_constraintTop_toBottomOf="@id/tvCartItemName"
+            tools:text="Size L - Ngọt: Vừa - Đá: Nhiều, Topping: Sương sáo x1" />
+
+        <TextView
+            android:id="@+id/tvCartItemPrice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/inter_family"
+            android:textColor="@color/brand_blue"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/qtyStepperCard"
+            app:layout_constraintStart_toEndOf="@id/imgCartItem"
+            app:layout_constraintTop_toBottomOf="@id/tvCartItemOptions"
+            tools:text="58.000đ" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/qtyStepperCard"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnCartDelete"
+            app:strokeColor="@color/brand_blue"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="4dp">
+
+                <ImageButton
+                    android:id="@+id/btnCartQtyMinus"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/product_detail_minus"
+                    android:src="@drawable/ic_minus_line"
+                    app:tint="@color/nav_inactive" />
+
+                <TextView
+                    android:id="@+id/tvCartQty"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/on_surface"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnCartQtyPlus"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_circle_brand_blue"
+                    android:contentDescription="@string/product_detail_plus"
+                    android:src="@drawable/ic_plus_line"
+                    app:tint="@color/white" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

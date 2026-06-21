@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_baby_blue"
-    tools:contexxyagyytyyyuuyt="com.teatrack_mcd_253eie502802_group02.client.Homepage">
+    tools:context="com.teatrack_mcd_253eie502802_group02.client.Homepage">
 
     <include
         android:id="@+id/headerClient"
@@ -167,6 +167,7 @@
                         style="@style/HomeSectionTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
                         android:gravity="center"
                         android:text="@string/home_our_beverages" />
 
@@ -395,13 +396,36 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                style="@style/HomeSectionTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
                 android:paddingStart="18dp"
-                android:paddingEnd="14dp"
-                android:text="@string/home_featured_products" />
+                android:paddingEnd="14dp">
+
+                <TextView
+                    style="@style/HomeSectionTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:text="@string/home_featured_products" />
+
+                <TextView
+                    android:id="@+id/tvViewAllFeatured"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:includeFontPadding="false"
+                    android:text="@string/home_view_all"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/layoutFeaturedProducts"
@@ -426,13 +450,36 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="18dp">
 
-                <TextView
-                    style="@style/HomeSectionTitle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
                     android:paddingStart="18dp"
-                    android:paddingEnd="14dp"
-                    android:text="@string/home_exciting_promotions" />
+                    android:paddingEnd="14dp">
+
+                    <TextView
+                        style="@style/HomeSectionTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:includeFontPadding="false"
+                        android:text="@string/home_exciting_promotions" />
+
+                    <TextView
+                        android:id="@+id/tvViewAllPromotions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:includeFontPadding="false"
+                        android:text="@string/home_view_all"
+                        android:textColor="@color/brand_blue"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/layoutPromotions"
@@ -449,14 +496,37 @@
                     tools:listitem="@layout/item_promotion_banner" />
             </LinearLayout>
 
-            <TextView
-                style="@style/HomeSectionTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingStart="18dp"
-                android:paddingEnd="14dp"
-                android:text="@string/home_whats_new" />
+                android:paddingEnd="14dp">
+
+                <TextView
+                    style="@style/HomeSectionTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:text="@string/home_whats_new" />
+
+                <TextView
+                    android:id="@+id/tvViewAllNews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:includeFontPadding="false"
+                    android:text="@string/home_view_all"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/layoutNews"
@@ -477,6 +547,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
+                android:layout_marginBottom="10dp"
                 android:paddingStart="18dp"
                 android:paddingEnd="14dp"
                 android:text="@string/home_ngo_gia_story_title" />
@@ -540,6 +611,234 @@
                             app:strokeWidth="0dp" />
                     </LinearLayout>
                 </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+            <!-- Section Title: Hệ thống chi nhánh -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="10dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="14dp">
+
+                <TextView
+                    style="@style/HomeSectionTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/home_agency_title" />
+            </LinearLayout>
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardFindBranch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="14dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Thumbnail image -->
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="140dp"
+                        android:contentDescription="@null"
+                        android:foregroundGravity="top"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/agencyyy" />
+
+                    <!-- Info row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_family"
+                                android:fontWeight="800"
+                                android:text="@string/home_find_branch_title"
+                                android:textColor="@color/on_surface"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="@font/inter_family"
+                                android:text="@string/home_find_branch_subtitle"
+                                android:textColor="@color/secondary"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <!-- Location icon button -->
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_circle_brand_blue">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_location_on"
+                                app:tint="@color/white" />
+                        </FrameLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card 2: Liên hệ & Góp ý -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="8dp"
+                app:cardBackgroundColor="@color/brand_blue"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_family"
+                        android:fontWeight="800"
+                        android:paddingBottom="5dp"
+                        android:text="@string/home_contact_title"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_family"
+                        android:text="@string/home_contact_subtitle"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                    <!-- Buttons row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <!-- Hotline button -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardHotline"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardBackgroundColor="#FFFFFF22"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/btn_ghost_bg"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/call"
+                                    app:tint="@color/brand_blue" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:fontFamily="@font/inter_family"
+                                    android:fontWeight="800"
+                                    android:text="@string/home_hotline"
+                                    android:textColor="@color/brand_blue"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <!-- Email button -->
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cardEmail"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardBackgroundColor="#FFFFFF22"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/btn_ghost_bg"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/mail"
+                                    app:tint="@color/brand_blue" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:fontFamily="@font/inter_family"
+                                    android:fontWeight="800"
+                                    android:text="@string/home_email"
+                                    android:textColor="@color/brand_blue"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -7,8 +7,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,14 +33,22 @@ public class BlogGeneral extends AppCompatActivity {
 
     private RecyclerView rvBlogList;
     private ProgressBar progressBar;
+    private android.widget.TextView tvTopTitle;
+    private View btnBack, btnShare;
     private List<Blog> allBlogs = new ArrayList<>();
     private DatabaseReference mDatabase;
     private BlogAdapter adapter;
 
+    private String filterCategory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blog_general);
+        setupMainInsets();
+
+        filterCategory = getIntent().getStringExtra("CATEGORY_FILTER");
 
         initViews();
         setupHeader();
@@ -48,48 +60,51 @@ public class BlogGeneral extends AppCompatActivity {
         loadBlogsFromFirebase();
     }
 
+    private void setupMainInsets() {
+        View mainView = findViewById(R.id.main);
+        if (mainView == null) {
+            return;
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(mainView, (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    }
+
     private void initViews() {
         rvBlogList = findViewById(R.id.rvBlogList);
         progressBar = findViewById(R.id.progressBar);
+        tvTopTitle = findViewById(R.id.tvTopTitle);
+        btnBack = findViewById(R.id.btnBack);
+        btnShare = findViewById(R.id.btnShare);
         
+        if (tvTopTitle != null && filterCategory != null && !filterCategory.isEmpty()) {
+            tvTopTitle.setText(filterCategory);
+        }
+
         rvBlogList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BlogAdapter(this, allBlogs);
         rvBlogList.setAdapter(adapter);
     }
 
     private void setupHeader() {
-        findViewById(R.id.btn_cart).setOnClickListener(v ->
-                startActivity(new Intent(this, Cart.class)));
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> onBackPressed());
+        }
 
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, UserProfile.class)));
+        if (btnShare != null) {
+            btnShare.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, "Check out these blogs at TeaTrack!");
+                startActivity(Intent.createChooser(intent, "Share via"));
+            });
+        }
     }
 
     private void setupNavBar() {
-        int[] navItemIds = {
-                R.id.nav_home,
-                R.id.nav_menu,
-                R.id.nav_orders,
-                R.id.nav_promotion,
-                R.id.nav_profile
-        };
-
-        NavBarHelper.setupNavBar(this, navItemIds, R.id.nav_promotion, v -> {
-            int id = v.getId();
-            if (id == R.id.nav_promotion) return; // đang ở đây rồi
-
-            Intent intent = null;
-            if (id == R.id.nav_home)           intent = new Intent(this, Homepage.class);
-            else if (id == R.id.nav_menu)      intent = new Intent(this, Menu.class);
-            else if (id == R.id.nav_orders)    intent = new Intent(this, OrderHistory.class);
-            else if (id == R.id.nav_profile)   intent = new Intent(this, UserProfile.class);
-
-            if (intent != null) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        });
+        // No NavBar client here as per user request
     }
 
     @Override
@@ -102,16 +117,42 @@ public class BlogGeneral extends AppCompatActivity {
 
     private void loadBlogsFromFirebase() {
         progressBar.setVisibility(View.VISIBLE);
+        Log.d("BlogGeneral", "Loading blogs from Firebase, category filter: " + filterCategory);
         
         // Lấy danh sách bài viết từ Firebase
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 allBlogs.clear();
+                Log.d("BlogGeneral", "DataSnapshot count: " + snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Blog blog = postSnapshot.getValue(Blog.class);
                     if (blog != null) {
-                        allBlogs.add(blog);
+                        // Ensure ID is set from the snapshot key if missing
+                        if (blog.getId() == null || blog.getId().isEmpty()) {
+                            blog.setId(postSnapshot.getKey());
+                        }
+                        
+                        Log.d("BlogGeneral", "Found blog: " + blog.getTitle() + " (ID: " + blog.getId() + ")");
+                        
+                        // Check if we filter by category (stored in 'title' field based on current model)
+                        boolean matches = false;
+                        if (filterCategory == null || filterCategory.trim().isEmpty()) {
+                            matches = true;
+                        } else if (blog.getTitle() != null) {
+                            String title = blog.getTitle().toLowerCase(java.util.Locale.ROOT).trim();
+                            String filter = filterCategory.toLowerCase(java.util.Locale.ROOT).trim();
+                            // Match if titles are same, or one contains other (e.g. Promotion vs Promotions)
+                            matches = title.contains(filter) || filter.contains(title);
+                        }
+
+                        if (matches) {
+                            allBlogs.add(blog);
+                        } else {
+                            Log.d("BlogGeneral", "Filtered out: '" + blog.getTitle() + "' != '" + filterCategory + "'");
+                        }
+                    } else {
+                        Log.w("BlogGeneral", "Blog is null for snapshot: " + postSnapshot.getKey());
                     }
                 }
                 
@@ -119,7 +160,10 @@ public class BlogGeneral extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
 
                 if (allBlogs.isEmpty()) {
-                    Toast.makeText(BlogGeneral.this, "Hiện chưa có bài viết nào trong Diễn đàn", Toast.LENGTH_SHORT).show();
+                    String msg = (filterCategory == null || filterCategory.isEmpty()) 
+                            ? "Hiện chưa có bài viết nào trong Diễn đàn" 
+                            : "Không tìm thấy bài viết cho danh mục: " + filterCategory;
+                    Toast.makeText(BlogGeneral.this, msg, Toast.LENGTH_SHORT).show();
                 }
             }
 

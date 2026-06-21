@@ -11,7 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,8 +35,9 @@ import java.util.List;
 
 public class BlogDetail extends AppCompatActivity {
 
-    private TextView txtBreadcrumbTitle, txtDate, txtHeading, txtSubheading, txtContent;
+    private TextView txtDate, txtHeading, txtContent, tvTopTitle;
     private ImageView imgSingle, imgGalleryLeft, imgGalleryRight1, imgGalleryRight2;
+    private View btnBack, btnShare;
     private LinearLayout layoutGallery;
     private RecyclerView rvRelatedBlogs;
     private DatabaseReference mDatabase;
@@ -41,7 +46,9 @@ public class BlogDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blog_detail);
+        setupMainInsets();
 
         // Lấy ID bài viết từ Intent
         blogId = getIntent().getStringExtra("blog_id");
@@ -61,11 +68,25 @@ public class BlogDetail extends AppCompatActivity {
         setupNavBar();
     }
 
+    private void setupMainInsets() {
+        View mainView = findViewById(R.id.main);
+        if (mainView == null) {
+            return;
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(mainView, (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    }
+
     private void initViews() {
-        txtBreadcrumbTitle = findViewById(R.id.txtDetailBreadcrumbTitle);
+        tvTopTitle = findViewById(R.id.tvTopTitle);
+        btnBack = findViewById(R.id.btnBack);
+        btnShare = findViewById(R.id.btnShare);
+
         txtDate = findViewById(R.id.txtDetailDate);
         txtHeading = findViewById(R.id.txtDetailHeading);
-        txtSubheading = findViewById(R.id.txtDetailSubheading);
         txtContent = findViewById(R.id.txtDetailContent);
         
         imgSingle = findViewById(R.id.imgDetailSingle);
@@ -78,11 +99,9 @@ public class BlogDetail extends AppCompatActivity {
         rvRelatedBlogs.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         // Xóa text mặc định ban đầu
-        txtBreadcrumbTitle.setText("");
-        txtDate.setText("");
-        txtHeading.setText("");
-        txtSubheading.setText("");
-        txtContent.setText("");
+        if (txtDate != null) txtDate.setText("");
+        if (txtHeading != null) txtHeading.setText("");
+        if (txtContent != null) txtContent.setText("");
     }
 
     private void loadBlogDetail() {
@@ -91,6 +110,9 @@ public class BlogDetail extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Blog blog = snapshot.getValue(Blog.class);
                 if (blog != null) {
+                    if (blog.getId() == null || blog.getId().isEmpty()) {
+                        blog.setId(snapshot.getKey());
+                    }
                     displayBlog(blog);
                 } else {
                     Toast.makeText(BlogDetail.this, "Không tìm thấy nội dung bài viết", Toast.LENGTH_SHORT).show();
@@ -105,7 +127,7 @@ public class BlogDetail extends AppCompatActivity {
     }
 
     private void displayBlog(Blog blog) {
-        txtBreadcrumbTitle.setText(blog.getTitle());
+        if (tvTopTitle != null) tvTopTitle.setText(blog.getTitle());
         txtDate.setText(blog.getDate());
         
         // Xử lý tiêu đề chính (Heading)
@@ -117,19 +139,6 @@ public class BlogDetail extends AppCompatActivity {
             try {
                 txtHeading.setTextColor(Color.parseColor(blog.getHeadingColor()));
             } catch (Exception ignored) {}
-        }
-
-        // Xử lý tiêu đề phụ (Subheading)
-        if (blog.getSubheading() != null && !blog.getSubheading().isEmpty()) {
-            txtSubheading.setVisibility(View.VISIBLE);
-            txtSubheading.setText(blog.getSubheading());
-            if (blog.getHeadingColor() != null) {
-                try {
-                    txtSubheading.setTextColor(Color.parseColor(blog.getHeadingColor()));
-                } catch (Exception ignored) {}
-            }
-        } else {
-            txtSubheading.setVisibility(View.GONE);
         }
 
         // Xử lý hiển thị hình ảnh (Single vs Gallery)
@@ -157,19 +166,28 @@ public class BlogDetail extends AppCompatActivity {
     }
 
     private void loadImage(String imageSource, ImageView imageView) {
-        if (imageSource == null || imageSource.isEmpty()) return;
-        if (imageSource.startsWith("http://") || imageSource.startsWith("https://")) {
-            Glide.with(this).load(imageSource)
+        if (imageSource == null || imageSource.trim().isEmpty()) return;
+        String source = imageSource.trim();
+        
+        if (source.startsWith("http")) {
+            Glide.with(this).load(source)
                     .placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background)
                     .into(imageView);
         } else {
-            // Bỏ phần mở rộng, thay dấu "." còn lại bằng "_" → lookup mipmap
-            String name = imageSource.contains(".")
-                    ? imageSource.substring(0, imageSource.lastIndexOf("."))
-                    : imageSource;
-            name = name.replace(".", "_");
+            // Remove file extension and standardize name
+            String name = source;
+            int dot = name.lastIndexOf('.');
+            if (dot > 0) {
+                name = name.substring(0, dot);
+            }
+            name = name.replace(".", "_").replace("-", "_");
+            
             int resId = getResources().getIdentifier(name, "mipmap", getPackageName());
+            if (resId == 0) {
+                resId = getResources().getIdentifier(name, "drawable", getPackageName());
+            }
+
             Glide.with(this)
                     .load(resId != 0 ? resId : R.drawable.ic_launcher_background)
                     .placeholder(R.drawable.ic_launcher_background)
@@ -185,8 +203,13 @@ public class BlogDetail extends AppCompatActivity {
                 List<Blog> relatedList = new ArrayList<>();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Blog blog = postSnapshot.getValue(Blog.class);
-                    if (blog != null && !blog.getId().equals(blogId)) {
-                        relatedList.add(blog);
+                    if (blog != null) {
+                        if (blog.getId() == null || blog.getId().isEmpty()) {
+                            blog.setId(postSnapshot.getKey());
+                        }
+                        if (!blog.getId().equals(blogId)) {
+                            relatedList.add(blog);
+                        }
                     }
                 }
                 RelatedBlogAdapter adapter = new RelatedBlogAdapter(BlogDetail.this, relatedList);
@@ -199,52 +222,30 @@ public class BlogDetail extends AppCompatActivity {
     }
 
     private void setupHeader() {
-        findViewById(R.id.btn_cart).setOnClickListener(v ->
-                startActivity(new Intent(this, Cart.class)));
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> onBackPressed());
+        }
 
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, UserProfile.class)));
+        if (btnShare != null) {
+            btnShare.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String title = (txtHeading != null) ? txtHeading.getText().toString() : "Blog";
+                intent.putExtra(Intent.EXTRA_TEXT, "Check out this blog: " + title);
+                startActivity(Intent.createChooser(intent, "Share via"));
+            });
+        }
     }
 
     private void setupNavBar() {
-        int[] navItemIds = {
-                R.id.nav_home,
-                R.id.nav_menu,
-                R.id.nav_orders,
-                R.id.nav_promotion,
-                R.id.nav_profile
-        };
-
-        NavBarHelper.setupNavBar(this, navItemIds, R.id.nav_promotion, v -> {
-            int id = v.getId();
-            if (id == R.id.nav_promotion) {
-                // Quay về danh sách blog
-                Intent intent = new Intent(this, BlogGeneral.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                return;
-            }
-
-            Intent intent = null;
-            if (id == R.id.nav_home)           intent = new Intent(this, Homepage.class);
-            else if (id == R.id.nav_menu)      intent = new Intent(this, Menu.class);
-            else if (id == R.id.nav_orders)    intent = new Intent(this, OrderHistory.class);
-            else if (id == R.id.nav_profile)   intent = new Intent(this, UserProfile.class);
-
-            if (intent != null) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        });
+        // No NavBar client here as per user request
     }
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, BlogGeneral.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        Intent intent = new Intent(this, Homepage.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
-        overridePendingTransition(0, 0);
+        finish();
     }
 }

@@ -91,6 +91,8 @@ public class Homepage extends BaseActivity {
         setupNews();
         setupCategoryActions();
         setupStoryAction();
+        setupViewAllActions();
+        setupContactSection();
         CartBadgeHelper.setup(this);
     }
 
@@ -149,7 +151,7 @@ public class Homepage extends BaseActivity {
         } else if (id == R.id.nav_orders) {
             intent = new Intent(this, OrderHistory.class);
         } else if (id == R.id.nav_promotion) {
-            intent = new Intent(this, BlogGeneral.class);
+            Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_profile) {
             intent = new Intent(this, UserProfile.class);
         }
@@ -178,9 +180,14 @@ public class Homepage extends BaseActivity {
 
         BannerAdapter adapter = new BannerAdapter(banners);
         adapter.setOnItemClickListener(position -> {
-            // Navigate to BlogDetail with dummy data
+            String blogId;
+            if (position == 0) blogId = "blog_2";
+            else if (position == 1) blogId = "blog_4";
+            else if (position == 2) blogId = "blog_7";
+            else blogId = "blog_2";
+
             Intent intent = new Intent(this, BlogDetail.class);
-            intent.putExtra("blog_id", "banner_blog_" + position);
+            intent.putExtra("blog_id", blogId);
             startActivity(intent);
         });
         viewPagerBanners.setAdapter(adapter);
@@ -257,6 +264,55 @@ public class Homepage extends BaseActivity {
         });
     }
 
+    private void setupViewAllActions() {
+        View tvViewAllFeatured = findViewById(R.id.tvViewAllFeatured);
+        if (tvViewAllFeatured != null) {
+            tvViewAllFeatured.setOnClickListener(v -> startActivity(new Intent(this, Menu.class)));
+        }
+
+        View tvViewAllPromotions = findViewById(R.id.tvViewAllPromotions);
+        if (tvViewAllPromotions != null) {
+            tvViewAllPromotions.setOnClickListener(v -> {
+                Intent intent = new Intent(this, BlogGeneral.class);
+                intent.putExtra("CATEGORY_FILTER", "Promotions");
+                startActivity(intent);
+            });
+        }
+
+        View tvViewAllNews = findViewById(R.id.tvViewAllNews);
+        if (tvViewAllNews != null) {
+            tvViewAllNews.setOnClickListener(v -> {
+                Intent intent = new Intent(this, BlogGeneral.class);
+                startActivity(intent);
+            });
+        }
+    }
+
+    private void setupContactSection() {
+        View cardFindBranch = findViewById(R.id.cardFindBranch);
+        if (cardFindBranch != null) {
+            cardFindBranch.setOnClickListener(v ->
+                    startActivity(new Intent(this, Agency.class))
+            );
+        }
+
+        View cardHotline = findViewById(R.id.cardHotline);
+        if (cardHotline != null) {
+            cardHotline.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(android.net.Uri.parse("tel:02-723-979-518"));
+                startActivity(intent);
+            });
+        }
+
+        View cardEmail = findViewById(R.id.cardEmail);
+        if (cardEmail != null) {
+            cardEmail.setOnClickListener(v ->
+                    startActivity(new Intent(this, ContactWithUs.class))
+            );
+        }
+    }
+
     private void onAddToCart(Product product) {
         CartActions.addDefaultProduct(this, product);
     }
@@ -281,10 +337,17 @@ public class Homepage extends BaseActivity {
         }
         rvPromotions.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         List<Promotion> promotions = new ArrayList<>();
-        promotions.add(new Promotion(R.mipmap.banner_monmoi));
-        promotions.add(new Promotion(R.mipmap.banner_aboutus));
-        promotions.add(new Promotion(R.mipmap.banner_aboutus2));
-        rvPromotions.setAdapter(new PromotionAdapter(promotions));
+        promotions.add(new Promotion("promo1", R.mipmap.banner_monmoi));
+        promotions.add(new Promotion("promo2", R.mipmap.banner_aboutus));
+        promotions.add(new Promotion("promo3", R.mipmap.banner_aboutus2));
+        
+        PromotionAdapter adapter = new PromotionAdapter(promotions);
+        adapter.setOnItemClickListener(item -> {
+            Intent intent = new Intent(this, BlogDetail.class);
+            intent.putExtra("blog_id", item.getId());
+            startActivity(intent);
+        });
+        rvPromotions.setAdapter(adapter);
     }
 
     private void setupNews() {
@@ -293,6 +356,11 @@ public class Homepage extends BaseActivity {
         }
         rvNews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         newsAdapter = new NewsCardAdapter(newsItems);
+        newsAdapter.setOnItemClickListener(item -> {
+            Intent intent = new Intent(this, BlogDetail.class);
+            intent.putExtra("blog_id", item.getId());
+            startActivity(intent);
+        });
         rvNews.setAdapter(newsAdapter);
         loadNews();
     }
@@ -352,6 +420,7 @@ public class Homepage extends BaseActivity {
                     }
                     int imageRes = resolveImageRes(imageField);
                     loaded.add(new NewsItem(
+                            child.getKey(),
                             title,
                             (date == null || date.isEmpty()) ? "--" : date,
                             imageRes));
@@ -382,9 +451,9 @@ public class Homepage extends BaseActivity {
 
     private List<NewsItem> getFallbackNews() {
         List<NewsItem> fallback = new ArrayList<>();
-        fallback.add(new NewsItem("Vẹn tròn trung thu - Trọn vị Ngô Gia", "26-31.07.25", R.mipmap.blog_1_2));
-        fallback.add(new NewsItem("Bí quyết chọn trà hợp gu mỗi ngày", "10-17.08.25", R.mipmap.blog_3_1));
-        fallback.add(new NewsItem("Món mới mùa hè đã lên kệ", "01-08.09.25", R.mipmap.blog_3_2));
+        fallback.add(new NewsItem("blog1", "Vẹn tròn trung thu - Trọn vị Ngô Gia", "26-31.07.25", R.mipmap.blog_1_2));
+        fallback.add(new NewsItem("blog2", "Bí quyết chọn trà hợp gu mỗi ngày", "10-17.08.25", R.mipmap.blog_3_1));
+        fallback.add(new NewsItem("blog3", "Món mới mùa hè đã lên kệ", "01-08.09.25", R.mipmap.blog_3_2));
         return fallback;
     }
 
