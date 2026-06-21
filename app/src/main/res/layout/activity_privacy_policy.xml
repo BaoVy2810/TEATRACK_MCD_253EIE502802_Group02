@@ -7,7 +7,20 @@
     android:layout_height="match_parent"
     android:background="@color/bg_baby_blue"
     tools:context=".client.PrivacyPolicyActivity">
-
+    <ImageView
+        android:id="@+id/btnProfileBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_profile_back_button"
+        android:contentDescription="@string/product_detail_back"
+        android:elevation="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -15,7 +28,7 @@
         android:overScrollMode="never"
         android:scrollbars="none"
         android:clipToPadding="false"
-        app:layout_constraintBottom_toTopOf="@id/navBar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,7 +36,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="24dp"
             android:background="@drawable/uspro_bg">
 
             <LinearLayout
@@ -87,7 +99,8 @@
                                 android:fontFamily="@font/inter_semibold"
                                 android:text="@string/privacy_title"
                                 android:textColor="@color/black"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -135,6 +148,7 @@
                         android:lineSpacingExtra="4dp"
                         android:text="@string/privacy_collect_content"
                         android:textColor="@color/black"
+                        android:justificationMode="inter_word"
                         android:textSize="13sp" />
 
                     <TextView
@@ -145,6 +159,7 @@
                         android:fontFamily="@font/inter"
                         android:text="@string/privacy_collect_bullet1"
                         android:textColor="@color/black"
+                        android:justificationMode="inter_word"
                         android:textSize="13sp"
                         app:drawableStartCompat="@drawable/dot_shape"
                         android:drawablePadding="8dp" />
@@ -155,6 +170,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginStart="12dp"
                         android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
                         android:text="@string/privacy_collect_bullet2"
                         android:textColor="@color/black"
                         android:textSize="13sp"
@@ -166,6 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:layout_marginStart="12dp"
+                        android:justificationMode="inter_word"
                         android:fontFamily="@font/inter"
                         android:text="@string/privacy_collect_bullet3"
                         android:textColor="@color/black"
@@ -203,6 +220,7 @@
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/inter"
                         android:lineSpacingExtra="4dp"
+                        android:justificationMode="inter_word"
                         android:text="@string/privacy_use_content"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
@@ -213,6 +231,7 @@
                         android:layout_marginTop="6dp"
                         android:layout_marginStart="12dp"
                         android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
                         android:text="@string/privacy_use_bullet1"
                         android:textColor="@color/black"
                         android:textSize="13sp"
@@ -225,6 +244,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginStart="12dp"
                         android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
                         android:text="@string/privacy_use_bullet2"
                         android:textColor="@color/black"
                         android:textSize="13sp"
@@ -287,6 +307,7 @@
                         android:lineSpacingExtra="4dp"
                         android:text="@string/privacy_sharing_content"
                         android:textColor="@color/black"
+                        android:justificationMode="inter_word"
                         android:textSize="13sp" />
 
                     <!-- Section 4 -->
@@ -321,6 +342,7 @@
                         android:lineSpacingExtra="4dp"
                         android:text="@string/privacy_rights_content"
                         android:textColor="@color/black"
+                        android:justificationMode="inter_word"
                         android:textSize="13sp" />
 
                     <TextView
@@ -401,6 +423,7 @@
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/inter"
                         android:lineSpacingExtra="4dp"
+                        android:justificationMode="inter_word"
                         android:text="@string/privacy_security_content"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
@@ -422,14 +445,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
-    <include
-        android:id="@+id/navBar"
-        layout="@layout/activity_nav_bar_client"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

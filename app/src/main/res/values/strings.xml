@@ -846,4 +846,12 @@
     <string name="home_hotline">Hotline</string>
     <string name="home_email">Email</string>
     <string name="header_sign_out">Sign out</string>
+    <string name="order_confirmation_title">Confirmation</string>
+    <string name="order_successful">Order Successful!</string>
+    <string name="order_pickup_time">Pickup time</string>
+    <string name="order_pickup_address">Pickup address</string>
+    <string name="order_track">Track order</string>
+    <string name="order_back_to_menu">Back to menu</string>
+    <string name="app_brand_name">HỒNG TRÀ NGÔ GIA</string>
+    <string name="app_brand_chinese">吴家红茶水</string>
 </resources>

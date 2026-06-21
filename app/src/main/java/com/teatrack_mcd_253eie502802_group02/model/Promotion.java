@@ -17,6 +17,11 @@ public class Promotion implements Serializable {
         this.imageRes = imageRes;
     }
 
+    public Promotion(String id, int imageRes) {
+        this.id = id;
+        this.imageRes = imageRes;
+    }
+
     public Promotion(String id, String code, String description, double minSubtotal, String type, double value) {
         this.id = id;
         this.code = code;

@@ -43,6 +43,9 @@ import java.util.Map;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
 public class Menu extends BaseActivity {
+    private static final String CANONICAL_NEW_ARRIVALS = "New Arrivals";
+    private static final String CANONICAL_BEST_SELLERS = "Best Sellers";
+
     private static final int[] NAV_IDS = {
             R.id.nav_home,
             R.id.nav_menu,
@@ -415,25 +418,31 @@ public class Menu extends BaseActivity {
         if (productCategory.isEmpty()) {
             return false;
         }
-        if (productCategory.equalsIgnoreCase(filterCategory)) {
-            return true;
-        }
-        String normalizedFilter = normalizeCategoryKey(filterCategory);
-        String normalizedProduct = normalizeCategoryKey(productCategory);
-        return !normalizedFilter.isEmpty() && normalizedFilter.equalsIgnoreCase(normalizedProduct);
+        String canonicalFilter = normalizeCategoryKey(filterCategory);
+        String canonicalProduct = normalizeCategoryKey(productCategory);
+        return !canonicalFilter.isEmpty()
+                && canonicalFilter.equalsIgnoreCase(canonicalProduct);
     }
 
     private String normalizeCategoryKey(String category) {
         if (category == null) {
             return "";
         }
-        if (equalsCategory(category, R.string.firebase_category_new_arrivals)) {
-            return "New Arrivals";
+        String trimmed = category.trim();
+        if (trimmed.isEmpty()) {
+            return "";
         }
-        if (equalsCategory(category, R.string.firebase_category_best_sellers)) {
-            return "Best Sellers";
+        if (equalsCategory(trimmed, R.string.firebase_category_new_arrivals)
+                || trimmed.equalsIgnoreCase(CANONICAL_NEW_ARRIVALS)
+                || trimmed.equalsIgnoreCase("New Drinks")) {
+            return CANONICAL_NEW_ARRIVALS;
         }
-        return category;
+        if (equalsCategory(trimmed, R.string.firebase_category_best_sellers)
+                || trimmed.equalsIgnoreCase(CANONICAL_BEST_SELLERS)
+                || trimmed.equalsIgnoreCase("Hot Drinks")) {
+            return CANONICAL_BEST_SELLERS;
+        }
+        return trimmed;
     }
 
     private List<Product> getInitialMenuProducts() {
