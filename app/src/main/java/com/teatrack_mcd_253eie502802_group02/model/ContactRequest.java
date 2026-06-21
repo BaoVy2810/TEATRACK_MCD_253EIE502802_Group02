@@ -1,5 +1,8 @@
 package com.teatrack_mcd_253eie502802_group02.model;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
+@IgnoreExtraProperties
 public class ContactRequest {
     private String fullName;
     private String email;
@@ -10,6 +13,7 @@ public class ContactRequest {
     private long timestamp;
 
     public ContactRequest() {
+        // Required for Firebase
     }
 
     public ContactRequest(String fullName, String email, String phone, String branch, String topic, String content, long timestamp) {
