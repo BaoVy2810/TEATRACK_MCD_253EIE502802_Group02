@@ -1,14 +1,19 @@
 package com.teatrack_mcd_253eie502802_group02.admin;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -154,13 +159,13 @@ public class AdminAgency extends AppCompatActivity {
      * Dialog Thêm Mới Chi Nhánh
      */
     private void showAddAgencyDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Dialog dialog = new Dialog(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_agency, null);
-        builder.setView(view);
+        dialog.setContentView(view);
 
-        AlertDialog dialog = builder.create();
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
 
         TextView tvDialogTitle = view.findViewById(R.id.tvDialogTitle);
@@ -171,8 +176,8 @@ public class AdminAgency extends AppCompatActivity {
         EditText etPhone = view.findViewById(R.id.etPhone);
         EditText etImage = view.findViewById(R.id.etImage);
         EditText etMapEmbed = view.findViewById(R.id.etMapEmbed);
-        Button btnCancel = view.findViewById(R.id.btnCancel);
-        Button btnSubmit = view.findViewById(R.id.btnSubmit);
+        com.google.android.material.button.MaterialButton btnCancel = view.findViewById(R.id.btnCancel);
+        com.google.android.material.button.MaterialButton btnSubmit = view.findViewById(R.id.btnSubmit);
         com.google.android.material.button.MaterialButton btnChooseImage = view.findViewById(R.id.btnChooseImage);
         ShapeableImageView ivPreview = view.findViewById(R.id.ivPreview);
 
@@ -262,13 +267,13 @@ public class AdminAgency extends AppCompatActivity {
      * Dialog Cập Nhật / Sửa Chi Nhánh (Gọi từ Adapter)
      */
     public void showEditAgencyDialog(Agency agency) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Dialog dialog = new Dialog(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_agency, null);
-        builder.setView(view);
+        dialog.setContentView(view);
 
-        AlertDialog dialog = builder.create();
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
 
         TextView tvDialogTitle = view.findViewById(R.id.tvDialogTitle);
@@ -279,8 +284,8 @@ public class AdminAgency extends AppCompatActivity {
         EditText etPhone = view.findViewById(R.id.etPhone);
         EditText etImage = view.findViewById(R.id.etImage);
         EditText etMapEmbed = view.findViewById(R.id.etMapEmbed);
-        Button btnCancel = view.findViewById(R.id.btnCancel);
-        Button btnSubmit = view.findViewById(R.id.btnSubmit);
+        com.google.android.material.button.MaterialButton btnCancel = view.findViewById(R.id.btnCancel);
+        com.google.android.material.button.MaterialButton btnSubmit = view.findViewById(R.id.btnSubmit);
         com.google.android.material.button.MaterialButton btnChooseImage = view.findViewById(R.id.btnChooseImage);
         ShapeableImageView ivPreview = view.findViewById(R.id.ivPreview);
 
@@ -395,21 +400,44 @@ public class AdminAgency extends AppCompatActivity {
     /**
      * Hàm xóa chi nhánh (Gọi từ Adapter)
      */
-    public void deleteAgency(String agencyId) {
-        new AlertDialog.Builder(this)
-                .setTitle("Xóa chi nhánh")
-                .setMessage("Bạn có chắc chắn muốn xóa chi nhánh này không?")
-                .setPositiveButton("Xóa", (dialog, which) -> {
-                    databaseReference.child(agencyId).removeValue().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AdminAgency.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(AdminAgency.this, "Lỗi khi xóa", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                })
-                .setNegativeButton("Hủy", null)
-                .show();
+    public void deleteAgency(Agency agency) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_delete_confirm);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            dialog.getWindow().setAttributes(params);
+        }
+
+        TextView tvTitle = dialog.findViewById(R.id.tvDeleteTitle);
+        if (tvTitle != null) tvTitle.setText("Xóa chi nhánh");
+
+        TextView tvMessage = dialog.findViewById(R.id.tvDeleteMessage);
+        String name = agency.getName();
+        String html = "Bạn có chắc chắn muốn xóa chi nhánh <b>" + name + "</b>?";
+        
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            tvMessage.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvMessage.setText(Html.fromHtml(html));
+        }
+
+        dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
+            databaseReference.child(agency.getId()).removeValue().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(AdminAgency.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(AdminAgency.this, "Lỗi khi xóa", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        dialog.show();
     }
 
     private void setupSearch() {

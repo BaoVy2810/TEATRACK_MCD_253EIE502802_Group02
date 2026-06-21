@@ -144,7 +144,7 @@ public class AgencyAdapter extends RecyclerView.Adapter<AgencyAdapter.AgencyView
         // 6. Xử lý sự kiện nút XÓA gọi phương thức xóa an toàn có Dialog xác nhận từ AdminAgency
         holder.btnDelete.setOnClickListener(v -> {
             if (context instanceof AdminAgency) {
-                ((AdminAgency) context).deleteAgency(agency.getId());
+                ((AdminAgency) context).deleteAgency(agency);
             }
         });
     }

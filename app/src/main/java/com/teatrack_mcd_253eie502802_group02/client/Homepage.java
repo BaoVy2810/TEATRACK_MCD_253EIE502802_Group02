@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.model.NewsItem;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.model.Promotion;
+import com.teatrack_mcd_253eie502802_group02.model.PromotionBanner;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.CartActions;
@@ -280,10 +281,10 @@ public class Homepage extends BaseActivity {
             return;
         }
         rvPromotions.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        List<Promotion> promotions = new ArrayList<>();
-        promotions.add(new Promotion(R.mipmap.banner_monmoi));
-        promotions.add(new Promotion(R.mipmap.banner_aboutus));
-        promotions.add(new Promotion(R.mipmap.banner_aboutus2));
+        List<PromotionBanner> promotions = new ArrayList<>();
+        promotions.add(new PromotionBanner(R.mipmap.banner_monmoi));
+        promotions.add(new PromotionBanner(R.mipmap.banner_aboutus));
+        promotions.add(new PromotionBanner(R.mipmap.banner_aboutus2));
         rvPromotions.setAdapter(new PromotionAdapter(promotions));
     }
 

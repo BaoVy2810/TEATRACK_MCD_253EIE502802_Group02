@@ -99,7 +99,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
 
         holder.btnDeleteBlog.setOnClickListener(v -> {
             if (context instanceof AdminBlog) {
-                ((AdminBlog) context).deleteBlog(blog.getId());
+                ((AdminBlog) context).deleteBlog(blog);
             }
         });
     }

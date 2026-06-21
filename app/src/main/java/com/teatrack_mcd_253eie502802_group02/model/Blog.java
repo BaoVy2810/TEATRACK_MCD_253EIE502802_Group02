@@ -1,15 +1,19 @@
 package com.teatrack_mcd_253eie502802_group02.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Blog implements Serializable {
     private String id;
     private String title;
     private String heading;
     private String headingColor;
+    private String subheading;
+    private String description;
     private String content;
     private String image;
     private String thumbnailImage;
+    private List<String> images;
     private String date;
     private String layoutType;
     private String category; // Giữ lại nếu cần phân loại
@@ -32,6 +36,12 @@ public class Blog implements Serializable {
     public String getHeadingColor() { return headingColor; }
     public void setHeadingColor(String headingColor) { this.headingColor = headingColor; }
 
+    public String getSubheading() { return subheading; }
+    public void setSubheading(String subheading) { this.subheading = subheading; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
 
@@ -40,6 +50,9 @@ public class Blog implements Serializable {
 
     public String getThumbnailImage() { return thumbnailImage; }
     public void setThumbnailImage(String thumbnailImage) { this.thumbnailImage = thumbnailImage; }
+
+    public List<String> getImages() { return images; }
+    public void setImages(List<String> images) { this.images = images; }
 
     public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }
@@ -52,4 +65,9 @@ public class Blog implements Serializable {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    // Helper methods
+    public String getDisplayImage() {
+        return (thumbnailImage != null && !thumbnailImage.isEmpty()) ? thumbnailImage : image;
+    }
 }

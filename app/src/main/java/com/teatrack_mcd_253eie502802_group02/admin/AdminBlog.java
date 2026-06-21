@@ -1,14 +1,19 @@
 package com.teatrack_mcd_253eie502802_group02.admin;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -142,13 +147,13 @@ public class AdminBlog extends AppCompatActivity {
     }
 
     private void showBlogDialog(Blog blog) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Dialog dialog = new Dialog(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_blog_admin, null);
-        builder.setView(view);
+        dialog.setContentView(view);
 
-        AlertDialog dialog = builder.create();
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
 
         TextView tvDialogTitle = view.findViewById(R.id.tvDialogTitle);
@@ -158,8 +163,8 @@ public class AdminBlog extends AppCompatActivity {
         EditText etBlogImage = view.findViewById(R.id.etBlogImage);
         Spinner spBlogCategory = view.findViewById(R.id.spBlogCategory);
         SwitchMaterial swPublished = view.findViewById(R.id.swPublished);
-        Button btnCancel = view.findViewById(R.id.btnCancel);
-        Button btnSubmit = view.findViewById(R.id.btnSubmit);
+        com.google.android.material.button.MaterialButton btnCancel = view.findViewById(R.id.btnCancel);
+        com.google.android.material.button.MaterialButton btnSubmit = view.findViewById(R.id.btnSubmit);
         com.google.android.material.button.MaterialButton btnChooseImage = view.findViewById(R.id.btnChooseBlogImage);
         ShapeableImageView ivPreview = view.findViewById(R.id.ivBlogPreview);
 
@@ -268,19 +273,44 @@ public class AdminBlog extends AppCompatActivity {
         dialog.show();
     }
 
-    public void deleteBlog(String blogId) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.str_delete_blog)
-                .setMessage(R.string.str_delete_confirm)
-                .setPositiveButton(R.string.str_delete_blog, (dialog, which) -> {
-                    databaseReference.child(blogId).removeValue().addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(AdminBlog.this, R.string.str_delete_success, Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                })
-                .setNegativeButton(R.string.btn_cancel, null)
-                .show();
+    public void deleteBlog(Blog blog) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_delete_confirm);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            dialog.getWindow().setAttributes(params);
+        }
+
+        TextView tvTitle = dialog.findViewById(R.id.tvDeleteTitle);
+        if (tvTitle != null) tvTitle.setText(R.string.str_delete_blog);
+
+        TextView tvMessage = dialog.findViewById(R.id.tvDeleteMessage);
+        String title = blog.getTitle();
+        if (title == null || title.isEmpty()) title = blog.getHeading();
+        
+        String html = getString(R.string.str_delete_confirm) + " <b>" + title + "</b>?";
+        
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            tvMessage.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvMessage.setText(Html.fromHtml(html));
+        }
+
+        dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
+            databaseReference.child(blog.getId()).removeValue().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Toast.makeText(AdminBlog.this, R.string.str_delete_success, Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            });
+        });
+
+        dialog.show();
     }
 
     private void setupSearch() {

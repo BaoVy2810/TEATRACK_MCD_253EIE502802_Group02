@@ -1,13 +1,21 @@
 package com.teatrack_mcd_253eie502802_group02.admin;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -131,26 +139,34 @@ public class AdminPromotion extends AppCompatActivity {
     }
 
     private void showPromotionDialog(Promotion promotion) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Dialog dialog = new Dialog(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_promotion_admin, null);
-        builder.setView(view);
+        dialog.setContentView(view);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
 
         EditText etCode = view.findViewById(R.id.etPromotionCode);
         EditText etDesc = view.findViewById(R.id.etPromotionDesc);
         Spinner spnType = view.findViewById(R.id.spnPromotionType);
         EditText etValue = view.findViewById(R.id.etPromotionValue);
         EditText etMinSubtotal = view.findViewById(R.id.etMinSubtotal);
-        Button btnSave = view.findViewById(R.id.btnSavePromotion);
-        Button btnCancel = view.findViewById(R.id.btnCancelPromotion);
+        com.google.android.material.button.MaterialButton btnSave = view.findViewById(R.id.btnSavePromotion);
+        com.google.android.material.button.MaterialButton btnCancel = view.findViewById(R.id.btnCancelPromotion);
         TextView tvTitle = view.findViewById(R.id.tvDialogTitle);
+        ImageButton btnCloseDialog = view.findViewById(R.id.btnCloseDialog);
+
+        if (btnCloseDialog != null) {
+            btnCloseDialog.setOnClickListener(v -> dialog.dismiss());
+        }
 
         // Setup Spinner
         String[] types = {getString(R.string.str_type_amount), getString(R.string.str_type_percent)};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, types);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnType.setAdapter(spinnerAdapter);
-
-        AlertDialog dialog = builder.create();
 
         if (promotion != null) {
             tvTitle.setText(R.string.str_edit_promotion);
@@ -239,14 +255,39 @@ public class AdminPromotion extends AppCompatActivity {
     }
 
     private void confirmDelete(Promotion promotion) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.str_delete_promotion)
-                .setMessage(R.string.str_delete_promotion_confirm)
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                    databaseReference.child(promotion.getId()).removeValue()
-                            .addOnSuccessListener(aVoid -> Toast.makeText(AdminPromotion.this, R.string.str_delete_promotion_success, Toast.LENGTH_SHORT).show());
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .show();
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_delete_confirm);
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            dialog.getWindow().setAttributes(params);
+        }
+
+        TextView tvTitle = dialog.findViewById(R.id.tvDeleteTitle);
+        if (tvTitle != null) tvTitle.setText(R.string.str_delete_promotion);
+
+        TextView tvMessage = dialog.findViewById(R.id.tvDeleteMessage);
+        String code = promotion.getCode();
+        String html = getString(R.string.str_delete_promotion_confirm) + " <b>" + code + "</b>?";
+        
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            tvMessage.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvMessage.setText(Html.fromHtml(html));
+        }
+
+        dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
+            databaseReference.child(promotion.getId()).removeValue()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(AdminPromotion.this, R.string.str_delete_promotion_success, Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    });
+        });
+
+        dialog.show();
     }
 }
