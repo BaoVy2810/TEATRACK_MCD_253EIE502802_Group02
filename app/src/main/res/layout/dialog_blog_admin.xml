@@ -33,19 +33,19 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_toStartOf="@id/btnClose"
-                    android:text="@string/dialog_add_account_title"
+                    android:layout_toStartOf="@id/btnCloseDialog"
+                    android:text="@string/str_blog_details"
                     android:textColor="@color/brand_blue"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <ImageButton
-                    android:id="@+id/btnClose"
+                    android:id="@+id/btnCloseDialog"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/bg_input_rounded"
-                    android:contentDescription="@string/cd_close_modal"
+                    android:contentDescription="@string/str_close"
                     android:padding="6dp"
                     android:src="@drawable/ic_close"
                     app:tint="@color/brand_blue" />
@@ -57,193 +57,153 @@
                 android:layout_marginBottom="8dp"
                 android:background="@color/divider" />
 
-            <!-- Full Name -->
+            <!-- Blog Title -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_full_name"
+                android:text="@string/str_blog_title"
                 android:textColor="@color/brand_blue"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/etFullName"
+                android:id="@+id/etBlogTitle"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
-                android:autofillHints="name"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="@string/hint_full_name"
-                android:inputType="textPersonName"
-                android:paddingHorizontal="12dp"
-                android:textSize="13sp" />
-
-            <!-- Username -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_username"
-                android:textColor="@color/brand_blue"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/etUsername"
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="8dp"
-                android:autofillHints="username"
-                android:background="@drawable/bg_input_rounded"
-                android:hint="@string/hint_username"
+                android:hint="@string/hint_enter_blog_title"
                 android:inputType="text"
                 android:paddingHorizontal="12dp"
                 android:textSize="13sp" />
 
-            <!-- Email -->
+            <!-- Blog Content -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_email"
+                android:text="@string/str_blog_content"
                 android:textColor="@color/brand_blue"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/etEmail"
+                android:id="@+id/etBlogContent"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
-                android:autofillHints="emailAddress"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="@string/hint_email"
-                android:inputType="textEmailAddress"
-                android:paddingHorizontal="12dp"
+                android:gravity="top"
+                android:hint="@string/hint_enter_blog_content"
+                android:inputType="textMultiLine"
+                android:minLines="4"
+                android:padding="12dp"
                 android:textSize="13sp" />
 
-            <!-- Phone Number -->
+            <!-- Blog Category -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_phone_number"
+                android:text="@string/str_blog_category"
                 android:textColor="@color/brand_blue"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/etPhoneNumber"
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spBlogCategory"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
+                android:layout_height="40dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
-                android:autofillHints="phone"
-                android:background="@drawable/bg_input_rounded"
-                android:hint="@string/hint_phone"
-                android:inputType="phone"
-                android:maxLength="10"
-                android:paddingHorizontal="12dp"
-                android:textSize="13sp" />
+                android:background="@drawable/bg_input_rounded" />
 
-            <!-- Address -->
+            <!-- Image Source -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_address_account"
+                android:text="@string/str_image_source_file"
                 android:textColor="@color/brand_blue"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/etAddress"
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="8dp"
-                android:autofillHints=""
-                android:background="@drawable/bg_input_rounded"
-                android:hint="@string/hint_address_account"
-                android:inputType="textPostalAddress"
-                android:paddingHorizontal="12dp"
-                android:textSize="13sp" />
-
-            <!-- Role & Status -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:gravity="center_vertical"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp">
 
-                <LinearLayout
+                <EditText
+                    android:id="@+id/etBlogImage"
+                    android:layout_width="0dp"
+                    android:layout_height="38dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_input_rounded"
+                    android:hint="@string/hint_image_url_or_upload"
+                    android:inputType="text"
+                    android:paddingHorizontal="12dp"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnChooseBlogImage"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/btn_choose"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="11sp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    app:strokeColor="@color/brand_blue"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="8dp" />
+            </LinearLayout>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivBlogPreview"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginBottom="12dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background"
+                android:visibility="gone"
+                app:shapeAppearanceOverlay="@style/RoundedCorners"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp" />
+
+            <!-- Published Status -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
+
+                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
-                    android:orientation="vertical">
+                    android:text="@string/str_blog_status"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_role"
-                        android:textColor="@color/brand_blue"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/btnRoleSelect"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_input_rounded"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp"
-                        tools:text="Customer" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/swPublished"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_status"
-                        android:textColor="@color/brand_blue"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/btnStatusSelect"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_input_rounded"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp"
-                        tools:text="Active" />
-                </LinearLayout>
-
+                    android:text="@string/str_status_published"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_primary" />
             </LinearLayout>
 
             <!-- Buttons Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -268,7 +228,7 @@
                     app:iconTint="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSave"
+                    android:id="@+id/btnSubmit"
                     android:layout_width="0dp"
                     android:layout_height="34dp"
                     android:layout_weight="1"
@@ -281,7 +241,7 @@
                     android:textSize="12sp"
                     android:gravity="center"
                     app:cornerRadius="17dp"
-                    app:icon="@drawable/document"
+                    app:icon="@drawable/edit2"
                     app:iconGravity="textStart"
                     app:iconPadding="4dp"
                     app:iconSize="12dp"

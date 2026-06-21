@@ -325,7 +325,7 @@
                 android:insetBottom="0dp"
                 app:backgroundTint="#0088FF"
                 app:cornerRadius="20dp"
-                app:icon="@android:drawable/ic_menu_save"
+                app:icon="@drawable/edit2"
                 app:iconSize="16dp"
                 app:iconGravity="textStart" />
         </LinearLayout>

@@ -340,7 +340,7 @@ public class Homepage extends BaseActivity {
         promotions.add(new Promotion("promo1", R.mipmap.banner_monmoi));
         promotions.add(new Promotion("promo2", R.mipmap.banner_aboutus));
         promotions.add(new Promotion("promo3", R.mipmap.banner_aboutus2));
-        
+
         PromotionAdapter adapter = new PromotionAdapter(promotions);
         adapter.setOnItemClickListener(item -> {
             Intent intent = new Intent(this, BlogDetail.class);
@@ -420,7 +420,6 @@ public class Homepage extends BaseActivity {
                     }
                     int imageRes = resolveImageRes(imageField);
                     loaded.add(new NewsItem(
-                            child.getKey(),
                             title,
                             (date == null || date.isEmpty()) ? "--" : date,
                             imageRes));

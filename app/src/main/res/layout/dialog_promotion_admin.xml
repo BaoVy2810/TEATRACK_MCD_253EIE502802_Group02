@@ -33,19 +33,19 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_toStartOf="@id/btnClose"
-                    android:text="@string/dialog_add_account_title"
+                    android:layout_toStartOf="@id/btnCloseDialog"
+                    android:text="@string/str_promotion_details"
                     android:textColor="@color/brand_blue"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <ImageButton
-                    android:id="@+id/btnClose"
+                    android:id="@+id/btnCloseDialog"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/bg_input_rounded"
-                    android:contentDescription="@string/cd_close_modal"
+                    android:contentDescription="@string/str_close"
                     android:padding="6dp"
                     android:src="@drawable/ic_close"
                     app:tint="@color/brand_blue" />
@@ -57,198 +57,116 @@
                 android:layout_marginBottom="8dp"
                 android:background="@color/divider" />
 
-            <!-- Full Name -->
+            <!-- Promotion Code -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_full_name"
+                android:text="@string/str_promotion_code"
                 android:textColor="@color/brand_blue"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/etFullName"
+                android:id="@+id/etPromotionCode"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
-                android:autofillHints="name"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="@string/hint_full_name"
-                android:inputType="textPersonName"
+                android:hint="@string/hint_enter_promotion_code"
+                android:inputType="textCapCharacters"
                 android:paddingHorizontal="12dp"
                 android:textSize="13sp" />
 
-            <!-- Username -->
+            <!-- Promotion Description -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_username"
+                android:text="@string/str_promotion_description"
                 android:textColor="@color/brand_blue"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/etUsername"
+                android:id="@+id/etPromotionDesc"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
-                android:autofillHints="username"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="@string/hint_username"
+                android:hint="@string/hint_enter_promotion_desc"
                 android:inputType="text"
                 android:paddingHorizontal="12dp"
                 android:textSize="13sp" />
 
-            <!-- Email -->
+            <!-- Promotion Type -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_email"
+                android:text="@string/str_promotion_type"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spnPromotionType"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_input_rounded" />
+
+            <!-- Promotion Value -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_promotion_value"
                 android:textColor="@color/brand_blue"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/etEmail"
+                android:id="@+id/etPromotionValue"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
-                android:autofillHints="emailAddress"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="@string/hint_email"
-                android:inputType="textEmailAddress"
+                android:hint="@string/hint_enter_value"
+                android:inputType="numberDecimal"
                 android:paddingHorizontal="12dp"
                 android:textSize="13sp" />
 
-            <!-- Phone Number -->
+            <!-- Min Subtotal -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_phone_number"
+                android:text="@string/str_min_subtotal"
                 android:textColor="@color/brand_blue"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/etPhoneNumber"
+                android:id="@+id/etMinSubtotal"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="8dp"
-                android:autofillHints="phone"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_input_rounded"
-                android:hint="@string/hint_phone"
-                android:inputType="phone"
-                android:maxLength="10"
+                android:hint="@string/hint_enter_min_subtotal"
+                android:inputType="numberDecimal"
                 android:paddingHorizontal="12dp"
                 android:textSize="13sp" />
-
-            <!-- Address -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_address_account"
-                android:textColor="@color/brand_blue"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/etAddress"
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="8dp"
-                android:autofillHints=""
-                android:background="@drawable/bg_input_rounded"
-                android:hint="@string/hint_address_account"
-                android:inputType="textPostalAddress"
-                android:paddingHorizontal="12dp"
-                android:textSize="13sp" />
-
-            <!-- Role & Status -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_role"
-                        android:textColor="@color/brand_blue"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/btnRoleSelect"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_input_rounded"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp"
-                        tools:text="Customer" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_status"
-                        android:textColor="@color/brand_blue"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/btnStatusSelect"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/bg_input_rounded"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="@color/text_primary"
-                        android:textSize="13sp"
-                        tools:text="Active" />
-                </LinearLayout>
-
-            </LinearLayout>
 
             <!-- Buttons Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCancel"
+                    android:id="@+id/btnCancelPromotion"
                     android:layout_width="0dp"
                     android:layout_height="34dp"
                     android:layout_weight="1"
@@ -268,7 +186,7 @@
                     app:iconTint="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnSave"
+                    android:id="@+id/btnSavePromotion"
                     android:layout_width="0dp"
                     android:layout_height="34dp"
                     android:layout_weight="1"
@@ -281,7 +199,7 @@
                     android:textSize="12sp"
                     android:gravity="center"
                     app:cornerRadius="17dp"
-                    app:icon="@drawable/document"
+                    app:icon="@drawable/edit2"
                     app:iconGravity="textStart"
                     app:iconPadding="4dp"
                     app:iconSize="12dp"
