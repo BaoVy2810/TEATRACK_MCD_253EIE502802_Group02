@@ -127,18 +127,18 @@
                 app:boxCornerRadiusTopEnd="25dp"
                 app:boxCornerRadiusTopStart="25dp"
                 app:boxStrokeColor="@color/til_stroke_color"
+                app:boxStrokeErrorColor="@color/Red"
                 app:boxStrokeWidth="1dp"
                 app:boxStrokeWidthFocused="1dp"
-                app:boxStrokeErrorColor="@color/Red"
-                app:errorIconTint="@color/Red"
-                app:hintEnabled="false"
                 app:errorEnabled="true"
+                app:errorIconTint="@color/Red"
                 app:errorTextAppearance="@style/ErrorTextZeroSize"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelLoginName"
                 app:startIconDrawable="@drawable/ic_username"
-                app:startIconTint="#6279FF">
+                app:startIconTint="@color/brand_blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtLoginName"
@@ -150,8 +150,8 @@
                     android:paddingStart="48dp"
                     android:paddingTop="11dp"
                     android:paddingBottom="11dp"
-                    android:textColorHint="#8B8B8B"
                     android:textColor="#0088FF"
+                    android:textColorHint="#8B8B8B"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -183,20 +183,20 @@
                 app:boxCornerRadiusTopEnd="25dp"
                 app:boxCornerRadiusTopStart="25dp"
                 app:boxStrokeColor="@color/til_stroke_color"
+                app:boxStrokeErrorColor="@color/Red"
                 app:boxStrokeWidth="1dp"
                 app:boxStrokeWidthFocused="1dp"
-                app:boxStrokeErrorColor="@color/Red"
-                app:errorIconTint="@color/Red"
-                app:hintEnabled="false"
                 app:endIconMode="password_toggle"
                 app:endIconTint="#D9D9D9"
                 app:errorEnabled="true"
+                app:errorIconTint="@color/Red"
                 app:errorTextAppearance="@style/ErrorTextZeroSize"
+                app:hintEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelPassword"
                 app:startIconDrawable="@drawable/ic_lock"
-                app:startIconTint="#6279FF">
+                app:startIconTint="@color/brand_blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtPassword"
