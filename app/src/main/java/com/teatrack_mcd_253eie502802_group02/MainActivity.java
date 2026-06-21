@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.admin.AdminAgency;
+import com.teatrack_mcd_253eie502802_group02.admin.AdminBlog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         // --- CODE ĐIỀU HƯỚNG VỀ ADMIN AGENCY ---
         // Khởi tạo Intent chuyển từ MainActivity sang AdminAgency
-        Intent intent = new Intent(MainActivity.this, AdminAgency.class);
+        Intent intent = new Intent(MainActivity.this, AdminBlog.class);
         startActivity(intent);
 
         // Đóng hẳn MainActivity để khi ở màn AdminAgency bấm nút Back sẽ thoát App luôn,

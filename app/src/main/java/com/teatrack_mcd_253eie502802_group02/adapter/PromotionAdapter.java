@@ -8,15 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.teatrack_mcd_253eie502802_group02.R;
-import com.teatrack_mcd_253eie502802_group02.model.Promotion;
+import com.teatrack_mcd_253eie502802_group02.model.PromotionBanner;
 
 import java.util.List;
 
 public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.PromotionViewHolder> {
 
-    private final List<Promotion> promotions;
+    private final List<PromotionBanner> promotions;
 
-    public PromotionAdapter(List<Promotion> promotions) {
+    public PromotionAdapter(List<PromotionBanner> promotions) {
         this.promotions = promotions;
     }
 
