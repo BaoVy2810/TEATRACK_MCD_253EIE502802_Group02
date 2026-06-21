@@ -1,10 +1,523 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    activity_admin_dashboard.xml
+    Theo đúng mockup: Topbar → Overview → Line chart → Bar chart
+    → Donut chart → Recent Orders → Branch Analysis → Bottom Nav
+    Không hardcode string/color/dimen nào.
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard">
+    android:background="@color/bg_screen">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- ══════════════════════════════════════════
+         TOPBAR (sticky)
+    ══════════════════════════════════════════ -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:elevation="@dimen/topbar_elevation">
+
+        <include
+            android:id="@+id/headerAdmin"
+            layout="@layout/activity_header_admin" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- ══════════════════════════════════════════
+         SCROLLABLE CONTENT
+    ══════════════════════════════════════════ -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/nav_height">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Screen Title with White Strip -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingVertical="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="14dp"
+                android:elevation="1dp">
+                <TextView
+                    android:id="@+id/tvSectionOverview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/title_overview_dashboard"
+                    android:textColor="@color/primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/screen_padding">
+
+                <!-- ── 4 STAT CARDS (2×2 grid) ── -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="@dimen/section_gap">
+
+                    <!-- Row 1 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:baselineAligned="false"
+                        android:layout_marginBottom="@dimen/stat_card_gap">
+
+                        <!-- Revenue -->
+                        <include layout="@layout/item_stat_card"
+                            android:id="@+id/cardRevenue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="@dimen/sp_6" />
+
+                        <!-- Orders This Week -->
+                        <include layout="@layout/item_stat_card"
+                            android:id="@+id/cardOrders"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/sp_6" />
+
+                    </LinearLayout>
+
+                    <!-- Row 2 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:baselineAligned="false">
+
+                        <!-- Products Sold -->
+                        <include layout="@layout/item_stat_card"
+                            android:id="@+id/cardSold"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="@dimen/sp_6" />
+
+                        <!-- Products -->
+                        <include layout="@layout/item_stat_card"
+                            android:id="@+id/cardProducts"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="@dimen/sp_6" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- ── SECTION: Sales Analytics ── -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_sales_analytics"
+                    android:textSize="@dimen/section_title_size"
+                    android:textColor="@color/brand_blue"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="@dimen/section_title_margin_bottom" />
+
+                <!-- ── LINE CHART: Performance (Revenue & Expenses) ── -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardLineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/section_gap"
+                    app:cardCornerRadius="@dimen/chart_card_corner"
+                    app:cardElevation="@dimen/chart_card_elevation"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/chart_card_padding">
+
+                        <!-- Card header row: title + toggle (Monthly/Weekly/Today) -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginBottom="@dimen/sp_12">
+
+                            <TextView
+                                android:id="@+id/tvLineChartTitle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/chart_performance_title"
+                                android:textSize="13sp"
+                                android:textColor="@color/brand_blue"
+                                android:textStyle="bold"
+                                android:layout_marginBottom="@dimen/sp_8" />
+
+                            <!-- Toggle group -->
+                            <LinearLayout
+                                android:id="@+id/toggleGroupLine"
+                                android:layout_width="wrap_content"
+                                android:layout_height="36dp"
+                                android:orientation="horizontal"
+                                android:background="@drawable/bg_toggle_group_blue"
+                                android:padding="2dp">
+
+                                <TextView
+                                    android:id="@+id/btnToggleMonthly"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:paddingHorizontal="16dp"
+                                    android:text="@string/btn_monthly"
+                                    android:textColor="@color/white"
+                                    android:textStyle="bold"
+                                    android:textSize="12sp"
+                                    android:background="@drawable/bg_toggle_item_inactive_transparent" />
+
+                                <TextView
+                                    android:id="@+id/btnToggleWeekly"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:paddingHorizontal="16dp"
+                                    android:text="@string/btn_weekly"
+                                    android:textColor="#007AFF"
+                                    android:textStyle="bold"
+                                    android:textSize="12sp"
+                                    android:background="@drawable/bg_toggle_item_active_white" />
+
+                                <TextView
+                                    android:id="@+id/btnToggleToday"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:paddingHorizontal="16dp"
+                                    android:text="@string/btn_today"
+                                    android:textColor="@color/white"
+                                    android:textStyle="bold"
+                                    android:textSize="12sp"
+                                    android:background="@drawable/bg_toggle_item_inactive_transparent" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- MPAndroidChart LineChart -->
+                        <com.github.mikephil.charting.charts.LineChart
+                            android:id="@+id/lineChart"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/chart_line_height" />
+
+                        <!-- Legend row -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/sp_8">
+
+                            <!-- Revenue legend dot -->
+                            <View
+                                android:layout_width="@dimen/chart_legend_icon_size"
+                                android:layout_height="@dimen/chart_legend_icon_size"
+                                android:background="@drawable/bg_legend_dot_blue"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="@dimen/sp_4" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/legend_revenue"
+                                android:textSize="@dimen/chart_legend_text_size"
+                                android:textColor="@color/text_secondary"
+                                android:layout_marginEnd="@dimen/chart_legend_gap" />
+
+                            <!-- Expenses legend dot -->
+                            <View
+                                android:layout_width="@dimen/chart_legend_icon_size"
+                                android:layout_height="@dimen/chart_legend_icon_size"
+                                android:background="@drawable/bg_legend_dot_red"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="@dimen/sp_4" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/legend_expenses"
+                                android:textSize="@dimen/chart_legend_text_size"
+                                android:textColor="@color/text_secondary" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ── BAR CHART: Daily Sales Trends ── -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardBarChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/section_gap"
+                    app:cardCornerRadius="@dimen/chart_card_corner"
+                    app:cardElevation="@dimen/chart_card_elevation"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/chart_card_padding">
+
+                        <!-- Header: title + "Last 7 Days" button -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="@dimen/sp_12">
+
+                            <TextView
+                                android:id="@+id/tvBarChartTitle"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/chart_daily_trend_title"
+                                android:textSize="13sp"
+                                android:textColor="@color/brand_blue"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnBarChartRange"
+                                style="@style/Widget.TeaTrack.Button.Primary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/btn_last_7_days"
+                                android:textSize="11sp" />
+
+
+                        </LinearLayout>
+
+                        <!-- MPAndroidChart BarChart -->
+                        <com.github.mikephil.charting.charts.BarChart
+                            android:id="@+id/barChart"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/chart_bar_height" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ── DONUT CHART: Top-selling Drinks ── -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardDonutChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/section_gap"
+                    app:cardCornerRadius="@dimen/chart_card_corner"
+                    app:cardElevation="@dimen/chart_card_elevation"
+                    app:cardBackgroundColor="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/chart_card_padding">
+
+                        <TextView
+                            android:id="@+id/tvDonutTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:text="@string/chart_top_drinks_title"
+                            android:textSize="13sp"
+                            android:textColor="@color/brand_blue"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="@dimen/sp_4" />
+
+                        <!-- PieChart (donut style, centre label set in code) -->
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pieChart"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/chart_donut_height" />
+
+                        <!-- Legend: 2-column grid -->
+                        <GridLayout
+                            android:id="@+id/donutLegend"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:columnCount="2"
+                            android:layout_marginTop="@dimen/sp_12">
+
+                            <!-- Hot Drinks -->
+                            <include layout="@layout/item_legend_dot"
+                                android:id="@+id/legendHotDrinks" />
+                            <!-- Fruit Tea -->
+                            <include layout="@layout/item_legend_dot"
+                                android:id="@+id/legendFruitTea" />
+                            <!-- Pure Tea -->
+                            <include layout="@layout/item_legend_dot"
+                                android:id="@+id/legendPureTea" />
+                            <!-- New Drinks -->
+                            <include layout="@layout/item_legend_dot"
+                                android:id="@+id/legendNewDrinks" />
+                            <!-- Latte Tea -->
+                            <include layout="@layout/item_legend_dot"
+                                android:id="@+id/legendLatteTea" />
+                            <!-- Milk Tea -->
+                            <include layout="@layout/item_legend_dot"
+                                android:id="@+id/legendMilkTea" />
+
+                        </GridLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ── RECENT ORDERS ── -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardRecentOrders"
+                    style="@style/Widget.TeaTrack.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/section_gap">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
+
+                        <!-- Header: title + View detail -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="@dimen/sp_8">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/section_recent_orders"
+                                android:textColor="@color/brand_blue"
+                                style="@style/TextAppearance.TeaTrack.CardTitle" />
+
+                            <TextView
+                                android:id="@+id/tvViewDetail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/btn_view_detail"
+                                android:textSize="@dimen/view_detail_text_size"
+                                android:textColor="@color/primary"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <!-- Recent orders list (RecyclerView) -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvRecentOrders"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- ── BRANCH ANALYSIS ── -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardBranchAnalysis"
+                    style="@style/Widget.TeaTrack.Card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/section_gap">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/card_padding">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/section_branch_analysis"
+                            android:textColor="@color/brand_blue"
+                            style="@style/TextAppearance.TeaTrack.CardTitle"
+                            android:layout_marginBottom="@dimen/sp_10" />
+
+                        <!-- Table header -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="@drawable/bg_table_header"
+                            android:paddingStart="@dimen/table_header_padding_h"
+                            android:paddingEnd="@dimen/table_header_padding_h"
+                            android:paddingTop="@dimen/table_header_padding_v"
+                            android:paddingBottom="@dimen/table_header_padding_v">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="@string/col_branch_address"
+                                style="@style/TextAppearance.TeaTrack.TableHeader" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/col_num_orders"
+                                style="@style/TextAppearance.TeaTrack.TableHeader"
+                                android:gravity="center" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/col_revenue"
+                                style="@style/TextAppearance.TeaTrack.TableHeader"
+                                android:gravity="end" />
+
+                        </LinearLayout>
+
+                        <!-- Branch rows (RecyclerView) -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvBranchAnalysis"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- ══════════════════════════════════════════
+         BOTTOM NAVIGATION BAR (Footer)
+    ══════════════════════════════════════════ -->
+    <include
+        android:id="@+id/bottomNav"
+        layout="@layout/activity_nav_bar_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

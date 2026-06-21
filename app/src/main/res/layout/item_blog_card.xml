@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="3dp"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <!-- Thumbnail Image -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgBlogThumbnail"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/RoundedImage8dp"
+            tools:src="@drawable/ic_launcher_background"
+            android:contentDescription="@string/blog_detail_image_desc" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="14dp"
+            android:paddingEnd="4dp">
+
+            <!-- Date with Icon -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="6dp">
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:src="@drawable/calendar"
+                    app:tint="#94A3B8"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/txtBlogDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textColor="#94A3B8"
+                    android:textSize="11sp"
+                    tools:text="09/10/2023" />
+            </LinearLayout>
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/txtBlogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/inter"
+                android:lineSpacingMultiplier="1.2"
+                android:maxLines="2"
+                android:textColor="#1E293B"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Tiêu đề bài viết từ Firebase hiển thị ở đây" />
+
+            <!-- Description (Optional snippet) -->
+            <TextView
+                android:id="@+id/txtBlogDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/inter"
+                android:maxLines="1"
+                android:textColor="#64748B"
+                android:textSize="12sp"
+                tools:text="Khám phá hành trình 74 năm di sản và tâm huyết..." />
+
+        </LinearLayout>
+
+        <!-- Navigation Arrow -->
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/right"
+            app:tint="#CBD5E1"
+            android:contentDescription="@null" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

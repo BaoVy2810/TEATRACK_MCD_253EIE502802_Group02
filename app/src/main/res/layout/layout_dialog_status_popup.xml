@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:elevation="8dp"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/label_status"
+        android:textColor="@color/brand_blue"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Active -->
+    <LinearLayout
+        android:id="@+id/btnPopupActive"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp">
+
+        <RadioButton
+            android:id="@+id/rbActive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/brand_blue"
+            android:clickable="false"
+            android:checked="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/status_active"
+            android:textColor="@color/brand_blue"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Inactive -->
+    <LinearLayout
+        android:id="@+id/btnPopupInactive"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp">
+
+        <RadioButton
+            android:id="@+id/rbInactive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/brand_blue"
+            android:clickable="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/status_inactive"
+            android:textColor="@color/brand_blue"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Locked -->
+    <LinearLayout
+        android:id="@+id/btnPopupLocked"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="4dp">
+
+        <RadioButton
+            android:id="@+id/rbLocked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/brand_blue"
+            android:clickable="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/status_locked"
+            android:textColor="@color/brand_blue"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>

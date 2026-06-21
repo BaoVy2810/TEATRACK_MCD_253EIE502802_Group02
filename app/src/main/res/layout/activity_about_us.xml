@@ -2,9 +2,659 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.teatrack_mcd_253eie502802_group02.client.AboutUsActivity">
+    android:background="#FFFFFF">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/activity_header_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/nav_bar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- HERO SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_hero_gradient"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="20dp"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvHeroEyebrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_hero_eyebrow"
+                        android:textColor="#0088FF"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/inter"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvHeroTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/about_hero_title"
+                        android:textColor="#0F172A"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/inter"
+                        android:textStyle="bold"
+                        android:lineSpacingMultiplier="1.2" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivHeroLogo"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="16dp"
+                    android:contentDescription="@string/about_logo_content_desc"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/logo_ngo_gia" />
+            </LinearLayout>
+
+            <!-- CÂU CHUYỆN THƯƠNG HIỆU -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="24dp"
+                android:background="#FFFFFF">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_story_title"
+                    android:textColor="#D11515"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/inter"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:letterSpacing="0.05" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/about_story_desc"
+                    android:textColor="#475569"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="1.5" />
+
+                <!-- CARD 1 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_leaf"
+                            android:background="@drawable/bg_icon_circle"
+                            android:padding="12dp"
+                            android:scaleType="fitCenter"
+                            android:contentDescription="@string/about_feature_quality_content_desc" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="14dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/about_feature_quality_title"
+                                android:textColor="#D11515"
+                                android:textSize="15sp"
+                                android:fontFamily="@font/inter"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/about_feature_quality_desc"
+                                android:textColor="#64748B"
+                                android:textSize="13sp"
+                                android:fontFamily="@font/inter_semibold"
+                                android:lineSpacingMultiplier="1.4" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- CARD 2 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_heart"
+                            android:background="@drawable/bg_icon_circle"
+                            android:padding="12dp"
+                            android:scaleType="fitCenter"
+                            android:contentDescription="@string/about_feature_service_content_desc" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="14dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/about_feature_service_title"
+                                android:textColor="#D11515"
+                                android:textSize="15sp"
+                                android:fontFamily="@font/inter"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/about_feature_service_desc"
+                                android:textColor="#64748B"
+                                android:textSize="13sp"
+                                android:fontFamily="@font/inter_semibold"
+                                android:lineSpacingMultiplier="1.4" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- CARD 3 -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#FFFFFF">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_star"
+                            android:background="@drawable/bg_icon_circle"
+                            android:padding="12dp"
+                            android:scaleType="fitCenter"
+                            android:contentDescription="@string/about_feature_tradition_content_desc" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="14dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/about_feature_tradition_title"
+                                android:textColor="#D11515"
+                                android:textSize="15sp"
+                                android:fontFamily="@font/inter"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="@string/about_feature_tradition_desc"
+                                android:textColor="#64748B"
+                                android:textSize="13sp"
+                                android:fontFamily="@font/inter_semibold"
+                                android:lineSpacingMultiplier="1.4" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <!-- VIDEO VIEW CONTAINER -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="205dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="8dp">
+
+                <VideoView
+                    android:id="@+id/videoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="#44000000">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_video_overlay"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/inter"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.08"
+                        android:gravity="center" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- SỨ MỆNH -->
+            <LinearLayout
+                android:id="@+id/sectionMission"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="20dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:id="@+id/missionOverlay"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.2"
+                    android:background="#223645"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_mission_title"
+                        android:textColor="#FFF8E9"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/inter"
+                        android:textStyle="bold"
+                        android:gravity="center_horizontal" />
+
+                    <View
+                        android:layout_width="40dp"
+                        android:layout_height="3dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="#FFF8E9"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_mission_desc"
+                        android:textColor="#FFF8E9"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:gravity="start"
+                        android:lineSpacingMultiplier="1.2" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivMissionBanner"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:src="@mipmap/banner_aboutus"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/about_mission_banner_content_desc" />
+            </LinearLayout>
+
+            <!-- TẦM NHÌN -->
+            <FrameLayout
+                android:id="@+id/sectionVision"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="20dp">
+
+                <ImageView
+                    android:id="@+id/ivVisionBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/banner_aboutus2"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/about_vision_banner_content_desc" />
+
+                <LinearLayout
+                    android:id="@+id/visionOverlay"
+                    android:layout_width="240dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingHorizontal="16dp"
+                    android:background="#A6000000">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_vision_title"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/inter"
+                        android:textStyle="bold"
+                        android:gravity="center" />
+
+                    <View
+                        android:layout_width="40dp"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="#FFF8E9"
+                        android:layout_gravity="center_horizontal" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_vision_desc"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.2" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- MOSAIC IMAGES -->
+            <FrameLayout
+                android:id="@+id/sectionMosaic"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="8dp"
+                android:background="#AEE0FF"
+                android:clipChildren="true"
+                android:clipToPadding="true">
+
+                <!--Col 1 - odd -->
+                <LinearLayout
+                    android:id="@+id/mosaicCol1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:orientation="vertical"
+                    android:translationX="0dp">
+                    <ImageView
+                        android:layout_width="73dp"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="6dp"
+                        android:src="@mipmap/drink_1"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/about_drink_content_desc"/>
+                    <ImageView
+                        android:layout_width="73dp"
+                        android:layout_height="100dp"
+                        android:src="@mipmap/drink_3"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/about_drink_content_desc"/>
+                </LinearLayout>
+
+                <!--Col 2 - even -->
+                <LinearLayout
+                    android:id="@+id/mosaicCol2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:translationX="82dp">
+                    <ImageView
+                        android:layout_width="73dp"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="6dp"
+                        android:src="@mipmap/drink_2"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/about_drink_content_desc"/>
+                    <ImageView
+                        android:layout_width="73dp"
+                        android:layout_height="100dp"
+                        android:src="@mipmap/drink_4"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/about_drink_content_desc"/>
+                </LinearLayout>
+
+                <!--Col 3 - odd -->
+                <LinearLayout
+                    android:id="@+id/mosaicCol3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:translationX="164dp">
+                    <ImageView
+                        android:layout_width="73dp"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="6dp"
+                        android:src="@mipmap/drink_5"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/about_drink_content_desc"/>
+                    <ImageView
+                        android:layout_width="73dp"
+                        android:layout_height="100dp"
+                        android:src="@mipmap/drink_1"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/about_drink_content_desc"/>
+                </LinearLayout>
+
+                <!--Col 4 - even -->
+                <LinearLayout
+                    android:id="@+id/mosaicCol4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:translationX="246dp">
+                    <ImageView
+                        android:layout_width="73dp"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="6dp"
+                        android:src="@mipmap/drink_3"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/about_drink_content_desc"/>
+                    <ImageView
+                        android:layout_width="73dp"
+                        android:layout_height="100dp"
+                        android:src="@mipmap/drink_5"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/about_drink_content_desc"/>
+                </LinearLayout>
+
+                <!--Col 5 - odd -->
+                <LinearLayout
+                    android:id="@+id/mosaicCol5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:translationX="328dp">
+                    <ImageView
+                        android:layout_width="73dp"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="6dp"
+                        android:src="@mipmap/drink_2"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/about_drink_content_desc"/>
+                    <ImageView
+                        android:layout_width="73dp"
+                        android:layout_height="100dp"
+                        android:src="@mipmap/drink_4"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/about_drink_content_desc"/>
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- KHÁCH HÀNG LÀ TRỌNG TÂM -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                android:layout_marginHorizontal="20dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@mipmap/back"
+                    android:scaleType="centerCrop"
+                    android:alpha="0.4"
+                    android:contentDescription="@string/about_background_content_desc" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_customer_centric_title"
+                        android:textColor="#D11515"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/inter"
+                        android:textStyle="bold"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/about_customer_centric_desc"
+                        android:textColor="#374151"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="1.5" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- GREETING BANNER -->
+            <FrameLayout
+                android:id="@+id/sectionGreet"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#EDF3FF">
+
+                <TextView
+                    android:id="@+id/tvGreetGhostTop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|start"
+                    android:translationY="-20dp"
+                    android:text="@string/about_greeting_marquee"
+                    android:textColor="#1A163557"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/inter"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.04"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true" />
+
+                <TextView
+                    android:id="@+id/tvGreetGhostBot"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|start"
+                    android:translationY="20dp"
+                    android:text="@string/about_greeting_marquee"
+                    android:textColor="#1A163557"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/inter"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.04"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true" />
+
+                <TextView
+                    android:id="@+id/tvGreeting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/about_greeting"
+                    android:textColor="#0088FF"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/inter"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05"
+                    android:gravity="center" />
+            </FrameLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/nav_bar"
+        layout="@layout/activity_nav_bar_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

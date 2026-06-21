@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".WelcomeActivity">
+    tools:context=".MainActivity">
 
     <!-- ===== ẢNH NỀN (background xanh + wave + logo) ===== -->
     <ImageView
@@ -19,16 +19,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <!-- ===== LOGO ===== -->
-
-    <!-- ===== TIÊU ĐỀ "Welcome" ===== -->
-
     <ImageView
         android:id="@+id/imgLogo"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="68dp"
-        android:contentDescription="Logo"
+        android:contentDescription="@string/welcome_logo_description"
         android:scaleType="fitCenter"
         android:src="@mipmap/logo_ngo_gia"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,21 +34,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- ===== TIÊU ĐỀ "Welcome" ===== -->
     <TextView
         android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="60dp"
-        android:fontFamily="@font/inter_semibold"
+        android:fontFamily="@font/inter_family"
+        android:textStyle="bold"
         android:shadowColor="#26000000"
         android:shadowDx="0"
         android:shadowDy="2"
         android:shadowRadius="4"
-        android:text="Welcome"
+        android:text="@string/welcome_title"
         android:textColor="#2C2C2C"
         android:textSize="34sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -63,8 +62,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/inter_light"
-        android:text="Sign in to your registered account."
+        android:fontFamily="@font/inter_family"
+        android:fontWeight="300"
+        android:text="@string/welcome_subtitle"
         android:textColor="#8D8D8D"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,18 +91,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
-            android:fontFamily="@font/inter_light"
-            android:text="Get started"
+            android:fontFamily="@font/inter_family"
+        android:fontWeight="300"
+            android:text="@string/welcome_get_started"
             android:textColor="#8D8D8D"
             android:textSize="15sp" />
 
         <FrameLayout
+            android:id="@+id/btnstart"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/login">
-
-
-        </FrameLayout>
+            android:background="@drawable/login" />
 
     </LinearLayout>
 

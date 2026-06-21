@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Vòng tròn trắng bên ngoài -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,2C6.47,2 2,6.47 2,12s4.47,10 10,10 10,-4.47 10,-10S17.53,2 12,2z"/>
+    <!-- Icon thùng rác màu đỏ bên trong -->
+    <path
+        android:fillColor="#D32F2F"
+        android:pathData="M15,9H9v8c0,0.55 0.45,1 1,1h4c0.55,0 1,-0.45 1,-1V9z M13.5,17h-1v-6h1V17z M11.5,17h-1v-6h1V17z M16,7h-2.5l-0.71,-0.71C12.6,6.11 12.35,6 12.09,6H11.9c-0.26,0 -0.51,0.11 -0.7,0.29L10.5,7H8C7.45,7 7,7.45 7,8s0.45,1 1,1h8c0.55,0 1,-0.45 1,-1S16.55,7 16,7z"/>
+</vector>

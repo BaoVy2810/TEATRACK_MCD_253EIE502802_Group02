@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:orientation="horizontal"
+    android:paddingVertical="4dp">
+    <TextView
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="8dp"
+        android:layout_gravity="bottom"
+        android:text="🫖"
+        android:textSize="18sp"
+        android:gravity="center"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NOGA"
+            android:textSize="10sp"
+            android:textColor="#888888"
+            android:layout_marginBottom="2dp"/>
+        <TextView
+            android:id="@+id/tvBotMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_bubble_bot"
+            android:padding="10dp"
+            android:textSize="13sp"
+            android:textColor="#222222"
+            android:maxWidth="220dp"/>
+    </LinearLayout>
+</LinearLayout>

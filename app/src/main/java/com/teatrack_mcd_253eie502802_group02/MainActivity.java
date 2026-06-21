@@ -2,32 +2,53 @@ package com.teatrack_mcd_253eie502802_group02;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import com.teatrack_mcd_253eie502802_group02.admin.AdminAgency;
-import com.teatrack_mcd_253eie502802_group02.admin.AdminBlog;
+import com.teatrack_mcd_253eie502802_group02.client.LoginActivity;
+import com.teatrack_mcd_253eie502802_group02.client.Menu;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String EXTRA_SELECTED_TAB = "extra_selected_tab";
+    public static final String EXTRA_MENU_CATEGORY = "extra_menu_category";
+    public static final String TAB_HOME = "home";
+    public static final String TAB_MENU = "menu";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        routeToTarget(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        routeToTarget(intent);
+    }
+
+    private void routeToTarget(Intent intent) {
+        String selectedTab = intent != null ? intent.getStringExtra(EXTRA_SELECTED_TAB) : null;
+
+        if (TAB_MENU.equals(selectedTab)) {
+            navigateToMenu(intent.getStringExtra(EXTRA_MENU_CATEGORY));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_main);
+        LinearLayout layoutGetStarted = findViewById(R.id.layoutGetStarted);
+        if (layoutGetStarted != null) {
+            layoutGetStarted.setOnClickListener(v -> {
+                Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(loginIntent);
+            });
+        }
+    }
 
-        // --- CODE ĐIỀU HƯỚNG VỀ ADMIN AGENCY ---
-        // Khởi tạo Intent chuyển từ MainActivity sang AdminAgency
-        Intent intent = new Intent(MainActivity.this, AdminBlog.class);
-        startActivity(intent);
-
-        // Đóng hẳn MainActivity để khi ở màn AdminAgency bấm nút Back sẽ thoát App luôn,
-        // thay vì bị quay ngược lại một màn hình MainActivity trống.
-        finish();
-        // --------------------------------------
+    public void navigateToMenu(String category) {
+        Intent menuIntent = new Intent(this, Menu.class);
+        if (category != null) {
+            menuIntent.putExtra(EXTRA_MENU_CATEGORY, category);
+        }
+        startActivity(menuIntent);
     }
 }

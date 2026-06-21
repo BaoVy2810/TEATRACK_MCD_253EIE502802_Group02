@@ -1,10 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/bg_screen"
     tools:context="com.teatrack_mcd_253eie502802_group02.admin.AdminAccount">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:elevation="@dimen/topbar_elevation">
+
+        <include
+            android:id="@+id/headerAdmin"
+            layout="@layout/activity_header_admin" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/nav_height"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/sp_16"
+                android:layout_marginBottom="@dimen/sp_14"
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:paddingVertical="@dimen/sp_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/sp_16"
+                    android:text="@string/title_account_management"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="@dimen/sp_14"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/screen_padding">
+
+                <EditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/search_input_height"
+                    android:layout_marginHorizontal="@dimen/sp_16"
+                    android:layout_marginBottom="@dimen/sp_12"
+                    android:background="@drawable/bg_input_rounded"
+                    android:drawableStart="@drawable/search"
+                    android:drawablePadding="@dimen/sp_10"
+                    android:hint="@string/str_search_hint_account"
+                    android:paddingHorizontal="15dp"
+                    android:singleLine="true"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/section_gap"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/sp_10"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRoleFilter"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/filter_button_height"
+                            android:layout_marginEnd="@dimen/sp_8"
+                            android:layout_weight="1"
+                            android:minWidth="0dp"
+                            android:minHeight="@dimen/filter_button_height"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:text="@string/filter_account_all"
+                            android:textAllCaps="false"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="12sp"
+                            android:letterSpacing="-0.04"
+                            android:gravity="center_vertical|start"
+                            app:backgroundTint="@color/white"
+                            app:cornerRadius="@dimen/filter_button_radius"
+                            app:strokeColor="@color/brand_blue"
+                            app:strokeWidth="1dp"
+                            app:icon="@drawable/down"
+                            app:iconGravity="end"
+                            app:iconPadding="4dp"
+                            app:iconSize="@dimen/filter_icon_size"
+                            app:iconTint="@color/brand_blue" />
+
+                        <!-- Export Excel Button -->
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnExportExcel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/filter_button_height"
+                            android:backgroundTint="@color/brand_blue"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:text="@string/btn_export_excel"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="12sp"
+                            android:letterSpacing="-0.04"
+                            app:cornerRadius="19dp"
+                            app:elevation="0dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnAddAccount"
+                            style="@style/Widget.TeaTrack.Button.Primary"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/filter_button_height"
+                            android:layout_marginEnd="4dp"
+                            android:layout_weight="1"
+                            android:minWidth="0dp"
+                            android:minHeight="@dimen/filter_button_height"
+                            android:text="@string/btn_add_account"
+                            android:textAllCaps="false"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="-0.05"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@drawable/plus"
+                            app:iconGravity="textStart"
+                            app:iconPadding="6dp"
+                            app:iconSize="16dp"
+                            app:iconTint="@color/white" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRefresh"
+                            style="@style/Widget.TeaTrack.Button.Primary"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/filter_button_height"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:minWidth="0dp"
+                            android:minHeight="@dimen/filter_button_height"
+                            android:text="@string/btn_refresh"
+                            android:textAllCaps="false"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:letterSpacing="-0.05"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            app:icon="@drawable/swap_3"
+                            app:iconGravity="textStart"
+                            app:iconPadding="6dp"
+                            app:iconSize="16dp"
+                            app:iconTint="@color/white" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAccounts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/item_account" />
+
+                <TextView
+                    android:id="@+id/tvEmptyState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="24dp"
+                    android:text="@string/empty_accounts_message"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/bottomNav"
+        layout="@layout/activity_nav_bar_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
