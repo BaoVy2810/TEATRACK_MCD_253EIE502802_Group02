@@ -11,12 +11,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.credentials.Credential;
 import androidx.credentials.CredentialManager;
 import androidx.credentials.GetCredentialRequest;
@@ -47,7 +46,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
-import androidx.core.content.ContextCompat;
 
 public class LoginActivity extends BaseActivity {
 
@@ -167,6 +165,27 @@ public class LoginActivity extends BaseActivity {
         if (edtPassword != null) edtPassword.addTextChangedListener(clearErrorWatcher);
     }
 
+    private void setFieldError(TextInputLayout til, boolean isError) {
+        if (til == null) return;
+        til.setErrorEnabled(false);
+        if (isError) {
+            int red = android.graphics.Color.RED;
+            android.content.res.ColorStateList redList = new android.content.res.ColorStateList(
+                    new int[][] {
+                            new int[] { android.R.attr.state_focused },
+                            new int[] { -android.R.attr.state_focused },
+                            new int[] {}
+                    },
+                    new int[] { red, red, red }
+            );
+            til.setBoxStrokeColorStateList(redList);
+        } else {
+            til.setBoxStrokeColorStateList(
+                    ContextCompat.getColorStateList(this, R.color.til_stroke_color)
+            );
+        }
+    }
+
     private void signInWithGoogle() {
         GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
@@ -225,18 +244,15 @@ public class LoginActivity extends BaseActivity {
         if (user == null) return;
         String uid = user.getUid();
 
-        // Kiểm tra user đã tồn tại chưa (theo firebaseUid field)
         databaseReference.orderByChild("firebaseUid").equalTo(uid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            // Đã có tài khoản → đăng nhập luôn
                             startActivity(new Intent(LoginActivity.this, Homepage.class));
                             finish();
                             return;
                         }
-                        // User mới → sinh CS ID và tạo tài khoản
                         UserIdGenerator.next(databaseReference, new UserIdGenerator.Callback() {
                             @Override
                             public void onGenerated(String csId) {
@@ -259,7 +275,6 @@ public class LoginActivity extends BaseActivity {
 
                             @Override
                             public void onError(String message) {
-                                // Fallback: vẫn cho vào app
                                 startActivity(new Intent(LoginActivity.this, Homepage.class));
                                 finish();
                             }
@@ -284,8 +299,8 @@ public class LoginActivity extends BaseActivity {
 
         if (TextUtils.isEmpty(loginName) || TextUtils.isEmpty(password)) {
             showError("Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!");
-            if (TextUtils.isEmpty(loginName)) tilLoginName.setError("!");
-            if (TextUtils.isEmpty(password)) tilPassword.setError("!");
+            if (TextUtils.isEmpty(loginName)) setFieldError(tilLoginName, true);
+            if (TextUtils.isEmpty(password)) setFieldError(tilPassword, true);
             return;
         }
 
@@ -321,8 +336,8 @@ public class LoginActivity extends BaseActivity {
 
                     if (!snapshot.exists()) {
                         showError("Tên đăng nhập hoặc mật khẩu không đúng!");
-                        tilLoginName.setError("!");
-                        tilPassword.setError("!");
+                        setFieldError(tilLoginName, true);
+                        setFieldError(tilPassword, true);
                         return;
                     }
 
@@ -353,7 +368,7 @@ public class LoginActivity extends BaseActivity {
 
                     if (!passwordMatched) {
                         showError("Tên đăng nhập hoặc mật khẩu không đúng!");
-                        tilPassword.setError("!");
+                        setFieldError(tilPassword, true);
                     }
                 }
 
@@ -419,7 +434,7 @@ public class LoginActivity extends BaseActivity {
         if (tvErrorMessage != null) {
             tvErrorMessage.setVisibility(View.GONE);
         }
-        if (tilLoginName != null) tilLoginName.setError(null);
-        if (tilPassword != null) tilPassword.setError(null);
+        setFieldError(tilLoginName, false);
+        setFieldError(tilPassword, false);
     }
 }

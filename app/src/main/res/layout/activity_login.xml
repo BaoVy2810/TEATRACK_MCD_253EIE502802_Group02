@@ -19,21 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Scrollable form: từ đỉnh đến trên dòng Sign Up -->
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollForm"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@id/layoutSignUp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/imgLogo"
@@ -63,7 +48,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imgLogo"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="25dp" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/viewUnderline"
@@ -82,7 +67,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginEnd="24dp"
                 android:background="@drawable/bg_error_login"
                 android:padding="10dp"
@@ -241,69 +226,66 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/cbRemember" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnLogIn"
-                android:layout_width="300dp"
-                android:layout_height="44dp"
-                android:layout_marginTop="5dp"
-                android:elevation="10dp"
-                android:shadowColor="#33000000"
-                android:shadowDx="0"
-                android:shadowDy="2"
-                android:shadowRadius="4"
-                android:stateListAnimator="@null"
-                android:text="@string/login_btn_login"
-                android:textColor="#FFFFFF"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:translationZ="10dp"
-                app:backgroundTint="#0088ff"
-                app:cornerRadius="22dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cbRemember" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogIn"
+        android:layout_width="300dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="10dp"
+        android:elevation="0dp"
+        android:translationZ="0dp"
 
-            <TextView
-                android:id="@+id/tvOr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/login_or"
-                android:textColor="#8B8B8B"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnLogIn" />
+        android:text="@string/login_btn_login"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:backgroundTint="#0088ff"
+        app:cornerRadius="22dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cbRemember"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGoogle"
-                android:layout_width="300dp"
-                android:layout_height="44dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/inter_semibold"
-                android:text="@string/login_btn_google"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:backgroundTint="#FFFFFF"
-                app:cornerRadius="22dp"
-                app:icon="@drawable/ic_google"
-                app:iconGravity="textStart"
-                app:iconPadding="6dp"
-                app:iconSize="20dp"
-                app:iconTint="@null"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvOr"
-                app:strokeColor="#E0E0E0"
-                app:strokeWidth="1dp" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+    <TextView
+        android:id="@+id/tvOr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/login_or"
+        android:textColor="#8B8B8B"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnLogIn" />
 
     <!-- Dòng Sign Up - luôn cố định ở đáy màn hình -->
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGoogle"
+        android:layout_width="300dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="@string/login_btn_google"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:backgroundTint="#FFFFFF"
+        app:cornerRadius="22dp"
+        app:icon="@drawable/ic_google"
+        app:iconGravity="textStart"
+        app:iconPadding="6dp"
+        app:iconSize="20dp"
+        app:iconTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvOr"
+        app:layout_constraintVertical_bias="0.0"
+        app:strokeColor="#E0E0E0"
+        app:strokeWidth="1dp" />
+
     <LinearLayout
         android:id="@+id/layoutSignUp"
         android:layout_width="wrap_content"
