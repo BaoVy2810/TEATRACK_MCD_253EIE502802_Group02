@@ -81,7 +81,7 @@
                         <ImageView
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:background="@drawable/bg_icon_blue_light"
+                            android:background="@drawable/bg_circle_profile"
                             android:contentDescription="@string/privacy_title"
                             android:padding="10dp"
                             android:src="@drawable/ic_shield_privacy"
