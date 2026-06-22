@@ -3,10 +3,8 @@ package com.teatrack_mcd_253eie502802_group02.client;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.text.Html;
@@ -15,10 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -36,7 +32,6 @@ import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
 import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
-import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.CartActions;
 import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 import com.teatrack_mcd_253eie502802_group02.util.ToppingPriceHelper;
@@ -84,11 +79,9 @@ public class ProductDetail extends BaseActivity {
     private TextView tvCommitment4;
     private TextView tvReviewCount;
     private ImageView imgStar1, imgStar2, imgStar3, imgStar4, imgStar5;
-    private int selectedRating = 0;
     private MaterialButton btnWriteReview;
     private MaterialButton btnSizeOptionM;
     private MaterialButton btnSizeOptionL;
-    private MaterialButton btnSweetnessNone;
     private MaterialButton btnSweetnessLess;
     private MaterialButton btnSweetnessNormal;
     private MaterialButton btnSweetnessHigh;
@@ -118,101 +111,97 @@ public class ProductDetail extends BaseActivity {
             });
         }
 
-        ImageView btnBack = findViewById(R.id.btnBack);
-        ImageView btnShare = findViewById(R.id.btnShare);
-        imgDetail = findViewById(R.id.imgDetail);
-        tvDetailName = findViewById(R.id.tvDetailName);
-        tvTopTitle = findViewById(R.id.tvTopTitle);
-        tvCategory = findViewById(R.id.tvCategory);
-        tvRatingValue = findViewById(R.id.tvRatingValue);
-        tvPriceM = findViewById(R.id.tvPriceM);
-        tvPriceL = findViewById(R.id.tvPriceL);
-        tvVipPriceM = findViewById(R.id.tvVipPriceM);
-        tvVipPriceL = findViewById(R.id.tvVipPriceL);
-        tvRatingSummary = findViewById(R.id.tvRatingSummary);
-        tvDescription = findViewById(R.id.tvDescription);
-        btnSizeOptionM = findViewById(R.id.btnSizeOptionM);
-        btnSizeOptionL = findViewById(R.id.btnSizeOptionL);
-        btnSweetnessLess = findViewById(R.id.btnSweetnessLess);
-        btnSweetnessNormal = findViewById(R.id.btnSweetnessNormal);
-        btnSweetnessHigh = findViewById(R.id.btnSweetnessHigh);
-        btnIceLess = findViewById(R.id.btnIceLess);
-        btnIceNormal = findViewById(R.id.btnIceNormal);
-        btnIceHigh = findViewById(R.id.btnIceHigh);
-        TextView tvQuantity = findViewById(R.id.tvQuantity);
+        ImageView btnBack    = findViewById(R.id.btnBack);
+        imgDetail            = findViewById(R.id.imgDetail);
+        tvDetailName         = findViewById(R.id.tvDetailName);
+        tvTopTitle           = findViewById(R.id.tvTopTitle);
+        tvCategory           = findViewById(R.id.tvCategory);
+        tvRatingValue        = findViewById(R.id.tvRatingValue);
+        tvPriceM             = findViewById(R.id.tvPriceM);
+        tvPriceL             = findViewById(R.id.tvPriceL);
+        tvVipPriceM          = findViewById(R.id.tvVipPriceM);
+        tvVipPriceL          = findViewById(R.id.tvVipPriceL);
+        tvRatingSummary      = findViewById(R.id.tvRatingSummary);
+        tvDescription        = findViewById(R.id.tvDescription);
+        btnSizeOptionM       = findViewById(R.id.btnSizeOptionM);
+        btnSizeOptionL       = findViewById(R.id.btnSizeOptionL);
+        btnSweetnessLess     = findViewById(R.id.btnSweetnessLess);
+        btnSweetnessNormal   = findViewById(R.id.btnSweetnessNormal);
+        btnSweetnessHigh     = findViewById(R.id.btnSweetnessHigh);
+        btnIceLess           = findViewById(R.id.btnIceLess);
+        btnIceNormal         = findViewById(R.id.btnIceNormal);
+        btnIceHigh           = findViewById(R.id.btnIceHigh);
+        TextView tvQuantity  = findViewById(R.id.tvQuantity);
         ImageButton btnQtyMinus = findViewById(R.id.btnQtyMinus);
-        ImageButton btnQtyPlus = findViewById(R.id.btnQtyPlus);
+        ImageButton btnQtyPlus  = findViewById(R.id.btnQtyPlus);
         RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
         TextView btnAddToCart = findViewById(R.id.btnAddToCart);
-        TextView btnBuyNow = findViewById(R.id.btnBuyNow);
+        TextView btnBuyNow    = findViewById(R.id.btnBuyNow);
         TextView breadcrumbHome = findViewById(R.id.breadcrumbHome);
         TextView breadcrumbMenu = findViewById(R.id.breadcrumbMenu);
-        breadcrumbTeaLatte = findViewById(R.id.breadcrumbTeaLatte);
-        LinearLayout noteToggle = findViewById(R.id.noteToggle);
-        customizationContent = findViewById(R.id.customizationContent);
-        tvNoteChevron = findViewById(R.id.tvNoteChevron);
-        toppingRowsContainer = findViewById(R.id.toppingRowsContainer);
-        tabDescription = findViewById(R.id.tabDescription);
-        tabReview = findViewById(R.id.tabReview);
-        tabCommitment = findViewById(R.id.tabCommitment);
-        tabIndicator = findViewById(R.id.tabIndicator);
-        tabIndicatorContainer = findViewById(R.id.tabIndicatorContainer);
-        layoutReview = findViewById(R.id.layoutReview);
-        layoutDescription = findViewById(R.id.layoutDescription);
-        layoutCommitment = findViewById(R.id.layoutCommitment);
-        layoutReviewForm = findViewById(R.id.layoutReviewForm);
-        tvTabPlaceholder = findViewById(R.id.tvTabPlaceholder);
-        tvInfoProductName = findViewById(R.id.tvInfoProductName);
-        tvInfoWeight = findViewById(R.id.tvInfoWeight);
-        tvInfoStorage = findViewById(R.id.tvInfoStorage);
-        tvInfoOrigin = findViewById(R.id.tvInfoOrigin);
-        tvInfoTopping = findViewById(R.id.tvInfoTopping);
-        tvCommitment1 = findViewById(R.id.tvCommitment1);
-        tvCommitment2 = findViewById(R.id.tvCommitment2);
-        tvCommitment3 = findViewById(R.id.tvCommitment3);
-        tvCommitment4 = findViewById(R.id.tvCommitment4);
-        tvReviewCount = findViewById(R.id.tvReviewCount);
-        imgStar1 = findViewById(R.id.imgStar1);
-        imgStar2 = findViewById(R.id.imgStar2);
-        imgStar3 = findViewById(R.id.imgStar3);
-        imgStar4 = findViewById(R.id.imgStar4);
-        imgStar5 = findViewById(R.id.imgStar5);
-        btnWriteReview = findViewById(R.id.btnWriteReview);
-        View logo = findViewById(R.id.img_logo);
-        if (logo != null) {
-            logo.setOnClickListener(v -> startActivity(new Intent(this, Homepage.class)));
-        }
+        breadcrumbTeaLatte      = findViewById(R.id.breadcrumbTeaLatte);
+        LinearLayout noteToggle  = findViewById(R.id.noteToggle);
+        customizationContent     = findViewById(R.id.customizationContent);
+        tvNoteChevron            = findViewById(R.id.tvNoteChevron);
+        toppingRowsContainer     = findViewById(R.id.toppingRowsContainer);
+        tabDescription           = findViewById(R.id.tabDescription);
+        tabReview                = findViewById(R.id.tabReview);
+        tabCommitment            = findViewById(R.id.tabCommitment);
+        tabIndicator             = findViewById(R.id.tabIndicator);
+        tabIndicatorContainer    = findViewById(R.id.tabIndicatorContainer);
+        layoutReview             = findViewById(R.id.layoutReview);
+        layoutDescription        = findViewById(R.id.layoutDescription);
+        layoutCommitment         = findViewById(R.id.layoutCommitment);
+        layoutReviewForm         = findViewById(R.id.layoutReviewForm);
+        tvTabPlaceholder         = findViewById(R.id.tvTabPlaceholder);
+        tvInfoProductName        = findViewById(R.id.tvInfoProductName);
+        tvInfoWeight             = findViewById(R.id.tvInfoWeight);
+        tvInfoStorage            = findViewById(R.id.tvInfoStorage);
+        tvInfoOrigin             = findViewById(R.id.tvInfoOrigin);
+        tvInfoTopping            = findViewById(R.id.tvInfoTopping);
+        tvCommitment1            = findViewById(R.id.tvCommitment1);
+        tvCommitment2            = findViewById(R.id.tvCommitment2);
+        tvCommitment3            = findViewById(R.id.tvCommitment3);
+        tvCommitment4            = findViewById(R.id.tvCommitment4);
+        tvReviewCount            = findViewById(R.id.tvReviewCount);
+        imgStar1                 = findViewById(R.id.imgStar1);
+        imgStar2                 = findViewById(R.id.imgStar2);
+        imgStar3                 = findViewById(R.id.imgStar3);
+        imgStar4                 = findViewById(R.id.imgStar4);
+        imgStar5                 = findViewById(R.id.imgStar5);
+        btnWriteReview           = findViewById(R.id.btnWriteReview);
 
-        btnBack.setOnClickListener(v -> backToMenu());
-        if (btnShare != null) {
-            btnShare.setOnClickListener(v -> {
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                String shareText = tvDetailName != null && tvDetailName.getText() != null
-                        ? tvDetailName.getText().toString()
-                        : getString(R.string.product_detail_title);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-                startActivity(Intent.createChooser(shareIntent, getString(R.string.product_detail_share)));
-            });
-        }
-        breadcrumbHome.setOnClickListener(v -> startActivity(new Intent(this, Homepage.class)));
-        breadcrumbMenu.setOnClickListener(v -> openMainTab(MainActivity.TAB_MENU, null));
-        breadcrumbTeaLatte.setOnClickListener(v ->
-                openMainTab(MainActivity.TAB_MENU, getString(R.string.firebase_category_tea_latte)));
-        noteToggle.setOnClickListener(v -> toggleCustomization());
+        // ── fix: img_logo không có trong layout này ──────────────────────────
+        // Đã xóa findViewById(R.id.img_logo) vì layout activity_product_detail
+        // không khai báo view đó.
 
-        String name = getIntent().getStringExtra("name");
-        String priceM = getIntent().getStringExtra("priceM");
-        String priceL = getIntent().getStringExtra("priceL");
-        String vipM = getIntent().getStringExtra("vipM");
-        String vipL = getIntent().getStringExtra("vipL");
-        int imageRes = getIntent().getIntExtra("imageRes", R.mipmap.traolongmochuong);
-        float rating = getIntent().getFloatExtra("rating", 4.9f);
+        if (btnBack != null) btnBack.setOnClickListener(v -> backToMenu());
+
+        if (breadcrumbHome != null) {
+            breadcrumbHome.setOnClickListener(v -> startActivity(new Intent(this, Homepage.class)));
+        }
+        if (breadcrumbMenu != null) {
+            breadcrumbMenu.setOnClickListener(v -> openMainTab(null));
+        }
+        if (breadcrumbTeaLatte != null) {
+            breadcrumbTeaLatte.setOnClickListener(v ->
+                    openMainTab(getString(R.string.firebase_category_tea_latte)));
+        }
+        if (noteToggle != null) noteToggle.setOnClickListener(v -> toggleCustomization());
+
+        String name        = getIntent().getStringExtra("name");
+        String priceM      = getIntent().getStringExtra("priceM");
+        String priceL      = getIntent().getStringExtra("priceL");
+        String vipM        = getIntent().getStringExtra("vipM");
+        String vipL        = getIntent().getStringExtra("vipL");
+        int    imageRes    = getIntent().getIntExtra("imageRes", R.mipmap.traolongmochuong);
+        float  rating      = getIntent().getFloatExtra("rating", 4.9f);
         String reviewCount = getIntent().getStringExtra("reviewCount");
-        String category = getIntent().getStringExtra("category");
+        String category    = getIntent().getStringExtra("category");
 
         bindFromIntent(name, category, priceM, priceL, vipM, vipL, imageRes, rating, reviewCount);
         CartBadgeHelper.setup(this);
+
         if (name != null) {
             fetchFromFirebase(name);
         } else {
@@ -223,20 +212,27 @@ public class ProductDetail extends BaseActivity {
         dummy.setImageRes(imageRes);
         setupThumbs(dummy);
 
-        btnQtyMinus.setOnClickListener(v -> {
-            quantity = Math.max(1, quantity - 1);
-            tvQuantity.setText(String.valueOf(quantity));
-        });
-        btnQtyPlus.setOnClickListener(v -> {
-            quantity += 1;
-            tvQuantity.setText(String.valueOf(quantity));
-        });
+        if (btnQtyMinus != null) {
+            btnQtyMinus.setOnClickListener(v -> {
+                quantity = Math.max(1, quantity - 1);
+                if (tvQuantity != null) tvQuantity.setText(String.valueOf(quantity));
+            });
+        }
+        if (btnQtyPlus != null) {
+            btnQtyPlus.setOnClickListener(v -> {
+                quantity += 1;
+                if (tvQuantity != null) tvQuantity.setText(String.valueOf(quantity));
+            });
+        }
 
-        btnAddToCart.setOnClickListener(v -> CartActions.addItem(this, buildCartItem()));
-        btnBuyNow.setOnClickListener(v -> {
-            CartActions.addItem(this, buildCartItem());
-            startActivity(new Intent(this, Cart.class));
-        });
+        if (btnAddToCart != null) btnAddToCart.setOnClickListener(v -> CartActions.addItem(this, buildCartItem()));
+        if (btnBuyNow != null) {
+            btnBuyNow.setOnClickListener(v -> {
+                CartActions.addItemSilent(this, buildCartItem());
+                startActivity(new Intent(this, Cart.class));
+                finish();
+            });
+        }
 
         if (rvRecommended != null) {
             rvRecommended.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -248,50 +244,38 @@ public class ProductDetail extends BaseActivity {
             ));
         }
 
-        setupBottomNavigation();
         setupTabs();
         setupOptionSelections();
         setupToppingRows();
         setupDescriptionInfo(name);
         setupCommitmentContent();
         setupReviewSection();
-        applyCustomizationState(false);
+        applyCustomizationState();
     }
+
+    // ── Description info ──────────────────────────────────────────────────────
 
     private void setupDescriptionInfo(String productName) {
         String resolvedName = productName != null ? productName : getString(R.string.product_detail_title);
-        if (tvInfoProductName != null) {
+        if (tvInfoProductName != null)
             tvInfoProductName.setText(formatInfoRow(R.string.product_detail_info_name, resolvedName));
-        }
-        if (tvInfoWeight != null) {
-            tvInfoWeight.setText(formatInfoRow(
-                    R.string.product_detail_info_weight,
-                    getString(R.string.product_detail_info_weight_value)));
-        }
-        if (tvInfoStorage != null) {
-            tvInfoStorage.setText(formatInfoRow(
-                    R.string.product_detail_info_storage,
-                    getString(R.string.product_detail_info_storage_value)));
-        }
-        if (tvInfoOrigin != null) {
-            tvInfoOrigin.setText(formatInfoRow(
-                    R.string.product_detail_info_origin,
-                    getString(R.string.product_detail_info_origin_value)));
-        }
-        if (tvInfoTopping != null) {
-            tvInfoTopping.setText(formatInfoRow(
-                    R.string.product_detail_info_topping,
-                    getString(R.string.product_detail_info_topping_value)));
-        }
+        if (tvInfoWeight != null)
+            tvInfoWeight.setText(formatInfoRow(R.string.product_detail_info_weight, getString(R.string.product_detail_info_weight_value)));
+        if (tvInfoStorage != null)
+            tvInfoStorage.setText(formatInfoRow(R.string.product_detail_info_storage, getString(R.string.product_detail_info_storage_value)));
+        if (tvInfoOrigin != null)
+            tvInfoOrigin.setText(formatInfoRow(R.string.product_detail_info_origin, getString(R.string.product_detail_info_origin_value)));
+        if (tvInfoTopping != null)
+            tvInfoTopping.setText(formatInfoRow(R.string.product_detail_info_topping, getString(R.string.product_detail_info_topping_value)));
     }
 
     private CharSequence formatInfoRow(int labelRes, String value) {
         String label = getString(labelRes);
-        if (!label.endsWith(":")) {
-            label = label + ":";
-        }
+        if (!label.endsWith(":")) label = label + ":";
         return Html.fromHtml("<b>" + label + "</b> " + value, Html.FROM_HTML_MODE_LEGACY);
     }
+
+    // ── Commitment ───────────────────────────────────────────────────────────
 
     private void setupCommitmentContent() {
         setHtmlText(tvCommitment1, R.string.product_detail_commitment_1);
@@ -301,26 +285,25 @@ public class ProductDetail extends BaseActivity {
     }
 
     private void setHtmlText(TextView textView, int stringRes) {
-        if (textView == null) {
-            return;
-        }
+        if (textView == null) return;
         textView.setText(Html.fromHtml(getString(stringRes), Html.FROM_HTML_MODE_LEGACY));
     }
 
+    // ── Reviews ───────────────────────────────────────────────────────────────
+
     private void setupReviewSection() {
-        if (tvReviewCount != null) {
+        if (tvReviewCount != null)
             tvReviewCount.setText(getString(R.string.product_detail_review_count_format, "0"));
-        }
 
         View.OnClickListener starClickListener = v -> {
-            int rating = 1;
+            int starRating = 1;
             int id = v.getId();
-            if (id == R.id.imgStar1) rating = 1;
-            else if (id == R.id.imgStar2) rating = 2;
-            else if (id == R.id.imgStar3) rating = 3;
-            else if (id == R.id.imgStar4) rating = 4;
-            else if (id == R.id.imgStar5) rating = 5;
-            updateStarRating(rating);
+            if      (id == R.id.imgStar1) starRating = 1;
+            else if (id == R.id.imgStar2) starRating = 2;
+            else if (id == R.id.imgStar3) starRating = 3;
+            else if (id == R.id.imgStar4) starRating = 4;
+            else if (id == R.id.imgStar5) starRating = 5;
+            updateStarRating(starRating);
         };
 
         if (imgStar1 != null) imgStar1.setOnClickListener(starClickListener);
@@ -334,15 +317,12 @@ public class ProductDetail extends BaseActivity {
         if (btnWriteReview != null) {
             btnWriteReview.setOnClickListener(v -> {
                 if (layoutReviewForm != null) {
-                    if (layoutReviewForm.getVisibility() == View.VISIBLE) {
-                        layoutReviewForm.setVisibility(View.GONE);
-                    } else {
-                        layoutReviewForm.setVisibility(View.VISIBLE);
+                    boolean showing = layoutReviewForm.getVisibility() == View.VISIBLE;
+                    layoutReviewForm.setVisibility(showing ? View.GONE : View.VISIBLE);
+                    if (!showing) {
                         updateStarRating(0);
                         EditText reviewTitle = findViewById(R.id.edtReviewTitle);
-                        if (reviewTitle != null) {
-                            reviewTitle.requestFocus();
-                        }
+                        if (reviewTitle != null) reviewTitle.requestFocus();
                     }
                 }
             });
@@ -350,95 +330,86 @@ public class ProductDetail extends BaseActivity {
     }
 
     private void updateStarRating(int rating) {
-        selectedRating = rating;
         ImageView[] stars = {imgStar1, imgStar2, imgStar3, imgStar4, imgStar5};
-        int activeColor = ContextCompat.getColor(this, R.color.star_rating_active);
+        int activeColor   = ContextCompat.getColor(this, R.color.star_rating_active);
         int inactiveColor = ContextCompat.getColor(this, R.color.outline_variant);
-
         for (int i = 0; i < stars.length; i++) {
             if (stars[i] != null) {
-                int color = i < rating ? activeColor : inactiveColor;
-                ImageViewCompat.setImageTintList(stars[i], ColorStateList.valueOf(color));
+                ImageViewCompat.setImageTintList(stars[i],
+                        ColorStateList.valueOf(i < rating ? activeColor : inactiveColor));
             }
         }
     }
 
-    private void bindFromIntent(String name, String category, String priceM, String priceL, String vipM, String vipL,
+    // ── Bind helpers ─────────────────────────────────────────────────────────
+
+    private void bindFromIntent(String name, String category,
+                                String priceM, String priceL,
+                                String vipM,   String vipL,
                                 int imageRes, float rating, String reviewCount) {
         String resolvedName = name != null ? name : getString(R.string.product_detail_title);
         tvDetailName.setText(resolvedName);
-        if (tvTopTitle != null) {
-            tvTopTitle.setText(resolvedName);
-        }
+        if (tvTopTitle != null) tvTopTitle.setText(resolvedName);
+
         tvCategory.setText(category != null ? category : getString(R.string.product_detail_category_default));
-        if (breadcrumbTeaLatte != null && category != null && !category.isEmpty()) {
+        if (breadcrumbTeaLatte != null && category != null && !category.isEmpty())
             breadcrumbTeaLatte.setText(category);
-        }
-        if (tvRatingValue != null) {
+
+        if (tvRatingValue != null)
             tvRatingValue.setText(String.format(java.util.Locale.getDefault(), "%.1f", rating));
-        }
+
         tvPriceM.setText(safePrice(priceM));
         tvPriceL.setText(safePrice(priceL));
         tvVipPriceM.setText(safePrice(vipM));
         tvVipPriceL.setText(safePrice(vipL));
         bindCustomizationPrice(priceM, priceL);
-        tvRatingSummary.setText(getString(
-                R.string.product_detail_views_format,
+
+        tvRatingSummary.setText(getString(R.string.product_detail_views_format,
                 reviewCount == null ? "1k" : reviewCount));
         tvDescription.setText(getString(R.string.product_detail_description_default));
         imgDetail.setImageResource(imageRes);
+
         currentProduct = buildProductFromIntent(name, category, priceM, priceL, vipM, vipL, imageRes, rating, reviewCount);
     }
 
     private void fetchFromFirebase(String name) {
-        if (name == null || name.isEmpty()) {
-            return;
-        }
+        if (name == null || name.isEmpty()) return;
         repository.getProductByName(name, new FirebaseProductRepository.ProductCallback() {
-            @Override
-            public void onSuccess(Product product) {
-                if (isFinishing()) {
-                    return;
-                }
-                bindFromProduct(product);
+            @Override public void onSuccess(Product product) {
+                if (!isFinishing()) bindFromProduct(product);
             }
-
-            @Override
-            public void onError(String message) {
-                // fallback to intent data
-            }
+            @Override public void onError(String message) { /* fallback to intent data */ }
         });
     }
 
     private void bindFromProduct(Product product) {
         currentProduct = product;
         tvDetailName.setText(product.getName());
-        if (tvTopTitle != null) {
-            tvTopTitle.setText(product.getName());
-        }
+        if (tvTopTitle != null) tvTopTitle.setText(product.getName());
+
         if (product.getCategory() != null && !product.getCategory().isEmpty()) {
             tvCategory.setText(product.getCategory());
-            if (breadcrumbTeaLatte != null) {
-                breadcrumbTeaLatte.setText(product.getCategory());
-            }
+            if (breadcrumbTeaLatte != null) breadcrumbTeaLatte.setText(product.getCategory());
             fetchRecommendedProducts(product.getCategory());
         }
+
         tvPriceM.setText(safePrice(product.getPriceM()));
         tvPriceL.setText(safePrice(product.getPriceL()));
         tvVipPriceM.setText(safePrice(product.getVipPriceM()));
         tvVipPriceL.setText(safePrice(product.getVipPriceL()));
         bindCustomizationPrice(String.valueOf(product.getPriceM()), String.valueOf(product.getPriceL()));
-        if (tvRatingValue != null) {
+
+        if (tvRatingValue != null)
             tvRatingValue.setText(String.format(java.util.Locale.getDefault(), "%.1f", product.getRating()));
-        }
-        tvRatingSummary.setText(getString(
-                R.string.product_detail_views_format,
-                product.getReviewCount()));
+
+        tvRatingSummary.setText(getString(R.string.product_detail_views_format, product.getReviewCount()));
         ProductImageHelper.load(imgDetail, product);
         setupDescriptionInfo(product.getName());
         setupThumbs(product);
         selectTab(tabDescription);
     }
+
+    // ── Thumbnails ────────────────────────────────────────────────────────────
 
     private void setupThumbs(Product product) {
         ShapeableImageView[] thumbs = {
@@ -448,31 +419,30 @@ public class ProductDetail extends BaseActivity {
                 findViewById(R.id.thumb4)
         };
 
-        List<String> sources = collectImageSources(product);
-        boolean useImageRes = sources.isEmpty() && product.getImageRes(this) != 0;
-        int visibleCount = useImageRes ? 1 : sources.size();
-        int fallbackRes = product.getImageRes(this) != 0 ? product.getImageRes(this) : R.mipmap.traolongmochuong;
+        List<String> sources  = collectImageSources(product);
+        boolean useImageRes   = sources.isEmpty() && product.getImageRes(this) != 0;
+        int visibleCount      = useImageRes ? 1 : sources.size();
+        int fallbackRes       = product.getImageRes(this) != 0 ? product.getImageRes(this) : R.mipmap.traolongmochuong;
 
         for (int i = 0; i < thumbs.length; i++) {
             ShapeableImageView thumb = thumbs[i];
-            if (thumb == null) {
-                continue;
-            }
+            if (thumb == null) continue;
+
             if (i < visibleCount) {
                 thumb.setVisibility(View.VISIBLE);
-                final int selectedIndex = i;
+                final int idx = i;
                 if (useImageRes) {
                     thumb.setImageResource(fallbackRes);
                     thumb.setOnClickListener(v -> {
                         imgDetail.setImageResource(fallbackRes);
-                        updateThumbSelection(thumbs, selectedIndex);
+                        updateThumbSelection(thumbs, idx);
                     });
                 } else {
                     String source = sources.get(i);
                     ProductImageHelper.loadFromSource(thumb, source, fallbackRes);
                     thumb.setOnClickListener(v -> {
                         ProductImageHelper.loadFromSource(imgDetail, source, fallbackRes);
-                        updateThumbSelection(thumbs, selectedIndex);
+                        updateThumbSelection(thumbs, idx);
                     });
                 }
             } else {
@@ -482,11 +452,8 @@ public class ProductDetail extends BaseActivity {
         }
 
         if (visibleCount > 0) {
-            if (useImageRes) {
-                imgDetail.setImageResource(fallbackRes);
-            } else {
-                ProductImageHelper.loadFromSource(imgDetail, sources.get(0), fallbackRes);
-            }
+            if (useImageRes) imgDetail.setImageResource(fallbackRes);
+            else ProductImageHelper.loadFromSource(imgDetail, sources.get(0), fallbackRes);
             updateThumbSelection(thumbs, 0);
         }
     }
@@ -495,101 +462,70 @@ public class ProductDetail extends BaseActivity {
         List<String> sources = new ArrayList<>();
         if (product.getImages() != null) {
             for (String image : product.getImages()) {
-                if (image != null && !image.trim().isEmpty()) {
-                    sources.add(image.trim());
-                }
+                if (image != null && !image.trim().isEmpty()) sources.add(image.trim());
             }
         }
-        if (sources.isEmpty() && product.getImage() != null && !product.getImage().trim().isEmpty()) {
+        if (sources.isEmpty() && product.getImage() != null && !product.getImage().trim().isEmpty())
             sources.add(product.getImage().trim());
-        }
         return sources;
     }
 
     private void updateThumbSelection(ShapeableImageView[] thumbs, int selectedIndex) {
-        int activeStroke = ContextCompat.getColor(this, R.color.brand_blue);
+        int activeStroke   = ContextCompat.getColor(this, R.color.brand_blue);
         int inactiveStroke = ContextCompat.getColor(this, R.color.outline_variant);
         for (int i = 0; i < thumbs.length; i++) {
             ShapeableImageView thumb = thumbs[i];
-            if (thumb == null || thumb.getVisibility() != View.VISIBLE) {
-                continue;
-            }
-            boolean isSelected = i == selectedIndex;
-            thumb.setStrokeColor(ColorStateList.valueOf(isSelected ? activeStroke : inactiveStroke));
-            thumb.setStrokeWidth(isSelected ? dp(2) : dp(1));
+            if (thumb == null || thumb.getVisibility() != View.VISIBLE) continue;
+            boolean sel = i == selectedIndex;
+            thumb.setStrokeColor(ColorStateList.valueOf(sel ? activeStroke : inactiveStroke));
+            thumb.setStrokeWidth(sel ? dp(2) : dp(1));
         }
     }
 
-    private String safePrice(Object price) {
-        if (price == null) return "0đ";
-        String p = String.valueOf(price);
-        if (p.isEmpty() || p.equalsIgnoreCase("null")) {
-            return "0đ";
-        }
+    // ── Price helpers ─────────────────────────────────────────────────────────
 
+    private String safePrice(Object price) {
+        if (price == null) return "0\u0111";
+        String p = String.valueOf(price);
+        if (p.isEmpty() || p.equalsIgnoreCase("null")) return "0\u0111";
         try {
             String clean = p.replaceAll("[^0-9]", "");
-            if (clean.isEmpty()) return p.endsWith("đ") ? p : p + "đ";
+            if (clean.isEmpty()) return p.endsWith("\u0111") ? p : p + "\u0111";
             long val = Long.parseLong(clean);
-            return String.format(java.util.Locale.US, "%,d", val).replace(',', '.') + "đ";
+            return String.format(java.util.Locale.US, "%,d", val).replace(',', '.') + "\u0111";
         } catch (Exception e) {
-            return p.endsWith("đ") ? p : p + "đ";
+            return p.endsWith("\u0111") ? p : p + "\u0111";
         }
     }
 
     private void bindCustomizationPrice(String priceM, String priceL) {
-        if (btnSizeOptionM != null) {
+        if (btnSizeOptionM != null)
             btnSizeOptionM.setText(getString(R.string.product_detail_size_m_price_format, safePrice(priceM)));
-        }
-        if (btnSizeOptionL != null) {
+        if (btnSizeOptionL != null)
             btnSizeOptionL.setText(getString(R.string.product_detail_size_l_price_format, safePrice(priceL)));
-        }
     }
+
+    // ── Option selections ─────────────────────────────────────────────────────
 
     private void setupOptionSelections() {
-        setupSizeGroup(new MaterialButton[]{btnSizeOptionM, btnSizeOptionL}, 0);
-        setupLevelGroup(new MaterialButton[]{btnSweetnessNone, btnSweetnessLess, btnSweetnessNormal, btnSweetnessHigh}, 2);
-        setupLevelGroup(new MaterialButton[]{btnIceLess, btnIceNormal, btnIceHigh}, 1);
+        setupButtonGroup(new MaterialButton[]{btnSizeOptionM, btnSizeOptionL}, 0);
+        setupButtonGroup(new MaterialButton[]{btnSweetnessLess, btnSweetnessNormal, btnSweetnessHigh}, 1);
+        setupButtonGroup(new MaterialButton[]{btnIceLess, btnIceNormal, btnIceHigh}, 1);
     }
 
-    private void setupSizeGroup(MaterialButton[] buttons, int defaultSelected) {
+    private void setupButtonGroup(MaterialButton[] buttons, int defaultSelected) {
         for (int i = 0; i < buttons.length; i++) {
             MaterialButton button = buttons[i];
             if (button == null) continue;
-            boolean isSelected = (i == defaultSelected);
-            button.setSelected(isSelected);
-            button.setTypeface(null, isSelected ? Typeface.BOLD : Typeface.NORMAL);
-            
+            boolean sel = (i == defaultSelected);
+            button.setSelected(sel);
+            button.setTypeface(null, sel ? Typeface.BOLD : Typeface.NORMAL);
             button.setOnClickListener(v -> {
                 for (MaterialButton b : buttons) {
-                    if (b != null) {
-                        b.setSelected(false);
-                        b.setTypeface(null, Typeface.NORMAL);
-                    }
+                    if (b != null) { b.setSelected(false); b.setTypeface(null, Typeface.NORMAL); }
                 }
                 v.setSelected(true);
-                ((MaterialButton)v).setTypeface(null, Typeface.BOLD);
-            });
-        }
-    }
-
-    private void setupLevelGroup(MaterialButton[] buttons, int defaultSelected) {
-        for (int i = 0; i < buttons.length; i++) {
-            MaterialButton button = buttons[i];
-            if (button == null) continue;
-            boolean isSelected = (i == defaultSelected);
-            button.setSelected(isSelected);
-            button.setTypeface(null, isSelected ? Typeface.BOLD : Typeface.NORMAL);
-
-            button.setOnClickListener(v -> {
-                for (MaterialButton b : buttons) {
-                    if (b != null) {
-                        b.setSelected(false);
-                        b.setTypeface(null, Typeface.NORMAL);
-                    }
-                }
-                v.setSelected(true);
-                ((MaterialButton)v).setTypeface(null, Typeface.BOLD);
+                ((MaterialButton) v).setTypeface(null, Typeface.BOLD);
             });
         }
     }
@@ -600,6 +536,8 @@ public class ProductDetail extends BaseActivity {
         CartBadgeHelper.updateBadge(this);
     }
 
+    // ── Recommended products ──────────────────────────────────────────────────
+
     private void fetchRecommendedProducts(String category) {
         repository.getProductsByCategory(category, new FirebaseProductRepository.ProductsCallback() {
             @Override
@@ -608,265 +546,203 @@ public class ProductDetail extends BaseActivity {
                 List<Product> limited = new ArrayList<>();
                 String currentName = tvDetailName != null ? tvDetailName.getText().toString() : "";
                 for (Product p : products) {
-                    if (p == null || p.getName() == null) {
-                        continue;
-                    }
-                    if (!p.getName().equalsIgnoreCase(currentName)) {
-                        limited.add(p);
-                    }
+                    if (p == null || p.getName() == null) continue;
+                    if (!p.getName().equalsIgnoreCase(currentName)) limited.add(p);
                     if (limited.size() >= 6) break;
                 }
-                RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
-                if (rvRecommended != null) {
-                    ProductCardAdapter adapter = new ProductCardAdapter(
-                            limited,
-                            R.layout.item_product_card,
-                            ProductDetail.this::openRelatedDetail,
-                            product -> CartActions.addDefaultProduct(ProductDetail.this, product)
-                    );
-                    rvRecommended.setAdapter(adapter);
-                }
+                RecyclerView rv = findViewById(R.id.rvRecommended);
+                if (rv != null) rv.setAdapter(new ProductCardAdapter(
+                        limited, R.layout.item_product_card,
+                        ProductDetail.this::openRelatedDetail,
+                        p -> CartActions.addDefaultProduct(ProductDetail.this, p)));
             }
 
             @Override
             public void onError(String message) {
-                RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
-                if (rvRecommended != null) {
-                    rvRecommended.setAdapter(new ProductCardAdapter(
-                            getRecommendedProducts(),
-                            R.layout.item_product_card,
-                            ProductDetail.this::openRelatedDetail,
-                            product -> CartActions.addDefaultProduct(ProductDetail.this, product)
-                    ));
-                }
+                RecyclerView rv = findViewById(R.id.rvRecommended);
+                if (rv != null) rv.setAdapter(new ProductCardAdapter(
+                        getRecommendedProducts(), R.layout.item_product_card,
+                        ProductDetail.this::openRelatedDetail,
+                        p -> CartActions.addDefaultProduct(ProductDetail.this, p)));
             }
         });
     }
 
     private List<Product> getRecommendedProducts() {
         List<Product> products = new ArrayList<>();
-        products.add(new Product("0", "P001", "Trà Xanh Sữa", "Trà Sữa", 24000, 28000, 21000, 25000, "", "", "traxanhsua.png", true, false));
-        products.add(new Product("0", "P002", "Đường Đen", "Trà Sữa", 29000, 31000, 26000, 28000, "", "", "trasuatranchauduongden.png", true, false));
-        products.add(new Product("0", "P003", "Trà Ô Long", "Trà Ô Long", 19000, 22000, 16000, 19000, "", "", "traolongmochuong.png", true, false));
+        products.add(new Product("0", "P001", "Tra Xanh Sua",  "Tra Sua", 24000, 28000, 21000, 25000, "", "", "traxanhsua.png",              true, false));
+        products.add(new Product("0", "P002", "Duong Den",     "Tra Sua", 29000, 31000, 26000, 28000, "", "", "trasuatranchauduongden.png",   true, false));
+        products.add(new Product("0", "P003", "Tra O Long",    "Tra O Long", 19000, 22000, 16000, 19000, "", "", "traolongmochuong.png",       true, false));
         return products;
     }
 
     private void openRelatedDetail(Product product) {
         Intent intent = new Intent(this, ProductDetail.class);
-        intent.putExtra("name", product.getName());
-        intent.putExtra("category", product.getCategory());
-        intent.putExtra("priceM", String.valueOf(product.getPriceM()));
-        intent.putExtra("priceL", String.valueOf(product.getPriceL()));
-        intent.putExtra("vipM", String.valueOf(product.getVipPriceM()));
-        intent.putExtra("vipL", String.valueOf(product.getVipPriceL()));
-        intent.putExtra("imageRes", product.getImageRes(this));
-        intent.putExtra("rating", product.getRating());
+        intent.putExtra("name",        product.getName());
+        intent.putExtra("category",    product.getCategory());
+        intent.putExtra("priceM",      String.valueOf(product.getPriceM()));
+        intent.putExtra("priceL",      String.valueOf(product.getPriceL()));
+        intent.putExtra("vipM",        String.valueOf(product.getVipPriceM()));
+        intent.putExtra("vipL",        String.valueOf(product.getVipPriceL()));
+        intent.putExtra("imageRes",    product.getImageRes(this));
+        intent.putExtra("rating",      product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());
         startActivity(intent);
     }
 
+    // ── Navigation ────────────────────────────────────────────────────────────
+
     private void backToMenu() {
-        openMainTab(MainActivity.TAB_MENU, null);
+        openMainTab(null);
         finish();
     }
 
-    private void openMainTab(String tab, String category) {
+    private void openMainTab(String category) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_SELECTED_TAB, tab);
+        intent.putExtra(MainActivity.EXTRA_SELECTED_TAB, MainActivity.TAB_MENU);
         if (category != null) {
-            intent.putExtra(MainActivity.EXTRA_MENU_CATEGORY, category);
+            intent.putExtra(MainActivity.EXTRA_MENU_CATEGORY,
+                    com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.normalize(category));
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 
-    private void setupBottomNavigation() {
-        View navHome = findViewById(R.id.nav_home);
-        View navMenu = findViewById(R.id.nav_menu);
-        View navOrders = findViewById(R.id.nav_orders);
-        View navPromotion = findViewById(R.id.nav_promotion);
-        View navProfile = findViewById(R.id.nav_profile);
-
-        int[] navIds = {
-                R.id.nav_home,
-                R.id.nav_menu,
-                R.id.nav_orders,
-                R.id.nav_promotion,
-                R.id.nav_profile
-        };
-        NavBarHelper.setupNavBar(this, navIds, R.id.nav_menu, v -> {
-            int id = v.getId();
-            if (id == R.id.nav_home) {
-                Intent intent = new Intent(this, Homepage.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            } else if (id == R.id.nav_menu) {
-                openMainTab(MainActivity.TAB_MENU, null);
-                overridePendingTransition(0, 0);
-            } else if (id == R.id.nav_orders) {
-                Intent intent = new Intent(this, OrderHistory.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            } else if (id == R.id.nav_promotion) {
-                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.nav_profile) {
-                Intent intent = new Intent(this, UserProfile.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        });
-
-        if (navMenu != null) {
-            NavBarHelper.updateItemState(this, navMenu, true);
-        }
-    }
+    // ── Tabs ──────────────────────────────────────────────────────────────────
 
     private void setupTabs() {
-        if (tabDescription == null || tabReview == null || tabCommitment == null) {
-            return;
-        }
+        if (tabDescription == null || tabReview == null || tabCommitment == null) return;
         tabDescription.setOnClickListener(v -> selectTab(tabDescription));
         tabReview.setOnClickListener(v -> selectTab(tabReview));
         tabCommitment.setOnClickListener(v -> selectTab(tabCommitment));
     }
 
     private void selectTab(TextView selectedTab) {
-        if (tabDescription == null || tabReview == null || tabCommitment == null) {
-            return;
-        }
-        int activeColor = ContextCompat.getColor(this, R.color.brand_blue);
+        if (tabDescription == null || tabReview == null || tabCommitment == null) return;
+        int activeColor   = ContextCompat.getColor(this, R.color.brand_blue);
         int inactiveColor = ContextCompat.getColor(this, R.color.nav_inactive);
 
         tabDescription.setTextColor(selectedTab == tabDescription ? activeColor : inactiveColor);
-        tabReview.setTextColor(selectedTab == tabReview ? activeColor : inactiveColor);
-        tabCommitment.setTextColor(selectedTab == tabCommitment ? activeColor : inactiveColor);
+        tabReview.setTextColor     (selectedTab == tabReview      ? activeColor : inactiveColor);
+        tabCommitment.setTextColor (selectedTab == tabCommitment  ? activeColor : inactiveColor);
 
-        if (layoutDescription != null) {
+        if (layoutDescription != null)
             layoutDescription.setVisibility(selectedTab == tabDescription ? View.VISIBLE : View.GONE);
-        }
-        if (layoutReview != null) {
+        if (layoutReview != null)
             layoutReview.setVisibility(selectedTab == tabReview ? View.VISIBLE : View.GONE);
-        }
-        if (layoutCommitment != null) {
+        if (layoutCommitment != null)
             layoutCommitment.setVisibility(selectedTab == tabCommitment ? View.VISIBLE : View.GONE);
-        }
-        if (tvTabPlaceholder != null) {
-            tvTabPlaceholder.setVisibility(View.GONE);
-        }
-        if (layoutReviewForm != null) {
-            layoutReviewForm.setVisibility(View.GONE);
-        }
+        if (tvTabPlaceholder != null) tvTabPlaceholder.setVisibility(View.GONE);
+        if (layoutReviewForm != null) layoutReviewForm.setVisibility(View.GONE);
         alignIndicatorToTab(selectedTab);
     }
 
     private void alignIndicatorToTab(TextView target) {
-        if (tabIndicator == null || tabIndicatorContainer == null || target == null) {
-            return;
-        }
-        int[] targetPos = new int[2];
+        if (tabIndicator == null || tabIndicatorContainer == null || target == null) return;
+        int[] targetPos    = new int[2];
         int[] containerPos = new int[2];
         target.getLocationOnScreen(targetPos);
         tabIndicatorContainer.getLocationOnScreen(containerPos);
-
         float x = targetPos[0] - containerPos[0];
-        ViewGroup.LayoutParams layoutParams = tabIndicator.getLayoutParams();
-        layoutParams.width = target.getWidth();
-        tabIndicator.setLayoutParams(layoutParams);
+        ViewGroup.LayoutParams lp = tabIndicator.getLayoutParams();
+        lp.width = target.getWidth();
+        tabIndicator.setLayoutParams(lp);
         tabIndicator.animate().x(x).setDuration(180).start();
     }
 
+    // ── Customization panel ───────────────────────────────────────────────────
+
     private void toggleCustomization() {
         isCustomizationExpanded = !isCustomizationExpanded;
-        applyCustomizationState(true);
+        applyCustomizationState();
     }
 
-    private void applyCustomizationState(boolean animateChevron) {
-        if (customizationContent != null) {
+    private void applyCustomizationState() {
+        if (customizationContent != null)
             customizationContent.setVisibility(isCustomizationExpanded ? View.VISIBLE : View.GONE);
-        }
-        if (tvNoteChevron != null) {
+        if (tvNoteChevron != null)
             tvNoteChevron.setRotation(isCustomizationExpanded ? 180f : 0f);
-        }
     }
+
+    // ── Toppings ──────────────────────────────────────────────────────────────
 
     private void setupToppingRows() {
-        if (toppingRowsContainer == null) {
-            return;
-        }
+        if (toppingRowsContainer == null) return;
         toppingRowsContainer.removeAllViews();
         String[][] toppings = {
-                {"Sương sáo", "3.000đ"},
-                {"Thạch dừa nguyên vị", "3.000đ"},
-                {"Hạt é", "3.000đ"},
-                {"Thạch dứa hương đào", "5.000đ"},
-                {"Thạch aiyu", "5.000đ"},
-                {"Thạch sợi lá dứa", "5.000đ"},
-                {"Thạch sương sáo viên (8)", "5.000đ"},
-                {"Trân châu hoàng kim", "5.000đ"},
-                {"Trân châu đường đen", "5.000đ"},
-                {"Trân châu 3Q trắng/đen", "5.000đ"},
-                {"Trân châu khoai môn", "5.000đ"},
-                {"Hạt thủy tinh củ năng", "5.000đ"},
-                {"Hạt thủy tinh lúa mạch", "5.000đ"},
-                {"Đào miếng", "5.000đ"},
-                {"Khoai môn nghiền", "5.000đ"},
-                {"Hạt sen", "7.000đ"},
-                {"Kem tươi vani", "7.000đ"},
-                {"Kem cheese", "7.000đ"},
-                {"Pudding trứng", "7.000đ"},
-                {"Thạch sữa viên (8)", "7.000đ"}
+                {"Suong sao",                  "3.000d"},
+                {"Thach dua nguyen vi",        "3.000d"},
+                {"Hat e",                      "3.000d"},
+                {"Thach dua huong dao",        "5.000d"},
+                {"Thach aiyu",                 "5.000d"},
+                {"Thach soi la dua",           "5.000d"},
+                {"Thach suong sao vien (8)",   "5.000d"},
+                {"Tran chau hoang kim",        "5.000d"},
+                {"Tran chau duong den",        "5.000d"},
+                {"Tran chau 3Q trang/den",     "5.000d"},
+                {"Tran chau khoai mon",        "5.000d"},
+                {"Hat thuy tinh cu nang",      "5.000d"},
+                {"Hat thuy tinh lua mach",     "5.000d"},
+                {"Dao mieng",                  "5.000d"},
+                {"Khoai mon nghien",           "5.000d"},
+                {"Hat sen",                    "7.000d"},
+                {"Kem tuoi vani",              "7.000d"},
+                {"Kem cheese",                 "7.000d"},
+                {"Pudding trung",              "7.000d"},
+                {"Thach sua vien (8)",         "7.000d"}
         };
-        for (int i = 0; i < toppings.length; i++) {
-            addToppingRow(toppings[i][0], toppings[i][1], i > 0);
+        for (String[] topping : toppings) {
+            addToppingRow(topping[0], topping[1]);
         }
     }
 
-    private void addToppingRow(String name, String price, boolean unused) {
+    private void addToppingRow(String name, String price) {
         View row = getLayoutInflater().inflate(R.layout.item_topping, toppingRowsContainer, false);
-        TextView tvName = row.findViewById(R.id.tvToppingName);
-        TextView tvPrice = row.findViewById(R.id.tvToppingPrice);
-        TextView tvQty = row.findViewById(R.id.tvQuantity);
+        TextView    tvName  = row.findViewById(R.id.tvToppingName);
+        TextView    tvPrice = row.findViewById(R.id.tvToppingPrice);
+        TextView    tvQty   = row.findViewById(R.id.tvQuantity);
         ImageButton btnMinus = row.findViewById(R.id.btnMinus);
-        ImageButton btnPlus = row.findViewById(R.id.btnPlus);
+        ImageButton btnPlus  = row.findViewById(R.id.btnPlus);
 
         tvName.setText(name);
-        tvPrice.setText("+ " + price);
+        tvPrice.setText(getString(R.string.topping_price_format, price));
         toppingQuantities.put(name, 0);
 
         btnMinus.setOnClickListener(v -> {
-            int current = toppingQuantities.get(name);
+            Integer cur = toppingQuantities.get(name);
+            int current = cur != null ? cur : 0;
             if (current > 0) {
                 current--;
                 toppingQuantities.put(name, current);
                 tvQty.setText(String.valueOf(current));
-                tvQty.setTextColor(ContextCompat.getColor(this, current > 0 ? R.color.on_surface : R.color.nav_inactive));
-                btnMinus.setColorFilter(ContextCompat.getColor(this, current > 0 ? R.color.on_surface : R.color.nav_inactive));
+                int color = ContextCompat.getColor(this, current > 0 ? R.color.on_surface : R.color.nav_inactive);
+                tvQty.setTextColor(color);
+                btnMinus.setColorFilter(color);
             }
         });
 
         btnPlus.setOnClickListener(v -> {
-            int current = toppingQuantities.get(name);
-            current++;
+            Integer cur = toppingQuantities.get(name);
+            int current = (cur != null ? cur : 0) + 1;
             toppingQuantities.put(name, current);
             tvQty.setText(String.valueOf(current));
-            tvQty.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
-            btnMinus.setColorFilter(ContextCompat.getColor(this, R.color.on_surface));
+            int color = ContextCompat.getColor(this, R.color.on_surface);
+            tvQty.setTextColor(color);
+            btnMinus.setColorFilter(color);
         });
 
         toppingRowsContainer.addView(row);
     }
+
+    // ── Cart item builder ─────────────────────────────────────────────────────
 
     private CartItem buildCartItem() {
         CartItem item = currentProduct != null
                 ? CartItem.fromProduct(this, currentProduct)
                 : new CartItem();
 
-        if ((item.getProductName() == null || item.getProductName().isEmpty()) && tvDetailName != null) {
+        if ((item.getProductName() == null || item.getProductName().isEmpty()) && tvDetailName != null)
             item.setProductName(tvDetailName.getText().toString());
-        }
 
         String size = getSelectedSize();
         item.setSize(size);
@@ -887,15 +763,17 @@ public class ProductDetail extends BaseActivity {
         }
 
         for (Map.Entry<String, Integer> entry : toppingQuantities.entrySet()) {
-            if (entry.getValue() != null && entry.getValue() > 0) {
-                item.addTopping(entry.getKey(), ToppingPriceHelper.getPrice(entry.getKey()), entry.getValue());
-            }
+            Integer qty = entry.getValue();
+            if (qty != null && qty > 0)
+                item.addTopping(entry.getKey(), ToppingPriceHelper.getPrice(entry.getKey()), qty);
         }
         return item;
     }
 
-    private Product buildProductFromIntent(String name, String category, String priceM, String priceL,
-                                           String vipM, String vipL, int imageRes, float rating, String reviewCount) {
+    private Product buildProductFromIntent(String name, String category,
+                                           String priceM, String priceL,
+                                           String vipM,   String vipL,
+                                           int imageRes, float rating, String reviewCount) {
         Product product = new Product();
         product.setName(name);
         product.setCategory(category);
@@ -910,9 +788,7 @@ public class ProductDetail extends BaseActivity {
     }
 
     private int parsePriceInt(String value) {
-        if (value == null || value.isEmpty()) {
-            return 0;
-        }
+        if (value == null || value.isEmpty()) return 0;
         try {
             String clean = value.replaceAll("[^0-9]", "");
             return clean.isEmpty() ? 0 : Integer.parseInt(clean);
@@ -922,43 +798,26 @@ public class ProductDetail extends BaseActivity {
     }
 
     private String getSelectedSize() {
-        if (btnSizeOptionL != null && btnSizeOptionL.isSelected()) {
-            return "L";
-        }
-        return "M";
+        return (btnSizeOptionL != null && btnSizeOptionL.isSelected()) ? "L" : "M";
     }
 
     private String getSelectedSugar() {
-        if (btnSweetnessLess != null && btnSweetnessLess.isSelected()) {
-            return btnSweetnessLess.getText().toString();
-        }
-        if (btnSweetnessHigh != null && btnSweetnessHigh.isSelected()) {
-            return btnSweetnessHigh.getText().toString();
-        }
-        if (btnSweetnessNormal != null) {
-            return btnSweetnessNormal.getText().toString();
-        }
+        if (btnSweetnessLess  != null && btnSweetnessLess.isSelected())  return btnSweetnessLess.getText().toString();
+        if (btnSweetnessHigh  != null && btnSweetnessHigh.isSelected())  return btnSweetnessHigh.getText().toString();
+        if (btnSweetnessNormal != null) return btnSweetnessNormal.getText().toString();
         return getString(R.string.product_detail_level_medium);
     }
 
     private String getSelectedIce() {
-        if (btnIceLess != null && btnIceLess.isSelected()) {
-            return btnIceLess.getText().toString();
-        }
-        if (btnIceHigh != null && btnIceHigh.isSelected()) {
-            return btnIceHigh.getText().toString();
-        }
-        if (btnIceNormal != null) {
-            return btnIceNormal.getText().toString();
-        }
+        if (btnIceLess   != null && btnIceLess.isSelected())  return btnIceLess.getText().toString();
+        if (btnIceHigh   != null && btnIceHigh.isSelected())  return btnIceHigh.getText().toString();
+        if (btnIceNormal != null) return btnIceNormal.getText().toString();
         return getString(R.string.product_detail_level_medium);
     }
 
     private int dp(int value) {
         return Math.round(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                value,
-                getResources().getDisplayMetrics()));
+                TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics()));
     }
 
     @Override

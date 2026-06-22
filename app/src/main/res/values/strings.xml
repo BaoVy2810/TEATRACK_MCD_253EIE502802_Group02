@@ -369,6 +369,7 @@
     <string name="cart_note">Note</string>
     <string name="cart_note_hint">Please write your note here</string>
     <string name="cart_payment_method">Payment Method</string>
+    <string name="payment_linked_title">Linked Payment Methods</string>
     <string name="cart_cash_on_hand">Cash on hand</string>
     <string name="cart_cash_in_bank">Cash in bank</string>
     <string name="cart_terms">By placing your order, you agree to Hồng Trà Ngô Gia\'s Terms of Service and Policies.</string>
@@ -848,10 +849,22 @@
     <string name="header_sign_out">Sign out</string>
     <string name="order_confirmation_title">Confirmation</string>
     <string name="order_successful">Order Successful!</string>
+    <string name="order_success_message">Thank you for choosing Hong Tra Ngo Gia.\nOrder &lt;b&gt;#%1$s&lt;/b&gt; is being prepared.</string>
     <string name="order_pickup_time">Pickup time</string>
     <string name="order_pickup_address">Pickup address</string>
+    <string name="order_total_label">Total</string>
     <string name="order_track">Track order</string>
     <string name="order_back_to_menu">Back to menu</string>
+    <string name="order_id_format">HTNG-%1$d</string>
+
+    <string name="payment_momo">MoMo</string>
+    <string name="payment_zalopay">ZaloPay</string>
+    <string name="payment_ewallet">Ví điện tử</string>
+    <string name="payment_qr_title">Thanh toán QR</string>
+    <string name="payment_qr_instructions">Please scan the QR code to complete your payment. The order will be confirmed automatically after payment is received.</string>
+    <string name="payment_waiting_format">Waiting for payment... (%1$ds)</string>
     <string name="app_brand_name">HỒNG TRÀ NGÔ GIA</string>
     <string name="app_brand_chinese">吴家红茶水</string>
+    <string name="topping_price_format">+ %s</string>
+    <string name="order_pickup_time_value">15 - 20 phút</string>
 </resources>
