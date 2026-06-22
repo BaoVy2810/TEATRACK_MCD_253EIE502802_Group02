@@ -79,12 +79,13 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
 
                             android:contentDescription="@string/refund_title"
                             android:padding="10dp"
-                            android:src="@drawable/refund"
+                            android:background="@drawable/bg_rounded_square"
+                            android:src="@drawable/resource_return"
                             />
 
                         <LinearLayout
@@ -129,6 +130,7 @@
                             android:layout_height="50dp"
                             android:contentDescription="@string/refund_reversals_title"
                             android:padding="4dp"
+                            android:background="@drawable/bg_circle_profile"
                             android:src="@drawable/points" />
 
                         <TextView
@@ -198,6 +200,7 @@
 
                             android:contentDescription="@string/refund_cancellations_title"
                             android:padding="4dp"
+                            android:background="@drawable/bg_circle_profile"
                             android:src="@drawable/cancel"
                             />
 
@@ -271,6 +274,8 @@
                             android:layout_height="50dp"
                             android:contentDescription="@string/refund_membership_title"
                             android:padding="4dp"
+                            android:background="@drawable/bg_circle_profile"
+
                             android:src="@drawable/mempurchase"
                             app:tint="@color/brand_blue" />
 
