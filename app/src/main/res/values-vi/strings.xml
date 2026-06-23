@@ -21,6 +21,7 @@
     <string name="nav_promotion">Khuyến mãi</string>
     <string name="nav_profile">Tài khoản</string>
     <string name="str_search_hint">Tìm sản phẩm&#8230;</string>
+    <string name="str_search_hint_account">Tìm tài khoản&#8230;</string>
     <string name="home_search">Tìm kiếm</string>
 
     <!-- Trang chủ & Câu chuyện thương hiệu -->

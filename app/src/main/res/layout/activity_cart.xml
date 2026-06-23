@@ -762,8 +762,7 @@
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_cash_coins"
-                                app:tint="@color/brand_blue" />
+                                android:src="@drawable/ic_cash_coins"/>
 
                             <TextView
                                 android:id="@+id/tvCashOnHandLabel"

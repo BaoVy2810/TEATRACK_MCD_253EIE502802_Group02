@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
@@ -26,7 +25,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.teatrack_mcd_253eie502802_group02.PaymentMethodActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.CartItemAdapter;
 import com.teatrack_mcd_253eie502802_group02.data.CartManager;
@@ -351,7 +349,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
     private void updatePaymentUi() {
         String methodName = "";
-        int iconRes = R.drawable.ic_cash;
+        int iconRes = R.drawable.ic_cash_coins;
 
         boolean isCashOnHand = selectedPaymentMethod == PAYMENT_CASH_ON_HAND;
         boolean isBankMethod = selectedPaymentMethod >= PAYMENT_CASH_IN_BANK;
@@ -369,20 +367,23 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         switch (selectedPaymentMethod) {
             case PAYMENT_CASH_ON_HAND:
                 methodName = getString(R.string.cart_cash_on_hand);
-                iconRes = R.drawable.ic_cash;
+                iconRes = R.drawable.ic_cash_coins;
                 break;
             case PAYMENT_CASH_IN_BANK:
+                methodName = getString(R.string.cart_cash_in_bank);
+                iconRes = R.drawable.ic_cash_dollar;
+                break;
             case PAYMENT_MOMO:
                 methodName = getString(R.string.payment_momo);
-                iconRes = R.drawable.ic_cash_bank;
+                iconRes = R.drawable.momo;
                 break;
             case PAYMENT_ZALOPAY:
                 methodName = getString(R.string.payment_zalopay);
-                iconRes = R.drawable.ic_cash_bank;
+                iconRes = R.drawable.zalopay;
                 break;
             case PAYMENT_EWALLET:
                 methodName = getString(R.string.payment_ewallet);
-                iconRes = R.drawable.ic_cash_bank;
+                iconRes = R.drawable.ewallet;
                 break;
         }
 
@@ -399,8 +400,8 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (dragHandle != null) dragHandle.setVisibility(View.GONE);
 
         if (layoutCartFooter != null) {
-            layoutCartFooter.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-            layoutCartFooter.setPadding(0, footerPaddingTop, 0, footerPaddingBottom);
+            layoutCartFooter.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+            layoutCartFooter.setPadding(0, 0, 0, 0);
         }
 
         if (selectedPaymentMethod >= PAYMENT_CASH_IN_BANK && layoutBankOptions != null) {
@@ -408,11 +409,13 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
         updatePaymentUi();
     }
-
     private void hidePaymentPicker() {
         if (cardPaymentPicker != null) cardPaymentPicker.setVisibility(View.GONE);
         if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.GONE);
-        if (cardOrderSummary != null) cardOrderSummary.setVisibility(View.VISIBLE);
+        if (cardOrderSummary != null) {
+            cardOrderSummary.setAlpha(1f);
+            cardOrderSummary.setVisibility(View.VISIBLE);
+        }
         if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.VISIBLE);
         if (tvTerms != null) tvTerms.setVisibility(View.VISIBLE);
         if (dragHandle != null) dragHandle.setVisibility(View.VISIBLE);
@@ -427,9 +430,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                     footerPaddingBottom
             );
         }
-    }
-
-    private void handleConfirmOrder() {
+    }    private void handleConfirmOrder() {
         if (CartManager.getInstance().getItems().isEmpty()) {
             return;
         }

@@ -42,8 +42,8 @@
 
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="269dp"
+                android:layout_height="132dp"
                 android:contentDescription="@string/login_logo_description"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/logo_ngo_gia" />
