@@ -57,7 +57,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class AdminDashboard extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class AdminDashboard extends BaseActivity {
 
     private ActivityAdminDashboardBinding binding;
     private DatabaseReference mDatabase;
@@ -207,7 +209,7 @@ public class AdminDashboard extends AppCompatActivity {
     private void setupHeader() {
         View header = findViewById(R.id.headerAdmin);
         if (header != null) {
-            header.findViewById(R.id.btn_profile).setOnClickListener(v -> startActivity(new Intent(this, AdminProfile.class)));
+            com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper.setupProfileMenu(this);
             header.findViewById(R.id.btn_notification).setOnClickListener(v -> Toast.makeText(this, "Opening Notifications...", Toast.LENGTH_SHORT).show());
         }
     }

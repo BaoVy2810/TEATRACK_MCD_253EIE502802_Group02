@@ -26,6 +26,7 @@ public class AdminOrders extends AppCompatActivity {
         });
 
         setupBottomNavigation();
+        com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper.setupProfileMenu(this);
     }
 
     private void setupBottomNavigation() {

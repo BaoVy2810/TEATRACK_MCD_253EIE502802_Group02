@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,7 +11,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,9 +35,9 @@ import java.util.List;
 
 public class BlogDetail extends AppCompatActivity {
 
-    private static final String DATABASE_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
-    private TextView txtBreadcrumbTitle, txtDate, txtHeading, txtSubheading, txtContent;
+    private TextView txtDate, txtHeading, txtContent, tvTopTitle;
     private ImageView imgSingle, imgGalleryLeft, imgGalleryRight1, imgGalleryRight2;
+    private View btnBack, btnShare;
     private LinearLayout layoutGallery;
     private RecyclerView rvRelatedBlogs;
     private DatabaseReference mDatabase;
@@ -43,7 +46,9 @@ public class BlogDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blog_detail);
+        setupMainInsets();
 
         // Lấy ID bài viết từ Intent
         blogId = getIntent().getStringExtra("blog_id");
@@ -54,7 +59,7 @@ public class BlogDetail extends AppCompatActivity {
         }
 
         initViews();
-        mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference("blogs");
+        mDatabase = FirebaseDatabase.getInstance().getReference("blogs");
         
         loadBlogDetail();
         loadRelatedBlogs();
@@ -63,11 +68,25 @@ public class BlogDetail extends AppCompatActivity {
         setupNavBar();
     }
 
+    private void setupMainInsets() {
+        View mainView = findViewById(R.id.main);
+        if (mainView == null) {
+            return;
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(mainView, (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    }
+
     private void initViews() {
-        txtBreadcrumbTitle = findViewById(R.id.txtDetailBreadcrumbTitle);
+        tvTopTitle = findViewById(R.id.tvTopTitle);
+        btnBack = findViewById(R.id.btnBack);
+        btnShare = findViewById(R.id.btnShare);
+
         txtDate = findViewById(R.id.txtDetailDate);
         txtHeading = findViewById(R.id.txtDetailHeading);
-        txtSubheading = findViewById(R.id.txtDetailSubheading);
         txtContent = findViewById(R.id.txtDetailContent);
         
         imgSingle = findViewById(R.id.imgDetailSingle);
@@ -80,30 +99,23 @@ public class BlogDetail extends AppCompatActivity {
         rvRelatedBlogs.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         // Xóa text mặc định ban đầu
-        txtBreadcrumbTitle.setText("");
-        txtDate.setText("");
-        txtHeading.setText("");
-        txtSubheading.setText("");
-        txtContent.setText("");
+        if (txtDate != null) txtDate.setText("");
+        if (txtHeading != null) txtHeading.setText("");
+        if (txtContent != null) txtContent.setText("");
     }
 
     private void loadBlogDetail() {
         mDatabase.child(blogId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try {
-                    Blog blog = snapshot.getValue(Blog.class);
-                    if (blog != null) {
-                        if (blog.getId() == null || blog.getId().isEmpty()) {
-                            blog.setId(snapshot.getKey());
-                        }
-                        displayBlog(blog);
-                    } else {
-                        parseManualAndDisplay(snapshot);
+                Blog blog = snapshot.getValue(Blog.class);
+                if (blog != null) {
+                    if (blog.getId() == null || blog.getId().isEmpty()) {
+                        blog.setId(snapshot.getKey());
                     }
-                } catch (Exception e) {
-                    Log.e("FirebaseBlog", "Manual parse needed for: " + snapshot.getKey());
-                    parseManualAndDisplay(snapshot);
+                    displayBlog(blog);
+                } else {
+                    Toast.makeText(BlogDetail.this, "Không tìm thấy nội dung bài viết", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -114,34 +126,8 @@ public class BlogDetail extends AppCompatActivity {
         });
     }
 
-    private void parseManualAndDisplay(DataSnapshot snapshot) {
-        if (!snapshot.exists()) {
-            Toast.makeText(this, "Không tìm thấy nội dung bài viết", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Blog manualBlog = new Blog();
-        manualBlog.setId(snapshot.getKey());
-        manualBlog.setTitle(readString(snapshot, "title"));
-        manualBlog.setHeading(readString(snapshot, "heading"));
-        manualBlog.setSubheading(readString(snapshot, "subheading"));
-        manualBlog.setContent(readString(snapshot, "content"));
-        manualBlog.setDate(readString(snapshot, "date"));
-        manualBlog.setImage(readString(snapshot, "image"));
-        manualBlog.setThumbnailImage(readString(snapshot, "thumbnailImage"));
-        manualBlog.setHeadingColor(readString(snapshot, "headingColor"));
-        manualBlog.setLayoutType(readString(snapshot, "layoutType"));
-        manualBlog.setDescription(readString(snapshot, "description"));
-        
-        displayBlog(manualBlog);
-    }
-
-    private String readString(DataSnapshot snapshot, String key) {
-        Object val = snapshot.child(key).getValue();
-        return val != null ? String.valueOf(val) : "";
-    }
-
     private void displayBlog(Blog blog) {
-        txtBreadcrumbTitle.setText(blog.getTitle());
+        if (tvTopTitle != null) tvTopTitle.setText(blog.getTitle());
         txtDate.setText(blog.getDate());
         
         // Xử lý tiêu đề chính (Heading)
@@ -153,19 +139,6 @@ public class BlogDetail extends AppCompatActivity {
             try {
                 txtHeading.setTextColor(Color.parseColor(blog.getHeadingColor()));
             } catch (Exception ignored) {}
-        }
-
-        // Xử lý tiêu đề phụ (Subheading)
-        if (blog.getSubheading() != null && !blog.getSubheading().isEmpty()) {
-            txtSubheading.setVisibility(View.VISIBLE);
-            txtSubheading.setText(blog.getSubheading());
-            if (blog.getHeadingColor() != null) {
-                try {
-                    txtSubheading.setTextColor(Color.parseColor(blog.getHeadingColor()));
-                } catch (Exception ignored) {}
-            }
-        } else {
-            txtSubheading.setVisibility(View.GONE);
         }
 
         // Xử lý hiển thị hình ảnh (Single vs Gallery)
@@ -193,21 +166,31 @@ public class BlogDetail extends AppCompatActivity {
     }
 
     private void loadImage(String imageSource, ImageView imageView) {
-        if (imageSource == null || imageSource.isEmpty()) return;
-
-        if (imageSource.startsWith("http")) {
-            Glide.with(this)
-                    .load(imageSource)
+        if (imageSource == null || imageSource.trim().isEmpty()) return;
+        String source = imageSource.trim();
+        
+        if (source.startsWith("http")) {
+            Glide.with(this).load(source)
                     .placeholder(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_launcher_background)
                     .into(imageView);
         } else {
-            String resourceName = imageSource;
-            if (resourceName.contains(".")) {
-                resourceName = resourceName.substring(0, resourceName.lastIndexOf("."));
+            // Remove file extension and standardize name
+            String name = source;
+            int dot = name.lastIndexOf('.');
+            if (dot > 0) {
+                name = name.substring(0, dot);
             }
-            int resId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
+            name = name.replace(".", "_").replace("-", "_");
+            
+            int resId = getResources().getIdentifier(name, "mipmap", getPackageName());
+            if (resId == 0) {
+                resId = getResources().getIdentifier(name, "drawable", getPackageName());
+            }
+
             Glide.with(this)
                     .load(resId != 0 ? resId : R.drawable.ic_launcher_background)
+                    .placeholder(R.drawable.ic_launcher_background)
                     .into(imageView);
         }
     }
@@ -220,8 +203,13 @@ public class BlogDetail extends AppCompatActivity {
                 List<Blog> relatedList = new ArrayList<>();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
                     Blog blog = postSnapshot.getValue(Blog.class);
-                    if (blog != null && !blog.getId().equals(blogId)) {
-                        relatedList.add(blog);
+                    if (blog != null) {
+                        if (blog.getId() == null || blog.getId().isEmpty()) {
+                            blog.setId(postSnapshot.getKey());
+                        }
+                        if (!blog.getId().equals(blogId)) {
+                            relatedList.add(blog);
+                        }
                     }
                 }
                 RelatedBlogAdapter adapter = new RelatedBlogAdapter(BlogDetail.this, relatedList);
@@ -234,35 +222,29 @@ public class BlogDetail extends AppCompatActivity {
     }
 
     private void setupHeader() {
-        findViewById(R.id.btn_cart).setOnClickListener(v ->
-                startActivity(new Intent(this, Cart.class)));
-
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, UserProfile.class)));
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> onBackPressed());
+        }
+        if (btnShare != null) {
+            btnShare.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String title = (txtHeading != null) ? txtHeading.getText().toString() : "Blog";
+                intent.putExtra(Intent.EXTRA_TEXT, "Check out this blog: " + title);
+                startActivity(Intent.createChooser(intent, "Share via"));
+            });
+        }
     }
 
     private void setupNavBar() {
-        int[] navItemIds = {
-                R.id.nav_home,
-                R.id.nav_menu,
-                R.id.nav_orders,
-                R.id.nav_promotion,
-                R.id.nav_profile
-        };
+        // No NavBar client here as per user request
+    }
 
-        NavBarHelper.setupNavBar(this, navItemIds, -1, v -> {
-            int id = v.getId();
-            if (id == R.id.nav_home) {
-                startActivity(new Intent(this, Homepage.class));
-            } else if (id == R.id.nav_menu) {
-                startActivity(new Intent(this, Menu.class));
-            } else if (id == R.id.nav_orders) {
-                startActivity(new Intent(this, OrderHistory.class));
-            } else if (id == R.id.nav_promotion) {
-                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.nav_profile) {
-                startActivity(new Intent(this, UserProfile.class));
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, BlogGeneral.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
     }
 }

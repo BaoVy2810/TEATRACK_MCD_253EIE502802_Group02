@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+
+  <!-- Icon búa -->
+  <group
+      android:translateX="16"
+      android:translateY="14"
+      android:scaleX="2"
+      android:scaleY="2">
+
+    <path
+        android:fillColor="#0088FF"
+        android:pathData="M0,19V17H12V19H0ZM5.65,14.15L0,8.5L2.1,6.35L7.8,12L5.65,14.15ZM12,7.8L6.35,2.1L8.5,0L14.15,5.65L12,7.8ZM16.6,18L3.55,4.95L4.95,3.55L18,16.6L16.6,18Z"/>
+  </group>
+
+</vector>

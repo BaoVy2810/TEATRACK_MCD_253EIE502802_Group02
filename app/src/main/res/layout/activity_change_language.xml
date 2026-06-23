@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8FAFC"
+    tools:context="com.teatrack_mcd_253eie502802_group02.client.ChangeLanguageActivity">
+
+    <ImageView
+        android:id="@+id/btnProfileBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_profile_back_button"
+        android:contentDescription="@string/product_detail_back"
+        android:elevation="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+
+    <ImageView
+        android:id="@+id/imgBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/account_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="147dp"
+        android:layout_height="92dp"
+        android:layout_marginTop="28dp"
+        android:contentDescription="@string/login_logo_description"
+        android:scaleType="fitXY"
+        android:src="@mipmap/logo_ngo_gia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.882"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvLanguageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="140dp"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/language_settings_title"
+        android:textColor="#2C2C2C"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/viewUnderline"
+        android:layout_width="48dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="4dp"
+        app:cardBackgroundColor="#005299"
+        app:cardCornerRadius="1.5dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLanguageTitle" />
+
+    <!-- Language Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardLanguage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="40dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvLanguageTitle">
+
+        <RadioGroup
+            android:id="@+id/rgLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <RadioButton
+                android:id="@+id/rbEnglish"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:button="@null"
+                android:checked="true"
+                android:drawableEnd="@android:drawable/btn_radio"
+                android:paddingHorizontal="16dp"
+                android:text="@string/language_english"
+                android:textColor="#1E293B"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="#F1F5F9" />
+
+            <RadioButton
+                android:id="@+id/rbVietnamese"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:button="@null"
+                android:drawableEnd="@android:drawable/btn_radio"
+                android:paddingHorizontal="16dp"
+                android:text="@string/language_vietnamese"
+                android:textColor="#1E293B"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </RadioGroup>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveLanguage"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="80dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/language_btn_save"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="#0088ff"
+        app:cornerRadius="15dp"
+        app:elevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardLanguage" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

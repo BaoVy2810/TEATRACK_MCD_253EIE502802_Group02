@@ -1,5 +1,6 @@
 package com.teatrack_mcd_253eie502802_group02.adapter;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,15 @@ import java.util.List;
 public class NewsCardAdapter extends RecyclerView.Adapter<NewsCardAdapter.NewsViewHolder> {
 
     private final List<NewsItem> newsItems;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(NewsItem item);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public NewsCardAdapter(List<NewsItem> newsItems) {
         this.newsItems = newsItems;
@@ -33,8 +43,23 @@ public class NewsCardAdapter extends RecyclerView.Adapter<NewsCardAdapter.NewsVi
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         NewsItem item = newsItems.get(position);
         holder.imgNews.setImageResource(item.getImageRes());
-        holder.tvNewsTitle.setText(item.getTitle());
+
+        String title = item.getTitle();
+        if (title != null) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                holder.tvNewsTitle.setText(Html.fromHtml(title, Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                holder.tvNewsTitle.setText(Html.fromHtml(title));
+            }
+        }
+
         holder.tvNewsDate.setText(item.getDateRange());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(item);
+            }
+        });
     }
 
     @Override

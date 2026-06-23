@@ -1,9 +1,13 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.content.Intent;
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,7 +27,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.model.NewsItem;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.model.Promotion;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
+import com.teatrack_mcd_253eie502802_group02.util.CartActions;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,7 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Homepage extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class Homepage extends BaseActivity {
     private static final int[] NAV_IDS = {
             R.id.nav_home,
             R.id.nav_menu,
@@ -63,15 +71,29 @@ public class Homepage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_homepage);
+
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
+
         bindViews();
-        safeInit(this::setupBottomNav);
-        safeInit(this::setupBanners);
-        safeInit(this::setupFeaturedProducts);
-        safeInit(this::setupPromotions);
-        safeInit(this::setupNews);
-        safeInit(this::setupCategoryActions);
-        safeInit(this::setupStoryAction);
+        setupBottomNav();
+        setupBanners();
+        setupFeaturedProducts();
+        setupPromotions();
+        setupNews();
+        setupCategoryActions();
+        setupStoryAction();
+        setupViewAllActions();
+        setupContactSection();
+        CartBadgeHelper.setup(this);
     }
 
     @Override
@@ -84,6 +106,7 @@ public class Homepage extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startAutoScroll();
+        CartBadgeHelper.updateBadge(this);
     }
 
     private void startAutoScroll() {
@@ -122,15 +145,27 @@ public class Homepage extends AppCompatActivity {
         if (id == R.id.nav_home) {
             return;
         }
+        Intent intent = null;
         if (id == R.id.nav_menu) {
-            startActivity(new Intent(this, Menu.class));
+            intent = new Intent(this, Menu.class);
         } else if (id == R.id.nav_orders) {
-            startActivity(new Intent(this, OrderHistory.class));
+            intent = new Intent(this, OrderHistory.class);
         } else if (id == R.id.nav_promotion) {
-            startActivity(new Intent(this, BlogGeneral.class));
+            Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_profile) {
-            startActivity(new Intent(this, UserProfile.class));
+            intent = new Intent(this, UserProfile.class);
         }
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
     private void setupBanners() {
@@ -151,9 +186,14 @@ public class Homepage extends AppCompatActivity {
 
         BannerAdapter adapter = new BannerAdapter(banners);
         adapter.setOnItemClickListener(position -> {
-            // Navigate to BlogDetail with dummy data
+            String blogId;
+            if (position == 0) blogId = "blog_2";
+            else if (position == 1) blogId = "blog_4";
+            else if (position == 2) blogId = "blog_7";
+            else blogId = "blog_2";
+
             Intent intent = new Intent(this, BlogDetail.class);
-            intent.putExtra("blog_id", "banner_blog_" + position);
+            intent.putExtra("blog_id", blogId);
             startActivity(intent);
         });
         viewPagerBanners.setAdapter(adapter);
@@ -199,7 +239,11 @@ public class Homepage extends AppCompatActivity {
             return;
         }
         rvFeaturedProducts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        featuredAdapter = new ProductCardAdapter(featuredProducts, this::openProductDetail);
+        featuredAdapter = new ProductCardAdapter(
+                featuredProducts,
+                this::openProductDetail,
+                this::onAddToCart
+        );
         rvFeaturedProducts.setAdapter(featuredAdapter);
         loadFeaturedProducts();
     }
@@ -226,6 +270,59 @@ public class Homepage extends AppCompatActivity {
         });
     }
 
+    private void setupViewAllActions() {
+        View tvViewAllFeatured = findViewById(R.id.tvViewAllFeatured);
+        if (tvViewAllFeatured != null) {
+            tvViewAllFeatured.setOnClickListener(v -> startActivity(new Intent(this, Menu.class)));
+        }
+
+        View tvViewAllPromotions = findViewById(R.id.tvViewAllPromotions);
+        if (tvViewAllPromotions != null) {
+            tvViewAllPromotions.setOnClickListener(v -> {
+                Intent intent = new Intent(this, BlogGeneral.class);
+                intent.putExtra("CATEGORY_FILTER", "Promotions");
+                startActivity(intent);
+            });
+        }
+
+        View tvViewAllNews = findViewById(R.id.tvViewAllNews);
+        if (tvViewAllNews != null) {
+            tvViewAllNews.setOnClickListener(v -> {
+                Intent intent = new Intent(this, BlogGeneral.class);
+                startActivity(intent);
+            });
+        }
+    }
+
+    private void setupContactSection() {
+        View cardFindBranch = findViewById(R.id.cardFindBranch);
+        if (cardFindBranch != null) {
+            cardFindBranch.setOnClickListener(v ->
+                    startActivity(new Intent(this, Agency.class))
+            );
+        }
+
+        View cardHotline = findViewById(R.id.cardHotline);
+        if (cardHotline != null) {
+            cardHotline.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(android.net.Uri.parse("tel:02-723-979-518"));
+                startActivity(intent);
+            });
+        }
+
+        View cardEmail = findViewById(R.id.cardEmail);
+        if (cardEmail != null) {
+            cardEmail.setOnClickListener(v ->
+                    startActivity(new Intent(this, ContactWithUs.class))
+            );
+        }
+    }
+
+    private void onAddToCart(Product product) {
+        CartActions.addDefaultProduct(this, product);
+    }
+
     private void openProductDetail(Product product) {
         Intent intent = new Intent(this, ProductDetail.class);
         intent.putExtra("name", product.getName());
@@ -246,10 +343,17 @@ public class Homepage extends AppCompatActivity {
         }
         rvPromotions.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         List<Promotion> promotions = new ArrayList<>();
-        promotions.add(new Promotion(R.mipmap.banner_monmoi));
-        promotions.add(new Promotion(R.mipmap.banner_aboutus));
-        promotions.add(new Promotion(R.mipmap.banner_aboutus2));
-        rvPromotions.setAdapter(new PromotionAdapter(promotions));
+        promotions.add(new Promotion("blog_2", R.mipmap.banner_monmoi));
+        promotions.add(new Promotion("blog_4", R.mipmap.banner_aboutus));
+        promotions.add(new Promotion("blog_7", R.mipmap.banner_aboutus2));
+
+        PromotionAdapter adapter = new PromotionAdapter(promotions);
+        adapter.setOnItemClickListener(item -> {
+            Intent intent = new Intent(this, BlogDetail.class);
+            intent.putExtra("blog_id", item.getId());
+            startActivity(intent);
+        });
+        rvPromotions.setAdapter(adapter);
     }
 
     private void setupNews() {
@@ -258,28 +362,38 @@ public class Homepage extends AppCompatActivity {
         }
         rvNews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         newsAdapter = new NewsCardAdapter(newsItems);
+        newsAdapter.setOnItemClickListener(item -> {
+            if (item.getId() == null || item.getId().isEmpty()) {
+                return;
+            }
+            Intent intent = new Intent(this, BlogDetail.class);
+            intent.putExtra("blog_id", item.getId());
+            startActivity(intent);
+        });
         rvNews.setAdapter(newsAdapter);
         loadNews();
     }
 
     private void setupCategoryActions() {
-        bindCategoryClick(R.id.categoryPureTea, getString(R.string.firebase_category_pure_tea));
-        bindCategoryClick(R.id.categoryTeaLatte, getString(R.string.firebase_category_tea_latte));
-        bindCategoryClick(R.id.categoryMilkTea, getString(R.string.firebase_category_milk_tea));
-        bindCategoryClick(R.id.categoryNewArrivals, getString(R.string.firebase_category_new_arrivals));
-        bindCategoryClick(R.id.categoryBestSellers, getString(R.string.firebase_category_best_sellers));
-        bindCategoryClick(R.id.categoryFruitTea, getString(R.string.firebase_category_fruit_tea));
+        bindCategoryClick(R.id.categoryPureTea, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.PURE_TEA);
+        bindCategoryClick(R.id.categoryTeaLatte, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.TEA_LATTE);
+        bindCategoryClick(R.id.categoryMilkTea, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.MILK_TEA);
+        bindCategoryClick(R.id.categoryNewArrivals, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.NEW_ARRIVALS);
+        bindCategoryClick(R.id.categoryBestSellers, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.BEST_SELLERS);
+        bindCategoryClick(R.id.categoryFruitTea, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.FRUIT_TEA);
     }
 
-    private void bindCategoryClick(int viewId, String firebaseCategory) {
+    private void bindCategoryClick(int viewId, String categoryKey) {
         View categoryView = findViewById(viewId);
         if (categoryView == null) {
             return;
         }
         categoryView.setOnClickListener(v -> {
             Intent intent = new Intent(this, Menu.class);
-            intent.putExtra(MainActivity.EXTRA_MENU_CATEGORY, firebaseCategory);
+            intent.putExtra(MainActivity.EXTRA_MENU_CATEGORY, categoryKey);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
+            overridePendingTransition(0, 0);
         });
     }
 
@@ -317,6 +431,7 @@ public class Homepage extends AppCompatActivity {
                     }
                     int imageRes = resolveImageRes(imageField);
                     loaded.add(new NewsItem(
+                            child.getKey(),
                             title,
                             (date == null || date.isEmpty()) ? "--" : date,
                             imageRes));
@@ -347,9 +462,9 @@ public class Homepage extends AppCompatActivity {
 
     private List<NewsItem> getFallbackNews() {
         List<NewsItem> fallback = new ArrayList<>();
-        fallback.add(new NewsItem("Vẹn tròn trung thu - Trọn vị Ngô Gia", "26-31.07.25", R.mipmap.blog_1_2));
-        fallback.add(new NewsItem("Bí quyết chọn trà hợp gu mỗi ngày", "10-17.08.25", R.mipmap.blog_3_1));
-        fallback.add(new NewsItem("Món mới mùa hè đã lên kệ", "01-08.09.25", R.mipmap.blog_3_2));
+        fallback.add(new NewsItem("blog_2", "Vẹn tròn trung thu - Trọn vị Ngô Gia", "26-31.07.25", R.mipmap.blog_1_2));
+        fallback.add(new NewsItem("blog_4", "Bí quyết chọn trà hợp gu mỗi ngày", "10-17.08.25", R.mipmap.blog_3_1));
+        fallback.add(new NewsItem("blog_7", "Món mới mùa hè đã lên kệ", "01-08.09.25", R.mipmap.blog_3_2));
         return fallback;
     }
 

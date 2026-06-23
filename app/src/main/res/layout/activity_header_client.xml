@@ -45,6 +45,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:foregroundTint="@color/card_bg"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -55,23 +56,44 @@
                     android:layout_gravity="center"
                     android:contentDescription="@string/nav_account"
                     android:src="@drawable/user"
-                    app:tint="@color/darkgreen" />
+                    app:tint="@color/brand_blue" />
             </FrameLayout>
 
-            <ImageButton
-                android:id="@+id/btn_cart"
+            <FrameLayout
                 android:layout_width="@dimen/header_profile_size"
                 android:layout_height="@dimen/header_profile_size"
                 android:layout_marginEnd="12dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/nav_orders"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/cart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btn_profile"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/brand_blue" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/btn_cart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/cart_title"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/cart"
+                    app:tint="@color/brand_blue" />
+
+                <TextView
+                    android:id="@+id/tvCartBadge"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/bg_cart_badge_red"
+                    android:fontFamily="@font/inter_family"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="2"
+                    tools:visibility="visible" />
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

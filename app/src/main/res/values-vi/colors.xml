@@ -130,4 +130,5 @@
     <!-- ── Toast ── -->
     <color name="toast_bg">#1F2937</color>
     <color name="toast_text">#FFFFFF</color>
+    <color name="dark_gray">#181C23</color>"
 </resources>

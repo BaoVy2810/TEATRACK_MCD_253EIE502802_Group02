@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvSignOut"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_popup_sign_out"
+    android:fontFamily="@font/inter_family"
+    android:gravity="center"
+    android:minWidth="140dp"
+    android:paddingStart="20dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="12dp"
+    android:text="@string/header_sign_out"
+    android:textColor="#0088FF"
+    android:textSize="14sp"
+    android:textStyle="bold" />

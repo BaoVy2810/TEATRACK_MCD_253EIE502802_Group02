@@ -10,7 +10,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 
-public class AdminProfile extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class AdminProfile extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,5 +24,6 @@ public class AdminProfile extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper.setupProfileMenu(this);
     }
 }

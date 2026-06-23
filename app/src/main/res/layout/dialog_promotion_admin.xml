@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="32dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="8dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Header -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp">
+
+                <TextView
+                    android:id="@+id/tvDialogTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/btnCloseDialog"
+                    android:text="@string/str_promotion_details"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/btnCloseDialog"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/bg_input_rounded"
+                    android:contentDescription="@string/str_close"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_close"
+                    app:tint="@color/brand_blue" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/divider" />
+
+            <!-- Promotion Code -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_promotion_code"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etPromotionCode"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_input_rounded"
+                android:hint="@string/hint_enter_promotion_code"
+                android:inputType="textCapCharacters"
+                android:paddingHorizontal="12dp"
+                android:textSize="13sp" />
+
+            <!-- Promotion Description -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_promotion_description"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etPromotionDesc"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_input_rounded"
+                android:hint="@string/hint_enter_promotion_desc"
+                android:inputType="text"
+                android:paddingHorizontal="12dp"
+                android:textSize="13sp" />
+
+            <!-- Promotion Type -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_promotion_type"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spnPromotionType"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_input_rounded" />
+
+            <!-- Promotion Value -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_promotion_value"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etPromotionValue"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_input_rounded"
+                android:hint="@string/hint_enter_value"
+                android:inputType="numberDecimal"
+                android:paddingHorizontal="12dp"
+                android:textSize="13sp" />
+
+            <!-- Min Subtotal -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_min_subtotal"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etMinSubtotal"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_input_rounded"
+                android:hint="@string/hint_enter_min_subtotal"
+                android:inputType="numberDecimal"
+                android:paddingHorizontal="12dp"
+                android:textSize="13sp" />
+
+            <!-- Buttons Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCancelPromotion"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="@color/danger"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/btn_cancel"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    app:cornerRadius="17dp"
+                    app:icon="@drawable/ic_close"
+                    app:iconGravity="textStart"
+                    app:iconPadding="4dp"
+                    app:iconSize="12dp"
+                    app:iconTint="@color/white" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSavePromotion"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/brand_blue"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/btn_save"
+                    android:textAllCaps="false"
+                    android:textSize="12sp"
+                    android:gravity="center"
+                    app:cornerRadius="17dp"
+                    app:icon="@drawable/edit2"
+                    app:iconGravity="textStart"
+                    app:iconPadding="4dp"
+                    app:iconSize="12dp"
+                    app:iconTint="@color/white" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</com.google.android.material.card.MaterialCardView>

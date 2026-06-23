@@ -3,6 +3,7 @@ package com.teatrack_mcd_253eie502802_group02.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -20,22 +21,45 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
         void onProductClick(Product product);
     }
 
+    public interface OnAddToCartClickListener {
+        void onAddToCart(Product product);
+    }
+
     private final List<Product> products;
     private final OnProductClickListener clickListener;
+    private final OnAddToCartClickListener addToCartClickListener;
     private final int layoutId;
 
     public ProductCardAdapter(List<Product> products) {
-        this(products, R.layout.item_product_card, null);
+        this(products, R.layout.item_product_card, null, null);
     }
 
     public ProductCardAdapter(List<Product> products, OnProductClickListener clickListener) {
-        this(products, R.layout.item_product_card, clickListener);
+        this(products, R.layout.item_product_card, clickListener, null);
+    }
+
+    public ProductCardAdapter(
+            List<Product> products,
+            OnProductClickListener clickListener,
+            OnAddToCartClickListener addToCartClickListener
+    ) {
+        this(products, R.layout.item_product_card, clickListener, addToCartClickListener);
     }
 
     public ProductCardAdapter(List<Product> products, int layoutId, OnProductClickListener clickListener) {
+        this(products, layoutId, clickListener, null);
+    }
+
+    public ProductCardAdapter(
+            List<Product> products,
+            int layoutId,
+            OnProductClickListener clickListener,
+            OnAddToCartClickListener addToCartClickListener
+    ) {
         this.products = products;
         this.layoutId = layoutId;
         this.clickListener = clickListener;
+        this.addToCartClickListener = addToCartClickListener;
     }
 
     @NonNull
@@ -62,6 +86,14 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
                 clickListener.onProductClick(item);
             }
         });
+
+        if (holder.btnAddToCartMini != null) {
+            holder.btnAddToCartMini.setOnClickListener(v -> {
+                if (addToCartClickListener != null) {
+                    addToCartClickListener.onAddToCart(item);
+                }
+            });
+        }
     }
 
     @Override
@@ -75,12 +107,14 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
+        ImageButton btnAddToCartMini;
         TextView tvProductName, tvRating, tvReviews;
         TextView tvPriceM, tvPriceL, tvVipPriceM, tvVipPriceL;
 
         ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
+            btnAddToCartMini = itemView.findViewById(R.id.btnAddToCartMini);
             tvProductName = itemView.findViewById(R.id.tvProductName);
             tvRating = itemView.findViewById(R.id.tvRating);
             tvReviews = itemView.findViewById(R.id.tvReviews);

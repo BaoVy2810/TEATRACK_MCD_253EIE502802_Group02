@@ -24,17 +24,24 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:paddingBottom="80dp">
 
-        <!-- Screen Title -->
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Screen Title with White Strip -->
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/title_product_management"
-            android:textColor="@color/brand_blue"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:background="@color/white"
+            android:paddingVertical="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="14dp"
+            android:elevation="1dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/title_product_management"
+                android:textColor="@color/brand_blue"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </FrameLayout>
 
         <!-- Search View (Full Width) -->
         <EditText
@@ -86,12 +93,12 @@
                 android:id="@+id/btnExportExcel"
                 android:layout_width="wrap_content"
                 android:layout_height="38dp"
-                android:backgroundTint="@color/primary_light"
+                android:backgroundTint="@color/brand_blue"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="@string/btn_export_excel"
                 android:textAllCaps="false"
-                android:textColor="@color/brand_blue"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="12sp"
                 app:cornerRadius="19dp"

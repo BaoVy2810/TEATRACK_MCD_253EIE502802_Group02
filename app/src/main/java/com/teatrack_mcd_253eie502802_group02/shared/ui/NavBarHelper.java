@@ -32,12 +32,8 @@ public final class NavBarHelper {
         item.setSelected(selected);
         int color = ContextCompat.getColor(context, selected ? R.color.white : R.color.text_secondary);
 
-        if (selected) {
-            item.setBackground(ResourcesCompat.getDrawable(
-                    context.getResources(), R.drawable.nav_item_background, context.getTheme()));
-        } else {
-            item.setBackgroundResource(android.R.color.transparent);
-        }
+        item.setBackground(ResourcesCompat.getDrawable(
+                context.getResources(), R.drawable.nav_item_background, context.getTheme()));
 
         if (item instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) item;

@@ -7,8 +7,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,133 +31,147 @@ import java.util.List;
 
 public class BlogGeneral extends AppCompatActivity {
 
-    private static final String DATABASE_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
     private RecyclerView rvBlogList;
     private ProgressBar progressBar;
+    private android.widget.TextView tvTopTitle;
+    private View btnBack, btnShare;
     private List<Blog> allBlogs = new ArrayList<>();
     private DatabaseReference mDatabase;
     private BlogAdapter adapter;
 
+    private String filterCategory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blog_general);
+        setupMainInsets();
+
+        filterCategory = getIntent().getStringExtra("CATEGORY_FILTER");
 
         initViews();
         setupHeader();
         setupNavBar();
 
-        // Khởi tạo Firebase với URL cụ thể cho vùng asia-southeast1
-        mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference("blogs");
+        // Khởi tạo Firebase - Node 'blogs'
+        mDatabase = FirebaseDatabase.getInstance().getReference("blogs");
 
         loadBlogsFromFirebase();
+    }
+
+    private void setupMainInsets() {
+        View mainView = findViewById(R.id.main);
+        if (mainView == null) {
+            return;
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(mainView, (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
     }
 
     private void initViews() {
         rvBlogList = findViewById(R.id.rvBlogList);
         progressBar = findViewById(R.id.progressBar);
+        tvTopTitle = findViewById(R.id.tvTopTitle);
+        btnBack = findViewById(R.id.btnBack);
+        btnShare = findViewById(R.id.btnShare);
         
+        if (tvTopTitle != null && filterCategory != null && !filterCategory.isEmpty()) {
+            tvTopTitle.setText(filterCategory);
+        }
+
         rvBlogList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BlogAdapter(this, allBlogs);
         rvBlogList.setAdapter(adapter);
     }
 
-    private String readString(DataSnapshot snapshot, String key) {
-        Object val = snapshot.child(key).getValue();
-        return val != null ? String.valueOf(val) : "";
-    }
-
     private void setupHeader() {
-        findViewById(R.id.btn_cart).setOnClickListener(v ->
-                startActivity(new Intent(this, Cart.class)));
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> onBackPressed());
+        }
 
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, UserProfile.class)));
+        if (btnShare != null) {
+            btnShare.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, "Check out these blogs at TeaTrack!");
+                startActivity(Intent.createChooser(intent, "Share via"));
+            });
+        }
     }
 
     private void setupNavBar() {
-        int[] navItemIds = {
-                R.id.nav_home,
-                R.id.nav_menu,
-                R.id.nav_orders,
-                R.id.nav_promotion,
-                R.id.nav_profile
-        };
+        // No NavBar client here as per user request
+    }
 
-        // Gán chức năng điều hướng cho Navbar
-        NavBarHelper.setupNavBar(this, navItemIds, -1, v -> {
-            int id = v.getId();
-            if (id == R.id.nav_home) {
-                startActivity(new Intent(this, Homepage.class));
-            } else if (id == R.id.nav_menu) {
-                startActivity(new Intent(this, Menu.class));
-            } else if (id == R.id.nav_orders) {
-                startActivity(new Intent(this, OrderHistory.class));
-            } else if (id == R.id.nav_promotion) {
-                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
-            } else if (id == R.id.nav_profile) {
-                startActivity(new Intent(this, UserProfile.class));
-            }
-        });
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, Homepage.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     private void loadBlogsFromFirebase() {
         progressBar.setVisibility(View.VISIBLE);
-        Log.d("FirebaseBlog", "Starting fetch from path: " + mDatabase.toString());
-        Toast.makeText(this, "Đang kết nối Firebase...", Toast.LENGTH_SHORT).show();
+        Log.d("BlogGeneral", "Loading blogs from Firebase, category filter: " + filterCategory);
         
+        // Lấy danh sách bài viết từ Firebase
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("FirebaseBlog", "onDataChange triggered. Exists: " + snapshot.exists() + ", Children: " + snapshot.getChildrenCount());
                 allBlogs.clear();
-                
-                if (!snapshot.exists()) {
-                    Log.e("FirebaseBlog", "No data found at 'blogs' node");
-                }
-
+                Log.d("BlogGeneral", "DataSnapshot count: " + snapshot.getChildrenCount());
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    try {
-                        Blog blog = postSnapshot.getValue(Blog.class);
-                        if (blog != null) {
-                            if (blog.getId() == null || blog.getId().isEmpty()) {
-                                blog.setId(postSnapshot.getKey());
-                            }
-                            allBlogs.add(blog);
+                    Blog blog = postSnapshot.getValue(Blog.class);
+                    if (blog != null) {
+                        // Ensure ID is set from the snapshot key if missing
+                        if (blog.getId() == null || blog.getId().isEmpty()) {
+                            blog.setId(postSnapshot.getKey());
                         }
-                    } catch (Exception e) {
-                        Log.e("FirebaseBlog", "Error parsing blog: " + postSnapshot.getKey(), e);
-                        // Manual parse fallback
-                        Blog manualBlog = new Blog();
-                        manualBlog.setId(postSnapshot.getKey());
-                        manualBlog.setTitle(readString(postSnapshot, "title"));
-                        manualBlog.setHeading(readString(postSnapshot, "heading"));
-                        manualBlog.setSubheading(readString(postSnapshot, "subheading"));
-                        manualBlog.setContent(readString(postSnapshot, "content"));
-                        manualBlog.setDate(readString(postSnapshot, "date"));
-                        manualBlog.setImage(readString(postSnapshot, "image"));
-                        manualBlog.setThumbnailImage(readString(postSnapshot, "thumbnailImage"));
-                        manualBlog.setDescription(readString(postSnapshot, "description"));
-                        allBlogs.add(manualBlog);
+                        
+                        Log.d("BlogGeneral", "Found blog: " + blog.getTitle() + " (ID: " + blog.getId() + ")");
+                        
+                        // Check if we filter by category (stored in 'title' field based on current model)
+                        boolean matches = false;
+                        if (filterCategory == null || filterCategory.trim().isEmpty()) {
+                            matches = true;
+                        } else if (blog.getTitle() != null) {
+                            String title = blog.getTitle().toLowerCase(java.util.Locale.ROOT).trim();
+                            String filter = filterCategory.toLowerCase(java.util.Locale.ROOT).trim();
+                            // Match if titles are same, or one contains other (e.g. Promotion vs Promotions)
+                            matches = title.contains(filter) || filter.contains(title);
+                        }
+
+                        if (matches) {
+                            allBlogs.add(blog);
+                        } else {
+                            Log.d("BlogGeneral", "Filtered out: '" + blog.getTitle() + "' != '" + filterCategory + "'");
+                        }
+                    } else {
+                        Log.w("BlogGeneral", "Blog is null for snapshot: " + postSnapshot.getKey());
                     }
                 }
                 
-                Log.d("FirebaseBlog", "Total blogs loaded: " + allBlogs.size());
                 adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
 
                 if (allBlogs.isEmpty()) {
-                    Toast.makeText(BlogGeneral.this, "Danh sách bài viết trống", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(BlogGeneral.this, "Tải thành công " + allBlogs.size() + " bài viết", Toast.LENGTH_SHORT).show();
+                    String msg = (filterCategory == null || filterCategory.isEmpty()) 
+                            ? "Hiện chưa có bài viết nào trong Diễn đàn" 
+                            : "Không tìm thấy bài viết cho danh mục: " + filterCategory;
+                    Toast.makeText(BlogGeneral.this, msg, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressBar.setVisibility(View.GONE);
-                Log.e("FirebaseBlog", "Firebase Error: " + error.getMessage() + ", Details: " + error.getDetails());
-                Toast.makeText(BlogGeneral.this, "Lỗi Firebase: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("Firebase", "Error: " + error.getMessage());
+                Toast.makeText(BlogGeneral.this, "Lỗi tải dữ liệu Diễn đàn", Toast.LENGTH_SHORT).show();
             }
         });
     }

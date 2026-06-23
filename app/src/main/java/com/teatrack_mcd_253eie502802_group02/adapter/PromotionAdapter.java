@@ -15,6 +15,15 @@ import java.util.List;
 public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.PromotionViewHolder> {
 
     private final List<Promotion> promotions;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Promotion item);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public PromotionAdapter(List<Promotion> promotions) {
         this.promotions = promotions;
@@ -30,7 +39,14 @@ public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.Prom
 
     @Override
     public void onBindViewHolder(@NonNull PromotionViewHolder holder, int position) {
-        holder.imgPromotion.setImageResource(promotions.get(position).getImageRes());
+        Promotion item = promotions.get(position);
+        holder.imgPromotion.setImageResource(item.getImageRes());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(item);
+            }
+        });
     }
 
     @Override

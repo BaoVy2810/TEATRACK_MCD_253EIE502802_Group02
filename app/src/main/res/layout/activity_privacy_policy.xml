@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_baby_blue"
+    tools:context=".client.PrivacyPolicyActivity">
+    <ImageView
+        android:id="@+id/btnProfileBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_profile_back_button"
+        android:contentDescription="@string/product_detail_back"
+        android:elevation="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/uspro_bg">
+
+            <LinearLayout
+                android:id="@+id/llHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="24dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="200dp"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/llHeader">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_circle_profile"
+                            android:contentDescription="@string/privacy_title"
+                            android:padding="10dp"
+                            android:src="@drawable/ic_shield_privacy"
+                            app:tint="@color/brand_blue" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_semibold"
+                                android:text="@string/privacy_title"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/privacy_last_updated"
+                                android:textColor="@color/Gray"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="16dp"
+                        android:background="#EEEEEE" />
+
+                    <!-- Section 1 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="4dp"
+                            android:layout_height="16dp"
+                            android:background="@drawable/bg_terms_indicator" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="@string/privacy_collect_title"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/inter"
+                        android:lineSpacingExtra="4dp"
+                        android:text="@string/privacy_collect_content"
+                        android:textColor="@color/black"
+                        android:justificationMode="inter_word"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/privacy_collect_bullet1"
+                        android:textColor="@color/black"
+                        android:justificationMode="inter_word"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
+                        android:text="@string/privacy_collect_bullet2"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="12dp"
+                        android:justificationMode="inter_word"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/privacy_collect_bullet3"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <!-- Section 2 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="4dp"
+                            android:layout_height="16dp"
+                            android:background="@drawable/bg_terms_indicator" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="@string/privacy_use_title"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/inter"
+                        android:lineSpacingExtra="4dp"
+                        android:justificationMode="inter_word"
+                        android:text="@string/privacy_use_content"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
+                        android:text="@string/privacy_use_bullet1"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
+                        android:text="@string/privacy_use_bullet2"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/privacy_use_bullet3"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/privacy_use_bullet4"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <!-- Section 3 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="4dp"
+                            android:layout_height="16dp"
+                            android:background="@drawable/bg_terms_indicator" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="@string/privacy_sharing_title"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/inter"
+                        android:lineSpacingExtra="4dp"
+                        android:text="@string/privacy_sharing_content"
+                        android:textColor="@color/black"
+                        android:justificationMode="inter_word"
+                        android:textSize="13sp" />
+
+                    <!-- Section 4 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="4dp"
+                            android:layout_height="16dp"
+                            android:background="@drawable/bg_terms_indicator" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="@string/privacy_rights_title"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/inter"
+                        android:lineSpacingExtra="4dp"
+                        android:text="@string/privacy_rights_content"
+                        android:textColor="@color/black"
+                        android:justificationMode="inter_word"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/privacy_rights_bullet1"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/privacy_rights_bullet2"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/privacy_rights_bullet3"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="@font/inter"
+                        android:text="@string/privacy_rights_bullet4"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        app:drawableStartCompat="@drawable/dot_shape"
+                        android:drawablePadding="8dp" />
+
+                    <!-- Section 5 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="4dp"
+                            android:layout_height="16dp"
+                            android:background="@drawable/bg_terms_indicator" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="@string/privacy_security_title"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/inter"
+                        android:lineSpacingExtra="4dp"
+                        android:justificationMode="inter_word"
+                        android:text="@string/privacy_security_content"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/imgLogo"
+                android:layout_width="147dp"
+                android:layout_height="92dp"
+                android:layout_marginTop="65dp"
+                android:contentDescription="@string/login_logo_description"
+                android:scaleType="fitXY"
+                android:src="@mipmap/logo_ngo_gia"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.909"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

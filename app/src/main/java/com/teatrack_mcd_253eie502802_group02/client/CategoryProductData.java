@@ -17,7 +17,9 @@ public class CategoryProductData {
         map.put("Tea Latte", teaLatteProducts());
         map.put("Milk Tea", milkTeaProducts());
         map.put("New Arrivals", newArrivalsProducts());
+        map.put("New Drinks", newArrivalsProducts());
         map.put("Best Sellers", bestSellersProducts());
+        map.put("Hot Drinks", bestSellersProducts());
         map.put("Fruit Tea", fruitTeaProducts());
 
         return map;

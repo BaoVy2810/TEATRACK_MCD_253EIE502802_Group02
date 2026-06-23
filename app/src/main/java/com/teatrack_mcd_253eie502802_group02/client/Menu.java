@@ -2,6 +2,7 @@ package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -29,7 +30,10 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.MenuProductAdapter;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
+import com.teatrack_mcd_253eie502802_group02.util.CartActions;
+import com.teatrack_mcd_253eie502802_group02.util.CategoryKeys;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -37,7 +41,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class Menu extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class Menu extends BaseActivity {
+
     private static final int[] NAV_IDS = {
             R.id.nav_home,
             R.id.nav_menu,
@@ -65,22 +72,57 @@ public class Menu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_menu);
 
-        selectedCategory = getIntent() != null
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
+
+        selectedCategory = CategoryKeys.normalize(getIntent() != null
                 ? getIntent().getStringExtra(MainActivity.EXTRA_MENU_CATEGORY)
-                : null;
+                : null);
 
         bindViews();
         setupProducts();
         setupSearch();
         setupFilterPopupTrigger();
-        // Show a stable UI immediately; Firebase data will replace it when loaded.
-        allProducts.clear();
-        allProducts.addAll(getFallbackMenuProducts());
-        applyFilter();
+        loadInitialProducts();
         loadProductsFromFirebase();
         setupBottomNav();
+        CartBadgeHelper.setup(this);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        selectedCategory = CategoryKeys.normalize(intent != null
+                ? intent.getStringExtra(MainActivity.EXTRA_MENU_CATEGORY)
+                : null);
+        if (allProducts.isEmpty()) {
+            loadInitialProducts();
+            loadProductsFromFirebase();
+        } else {
+            applyFilter();
+        }
+    }
+
+    private void loadInitialProducts() {
+        allProducts.clear();
+        allProducts.addAll(getInitialMenuProducts());
+        applyFilter();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CartBadgeHelper.updateBadge(this);
     }
 
     private void bindViews() {
@@ -166,12 +208,12 @@ public class Menu extends AppCompatActivity {
     private void bindPopupOptions(View popupView) {
         Map<Integer, String> categoryOptions = new LinkedHashMap<>();
         categoryOptions.put(R.id.optCategoryAll, "");
-        categoryOptions.put(R.id.optCategoryPureTea, getString(R.string.firebase_category_pure_tea));
-        categoryOptions.put(R.id.optCategoryMilkTea, getString(R.string.firebase_category_milk_tea));
-        categoryOptions.put(R.id.optCategoryTeaLatte, getString(R.string.firebase_category_tea_latte));
-        categoryOptions.put(R.id.optCategoryFruitTea, getString(R.string.firebase_category_fruit_tea));
-        categoryOptions.put(R.id.optCategoryNewArrivals, getString(R.string.firebase_category_new_arrivals));
-        categoryOptions.put(R.id.optCategoryBestSellers, getString(R.string.firebase_category_best_sellers));
+        categoryOptions.put(R.id.optCategoryPureTea, CategoryKeys.PURE_TEA);
+        categoryOptions.put(R.id.optCategoryMilkTea, CategoryKeys.MILK_TEA);
+        categoryOptions.put(R.id.optCategoryTeaLatte, CategoryKeys.TEA_LATTE);
+        categoryOptions.put(R.id.optCategoryFruitTea, CategoryKeys.FRUIT_TEA);
+        categoryOptions.put(R.id.optCategoryNewArrivals, CategoryKeys.NEW_ARRIVALS);
+        categoryOptions.put(R.id.optCategoryBestSellers, CategoryKeys.BEST_SELLERS);
         for (Map.Entry<Integer, String> entry : categoryOptions.entrySet()) {
             TextView option = popupView.findViewById(entry.getKey());
             if (option != null) {
@@ -214,17 +256,17 @@ public class Menu extends AppCompatActivity {
     private void updatePopupSelectionState(View popupView) {
         applyPopupOptionState(popupView.findViewById(R.id.optCategoryAll), selectedCategory == null || selectedCategory.isEmpty());
         applyPopupOptionState(popupView.findViewById(R.id.optCategoryPureTea),
-                equalsCategory(selectedCategory, R.string.firebase_category_pure_tea));
+                CategoryKeys.PURE_TEA.equals(selectedCategory));
         applyPopupOptionState(popupView.findViewById(R.id.optCategoryMilkTea),
-                equalsCategory(selectedCategory, R.string.firebase_category_milk_tea));
+                CategoryKeys.MILK_TEA.equals(selectedCategory));
         applyPopupOptionState(popupView.findViewById(R.id.optCategoryTeaLatte),
-                equalsCategory(selectedCategory, R.string.firebase_category_tea_latte));
+                CategoryKeys.TEA_LATTE.equals(selectedCategory));
         applyPopupOptionState(popupView.findViewById(R.id.optCategoryFruitTea),
-                equalsCategory(selectedCategory, R.string.firebase_category_fruit_tea));
+                CategoryKeys.FRUIT_TEA.equals(selectedCategory));
         applyPopupOptionState(popupView.findViewById(R.id.optCategoryNewArrivals),
-                equalsCategory(selectedCategory, R.string.firebase_category_new_arrivals));
+                CategoryKeys.NEW_ARRIVALS.equals(selectedCategory));
         applyPopupOptionState(popupView.findViewById(R.id.optCategoryBestSellers),
-                equalsCategory(selectedCategory, R.string.firebase_category_best_sellers));
+                CategoryKeys.BEST_SELLERS.equals(selectedCategory));
 
         applyPopupOptionState(popupView.findViewById(R.id.optSortFeatured), "featured".equals(selectedSort));
         applyPopupOptionState(popupView.findViewById(R.id.optSortNameAsc), "name_asc".equals(selectedSort));
@@ -238,8 +280,8 @@ public class Menu extends AppCompatActivity {
             return;
         }
         option.setBackgroundResource(selected ? R.drawable.bg_filter_option_selected : android.R.color.transparent);
-        option.setTextColor(ContextCompat.getColor(this, selected ? R.color.brand_dark_blue : R.color.black));
-        option.setTextSize(selected ? 13f : 12f);
+        option.setTextColor(ContextCompat.getColor(this, selected ? R.color.brand_blue : R.color.black));
+        option.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
     }
 
     private void loadProductsFromFirebase() {
@@ -271,7 +313,7 @@ public class Menu extends AppCompatActivity {
         for (Product product : allProducts) {
             boolean categoryMatch = selectedCategory == null
                     || selectedCategory.isEmpty()
-                    || (product.getCategory() != null && product.getCategory().equalsIgnoreCase(selectedCategory));
+                    || matchesCategory(product, selectedCategory);
             boolean searchMatch = searchQuery.isEmpty() || matchesSearch(product, searchQuery);
             if (categoryMatch && searchMatch) {
                 filteredProducts.add(product);
@@ -286,7 +328,7 @@ public class Menu extends AppCompatActivity {
             tvMenuSectionTitle.setText(
                     selectedCategory == null || selectedCategory.isEmpty()
                             ? getString(R.string.menu_all_products_title)
-                            : selectedCategory.toUpperCase(Locale.getDefault()));
+                            : getCategoryDisplayName(selectedCategory).toUpperCase(Locale.getDefault()));
         }
         if (tvMenuSectionSubtitle != null) {
             if (!searchQuery.isEmpty()) {
@@ -330,26 +372,48 @@ public class Menu extends AppCompatActivity {
         return value != null && value.equalsIgnoreCase(getString(stringRes));
     }
 
+    private String getCategoryDisplayName(String canonical) {
+        if (CategoryKeys.PURE_TEA.equals(canonical)) {
+            return getString(R.string.firebase_category_pure_tea);
+        }
+        if (CategoryKeys.MILK_TEA.equals(canonical)) {
+            return getString(R.string.firebase_category_milk_tea);
+        }
+        if (CategoryKeys.TEA_LATTE.equals(canonical)) {
+            return getString(R.string.firebase_category_tea_latte);
+        }
+        if (CategoryKeys.FRUIT_TEA.equals(canonical)) {
+            return getString(R.string.firebase_category_fruit_tea);
+        }
+        if (CategoryKeys.NEW_ARRIVALS.equals(canonical)) {
+            return getString(R.string.firebase_category_new_arrivals);
+        }
+        if (CategoryKeys.BEST_SELLERS.equals(canonical)) {
+            return getString(R.string.firebase_category_best_sellers);
+        }
+        return canonical;
+    }
+
     private String resolveCategorySubtitle() {
         if (selectedCategory == null || selectedCategory.isEmpty()) {
             return getString(R.string.menu_section_subtitle_default);
         }
-        if (equalsCategory(selectedCategory, R.string.firebase_category_pure_tea)) {
+        if (CategoryKeys.PURE_TEA.equals(selectedCategory)) {
             return getString(R.string.menu_section_subtitle_pure_tea);
         }
-        if (equalsCategory(selectedCategory, R.string.firebase_category_milk_tea)) {
+        if (CategoryKeys.MILK_TEA.equals(selectedCategory)) {
             return getString(R.string.menu_section_subtitle_milk_tea);
         }
-        if (equalsCategory(selectedCategory, R.string.firebase_category_tea_latte)) {
+        if (CategoryKeys.TEA_LATTE.equals(selectedCategory)) {
             return getString(R.string.menu_section_subtitle_tea_latte);
         }
-        if (equalsCategory(selectedCategory, R.string.firebase_category_fruit_tea)) {
+        if (CategoryKeys.FRUIT_TEA.equals(selectedCategory)) {
             return getString(R.string.menu_section_subtitle_fruit_tea);
         }
-        if (equalsCategory(selectedCategory, R.string.firebase_category_new_arrivals)) {
+        if (CategoryKeys.NEW_ARRIVALS.equals(selectedCategory)) {
             return getString(R.string.menu_section_subtitle_new_arrivals);
         }
-        if (equalsCategory(selectedCategory, R.string.firebase_category_best_sellers)) {
+        if (CategoryKeys.BEST_SELLERS.equals(selectedCategory)) {
             return getString(R.string.menu_section_subtitle_best_sellers);
         }
         return getString(R.string.menu_section_subtitle_default);
@@ -372,6 +436,46 @@ public class Menu extends AppCompatActivity {
         } catch (NumberFormatException e) {
             return 0L;
         }
+    }
+
+    private boolean matchesCategory(Product product, String filterCategory) {
+        String productCategory = safeString(product.getCategory());
+        if (productCategory.isEmpty()) {
+            return false;
+        }
+        String canonicalFilter = normalizeCategoryKey(filterCategory);
+        String canonicalProduct = normalizeCategoryKey(productCategory);
+        return !canonicalFilter.isEmpty()
+                && canonicalFilter.equalsIgnoreCase(canonicalProduct);
+    }
+
+    private String normalizeCategoryKey(String category) {
+        String normalized = CategoryKeys.normalize(category);
+        return normalized == null ? "" : normalized;
+    }
+
+    private List<Product> getInitialMenuProducts() {
+        if (selectedCategory != null && !selectedCategory.isEmpty()) {
+            List<Product> categoryProducts = resolveCategoryFallback(selectedCategory);
+            if (!categoryProducts.isEmpty()) {
+                for (Product product : categoryProducts) {
+                    product.setCategory(selectedCategory);
+                }
+                return categoryProducts;
+            }
+        }
+        return getFallbackMenuProducts();
+    }
+
+    private List<Product> resolveCategoryFallback(String category) {
+        Map<String, List<Product>> map = CategoryProductData.getCategoryProductsMap();
+        List<Product> products = map.get(category);
+        if (products != null && !products.isEmpty()) {
+            return new ArrayList<>(products);
+        }
+        String normalized = normalizeCategoryKey(category);
+        products = map.get(normalized);
+        return products != null ? new ArrayList<>(products) : new ArrayList<>();
     }
 
     private List<Product> getFallbackMenuProducts() {
@@ -400,26 +504,43 @@ public class Menu extends AppCompatActivity {
     }
 
     private void onAddToCart(Product product) {
-        Toast.makeText(this, getString(R.string.product_detail_added_to_cart), Toast.LENGTH_SHORT).show();
-        openProductDetail(product);
+        CartActions.addDefaultProduct(this, product);
     }
 
     private void setupBottomNav() {
         NavBarHelper.setupNavBar(this, NAV_IDS, R.id.nav_menu, v -> {
             int id = v.getId();
             if (id == R.id.nav_home) {
-                startActivity(new Intent(this, Homepage.class));
+                Intent intent = new Intent(this, Homepage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             } else if (id == R.id.nav_menu) {
                 selectedCategory = null;
                 applyFilter();
             } else if (id == R.id.nav_orders) {
-                startActivity(new Intent(this, OrderHistory.class));
+                Intent intent = new Intent(this, OrderHistory.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             } else if (id == R.id.nav_promotion) {
-                startActivity(new Intent(this, BlogGeneral.class));
+                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_profile) {
-                startActivity(new Intent(this, UserProfile.class));
+                Intent intent = new Intent(this, UserProfile.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, Homepage.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
     }
 
     @Override

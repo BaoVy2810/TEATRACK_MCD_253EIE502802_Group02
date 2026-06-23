@@ -1,50 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_baby_blue">
-    <include
-        android:id="@+id/headerClient"
-        layout="@layout/activity_header_client"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/navBarClient"
-        layout="@layout/activity_nav_bar_client"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/header_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:elevation="12dp"
-        android:translationZ="12dp"
-        app:elevation="0dp"
-        app:liftOnScroll="true">
+        android:layout_height="@dimen/header_height"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="@dimen/header_elevation"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.BottomRounded"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/topBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="12dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="10dp">
+            android:layout_height="match_parent"
+            android:paddingHorizontal="12dp">
 
             <ImageView
                 android:id="@+id/btnBack"
@@ -54,39 +30,73 @@
                 android:contentDescription="@string/product_detail_back"
                 android:padding="8dp"
                 android:src="@drawable/ic_arrow_left"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/brand_blue" />
 
             <TextView
                 android:id="@+id/tvTopTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginHorizontal="8dp"
+                android:fontFamily="@font/inter_family"
                 android:gravity="center"
                 android:text="@string/product_detail_title"
                 android:textColor="@color/brand_blue"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layoutCartIcon"
+                app:layout_constraintStart_toEndOf="@+id/btnBack"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/btnShare"
+            <FrameLayout
+                android:id="@+id/layoutCartIcon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/bg_arrow_circle"
-                android:contentDescription="@string/product_detail_share"
-                android:padding="8dp"
-                android:src="@drawable/share"
-                app:tint="@color/brand_blue" />
-        </LinearLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/btn_cart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_arrow_circle"
+                    android:contentDescription="@string/cart_title"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/cart"
+                    app:tint="@color/brand_blue" />
+
+                <TextView
+                    android:id="@+id/tvCartBadge"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/bg_cart_badge_red"
+                    android:fontFamily="@font/inter_family"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/white"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="2"
+                    tools:visibility="visible" />
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:clipToPadding="false"
         android:fillViewport="true"
-        android:paddingBottom="80dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_constraintTop_toBottomOf="@id/header_container"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -94,7 +104,10 @@
             android:orientation="vertical"
             android:paddingStart="16dp"
             android:paddingTop="12dp"
-            android:paddingEnd="16dp">
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false"
+            android:clipChildren="false">
 
             <!-- BREADCRUMB -->
             <LinearLayout
@@ -109,6 +122,7 @@
                     android:id="@+id/breadcrumbHome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_family"
                     android:text="@string/nav_home"
                     android:textColor="@color/nav_inactive"
                     android:textSize="12sp"
@@ -126,6 +140,7 @@
                     android:id="@+id/breadcrumbMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_family"
                     android:text="@string/nav_menu"
                     android:textColor="@color/nav_inactive"
                     android:textSize="12sp"
@@ -143,6 +158,7 @@
                     android:id="@+id/breadcrumbTeaLatte"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter_family"
                     android:text="@string/firebase_category_tea_latte"
                     android:textColor="@color/brand_blue"
                     android:textSize="12sp"
@@ -273,6 +289,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/inter_family"
                         android:letterSpacing="0.1"
                         android:text="@string/product_detail_category_default"
                         android:textAllCaps="true"
@@ -280,55 +297,57 @@
                         android:textSize="10sp"
                         android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:background="@drawable/bg_rating_pill"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="10dp"
-                    android:paddingTop="6dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="6dp">
-
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:contentDescription="rating"
-                        android:src="@drawable/ic_star_rating" />
-
-                    <TextView
-                        android:id="@+id/tvRatingValue"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:text="4.9"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:layout_marginStart="12dp"
+                        android:background="@drawable/bg_rating_pill"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingTop="6dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="6dp">
 
-                    <TextView
-                        android:id="@+id/tvRatingSummary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:text="@string/product_detail_rating_default"
-                        android:textColor="@color/Gray"
-                        android:textSize="10sp"
-                        android:textStyle="italic" />
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:contentDescription="rating"
+                            android:src="@drawable/ic_star_rating" />
+
+                        <TextView
+                            android:id="@+id/tvRatingValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:fontFamily="@font/inter_family"
+                            android:text="4.9"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvRatingSummary"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:text="@string/product_detail_rating_default"
+                            android:textColor="@color/Gray"
+                            android:textSize="10sp"
+                            android:textStyle="italic" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvDetailName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/inter_semibold"
-                android:textColor="@color/brand_blue"
-                android:textSize="20sp"
-                tools:text="Trà Sữa Socola" />
+                <TextView
+                    android:id="@+id/tvDetailName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/inter_family"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="Trà Sữa Socola" />
             </LinearLayout>
 
             <!-- PRICE CARDS -->
@@ -366,11 +385,12 @@
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_size_tag"
+                                android:fontFamily="@font/inter_family"
                                 android:gravity="center"
                                 android:text="@string/home_price_medium"
                                 android:textColor="@color/brand_blue"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/tvPriceM"
@@ -378,10 +398,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
                                 android:text="@string/product_detail_price_m_default"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -395,11 +416,12 @@
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_vip_tag"
+                                android:fontFamily="@font/inter_family"
                                 android:gravity="center"
                                 android:text="@string/home_vip_badge"
                                 android:textColor="@color/white"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="10sp" />
 
                             <TextView
                                 android:id="@+id/tvVipPriceM"
@@ -407,10 +429,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
                                 android:text="@string/product_detail_vip_price_m_default"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -444,11 +467,12 @@
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_size_tag"
+                                android:fontFamily="@font/inter_family"
                                 android:gravity="center"
                                 android:text="@string/home_price_large"
                                 android:textColor="@color/brand_blue"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:id="@+id/tvPriceL"
@@ -456,10 +480,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
                                 android:text="@string/product_detail_price_l_default"
+                                android:textStyle="bold"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textSize="12sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -473,11 +498,12 @@
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_vip_tag"
+                                android:fontFamily="@font/inter_family"
                                 android:gravity="center"
                                 android:text="@string/home_vip_badge"
                                 android:textColor="@color/white"
-                                android:textSize="10sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="10sp" />
 
                             <TextView
                                 android:id="@+id/tvVipPriceL"
@@ -485,10 +511,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
                                 android:text="@string/product_detail_vip_price_l_default"
                                 android:textColor="@color/black"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -542,6 +569,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
+                                android:fontFamily="@font/inter_family"
                                 android:text="@string/product_detail_promo_title"
                                 android:textColor="@color/brand_blue"
                                 android:textSize="14sp"
@@ -608,7 +636,7 @@
                 android:fontFamily="@font/inter_family"
                 android:text="@string/product_detail_description_default"
                 android:textColor="@color/nav_inactive"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textStyle="italic" />
 
             <com.google.android.material.card.MaterialCardView
@@ -642,10 +670,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/inter_family"
                             android:text="@string/product_detail_note_title"
                             android:textColor="@color/on_surface"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/tvNoteChevron"
@@ -670,12 +699,13 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_family"
                             android:letterSpacing="0.08"
                             android:text="@string/product_detail_pick_size"
                             android:textAllCaps="true"
                             android:textColor="@color/nav_inactive"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="10sp" />
 
                         <!-- Size buttons: M / L -->
                         <LinearLayout
@@ -696,7 +726,7 @@
                                 android:text="@string/product_detail_size_m_price"
                                 android:textAllCaps="false"
                                 android:textColor="@color/selector_option_button_text"
-                                android:textSize="10sp"
+                                android:textSize="12sp"
                                 app:backgroundTint="@color/selector_option_button_bg"
                                 app:cornerRadius="20dp"
                                 app:strokeColor="@color/selector_option_button_stroke"
@@ -715,7 +745,7 @@
                                 android:text="@string/product_detail_size_l_price"
                                 android:textAllCaps="false"
                                 android:textColor="@color/selector_option_button_text"
-                                android:textSize="10sp"
+                                android:textSize="12sp"
                                 app:backgroundTint="@color/selector_option_button_bg"
                                 app:cornerRadius="20dp"
                                 app:strokeColor="@color/selector_option_button_stroke"
@@ -727,12 +757,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            android:fontFamily="@font/inter_family"
                             android:letterSpacing="0.08"
                             android:text="@string/product_detail_sweetness"
                             android:textAllCaps="true"
                             android:textColor="@color/nav_inactive"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="10sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -751,7 +782,7 @@
                                 android:text="@string/product_detail_level_less"
                                 android:textAllCaps="false"
                                 android:textColor="@color/selector_option_button_text"
-                                android:textSize="10sp"
+                                android:textSize="12sp"
                                 app:backgroundTint="@color/selector_option_button_bg"
                                 app:cornerRadius="20dp"
                                 app:strokeColor="@color/selector_option_button_stroke"
@@ -769,7 +800,7 @@
                                 android:text="@string/product_detail_level_medium"
                                 android:textAllCaps="false"
                                 android:textColor="@color/selector_option_button_text"
-                                android:textSize="10sp"
+                                android:textSize="12sp"
                                 app:backgroundTint="@color/selector_option_button_bg"
                                 app:cornerRadius="20dp"
                                 app:strokeColor="@color/selector_option_button_stroke"
@@ -787,7 +818,7 @@
                                 android:text="@string/product_detail_level_high"
                                 android:textAllCaps="false"
                                 android:textColor="@color/selector_option_button_text"
-                                android:textSize="10sp"
+                                android:textSize="12sp"
                                 app:backgroundTint="@color/selector_option_button_bg"
                                 app:cornerRadius="20dp"
                                 app:strokeColor="@color/selector_option_button_stroke"
@@ -799,12 +830,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            android:fontFamily="@font/inter_family"
                             android:letterSpacing="0.08"
                             android:text="@string/product_detail_ice_level"
                             android:textAllCaps="true"
                             android:textColor="@color/nav_inactive"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="10sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -823,7 +855,7 @@
                                 android:text="@string/product_detail_level_less"
                                 android:textAllCaps="false"
                                 android:textColor="@color/selector_option_button_text"
-                                android:textSize="10sp"
+                                android:textSize="12sp"
                                 app:backgroundTint="@color/selector_option_button_bg"
                                 app:cornerRadius="20dp"
                                 app:strokeColor="@color/selector_option_button_stroke"
@@ -841,7 +873,7 @@
                                 android:text="@string/product_detail_level_medium"
                                 android:textAllCaps="false"
                                 android:textColor="@color/selector_option_button_text"
-                                android:textSize="10sp"
+                                android:textSize="12sp"
                                 app:backgroundTint="@color/selector_option_button_bg"
                                 app:cornerRadius="20dp"
                                 app:strokeColor="@color/selector_option_button_stroke"
@@ -859,7 +891,7 @@
                                 android:text="@string/product_detail_level_high"
                                 android:textAllCaps="false"
                                 android:textColor="@color/selector_option_button_text"
-                                android:textSize="10sp"
+                                android:textSize="12sp"
                                 app:backgroundTint="@color/selector_option_button_bg"
                                 app:cornerRadius="20dp"
                                 app:strokeColor="@color/selector_option_button_stroke"
@@ -871,12 +903,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            android:fontFamily="@font/inter_family"
                             android:letterSpacing="0.08"
                             android:text="@string/product_detail_toppings"
                             android:textAllCaps="true"
                             android:textColor="@color/nav_inactive"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="10sp" />
 
                         <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
@@ -889,10 +922,9 @@
                             app:strokeColor="#E7EDF9"
                             app:strokeWidth="1dp">
 
-                            <ScrollView
+                            <androidx.core.widget.NestedScrollView
                                 android:layout_width="match_parent"
                                 android:layout_height="300dp"
-                                android:nestedScrollingEnabled="true"
                                 android:scrollbars="vertical">
 
                                 <LinearLayout
@@ -903,7 +935,7 @@
                                     android:orientation="vertical"
                                     android:padding="8dp"
                                     android:showDividers="middle" />
-                            </ScrollView>
+                            </androidx.core.widget.NestedScrollView>
                         </com.google.android.material.card.MaterialCardView>
 
                     </LinearLayout>
@@ -933,10 +965,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:fontFamily="@font/inter_family"
                         android:text="@string/product_detail_quantity"
                         android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
 
                     <!-- Stepper pill — light lavender capsule with dark symbols -->
                     <LinearLayout
@@ -963,11 +996,12 @@
                             android:id="@+id/tvQuantity"
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_family"
                             android:gravity="center"
                             android:text="1"
                             android:textColor="@color/on_surface"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="14sp" />
 
                         <ImageButton
                             android:id="@+id/btnQtyPlus"
@@ -995,17 +1029,18 @@
                     android:layout_width="0dp"
                     android:layout_height="56dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
                     android:text="@string/product_detail_add_to_cart"
                     android:textAllCaps="false"
                     android:textColor="@color/selector_btn_add_to_cart_text"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
+                    android:textSize="14sp"
                     app:backgroundTint="@color/selector_btn_add_to_cart_bg"
                     app:cornerRadius="20dp"
                     app:icon="@drawable/ic_cart"
                     app:iconGravity="textStart"
                     app:iconPadding="8dp"
                     app:iconSize="16dp"
+                    android:textStyle="bold"
                     app:iconTint="@color/selector_btn_add_to_cart_text"
                     app:strokeColor="#0088ff"
                     app:strokeWidth="2dp" />
@@ -1016,13 +1051,14 @@
                     android:layout_height="56dp"
                     android:layout_marginStart="12dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
                     app:backgroundTint="@color/selector_btn_buy_now_bg"
                     android:text="@string/product_detail_buy_now"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
+                    android:textSize="14sp"
                     app:cornerRadius="20dp"
+                    android:textStyle="bold"
                     app:elevation="6dp" />
             </LinearLayout>
 
@@ -1035,41 +1071,53 @@
 
                 <TextView
                     android:id="@+id/tabDescription"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
                     android:gravity="center"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:text="@string/product_detail_tab_description"
                     android:textColor="@color/nav_inactive"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tabReview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
                     android:gravity="center"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:text="@string/product_detail_tab_review"
                     android:textColor="@color/brand_blue"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tabCommitment"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
+                    android:fontFamily="@font/inter_family"
                     android:gravity="center"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:text="@string/product_detail_tab_commitment"
                     android:textColor="@color/nav_inactive"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -1086,10 +1134,9 @@
 
                 <View
                     android:id="@+id/tabIndicator"
-                    android:layout_width="80dp"
+                    android:layout_width="0dp"
                     android:layout_height="2dp"
                     android:layout_gravity="bottom"
-                    android:layout_marginStart="100dp"
                     android:background="@color/brand_blue" />
             </FrameLayout>
 
@@ -1130,10 +1177,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
+                            android:fontFamily="@font/inter_family"
+                            android:textStyle="bold"
                             android:text="@string/product_detail_info_title"
                             android:textColor="@color/brand_blue"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <View
@@ -1153,7 +1201,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/on_surface"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
                         <View
                             android:layout_width="match_parent"
@@ -1167,7 +1215,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:textColor="@color/on_surface"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
                         <View
                             android:layout_width="match_parent"
@@ -1181,7 +1229,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:textColor="@color/on_surface"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
                         <View
                             android:layout_width="match_parent"
@@ -1195,7 +1243,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:textColor="@color/on_surface"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
                     </LinearLayout>
 
@@ -1211,7 +1259,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:textColor="@color/on_surface"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <!-- Commitment tab -->
@@ -1226,10 +1274,11 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_family"
+                        android:textStyle="bold"
                         android:text="@string/product_detail_commitment_title"
                         android:textColor="@color/on_surface"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:textSize="13sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1250,11 +1299,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_weight="1"
-                            android:lineSpacingExtra="4dp"
                             android:justificationMode="inter_word"
+                            android:lineSpacingExtra="4dp"
                             android:text="@string/product_detail_commitment_1"
                             android:textColor="@color/on_surface"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -1276,11 +1325,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_weight="1"
-                            android:lineSpacingExtra="4dp"
                             android:justificationMode="inter_word"
+                            android:lineSpacingExtra="4dp"
                             android:text="@string/product_detail_commitment_2"
                             android:textColor="@color/on_surface"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -1302,11 +1351,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_weight="1"
-                            android:lineSpacingExtra="4dp"
                             android:justificationMode="inter_word"
+                            android:lineSpacingExtra="4dp"
                             android:text="@string/product_detail_commitment_3"
                             android:textColor="@color/on_surface"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -1328,11 +1377,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_weight="1"
-                            android:lineSpacingExtra="4dp"
                             android:justificationMode="inter_word"
+                            android:lineSpacingExtra="4dp"
                             android:text="@string/product_detail_commitment_4"
                             android:textColor="@color/on_surface"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -1361,10 +1410,11 @@
                                 android:id="@+id/tvReviewAverage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_family"
+                                android:textStyle="bold"
                                 android:text="5.0"
                                 android:textColor="@color/brand_blue"
-                                android:textSize="36sp"
-                                android:textStyle="bold" />
+                                android:textSize="36sp" />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -1408,6 +1458,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="2dp"
+                                android:textStyle="bold"
                                 android:text="@string/product_detail_review_count_format"
                                 android:textColor="@color/nav_inactive"
                                 android:textSize="12sp" />
@@ -1432,6 +1483,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="5"
                                     android:textColor="@color/nav_inactive"
+                                    android:textStyle="bold"
                                     android:textSize="10sp" />
 
                                 <ProgressBar
@@ -1458,6 +1510,7 @@
                                     android:layout_width="12dp"
                                     android:layout_height="wrap_content"
                                     android:text="4"
+                                    android:textStyle="bold"
                                     android:textColor="@color/nav_inactive"
                                     android:textSize="10sp" />
 
@@ -1484,6 +1537,7 @@
                                 <TextView
                                     android:layout_width="12dp"
                                     android:layout_height="wrap_content"
+                                    android:textStyle="bold"
                                     android:text="3"
                                     android:textColor="@color/nav_inactive"
                                     android:textSize="10sp" />
@@ -1512,6 +1566,7 @@
                                     android:layout_width="12dp"
                                     android:layout_height="wrap_content"
                                     android:text="2"
+                                    android:textStyle="bold"
                                     android:textColor="@color/nav_inactive"
                                     android:textSize="10sp" />
 
@@ -1538,6 +1593,7 @@
                                     android:layout_width="12dp"
                                     android:layout_height="wrap_content"
                                     android:text="1"
+                                    android:textStyle="bold"
                                     android:textColor="@color/nav_inactive"
                                     android:textSize="10sp" />
 
@@ -1561,12 +1617,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_marginTop="16dp"
+                        android:fontFamily="@font/inter_family"
+                        android:textStyle="bold"
                         android:text="@string/product_detail_write_review"
                         app:backgroundTint="@color/selector_btn_add_to_cart_bg"
                         android:textAllCaps="false"
                         android:textColor="@color/brand_blue"
                         android:textSize="12sp"
-                        android:textStyle="bold"
                         app:cornerRadius="12dp"
                         app:icon="@drawable/ic_write_review"
                         app:iconGravity="textStart"
@@ -1589,10 +1646,11 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_family"
                             android:text="@string/product_detail_review_form_title"
                             android:textColor="@color/on_surface"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                            android:textSize="14sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -1606,7 +1664,9 @@
                                 android:layout_height="wrap_content"
                                 android:text="@string/product_detail_review_quality_label"
                                 android:textColor="@color/on_surface"
-                                android:textSize="10sp" />
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                />
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -1682,7 +1742,7 @@
                             android:paddingHorizontal="14dp"
                             android:textColor="@color/on_surface"
                             android:textColorHint="@color/secondary"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
                         <EditText
                             android:id="@+id/edtReviewComment"
@@ -1697,7 +1757,7 @@
                             android:padding="14dp"
                             android:textColor="@color/on_surface"
                             android:textColorHint="@color/secondary"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnSubmitReview"
@@ -1705,6 +1765,7 @@
                             android:layout_height="40dp"
                             android:layout_gravity="end"
                             android:layout_marginTop="12dp"
+                            android:fontFamily="@font/inter_family"
                             android:paddingHorizontal="24dp"
                             android:text="@string/product_detail_review_submit"
                             android:textAllCaps="false"
@@ -1745,7 +1806,7 @@
                             android:gravity="center"
                             android:text="@string/product_detail_empty_review"
                             android:textColor="@color/nav_inactive"
-                            android:textSize="10sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -1764,15 +1825,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="-16dp"
+                android:layout_marginEnd="-16dp"
                 android:layout_marginTop="24dp"
-                android:background="@color/ic_launcher_background"
+                android:background="@color/white"
+                android:fontFamily="@font/inter_family"
                 android:gravity="center"
-                android:paddingStart="18dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
                 android:text="@string/product_detail_related_title"
                 android:textColor="@color/brand_blue"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -1780,8 +1842,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
                 android:paddingBottom="8dp"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
@@ -1790,5 +1850,4 @@
                 tools:listitem="@layout/item_product_card" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

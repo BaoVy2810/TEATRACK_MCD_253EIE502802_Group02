@@ -1,56 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_screen"
+    android:background="#EEF4FF"
     tools:context="com.teatrack_mcd_253eie502802_group02.admin.AdminBlog">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Header Admin -->
+    <include
+        android:id="@+id/layout_header"
+        layout="@layout/activity_header_admin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:elevation="4dp">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <include
-            android:id="@+id/headerAdmin"
-            layout="@layout/activity_header_admin" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
+        android:id="@+id/searchContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:paddingBottom="70dp"
-        android:clipToPadding="false">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/txtBlogManagement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/inter_semibold"
+            android:text="@string/str_blog_management"
+            android:textColor="#1A1A1A"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#FFFFFF">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/nav_forum"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/primary" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
 
-            <!-- Blog/Forum management content -->
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/search"
+                    android:contentDescription="search" />
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                <EditText
+                    android:id="@+id/etSearchBlog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@null"
+                    android:hint="@string/str_blog_search"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
+        <Button
+            android:id="@+id/btnAddBlog"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginBottom="4dp"
+            android:backgroundTint="#0088FF"
+            android:text="@string/str_add_blog"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBlogList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        android:paddingHorizontal="12dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@id/layout_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+        tools:listitem="@layout/item_blog_admin" />
+
+    <TextView
+        android:id="@+id/tvEmptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_no_blogs"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:textColor="#666666"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+        app:layout_constraintBottom_toTopOf="@id/layout_nav_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Navigation Bar Admin -->
     <include
-        android:id="@+id/bottomNav"
+        android:id="@+id/layout_nav_bar"
         layout="@layout/activity_nav_bar_admin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
