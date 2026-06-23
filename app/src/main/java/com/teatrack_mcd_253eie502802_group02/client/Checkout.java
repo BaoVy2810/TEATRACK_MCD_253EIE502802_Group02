@@ -15,9 +15,12 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
 import java.util.Locale;
-import java.util.Random;
 
 public class Checkout extends BaseActivity {
+
+    public static final String EXTRA_ORDER_ID = "orderId";
+    public static final String EXTRA_PICKUP_ADDRESS = "pickupAddress";
+    public static final String EXTRA_ORDER_TOTAL = "orderTotal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +37,16 @@ public class Checkout extends BaseActivity {
             });
         }
 
+        String orderId = getIntent().getStringExtra(EXTRA_ORDER_ID);
         TextView tvOrderId = findViewById(R.id.tvOrderId);
-        if (tvOrderId != null) {
-            int randomNum = new Random().nextInt(90000) + 10000;
-            String orderCode = getString(R.string.order_id_format, randomNum);
+        if (tvOrderId != null && orderId != null && !orderId.isEmpty()) {
             tvOrderId.setText(Html.fromHtml(
-                    getString(R.string.order_success_message, orderCode),
+                    getString(R.string.order_success_order_line, orderId),
                     Html.FROM_HTML_MODE_LEGACY
             ));
         }
 
-        String pickupAddress = getIntent().getStringExtra("pickupAddress");
+        String pickupAddress = getIntent().getStringExtra(EXTRA_PICKUP_ADDRESS);
         TextView tvPickupAddress = findViewById(R.id.tvPickupAddress);
         if (tvPickupAddress != null && pickupAddress != null) {
             tvPickupAddress.setText(pickupAddress);
@@ -55,7 +57,7 @@ public class Checkout extends BaseActivity {
             tvPickupTime.setText(R.string.order_pickup_time_value);
         }
 
-        int orderTotal = getIntent().getIntExtra("orderTotal", 0);
+        int orderTotal = getIntent().getIntExtra(EXTRA_ORDER_TOTAL, 0);
         TextView tvOrderTotal = findViewById(R.id.tvOrderTotal);
         if (tvOrderTotal != null) {
             tvOrderTotal.setText(formatPrice(orderTotal));

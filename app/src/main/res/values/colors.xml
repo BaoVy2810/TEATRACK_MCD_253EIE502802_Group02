@@ -22,7 +22,9 @@
     <color name="Gray">#8D8D8D</color>
     <color name="dark_gray">#181C23</color>
 
-
+    <color name="payment_momo_pink">#D6336C</color>
+    <color name="payment_zalopay_blue">#4285F4</color>
+    <color name="payment_bank_blue">#4285F4</color>
 <!--    TEST ADMIN DASHBOARD-->
     <!-- ── Brand / Primary ── -->
     <color name="primary">#0088FF</color>

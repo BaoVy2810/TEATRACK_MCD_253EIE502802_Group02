@@ -80,16 +80,26 @@
                 app:cardElevation="0dp" />
 
             <TextView
-                android:id="@+id/tvOrderId"
+                android:id="@+id/tvOrderThanks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/inter_family"
                 android:gravity="center"
-                android:lineSpacingExtra="4dp"
+                android:text="@string/order_success_thanks"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvOrderId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/inter_family"
+                android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                tools:text="Thank you for choosing Hong Tra Ngo Gia. Order #HTNG-12345 is being prepared." />
+                tools:text="Order #HTNG-12345 is being prepared." />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"

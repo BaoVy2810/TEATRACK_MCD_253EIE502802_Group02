@@ -709,6 +709,10 @@
     <string name="order_confirmation_title">Xác nhận</string>
     <string name="order_successful">Đặt hàng thành công!</string>
     <string name="order_success_message">Cảm ơn bạn đã lựa chọn Hồng Trà Ngô Gia.\nĐơn hàng &lt;b&gt;#%1$s&lt;/b&gt; đang được chuẩn bị.</string>
+    <string name="order_success_thanks">Cảm ơn bạn đã lựa chọn Hồng Trà Ngô Gia.</string>
+    <string name="order_success_order_line">Đơn hàng &lt;b&gt;#%1$s&lt;/b&gt; đang được chuẩn bị.</string>
+    <string name="order_save_error">Không thể lưu đơn hàng. Vui lòng thử lại.</string>
+    <string name="order_saving">Đang đặt hàng…</string>
     <string name="order_pickup_time">Thời gian nhận hàng</string>
     <string name="order_pickup_address">Địa chỉ nhận hàng</string>
     <string name="order_total_label">Tổng cộng</string>

@@ -13,8 +13,10 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.core.content.ContextCompat;
@@ -28,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.CartItemAdapter;
 import com.teatrack_mcd_253eie502802_group02.data.CartManager;
+import com.teatrack_mcd_253eie502802_group02.data.OrderCheckoutFlow;
 import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 
@@ -55,6 +58,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private TextView tvSelectedPayment;
     private TextView tvSelectedBranchAddress;
     private TextView tvRecipientDetails;
+    private EditText etNote;
     private ImageView ivSelectedPaymentIcon;
     private View cardItemRemoved;
     private View cartRoot;
@@ -100,6 +104,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         tvSelectedPayment = findViewById(R.id.tvSelectedPayment);
         tvSelectedBranchAddress = findViewById(R.id.tvSelectedBranchAddress);
         tvRecipientDetails = findViewById(R.id.tvRecipientDetails);
+        etNote = findViewById(R.id.etNote);
         ivSelectedPaymentIcon = findViewById(R.id.ivSelectedPaymentIcon);
         cardItemRemoved = findViewById(R.id.cardItemRemoved);
         RecyclerView rvCartItems = findViewById(R.id.rvCartItems);
@@ -436,19 +441,29 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
 
         String branchAddress = tvSelectedBranchAddress != null ? tvSelectedBranchAddress.getText().toString() : "";
+        String recipientDetails = tvRecipientDetails != null ? tvRecipientDetails.getText().toString() : "";
+        String note = etNote != null ? etNote.getText().toString() : "";
 
         if (selectedPaymentMethod == PAYMENT_CASH_ON_HAND) {
-            int orderTotal = CartManager.getInstance().getSubtotal();
-            Intent intent = new Intent(this, Checkout.class);
-            intent.putExtra("pickupAddress", branchAddress);
-            intent.putExtra("orderTotal", orderTotal);
-            startActivity(intent);
-            CartManager.getInstance().clear();
-            finish();
+            if (btnConfirmOrder != null) {
+                btnConfirmOrder.setEnabled(false);
+            }
+            Toast.makeText(this, R.string.order_saving, Toast.LENGTH_SHORT).show();
+            OrderCheckoutFlow.placeOrderAndOpenCheckout(
+                    this,
+                    selectedPaymentMethod,
+                    branchAddress,
+                    recipientDetails,
+                    note,
+                    false,
+                    btnConfirmOrder
+            );
         } else {
             Intent intent = new Intent(this, Payment.class);
             intent.putExtra("method", selectedPaymentMethod);
             intent.putExtra("pickupAddress", branchAddress);
+            intent.putExtra("recipientDetails", recipientDetails);
+            intent.putExtra("note", note);
             startActivity(intent);
         }
     }
