@@ -14,7 +14,6 @@ public class ContactRequest {
     private long timestamp;
 
     public ContactRequest() {
-        // Required for Firebase
     }
 
     public ContactRequest(String id, String fullName, String email, String phone, String branch, String topic, String content, long timestamp) {
