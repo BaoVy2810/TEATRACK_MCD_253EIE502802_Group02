@@ -3,7 +3,8 @@
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:textColor="@color/text_primary"
-    android:textSize="12sp"
-    android:gravity="center_vertical" />
+    android:paddingVertical="8dp"
+    android:textColor="@color/black"
+    android:textSize="13sp"
+    android:ellipsize="end"
+    android:maxLines="1" />

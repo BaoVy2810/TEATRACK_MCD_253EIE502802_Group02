@@ -116,7 +116,7 @@
                 android:scaleType="fitCenter"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/trash_can"
-                app:tint="#FF4444"
+                app:tint="@color/danger"
                 android:contentDescription="Delete" />
         </LinearLayout>
     </LinearLayout>

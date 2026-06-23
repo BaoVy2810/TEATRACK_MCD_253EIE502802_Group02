@@ -235,7 +235,7 @@
                     android:layout_height="@dimen/role_icon_size"
                     android:contentDescription="@string/cd_phone"
                     android:src="@drawable/call"
-                    app:tint="@color/phone_green" />
+                    app:tint="@color/brand_blue" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -280,7 +280,7 @@
                 android:layout_height="@dimen/role_icon_size"
                 android:contentDescription="@string/cd_address"
                 android:src="@drawable/location"
-                app:tint="@color/address_amber" />
+                app:tint="@color/brand_blue" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -330,7 +330,7 @@
                 android:layout_height="24dp"
                 android:contentDescription="@string/cd_created_date"
                 android:src="@drawable/calendar"
-                app:tint="@color/vip_purple" />
+                app:tint="@color/brand_blue" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -397,7 +397,7 @@
                     android:contentDescription="@string/cd_delete_account"
                     android:padding="10dp"
                     android:src="@drawable/trash_can"
-                    app:tint="@color/danger_dark" />
+                    app:tint="@color/danger" />
 
             </LinearLayout>
         </LinearLayout>

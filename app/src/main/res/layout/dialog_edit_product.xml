@@ -75,6 +75,8 @@
                 android:hint="@string/hint_product_name"
                 android:inputType="text"
                 android:paddingHorizontal="12dp"
+                android:textColor="@color/brand_blue"
+                android:textColorHint="#800088FF"
                 android:textSize="13sp" />
 
             <!-- Product Category -->
@@ -86,14 +88,21 @@
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/spinnerCategory"
+            <TextView
+                android:id="@+id/tvCategorySelect"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_input_rounded"
-                android:paddingHorizontal="4dp" />
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="@string/pure_tea"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                app:drawableEndCompat="@drawable/down_2"
+                app:drawableTint="@color/brand_blue" />
 
             <!-- Product Status -->
             <TextView
@@ -173,6 +182,8 @@
                             android:gravity="center"
                             android:hint="@string/hint_price"
                             android:inputType="number"
+                            android:textColor="@color/brand_blue"
+                            android:textColorHint="#800088FF"
                             android:textSize="11sp" />
 
                         <TextView
@@ -202,6 +213,8 @@
                             android:gravity="center"
                             android:hint="@string/hint_price"
                             android:inputType="number"
+                            android:textColor="@color/brand_blue"
+                            android:textColorHint="#800088FF"
                             android:textSize="11sp" />
 
                         <TextView
@@ -251,6 +264,8 @@
                             android:gravity="center"
                             android:hint="@string/hint_price"
                             android:inputType="number"
+                            android:textColor="@color/brand_blue"
+                            android:textColorHint="#800088FF"
                             android:textSize="11sp" />
 
                         <TextView
@@ -280,6 +295,8 @@
                             android:gravity="center"
                             android:hint="@string/hint_price"
                             android:inputType="number"
+                            android:textColor="@color/brand_blue"
+                            android:textColorHint="#800088FF"
                             android:textSize="11sp" />
 
                         <TextView
@@ -317,6 +334,8 @@
                 android:padding="10dp"
                 android:scrollbars="vertical"
                 android:fadeScrollbars="false"
+                android:textColor="@color/brand_blue"
+                android:textColorHint="#800088FF"
                 android:textSize="13sp" />
 
             <!-- Product Description -->
@@ -342,6 +361,8 @@
                 android:padding="10dp"
                 android:scrollbars="vertical"
                 android:fadeScrollbars="false"
+                android:textColor="@color/brand_blue"
+                android:textColorHint="#800088FF"
                 android:textSize="13sp" />
 
             <!-- Images -->

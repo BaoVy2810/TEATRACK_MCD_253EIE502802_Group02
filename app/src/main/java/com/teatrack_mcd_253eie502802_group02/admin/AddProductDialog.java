@@ -10,7 +10,11 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.graphics.drawable.ColorDrawable;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -18,12 +22,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
@@ -52,10 +60,17 @@ public class AddProductDialog {
     private View llPlaceholder;
     private String uploadedImageUrl = "logo_ngo_gia.png"; // Mặc định
     private final DecimalFormat priceFormatter = new DecimalFormat("#,###");
+    private String selectedCategory;
 
     public AddProductDialog(Context context, List<String> categories) {
         this.context = context;
         this.categories = categories;
+        if (categories != null && !categories.isEmpty()) {
+            selectedCategory = categories.get(0).equals(context.getString(R.string.filter_all)) && categories.size() > 1 
+                    ? categories.get(1) : categories.get(0);
+        } else {
+            selectedCategory = context.getString(R.string.pure_tea);
+        }
     }
 
     public void show() {
@@ -73,7 +88,7 @@ public class AddProductDialog {
 
         EditText etProductId = dialog.findViewById(R.id.etProductId);
         EditText etProductName = dialog.findViewById(R.id.etProductName);
-        Spinner spinnerCategory = dialog.findViewById(R.id.spinnerCategory);
+        TextView tvCategorySelect = dialog.findViewById(R.id.tvCategorySelect);
         CheckBox cbVisible = dialog.findViewById(R.id.cbVisible);
         CheckBox cbSpecial = dialog.findViewById(R.id.cbSpecial);
         EditText etPriceM = dialog.findViewById(R.id.etPriceM);
@@ -95,18 +110,11 @@ public class AddProductDialog {
         // Default image for new product
         setupImageUpload(dialog);
 
-        // Setup Spinner
-        List<String> spinnerCats = new ArrayList<>(categories);
-        spinnerCats.remove(context.getString(R.string.filter_all));
-        if (spinnerCats.isEmpty()) {
-            spinnerCats.add(context.getString(R.string.pure_tea));
-            spinnerCats.add(context.getString(R.string.milk_tea));
-            spinnerCats.add(context.getString(R.string.tea_latte));
-            spinnerCats.add(context.getString(R.string.fruit_tea));
+        // Setup Category Select
+        if (tvCategorySelect != null) {
+            tvCategorySelect.setText(selectedCategory);
+            tvCategorySelect.setOnClickListener(v -> showCategoryPopup(v));
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.item_spinner_category, spinnerCats);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapter);
 
         btnClose.setOnClickListener(v -> dialog.dismiss());
         btnCancel.setOnClickListener(v -> dialog.dismiss());
@@ -121,16 +129,48 @@ public class AddProductDialog {
             }
 
             if (selectedImageUri != null) {
-                uploadImageAndSaveProduct(dialog, id, name, spinnerCategory, cbVisible, cbSpecial,
+                uploadImageAndSaveProduct(dialog, id, name, selectedCategory, cbVisible, cbSpecial,
                         etPriceM, etPriceL, etVipPriceM, etVipPriceL, etProductInfo, etProductDesc);
             } else {
-                saveToFirebase(id, name, spinnerCategory, cbVisible, cbSpecial,
+                saveToFirebase(id, name, selectedCategory, cbVisible, cbSpecial,
                         etPriceM, etPriceL, etVipPriceM, etVipPriceL, etProductInfo, etProductDesc, uploadedImageUrl);
                 dialog.dismiss();
             }
         });
 
         dialog.show();
+    }
+
+    private void showCategoryPopup(View anchor) {
+        List<String> popupCats = new ArrayList<>(categories);
+        popupCats.remove(context.getString(R.string.filter_all));
+        if (popupCats.isEmpty()) {
+            popupCats.add(context.getString(R.string.pure_tea));
+            popupCats.add(context.getString(R.string.milk_tea));
+            popupCats.add(context.getString(R.string.tea_latte));
+            popupCats.add(context.getString(R.string.fruit_tea));
+        }
+
+        View popupView = LayoutInflater.from(context).inflate(R.layout.dialog_category_selector, null);
+        PopupWindow popupWindow = new PopupWindow(popupView,
+                anchor.getWidth(),
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
+
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setElevation(10);
+
+        RecyclerView rvCategories = popupView.findViewById(R.id.rvCategoryList);
+        if (rvCategories != null) {
+            rvCategories.setLayoutManager(new LinearLayoutManager(context));
+            rvCategories.setAdapter(new CategoryDialogAdapter(popupCats, selectedCategory, category -> {
+                selectedCategory = category;
+                ((TextView) anchor).setText(selectedCategory);
+                popupWindow.dismiss();
+            }));
+        }
+
+        popupWindow.showAsDropDown(anchor, 0, 5);
     }
 
     private void setupImageUpload(Dialog dialog) {
@@ -202,7 +242,7 @@ public class AddProductDialog {
         }
     }
 
-    private void uploadImageAndSaveProduct(Dialog dialog, String id, String name, Spinner spinnerCategory,
+    private void uploadImageAndSaveProduct(Dialog dialog, String id, String name, String category,
                                            CheckBox cbVisible, CheckBox cbSpecial, EditText etPriceM,
                                            EditText etPriceL, EditText etVipPriceM, EditText etVipPriceL,
                                            EditText etProductInfo, EditText etProductDesc) {
@@ -219,7 +259,7 @@ public class AddProductDialog {
                     @Override
                     public void onSuccess(String requestId, Map resultData) {
                         uploadedImageUrl = (String) resultData.get("secure_url");
-                        saveToFirebase(id, name, spinnerCategory, cbVisible, cbSpecial,
+                        saveToFirebase(id, name, category, cbVisible, cbSpecial,
                                 etPriceM, etPriceL, etVipPriceM, etVipPriceL, etProductInfo, etProductDesc, uploadedImageUrl);
                         dialog.dismiss();
                     }
@@ -232,13 +272,13 @@ public class AddProductDialog {
                 }).dispatch();
     }
 
-    private void saveToFirebase(String id, String name, Spinner spinnerCategory, CheckBox cbVisible,
+    private void saveToFirebase(String id, String name, String category, CheckBox cbVisible,
                                 CheckBox cbSpecial, EditText etPriceM, EditText etPriceL,
                                 EditText etVipPriceM, EditText etVipPriceL, EditText etProductInfo,
                                 EditText etProductDesc, String imageUrl) {
 
         Product newProduct = new Product(
-                id, id, name, spinnerCategory.getSelectedItem().toString(),
+                id, id, name, category,
                 parsePrice(etPriceM), parsePrice(etPriceL),
                 parsePrice(etVipPriceM), parsePrice(etVipPriceL),
                 etProductInfo.getText().toString().trim(),

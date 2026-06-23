@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -215,7 +216,7 @@ public class AdminProduct extends AppCompatActivity {
 
         View popupView = LayoutInflater.from(this).inflate(R.layout.dialog_category_selector, null);
         PopupWindow popupWindow = new PopupWindow(popupView,
-                (int) (getResources().getDisplayMetrics().widthPixels * 0.6),
+                (int) (getResources().getDisplayMetrics().widthPixels * 0.45),
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 true);
 
@@ -223,7 +224,10 @@ public class AdminProduct extends AppCompatActivity {
         popupWindow.setElevation(20);
 
         TextView tvTitle = popupView.findViewById(R.id.tvCategoryDialogTitle);
-        if (tvTitle != null) tvTitle.setText(selectedCategory);
+        if (tvTitle != null) {
+            tvTitle.setText(selectedCategory);
+            tvTitle.setVisibility(View.GONE);
+        }
 
         RecyclerView rvCategories = popupView.findViewById(R.id.rvCategoryList);
         if (rvCategories != null) {
@@ -323,63 +327,5 @@ public class AdminProduct extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    interface OnCategorySelectedListener {
-        void onCategorySelected(String category);
-    }
-
-    static class CategoryDialogAdapter extends RecyclerView.Adapter<CategoryDialogAdapter.ViewHolder> {
-        private final List<String> categories;
-        private final String selectedCategory;
-        private final OnCategorySelectedListener listener;
-
-        CategoryDialogAdapter(List<String> categories, String selectedCategory, OnCategorySelectedListener listener) {
-            this.categories = categories;
-            this.selectedCategory = selectedCategory;
-            this.listener = listener;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_dialog, parent, false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            String category = categories.get(position);
-            holder.tvName.setText(category);
-
-            boolean isSelected = category.equals(selectedCategory);
-            if (isSelected) {
-                holder.itemView.setBackgroundResource(R.drawable.bg_time_range_active);
-                holder.tvName.setTextColor(Color.WHITE);
-                holder.tvName.setTypeface(null, android.graphics.Typeface.BOLD);
-            } else {
-                holder.itemView.setBackgroundResource(android.R.color.transparent);
-                holder.tvName.setTextColor(Color.parseColor("#007AFF"));
-                holder.tvName.setTypeface(null, android.graphics.Typeface.NORMAL);
-            }
-
-            holder.divider.setVisibility(position == categories.size() - 1 ? View.GONE : View.VISIBLE);
-            holder.itemView.setOnClickListener(v -> listener.onCategorySelected(category));
-        }
-
-        @Override
-        public int getItemCount() {
-            return categories.size();
-        }
-
-        static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView tvName;
-            View divider;
-            ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                tvName = itemView.findViewById(R.id.tvCategoryItemName);
-                divider = itemView.findViewById(R.id.divider);
-            }
-        }
     }
 }
