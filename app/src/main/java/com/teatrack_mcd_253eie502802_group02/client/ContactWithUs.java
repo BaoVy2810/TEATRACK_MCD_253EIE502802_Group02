@@ -149,7 +149,6 @@ public class ContactWithUs extends AppCompatActivity {
         int selectedTopicId = radioTopic.getCheckedRadioButtonId();
         android.widget.RadioButton rbSelected = findViewById(selectedTopicId);
         String topic = rbSelected.getText().toString();
-
         // Lấy danh sách contact hiện tại để tạo mã tiếp theo
         mDatabase.child("contacts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
