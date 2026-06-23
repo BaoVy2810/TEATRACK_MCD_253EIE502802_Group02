@@ -78,6 +78,9 @@ dependencies {
     // Cloudinary
     implementation("com.cloudinary:cloudinary-android:3.1.2")
 
+    // Gemini AI
+    implementation(libs.generativeai)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

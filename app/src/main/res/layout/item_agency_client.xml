@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardAgency"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginBottom="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivAgency"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/RoundedImage8dp"
+            android:src="@mipmap/logo_ngo_gia"
+            android:contentDescription="@string/str_agency_name" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="14dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvAgencyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên chi nhánh"
+                android:textColor="@color/brand_blue"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter"
+                tools:text="Ngô Gia - Quận 1" />
+
+            <TextView
+                android:id="@+id/tvAgencyAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Địa chỉ chi nhánh"
+                android:textColor="#475569"
+                android:textSize="13sp"
+                android:fontFamily="@font/inter_semibold"
+                android:lineSpacingMultiplier="1.2"
+                tools:text="123 Đường Lê Lợi, Phường Bến Thành, Quận 1, TP.HCM" />
+
+            <TextView
+                android:id="@+id/tvAgencyPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="SĐT: 0123456789"
+                android:textColor="#64748B"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/inter"
+                tools:text="SĐT: 0999.888.777" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/location"
+            app:tint="@color/brand_blue"
+            android:contentDescription="@string/str_select_branch" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
