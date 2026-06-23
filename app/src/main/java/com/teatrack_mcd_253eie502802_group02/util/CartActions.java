@@ -23,11 +23,21 @@ public final class CartActions {
     }
 
     public static void addItem(Activity activity, CartItem item) {
+        addItem(activity, item, true);
+    }
+
+    public static void addItemSilent(Activity activity, CartItem item) {
+        addItem(activity, item, false);
+    }
+
+    private static void addItem(Activity activity, CartItem item, boolean showToast) {
         if (item == null || activity == null) {
             return;
         }
         CartManager.getInstance().addItem(item);
         CartBadgeHelper.updateBadge(activity);
-        Toast.makeText(activity, R.string.product_detail_added_to_cart, Toast.LENGTH_SHORT).show();
+        if (showToast) {
+            Toast.makeText(activity, R.string.product_detail_added_to_cart, Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -70,6 +70,7 @@ public class LoginActivity extends BaseActivity {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_USER_ID = "userId";
+    private static final String KEY_ROLE = "role";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +88,13 @@ public class LoginActivity extends BaseActivity {
 
         if (mAuth.getCurrentUser() != null) {
             String savedUserId = sharedPreferences.getString(KEY_USER_ID, null);
+            String savedRole = sharedPreferences.getString(KEY_ROLE, "Customer");
             if (savedUserId != null) {
-                startActivity(new Intent(this, Homepage.class));
+                if ("Admin".equalsIgnoreCase(savedRole)) {
+                    startActivity(new Intent(this, AdminDashboard.class));
+                } else {
+                    startActivity(new Intent(this, Homepage.class));
+                }
                 finish();
             }
         }
@@ -251,7 +257,10 @@ public class LoginActivity extends BaseActivity {
                                 userMap.put("provider", "google");
                                 databaseReference.child(csId).setValue(userMap);
 
-                                sharedPreferences.edit().putString(KEY_USER_ID, csId).apply();
+                                sharedPreferences.edit()
+                                        .putString(KEY_USER_ID, csId)
+                                        .putString(KEY_ROLE, "Customer")
+                                        .apply();
 
                                 startActivity(new Intent(LoginActivity.this, Homepage.class));
                                 finish();
@@ -338,7 +347,13 @@ public class LoginActivity extends BaseActivity {
                             String role = userSnap.child("role").getValue(String.class);
 
                             if (cbRemember.isChecked()) {
-                                saveLoginData(loginName, password, userId);
+                                saveLoginData(loginName, password, userId, role);
+                            } else {
+                                // Even if not "remembering" credentials, we might want to keep the session
+                                sharedPreferences.edit()
+                                        .putString(KEY_USER_ID, userId)
+                                        .putString(KEY_ROLE, role)
+                                        .apply();
                             }
 
                             if ("Admin".equalsIgnoreCase(role)) {
@@ -380,12 +395,13 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void saveLoginData(String username, String password, String userId) {
+    private void saveLoginData(String username, String password, String userId, String role) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_REMEMBER, true);
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_PASSWORD, password);
         editor.putString(KEY_USER_ID, userId);
+        editor.putString(KEY_ROLE, role);
         editor.apply();
     }
 
