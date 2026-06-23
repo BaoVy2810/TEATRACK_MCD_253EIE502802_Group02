@@ -706,13 +706,4 @@
     <string name="blog_detail_image_desc">Ảnh chính bài viết</string>
     <string name="blog_related_image_desc">Ảnh bài viết liên quan</string>
     <string name="home_view_all">Xem tất cả</string>
-    <string name="order_confirmation_title">Xác nhận</string>
-    <string name="order_successful">Đặt hàng thành công!</string>
-    <string name="order_success_message">Cảm ơn bạn đã lựa chọn Hồng Trà Ngô Gia.\nĐơn hàng &lt;b&gt;#%1$s&lt;/b&gt; đang được chuẩn bị.</string>
-    <string name="order_pickup_time">Thời gian nhận hàng</string>
-    <string name="order_pickup_address">Địa chỉ nhận hàng</string>
-    <string name="order_total_label">Tổng cộng</string>
-    <string name="order_track">Theo dõi đơn hàng</string>
-    <string name="order_back_to_menu">Quay lại thực đơn</string>
-    <string name="order_id_format">HTNG-%1$d</string>
 </resources>

@@ -47,45 +47,22 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/layoutCartIcon"
+                app:layout_constraintEnd_toStartOf="@+id/btnShare"
                 app:layout_constraintStart_toEndOf="@+id/btnBack"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <FrameLayout
-                android:id="@+id/layoutCartIcon"
+            <ImageView
+                android:id="@+id/btnShare"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:background="@drawable/bg_arrow_circle"
+                android:contentDescription="@string/product_detail_share"
+                android:padding="8dp"
+                android:src="@drawable/share"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageButton
-                    android:id="@+id/btn_cart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_arrow_circle"
-                    android:contentDescription="@string/cart_title"
-                    android:padding="8dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/cart"
-                    app:tint="@color/brand_blue" />
-
-                <TextView
-                    android:id="@+id/tvCartBadge"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="top|end"
-                    android:background="@drawable/bg_cart_badge_red"
-                    android:fontFamily="@font/inter_family"
-                    android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/white"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    tools:text="2"
-                    tools:visibility="visible" />
-            </FrameLayout>
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/brand_blue" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -95,8 +72,8 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/header_container"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/navBarClient"
+        app:layout_constraintTop_toBottomOf="@id/header_container">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1850,4 +1827,14 @@
                 tools:listitem="@layout/item_product_card" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/navBarClient"
+        layout="@layout/activity_nav_bar_client"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

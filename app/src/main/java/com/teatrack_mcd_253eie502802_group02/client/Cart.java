@@ -12,7 +12,6 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,12 +25,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.teatrack_mcd_253eie502802_group02.PaymentMethodActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.CartItemAdapter;
 import com.teatrack_mcd_253eie502802_group02.data.CartManager;
 import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
@@ -43,10 +42,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
     private static final int PAYMENT_CASH_ON_HAND = 0;
     private static final int PAYMENT_CASH_IN_BANK = 1;
-    private static final int PAYMENT_MOMO = 2;
-    private static final int PAYMENT_ZALOPAY = 3;
-    private static final int PAYMENT_EWALLET = 4;
-    private static final int REQUEST_PAYMENT = 101;
+
     private final List<CartItem> cartItems = new ArrayList<>();
     private CartItemAdapter adapter;
     private TextView tvItemsSelected;
@@ -55,8 +51,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private TextView tvSubtotal;
     private TextView tvTotal;
     private TextView tvSelectedPayment;
-    private TextView tvSelectedBranchAddress;
-    private TextView tvRecipientDetails;
     private ImageView ivSelectedPaymentIcon;
     private View cardItemRemoved;
     private View cartRoot;
@@ -64,20 +58,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private View paymentOverlayScrim;
     private View cardOrderSummary;
     private View cardPaymentPicker;
-    private View layoutBankOptions;
-    private View rowCashInBankHeader;
-    private View btnConfirmOrder;
-    private TextView tvTerms;
-    private TextView tvCashOnHandLabel;
-    private TextView tvCashInBankLabel;
-    private View optionMoMo;
-    private View optionZaloPay;
-    private View optionEWallet;
-    private View dragHandle;
-    private int footerPaddingStart;
-    private int footerPaddingTop;
-    private int footerPaddingEnd;
-    private int footerPaddingBottom;
     private int selectedPaymentMethod = PAYMENT_CASH_ON_HAND;
     private final Handler bannerHandler = new Handler(Looper.getMainLooper());
 
@@ -100,15 +80,11 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         tvSubtotal = findViewById(R.id.tvSubtotal);
         tvTotal = findViewById(R.id.tvTotal);
         tvSelectedPayment = findViewById(R.id.tvSelectedPayment);
-        tvSelectedBranchAddress = findViewById(R.id.tvSelectedBranchAddress);
-        tvRecipientDetails = findViewById(R.id.tvRecipientDetails);
         ivSelectedPaymentIcon = findViewById(R.id.ivSelectedPaymentIcon);
         cardItemRemoved = findViewById(R.id.cardItemRemoved);
         RecyclerView rvCartItems = findViewById(R.id.rvCartItems);
-        TextView tvTermsView = findViewById(R.id.tvTerms);
-        tvTerms = tvTermsView;
+        TextView tvTerms = findViewById(R.id.tvTerms);
         TextView tvTotalLabel = findViewById(R.id.tvTotalLabel);
-        btnConfirmOrder = findViewById(R.id.btnConfirmOrder);
 
         applyExtraBoldTypeface(tvTotalLabel, tvTotal);
 
@@ -117,22 +93,8 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             btnBack.setOnClickListener(v -> finish());
         }
 
-        dragHandle = findViewById(R.id.dragHandle);
-        if (layoutCartFooter != null) {
-            footerPaddingStart = layoutCartFooter.getPaddingStart();
-            footerPaddingTop = layoutCartFooter.getPaddingTop();
-            footerPaddingEnd = layoutCartFooter.getPaddingEnd();
-            footerPaddingBottom = layoutCartFooter.getPaddingBottom();
-        }
-
-        CartBadgeHelper.setup(this);
-
-        setupTermsLink(tvTermsView);
+        setupTermsLink(tvTerms);
         setupPaymentPicker();
-
-        if (btnConfirmOrder != null) {
-            btnConfirmOrder.setOnClickListener(v -> handleConfirmOrder());
-        }
 
         adapter = new CartItemAdapter(cartItems, new CartItemAdapter.CartItemActionListener() {
             @Override
@@ -154,17 +116,14 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
         CartManager.getInstance().addListener(this);
         refreshCartUi();
+        View layoutSummaryCollapsible = findViewById(R.id.layoutSummaryCollapsible);
         View cardOrderSummary = findViewById(R.id.cardOrderSummary);
+        View dragHandle = findViewById(R.id.dragHandle);
+
         if (dragHandle != null && cardOrderSummary != null) {
             dragHandle.setOnClickListener(v -> toggleSummary(cardOrderSummary));
             cardOrderSummary.setOnClickListener(v -> toggleSummary(cardOrderSummary));
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        CartBadgeHelper.updateBadge(this);
     }
 
     private void toggleSummary(View cardOrderSummary) {
@@ -195,14 +154,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     public void onCartChanged() {
         refreshCartUi();
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_PAYMENT && resultCode == RESULT_OK && data != null) {
-            int method = data.getIntExtra("selected", PAYMENT_CASH_ON_HAND);
-            selectPaymentMethod(method);
-        }
-    }
+
     private void setupWindowInsets() {
         if (cartRoot == null) {
             return;
@@ -266,13 +218,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private void setupPaymentPicker() {
         View btnPaymentChange = findViewById(R.id.btnPaymentChange);
         View optionCashOnHand = findViewById(R.id.optionCashOnHand);
-        rowCashInBankHeader = findViewById(R.id.rowCashInBankHeader);
-        layoutBankOptions = findViewById(R.id.layoutBankOptions);
-        tvCashOnHandLabel = findViewById(R.id.tvCashOnHandLabel);
-        tvCashInBankLabel = findViewById(R.id.tvCashInBankLabel);
-        optionMoMo = findViewById(R.id.optionMoMo);
-        optionZaloPay = findViewById(R.id.optionZaloPay);
-        optionEWallet = findViewById(R.id.optionEWallet);
+        View optionCashInBank = findViewById(R.id.optionCashInBank);
 
         if (btnPaymentChange != null) {
             btnPaymentChange.setOnClickListener(v -> showPaymentPicker());
@@ -286,170 +232,48 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (optionCashOnHand != null) {
             optionCashOnHand.setOnClickListener(v -> selectPaymentMethod(PAYMENT_CASH_ON_HAND));
         }
-        if (rowCashInBankHeader != null) {
-            rowCashInBankHeader.setOnClickListener(v -> toggleBankOptions());
-        }
-        if (optionMoMo != null) optionMoMo.setOnClickListener(v -> selectPaymentMethod(PAYMENT_MOMO));
-        if (optionZaloPay != null) optionZaloPay.setOnClickListener(v -> selectPaymentMethod(PAYMENT_ZALOPAY));
-        if (optionEWallet != null) optionEWallet.setOnClickListener(v -> selectPaymentMethod(PAYMENT_EWALLET));
-
-        updatePaymentUi();
-    }
-
-    private void toggleBankOptions() {
-        if (layoutBankOptions == null) return;
-        boolean show = layoutBankOptions.getVisibility() != View.VISIBLE;
-        layoutBankOptions.setVisibility(show ? View.VISIBLE : View.GONE);
-        if (show) {
-            highlightBankHeader(true);
-            highlightCashOnHand(false);
+        if (optionCashInBank != null) {
+            optionCashInBank.setOnClickListener(v -> selectPaymentMethod(PAYMENT_CASH_IN_BANK));
         }
     }
 
-    private void highlightCashOnHand(boolean selected) {
-        if (tvCashOnHandLabel == null) return;
-        tvCashOnHandLabel.setTextColor(ContextCompat.getColor(this,
-                selected ? R.color.on_surface : R.color.secondary));
-        tvCashOnHandLabel.setTypeface(tvCashOnHandLabel.getTypeface(),
-                selected ? Typeface.BOLD : Typeface.NORMAL);
+    private void showPaymentPicker() {
+        if (paymentOverlayScrim != null) {
+            paymentOverlayScrim.setVisibility(View.VISIBLE);
+        }
+        if (cardOrderSummary != null) {
+            cardOrderSummary.setVisibility(View.INVISIBLE);
+        }
+        if (cardPaymentPicker != null) {
+            cardPaymentPicker.setVisibility(View.VISIBLE);
+        }
     }
 
-    private void highlightBankHeader(boolean selected) {
-        if (tvCashInBankLabel == null) return;
-        tvCashInBankLabel.setTextColor(ContextCompat.getColor(this,
-                selected ? R.color.on_surface : R.color.secondary));
-        tvCashInBankLabel.setTypeface(tvCashInBankLabel.getTypeface(),
-                selected ? Typeface.BOLD : Typeface.NORMAL);
-    }
-
-    private void highlightBankOption(View optionRow, boolean selected) {
-        if (!(optionRow instanceof ViewGroup)) {
-            return;
+    private void hidePaymentPicker() {
+        if (paymentOverlayScrim != null) {
+            paymentOverlayScrim.setVisibility(View.GONE);
         }
-        ViewGroup group = (ViewGroup) optionRow;
-        TextView label = null;
-        for (int i = 0; i < group.getChildCount(); i++) {
-            View child = group.getChildAt(i);
-            if (child instanceof TextView) {
-                label = (TextView) child;
-                break;
-            }
+        if (cardPaymentPicker != null) {
+            cardPaymentPicker.setVisibility(View.GONE);
         }
-        if (label == null) {
-            return;
+        if (cardOrderSummary != null) {
+            cardOrderSummary.setVisibility(View.VISIBLE);
         }
-        label.setTextColor(ContextCompat.getColor(this,
-                selected ? R.color.brand_blue : R.color.secondary));
-        label.setTypeface(label.getTypeface(), selected ? Typeface.BOLD : Typeface.NORMAL);
     }
 
     private void selectPaymentMethod(int method) {
         selectedPaymentMethod = method;
-        updatePaymentUi();
+        if (tvSelectedPayment != null) {
+            tvSelectedPayment.setText(method == PAYMENT_CASH_IN_BANK
+                    ? R.string.cart_cash_in_bank
+                    : R.string.cart_cash_on_hand);
+        }
+        if (ivSelectedPaymentIcon != null) {
+            ivSelectedPaymentIcon.setImageResource(method == PAYMENT_CASH_IN_BANK
+                    ? R.drawable.ic_cash_bank
+                    : R.drawable.ic_cash);
+        }
         hidePaymentPicker();
-    }
-
-    private void updatePaymentUi() {
-        String methodName = "";
-        int iconRes = R.drawable.ic_cash;
-
-        boolean isCashOnHand = selectedPaymentMethod == PAYMENT_CASH_ON_HAND;
-        boolean isBankMethod = selectedPaymentMethod >= PAYMENT_CASH_IN_BANK;
-
-        highlightCashOnHand(isCashOnHand);
-        highlightBankHeader(isBankMethod);
-        highlightBankOption(optionZaloPay, selectedPaymentMethod == PAYMENT_ZALOPAY);
-        highlightBankOption(optionMoMo, selectedPaymentMethod == PAYMENT_MOMO);
-        highlightBankOption(optionEWallet, selectedPaymentMethod == PAYMENT_EWALLET);
-
-        if (layoutBankOptions != null && !isBankMethod) {
-            layoutBankOptions.setVisibility(View.GONE);
-        }
-
-        switch (selectedPaymentMethod) {
-            case PAYMENT_CASH_ON_HAND:
-                methodName = getString(R.string.cart_cash_on_hand);
-                iconRes = R.drawable.ic_cash;
-                break;
-            case PAYMENT_CASH_IN_BANK:
-            case PAYMENT_MOMO:
-                methodName = getString(R.string.payment_momo);
-                iconRes = R.drawable.ic_cash_bank;
-                break;
-            case PAYMENT_ZALOPAY:
-                methodName = getString(R.string.payment_zalopay);
-                iconRes = R.drawable.ic_cash_bank;
-                break;
-            case PAYMENT_EWALLET:
-                methodName = getString(R.string.payment_ewallet);
-                iconRes = R.drawable.ic_cash_bank;
-                break;
-        }
-
-        if (tvSelectedPayment != null) tvSelectedPayment.setText(methodName);
-        if (ivSelectedPaymentIcon != null) ivSelectedPaymentIcon.setImageResource(iconRes);
-    }
-
-    private void showPaymentPicker() {
-        if (cardOrderSummary != null) cardOrderSummary.setVisibility(View.GONE);
-        if (cardPaymentPicker != null) cardPaymentPicker.setVisibility(View.VISIBLE);
-        if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.VISIBLE);
-        if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.GONE);
-        if (tvTerms != null) tvTerms.setVisibility(View.GONE);
-        if (dragHandle != null) dragHandle.setVisibility(View.GONE);
-
-        if (layoutCartFooter != null) {
-            layoutCartFooter.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-            layoutCartFooter.setPadding(0, footerPaddingTop, 0, footerPaddingBottom);
-        }
-
-        if (selectedPaymentMethod >= PAYMENT_CASH_IN_BANK && layoutBankOptions != null) {
-            layoutBankOptions.setVisibility(View.VISIBLE);
-        }
-        updatePaymentUi();
-    }
-
-    private void hidePaymentPicker() {
-        if (cardPaymentPicker != null) cardPaymentPicker.setVisibility(View.GONE);
-        if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.GONE);
-        if (cardOrderSummary != null) cardOrderSummary.setVisibility(View.VISIBLE);
-        if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.VISIBLE);
-        if (tvTerms != null) tvTerms.setVisibility(View.VISIBLE);
-        if (dragHandle != null) dragHandle.setVisibility(View.VISIBLE);
-        if (layoutBankOptions != null) layoutBankOptions.setVisibility(View.GONE);
-
-        if (layoutCartFooter != null) {
-            layoutCartFooter.setBackgroundResource(R.drawable.bg_cart_footer);
-            layoutCartFooter.setPadding(
-                    footerPaddingStart,
-                    footerPaddingTop,
-                    footerPaddingEnd,
-                    footerPaddingBottom
-            );
-        }
-    }
-
-    private void handleConfirmOrder() {
-        if (CartManager.getInstance().getItems().isEmpty()) {
-            return;
-        }
-
-        String branchAddress = tvSelectedBranchAddress != null ? tvSelectedBranchAddress.getText().toString() : "";
-
-        if (selectedPaymentMethod == PAYMENT_CASH_ON_HAND) {
-            int orderTotal = CartManager.getInstance().getSubtotal();
-            Intent intent = new Intent(this, Checkout.class);
-            intent.putExtra("pickupAddress", branchAddress);
-            intent.putExtra("orderTotal", orderTotal);
-            startActivity(intent);
-            CartManager.getInstance().clear();
-            finish();
-        } else {
-            Intent intent = new Intent(this, Payment.class);
-            intent.putExtra("method", selectedPaymentMethod);
-            intent.putExtra("pickupAddress", branchAddress);
-            startActivity(intent);
-        }
     }
 
     private void openProfileTab() {

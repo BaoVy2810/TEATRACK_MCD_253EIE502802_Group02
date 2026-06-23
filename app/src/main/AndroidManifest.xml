@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> <!-- Android 13+ -->
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />  <!-- Android 13+ -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />  <!-- Android 12 trở xuống -->
 
     <application
         android:name=".TeaTrackApplication"
@@ -19,11 +19,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02"
-        android:usesCleartextTraffic="true">
-        <activity
-            android:name=".PaymentMethodActivity"
-            android:exported="false" />
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02">
         <activity
             android:name=".client.PolicyandTermActivity"
             android:exported="false" />
@@ -104,8 +101,7 @@
             android:exported="false" />
         <activity
             android:name=".client.Menu"
-            android:exported="false"
-            android:launchMode="singleTop" />
+            android:exported="false" />
         <activity
             android:name=".client.PageNotFound"
             android:exported="false" />
@@ -120,9 +116,6 @@
             android:exported="false" />
         <activity
             android:name=".client.ForgotPassword"
-            android:exported="false" />
-        <activity
-            android:name=".client.PaymentMethodActivity"
             android:exported="false" />
         <activity
             android:name=".client.RegisterActivity"
@@ -159,20 +152,21 @@
             android:exported="false" />
         <activity
             android:name=".client.Homepage"
-            android:exported="false"
-            android:launchMode="singleTop" />
+            android:exported="false" />
         <activity
             android:name=".admin.AdminDashboard"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

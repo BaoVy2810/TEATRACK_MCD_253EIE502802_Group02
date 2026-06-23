@@ -225,6 +225,7 @@ public class BlogDetail extends AppCompatActivity {
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> onBackPressed());
         }
+
         if (btnShare != null) {
             btnShare.setOnClickListener(v -> {
                 Intent intent = new Intent(Intent.ACTION_SEND);
@@ -242,7 +243,7 @@ public class BlogDetail extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, BlogGeneral.class);
+        Intent intent = new Intent(this, Homepage.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
         finish();

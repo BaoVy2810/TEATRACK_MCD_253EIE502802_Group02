@@ -156,16 +156,10 @@ public class Homepage extends BaseActivity {
             intent = new Intent(this, UserProfile.class);
         }
         if (intent != null) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent);
             overridePendingTransition(0, 0);
         }
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
     }
 
     private void setupBanners() {
@@ -343,9 +337,9 @@ public class Homepage extends BaseActivity {
         }
         rvPromotions.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         List<Promotion> promotions = new ArrayList<>();
-        promotions.add(new Promotion("blog_2", R.mipmap.banner_monmoi));
-        promotions.add(new Promotion("blog_4", R.mipmap.banner_aboutus));
-        promotions.add(new Promotion("blog_7", R.mipmap.banner_aboutus2));
+        promotions.add(new Promotion("promo1", R.mipmap.banner_monmoi));
+        promotions.add(new Promotion("promo2", R.mipmap.banner_aboutus));
+        promotions.add(new Promotion("promo3", R.mipmap.banner_aboutus2));
 
         PromotionAdapter adapter = new PromotionAdapter(promotions);
         adapter.setOnItemClickListener(item -> {
@@ -363,9 +357,6 @@ public class Homepage extends BaseActivity {
         rvNews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         newsAdapter = new NewsCardAdapter(newsItems);
         newsAdapter.setOnItemClickListener(item -> {
-            if (item.getId() == null || item.getId().isEmpty()) {
-                return;
-            }
             Intent intent = new Intent(this, BlogDetail.class);
             intent.putExtra("blog_id", item.getId());
             startActivity(intent);
@@ -375,25 +366,23 @@ public class Homepage extends BaseActivity {
     }
 
     private void setupCategoryActions() {
-        bindCategoryClick(R.id.categoryPureTea, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.PURE_TEA);
-        bindCategoryClick(R.id.categoryTeaLatte, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.TEA_LATTE);
-        bindCategoryClick(R.id.categoryMilkTea, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.MILK_TEA);
-        bindCategoryClick(R.id.categoryNewArrivals, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.NEW_ARRIVALS);
-        bindCategoryClick(R.id.categoryBestSellers, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.BEST_SELLERS);
-        bindCategoryClick(R.id.categoryFruitTea, com.teatrack_mcd_253eie502802_group02.util.CategoryKeys.FRUIT_TEA);
+        bindCategoryClick(R.id.categoryPureTea, getString(R.string.firebase_category_pure_tea));
+        bindCategoryClick(R.id.categoryTeaLatte, getString(R.string.firebase_category_tea_latte));
+        bindCategoryClick(R.id.categoryMilkTea, getString(R.string.firebase_category_milk_tea));
+        bindCategoryClick(R.id.categoryNewArrivals, getString(R.string.firebase_category_new_arrivals));
+        bindCategoryClick(R.id.categoryBestSellers, getString(R.string.firebase_category_best_sellers));
+        bindCategoryClick(R.id.categoryFruitTea, getString(R.string.firebase_category_fruit_tea));
     }
 
-    private void bindCategoryClick(int viewId, String categoryKey) {
+    private void bindCategoryClick(int viewId, String firebaseCategory) {
         View categoryView = findViewById(viewId);
         if (categoryView == null) {
             return;
         }
         categoryView.setOnClickListener(v -> {
             Intent intent = new Intent(this, Menu.class);
-            intent.putExtra(MainActivity.EXTRA_MENU_CATEGORY, categoryKey);
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra(MainActivity.EXTRA_MENU_CATEGORY, firebaseCategory);
             startActivity(intent);
-            overridePendingTransition(0, 0);
         });
     }
 
@@ -431,7 +420,6 @@ public class Homepage extends BaseActivity {
                     }
                     int imageRes = resolveImageRes(imageField);
                     loaded.add(new NewsItem(
-                            child.getKey(),
                             title,
                             (date == null || date.isEmpty()) ? "--" : date,
                             imageRes));
@@ -462,9 +450,9 @@ public class Homepage extends BaseActivity {
 
     private List<NewsItem> getFallbackNews() {
         List<NewsItem> fallback = new ArrayList<>();
-        fallback.add(new NewsItem("blog_2", "Vẹn tròn trung thu - Trọn vị Ngô Gia", "26-31.07.25", R.mipmap.blog_1_2));
-        fallback.add(new NewsItem("blog_4", "Bí quyết chọn trà hợp gu mỗi ngày", "10-17.08.25", R.mipmap.blog_3_1));
-        fallback.add(new NewsItem("blog_7", "Món mới mùa hè đã lên kệ", "01-08.09.25", R.mipmap.blog_3_2));
+        fallback.add(new NewsItem("blog1", "Vẹn tròn trung thu - Trọn vị Ngô Gia", "26-31.07.25", R.mipmap.blog_1_2));
+        fallback.add(new NewsItem("blog2", "Bí quyết chọn trà hợp gu mỗi ngày", "10-17.08.25", R.mipmap.blog_3_1));
+        fallback.add(new NewsItem("blog3", "Món mới mùa hè đã lên kệ", "01-08.09.25", R.mipmap.blog_3_2));
         return fallback;
     }
 
