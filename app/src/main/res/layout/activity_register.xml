@@ -143,7 +143,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelFullName"
                 app:startIconDrawable="@drawable/ic_username"
-                app:startIconTint="#6279FF">
+                app:startIconTint="#0088ff">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etFullName"
@@ -195,7 +195,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelName"
                 app:startIconDrawable="@drawable/ic_username"
-                app:startIconTint="#6279FF">
+                app:startIconTint="#0088ff">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etName"
@@ -249,7 +249,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelEmail"
                 app:startIconDrawable="@drawable/ic_email"
-                app:startIconTint="#6279FF">
+                app:startIconTint="#0088ff">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
@@ -303,7 +303,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelPhone"
                 app:startIconDrawable="@drawable/ic_phonenumber"
-                app:startIconTint="#6279FF"
+                app:startIconTint="#0088ff"
                 app:startIconScaleType="centerInside">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -360,7 +360,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelPassword"
                 app:startIconDrawable="@drawable/ic_lock"
-                app:startIconTint="#6279FF">
+                app:startIconTint="#0088ff">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
@@ -416,7 +416,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvLabelConfirmPassword"
                 app:startIconDrawable="@drawable/ic_lock"
-                app:startIconTint="#6279FF">
+                app:startIconTint="#0088ff">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etConfirmPassword"

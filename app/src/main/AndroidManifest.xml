@@ -22,9 +22,6 @@
         android:theme="@style/Theme.TEATRACK_MCD_253EIE502802_Group02"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".PaymentMethodActivity"
-            android:exported="false" />
-        <activity
             android:name=".client.PolicyandTermActivity"
             android:exported="false" />
         <activity
@@ -120,10 +117,7 @@
             android:exported="false" />
         <activity
             android:name=".client.ForgotPassword"
-            android:exported="false" />
-        <activity
-            android:name=".client.PaymentMethodActivity"
-            android:exported="false" />
+            android:exported="false" />>
         <activity
             android:name=".client.RegisterActivity"
             android:exported="false" />
@@ -156,7 +150,8 @@
             android:exported="false" />
         <activity
             android:name=".client.LoginActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".client.Homepage"
             android:exported="false"
