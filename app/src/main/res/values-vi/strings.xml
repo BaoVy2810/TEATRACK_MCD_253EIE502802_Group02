@@ -655,6 +655,7 @@
     <string name="str_agency_details">AGENCY DETAILS</string>
     <string name="str_agency_id">Agency ID</string>
     <string name="str_agency_name">Tên chi nhánh</string>
+    <string name="str_agency_phone">Số điện thoại</string>
     <string name="str_address">Địa chỉ</string>
     <string name="str_phone_number">Số điện thoại</string>
     <string name="str_image_source_file">Tệp nguồn hình ảnh</string>
@@ -715,4 +716,26 @@
     <string name="order_track">Theo dõi đơn hàng</string>
     <string name="order_back_to_menu">Quay lại thực đơn</string>
     <string name="order_id_format">HTNG-%1$d</string>
+    <string name="str_agency_title">HỆ THỐNG CHI NHÁNH</string>
+    <string name="str_breadcrumb_agency">Trang chủ / Chi nhánh</string>
+    <string name="str_contact">LIÊN HỆ VỚI CHÚNG TÔI</string>
+    <string name="str_contact_breadcrumb">Trang chủ / Liên hệ</string>
+    <string name="str_contact_info">Thông tin liên hệ</string>
+    <string name="str_contact_desc">Chúng tôi luôn lắng nghe ý kiến của bạn để hoàn thiện hơn mỗi ngày.</string>
+    <string name="str_phone">Hotline: 0999.888.777</string>
+    <string name="str_email">Email: contact@teatrack.com</string>
+    <string name="str_fullname">Họ và tên</string>
+    <string name="str_fullname_hint">Nhập họ và tên của bạn</string>
+    <string name="str_email_hint">Địa chỉ Email</string>
+    <string name="str_email_prompt">Nhập địa chỉ email</string>
+    <string name="str_phone_hint">Số điện thoại</string>
+    <string name="str_phone_prompt">Nhập số điện thoại</string>
+    <string name="str_branch_label">Chọn chi nhánh</string>
+    <string name="str_topic_complain">Góp ý</string>
+    <string name="str_topic_praise">Khen ngợi</string>
+    <string name="str_topic_suggest">Đề xuất</string>
+    <string name="str_feedback_content">Nội dung</string>
+    <string name="str_feedback_content_hint">Nhập nội dung góp ý tại đây</string>
+    <string name="str_send">Gửi</string>
+    <string name="str_contact_success_title">Gửi thành công!</string>
 </resources>

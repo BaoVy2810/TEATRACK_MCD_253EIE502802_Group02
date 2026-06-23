@@ -4,6 +4,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class ContactRequest {
+    private String id;
     private String fullName;
     private String email;
     private String phone;
@@ -16,7 +17,8 @@ public class ContactRequest {
         // Required for Firebase
     }
 
-    public ContactRequest(String fullName, String email, String phone, String branch, String topic, String content, long timestamp) {
+    public ContactRequest(String id, String fullName, String email, String phone, String branch, String topic, String content, long timestamp) {
+        this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
@@ -25,6 +27,9 @@ public class ContactRequest {
         this.content = content;
         this.timestamp = timestamp;
     }
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public String getFullName() { return fullName; }
     public void setFullName(String fullName) { this.fullName = fullName; }
