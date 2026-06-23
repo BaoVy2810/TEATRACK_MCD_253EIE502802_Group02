@@ -7,6 +7,7 @@
     <string name="nav_products">Products</string>
     <string name="nav_orders">Orders</string>
     <string name="nav_account">Account</string>
+    <string name="nav_forum">Forum</string>
     <string name="blog_breadcrumb">Home / Forum</string>
     <string name="blog_page_title">Forum</string>
     <string name="nav_branch">Branch</string>
