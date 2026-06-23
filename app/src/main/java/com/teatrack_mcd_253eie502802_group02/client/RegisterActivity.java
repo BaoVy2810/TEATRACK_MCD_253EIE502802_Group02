@@ -164,19 +164,31 @@ public class RegisterActivity extends BaseActivity {
 
     private void setFieldError(TextInputLayout til, boolean isError) {
         if (til == null) return;
+
+        til.setErrorEnabled(false); // không chiếm space
+
         if (isError) {
-            til.setBoxStrokeColor(android.graphics.Color.RED);
-            til.setBoxStrokeErrorColor(
-                    android.content.res.ColorStateList.valueOf(android.graphics.Color.RED)
+            til.setBoxStrokeWidth(2);
+            til.setBoxStrokeWidthFocused(2);
+            // Force màu đỏ bằng cách override toàn bộ state
+            int red = android.graphics.Color.RED;
+            android.content.res.ColorStateList redList = new android.content.res.ColorStateList(
+                    new int[][] {
+                            new int[] { android.R.attr.state_focused },
+                            new int[] { -android.R.attr.state_focused },
+                            new int[] {}
+                    },
+                    new int[] { red, red, red }
             );
-            til.setErrorEnabled(true);
-            til.setError(" ");
+            til.setBoxStrokeColorStateList(redList);
         } else {
-            til.setError(null);
-            til.setErrorEnabled(false);
+            til.setBoxStrokeWidth(1);
+            til.setBoxStrokeWidthFocused(1);
+            til.setBoxStrokeColorStateList(
+                    androidx.core.content.ContextCompat.getColorStateList(this, R.color.til_stroke_color)
+            );
         }
     }
-
     private void resetFieldErrors() {
         setFieldError(tilFullName, false);
         setFieldError(tilName, false);
