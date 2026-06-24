@@ -743,4 +743,5 @@
     <string name="str_feedback_content_hint">Nhập nội dung góp ý tại đây</string>
     <string name="str_send">Gửi</string>
     <string name="str_contact_success_title">Gửi thành công!</string>
+    <string name="str_edit_info">Edit</string>
 </resources>
