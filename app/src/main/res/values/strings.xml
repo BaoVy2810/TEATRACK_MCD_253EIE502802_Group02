@@ -879,6 +879,28 @@
     <string name="order_total_label">Total</string>
     <string name="order_track">Track order</string>
     <string name="order_back_to_menu">Back to menu</string>
+    <string name="order_tracking_title">Order Tracking</string>
+    <string name="order_tracking_id_prefix">#%1$s</string>
+    <string name="order_tracking_shipper_status">Shipper is on the way</string>
+    <string name="order_tracking_status_title">Order Status</string>
+    <string name="order_tracking_confirmed">Confirmed</string>
+    <string name="order_tracking_preparing">Preparing</string>
+    <string name="order_tracking_ready_for_pickup">Ready for Pickup</string>
+    <string name="order_tracking_waiting_pickup">Waiting for customer to pick up...</string>
+    <string name="order_tracking_out_for_delivery">Out for Delivery</string>
+    <string name="order_tracking_delivered">Delivered</string>
+    <string name="order_tracking_estimated_prefix">Estimated: %1$s</string>
+    <string name="order_tracking_waiting_shipper">Waiting for shipper...</string>
+    <string name="order_tracking_delivery_info">Delivery Information</string>
+    <string name="order_tracking_recipient">Recipient:</string>
+    <string name="order_tracking_address">Address:</string>
+    <string name="order_tracking_payment">Payment:</string>
+    <string name="order_tracking_cash">Cash</string>
+    <string name="order_tracking_contact_support">Contact Support</string>
+    <string name="order_tracking_estimated_sample">Estimated: 15-20 mins</string>
+    <string name="order_tracking_sample_time1">10:30 AM, 12 Oct 2023</string>
+    <string name="order_tracking_sample_time2">10:45 AM, 12 Oct 2023</string>
+    <string name="order_tracking_sample_id">#ORD12345</string>
     <string name="order_id_format">HTNG-%1$d</string>
 
     <string name="payment_qr_instructions">Please scan the QR code to complete your payment. The order will be confirmed automatically after payment is received.</string>
@@ -897,7 +919,7 @@
     <string name="order_saving">Đang lưu đơn hàng...</string>
     <string name="order_success_order_line">Mã đơn: %s</string>
     <string name="order_success_thanks">Cảm ơn bạn đã mua hàng!</string>
-    
+
     <!-- Agency/Order Hints -->
     <string name="hint_agency_id_example">Ví dụ: AG01</string>
     <string name="hint_enter_agency_name">Nhập tên đại lý</string>

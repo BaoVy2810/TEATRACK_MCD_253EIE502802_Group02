@@ -424,7 +424,7 @@
     <string name="forgot_password_label_email">Email*</string>
     <string name="forgot_password_hint_email">Nhập địa chỉ email của bạn</string>
     <string name="forgot_password_btn_send_otp">Gửi mã OTP</string>
-    <string name="forgot_password_already_have_account">Bạn đã sẵn sàng có tài khoản? </string>
+    <string name="forgot_password_already_have_account">Bạn đã có tài khoản? </string>
     <string name="forgot_password_sign_in">Đăng nhập</string>
     <string name="forgot_password_error_empty">Vui lòng điền đầy đủ địa chỉ email của bạn.</string>
     <string name="forgot_password_error_not_found">Không tìm thấy tài khoản liên kết với email này. Vui lòng kiểm tra lại.</string>
@@ -744,4 +744,26 @@
     <string name="str_send">Gửi</string>
     <string name="str_contact_success_title">Gửi thành công!</string>
     <string name="str_edit_info">Edit</string>
+    <string name="order_tracking_title">Theo Dõi Đơn Hàng</string>
+    <string name="order_tracking_id_prefix">#%1$s</string>
+    <string name="order_tracking_shipper_status">Tài xế đang giao hàng</string>
+    <string name="order_tracking_status_title">Trạng Thái Đơn Hàng</string>
+    <string name="order_tracking_confirmed">Đã xác nhận</string>
+    <string name="order_tracking_preparing">Đang chuẩn bị</string>
+    <string name="order_tracking_ready_for_pickup">Chờ lấy hàng</string>
+    <string name="order_tracking_waiting_pickup">Đang chờ khách đến lấy...</string>
+    <string name="order_tracking_out_for_delivery">Đang giao hàng</string>
+    <string name="order_tracking_delivered">Đã giao hàng</string>
+    <string name="order_tracking_estimated_prefix">Dự kiến: %1$s</string>
+    <string name="order_tracking_waiting_shipper">Đang tìm tài xế...</string>
+    <string name="order_tracking_delivery_info">Thông Tin Giao Hàng</string>
+    <string name="order_tracking_recipient">Người nhận:</string>
+    <string name="order_tracking_address">Địa chỉ:</string>
+    <string name="order_tracking_payment">Thanh toán:</string>
+    <string name="order_tracking_cash">Tiền mặt</string>
+    <string name="order_tracking_contact_support">Liên hệ hỗ trợ</string>
+    <string name="order_tracking_estimated_sample">Dự kiến: 15-20 phút</string>
+    <string name="order_tracking_sample_time1">10:30, 12 Th10 2023</string>
+    <string name="order_tracking_sample_time2">10:45, 12 Th10 2023</string>
+    <string name="order_tracking_sample_id">#ORD12345</string>
 </resources>
