@@ -706,4 +706,26 @@
     <string name="blog_detail_image_desc">Ảnh chính bài viết</string>
     <string name="blog_related_image_desc">Ảnh bài viết liên quan</string>
     <string name="home_view_all">Xem tất cả</string>
+    <string name="order_tracking_title">Theo Dõi Đơn Hàng</string>
+    <string name="order_tracking_id_prefix">#%1$s</string>
+    <string name="order_tracking_shipper_status">Tài xế đang giao hàng</string>
+    <string name="order_tracking_status_title">Trạng Thái Đơn Hàng</string>
+    <string name="order_tracking_confirmed">Đã xác nhận</string>
+    <string name="order_tracking_preparing">Đang chuẩn bị</string>
+    <string name="order_tracking_ready_for_pickup">Chờ lấy hàng</string>
+    <string name="order_tracking_waiting_pickup">Đang chờ khách đến lấy...</string>
+    <string name="order_tracking_out_for_delivery">Đang giao hàng</string>
+    <string name="order_tracking_delivered">Đã giao hàng</string>
+    <string name="order_tracking_estimated_prefix">Dự kiến: %1$s</string>
+    <string name="order_tracking_waiting_shipper">Đang tìm tài xế...</string>
+    <string name="order_tracking_delivery_info">Thông Tin Giao Hàng</string>
+    <string name="order_tracking_recipient">Người nhận:</string>
+    <string name="order_tracking_address">Địa chỉ:</string>
+    <string name="order_tracking_payment">Thanh toán:</string>
+    <string name="order_tracking_cash">Tiền mặt</string>
+    <string name="order_tracking_contact_support">Liên hệ hỗ trợ</string>
+    <string name="order_tracking_estimated_sample">Dự kiến: 15-20 phút</string>
+    <string name="order_tracking_sample_time1">10:30, 12 Th10 2023</string>
+    <string name="order_tracking_sample_time2">10:45, 12 Th10 2023</string>
+    <string name="order_tracking_sample_id">#ORD12345</string>
 </resources>
