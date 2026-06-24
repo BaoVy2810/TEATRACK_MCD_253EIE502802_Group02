@@ -66,7 +66,8 @@ public class Checkout extends BaseActivity {
 
         findViewById(R.id.btnBackToMenu).setOnClickListener(v -> navigateToMenu());
         findViewById(R.id.btnTrackOrder).setOnClickListener(v -> {
-            Intent intent = new Intent(this, OrderHistory.class);
+            Intent intent = new Intent(this, OrderTracking.class);
+            intent.putExtra("orderId", orderId);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
