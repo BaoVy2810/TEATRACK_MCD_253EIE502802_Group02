@@ -68,7 +68,9 @@ public final class OrderPlacementHelper {
         order.setTotal(total);
         order.setItems(orderItems);
         order.setDeliveryDate(today);
-        order.setDeliveryTime("");
+        android.content.SharedPreferences userPrefs = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String pickupTime = userPrefs.getString("saved_pickup_time", "");
+        order.setDeliveryTime(pickupTime == null ? "" : pickupTime);
         order.setNote(note == null || note.trim().isEmpty() ? "" : note.trim());
         order.setCouponCode("");
         order.setUserId(userId == null ? "" : userId);

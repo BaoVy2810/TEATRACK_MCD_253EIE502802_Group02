@@ -419,7 +419,9 @@ public class Homepage extends BaseActivity {
                         continue;
                     }
                     int imageRes = resolveImageRes(imageField);
+                    String blogId = child.getKey();
                     loaded.add(new NewsItem(
+                            child.getKey(),
                             title,
                             (date == null || date.isEmpty()) ? "--" : date,
                             imageRes));
