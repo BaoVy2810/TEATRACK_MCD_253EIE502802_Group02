@@ -28,6 +28,7 @@ import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ContactWithUs extends AppCompatActivity {
 
@@ -148,16 +149,51 @@ public class ContactWithUs extends AppCompatActivity {
         int selectedTopicId = radioTopic.getCheckedRadioButtonId();
         android.widget.RadioButton rbSelected = findViewById(selectedTopicId);
         String topic = rbSelected.getText().toString();
+        mDatabase.child("contacts").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long maxId = 0;
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    // Lấy mã ở 2 nơi: Key của bản ghi và trường 'id' bên trong
+                    String idInside = ds.child("id").getValue(String.class);
+                    String keyOutside = ds.getKey();
 
-        // Tạo đối tượng yêu cầu
-        ContactRequest request = new ContactRequest(
-                fullname, email, phone, branch, topic, content, System.currentTimeMillis()
-        );
+                    // Kiểm tra trường 'id'
+                    if (idInside != null && idInside.startsWith("CT")) {
+                        try {
+                            long val = Long.parseLong(idInside.substring(2));
+                            if (val > maxId) maxId = val;
+                        } catch (NumberFormatException ignored) {}
+                    }
 
-        // Lưu vào node 'contacts' trên Firebase
-        mDatabase.child("contacts").push().setValue(request)
-                .addOnSuccessListener(aVoid -> showSuccessDialog())
-                .addOnFailureListener(e -> Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                    // Kiểm tra Key bên ngoài
+                    if (keyOutside != null && keyOutside.startsWith("CT")) {
+                        try {
+                            long val = Long.parseLong(keyOutside.substring(2));
+                            if (val > maxId) maxId = val;
+                        } catch (NumberFormatException ignored) {}
+                    }
+                }
+                
+                // Nếu xóa hết sạch folder contacts, maxId sẽ là 0 -> customId = CT01
+                String customId = String.format(Locale.US, "CT%02d", maxId + 1);
+
+                // Tạo đối tượng yêu cầu với ID tùy chỉnh (mã CTxx)
+                ContactRequest request = new ContactRequest(
+                        customId, fullname, email, phone, branch, topic, content, System.currentTimeMillis()
+                );
+
+                // Sử dụng customId (CT01, CT02...) làm Key
+                mDatabase.child("contacts").child(customId).setValue(request)
+                        .addOnSuccessListener(aVoid -> showSuccessDialog())
+                        .addOnFailureListener(e -> Toast.makeText(ContactWithUs.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ContactWithUs.this, "Lỗi đọc dữ liệu: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private boolean validateForm() {
