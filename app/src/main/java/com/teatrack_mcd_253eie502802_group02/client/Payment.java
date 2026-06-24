@@ -141,7 +141,7 @@ public class Payment extends AppCompatActivity {
         tvInstructions.setText(instructions);
 
         findViewById(R.id.btnDownloadQr).setOnClickListener(v -> saveQrToGallery(cardQr));
-        findViewById(R.id.btnCustomizeQr).setOnClickListener(v -> 
+        findViewById(R.id.btnCustomizeQr).setOnClickListener(v ->
             Toast.makeText(this, "QR Customization coming soon!", Toast.LENGTH_SHORT).show());
         findViewById(R.id.btnShareQr).setOnClickListener(v -> shareQrImage(cardQr));
 
@@ -160,11 +160,11 @@ public class Payment extends AppCompatActivity {
 
     private void startScanningAnimation() {
         if (viewScanningLine == null) return;
-        
+
         viewScanningLine.post(() -> {
             float startY = 0f;
             float endY = ((View) viewScanningLine.getParent()).getHeight() - viewScanningLine.getHeight();
-            
+
             scanningAnimator = ObjectAnimator.ofFloat(viewScanningLine, "translationY", startY, endY);
             scanningAnimator.setDuration(2000);
             scanningAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -201,7 +201,7 @@ public class Payment extends AppCompatActivity {
     private void saveQrToGallery(View view) {
         Bitmap bitmap = createBitmapFromView(view);
         String fileName = "QR_Payment_" + System.currentTimeMillis() + ".png";
-        
+
         OutputStream fos;
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -216,7 +216,7 @@ public class Payment extends AppCompatActivity {
                 File image = new File(imagesDir, fileName);
                 fos = new FileOutputStream(image);
             }
-            
+
             if (fos != null) {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
                 fos.close();

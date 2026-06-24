@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
@@ -33,6 +34,7 @@ import com.teatrack_mcd_253eie502802_group02.data.CartManager;
 import com.teatrack_mcd_253eie502802_group02.data.OrderCheckoutFlow;
 import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
@@ -157,7 +159,10 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
         CartManager.getInstance().addListener(this);
         refreshCartUi();
+        View layoutSummaryCollapsible = findViewById(R.id.layoutSummaryCollapsible);
         View cardOrderSummary = findViewById(R.id.cardOrderSummary);
+        View dragHandle = findViewById(R.id.dragHandle);
+
         if (dragHandle != null && cardOrderSummary != null) {
             dragHandle.setOnClickListener(v -> toggleSummary(cardOrderSummary));
             cardOrderSummary.setOnClickListener(v -> toggleSummary(cardOrderSummary));

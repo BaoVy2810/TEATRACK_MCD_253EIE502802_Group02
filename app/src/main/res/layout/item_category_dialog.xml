@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingHorizontal="20dp"
-    android:paddingVertical="8dp"
+    android:layout_height="36dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
     android:background="?attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/tvCategoryItemName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/icChecked"
         android:textColor="@color/brand_blue"
-        android:textSize="12sp"
-        android:textStyle="normal" />
+        android:textSize="12sp" />
 
-    <!-- Divider line at the bottom -->
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="#E8F4FF" />
+    <ImageView
+        android:id="@+id/icChecked"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_check_circle"
+        android:visibility="gone"
+        app:tint="@color/white" />
 
-</LinearLayout>
+    <!-- Optional Divider (handled by layout if needed, but for CSS-like match we use backgrounds) -->
+</RelativeLayout>

@@ -3,12 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /> <!-- Android 13+ -->
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />  <!-- Android 13+ -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />  <!-- Android 12 trở xuống -->
 
     <application
         android:name=".TeaTrackApplication"
@@ -117,7 +115,7 @@
             android:exported="false" />
         <activity
             android:name=".client.ForgotPassword"
-            android:exported="false" />>
+            android:exported="false" />
         <activity
             android:name=".client.RegisterActivity"
             android:exported="false" />

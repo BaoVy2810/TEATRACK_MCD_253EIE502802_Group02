@@ -277,7 +277,7 @@
                     android:padding="7dp"
                     android:src="@drawable/call"
                     android:contentDescription="@string/label_phone_account"
-                    app:tint="@color/phone_green" />
+                    app:tint="@color/brand_blue" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -325,7 +325,7 @@
                     android:padding="7dp"
                     android:src="@drawable/location"
                     android:contentDescription="@string/label_address_account"
-                    app:tint="@color/address_amber" />
+                    app:tint="@color/brand_blue" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -373,7 +373,7 @@
                     android:padding="7dp"
                     android:src="@drawable/calendar"
                     android:contentDescription="@string/label_created_date"
-                    app:tint="@color/vip_purple" />
+                    app:tint="@color/brand_blue" />
 
                 <LinearLayout
                     android:layout_width="0dp"

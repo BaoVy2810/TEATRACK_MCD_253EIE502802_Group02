@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -18,8 +20,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
@@ -48,6 +55,7 @@ public class EditProductDialog {
     private ImageView ivMainPreview;
     private View llPlaceholder;
     private String uploadedImageUrl;
+    private String selectedCategory;
     private final DecimalFormat priceFormatter = new DecimalFormat("#,###");
 
     public EditProductDialog(Context context, Product product, List<String> categories) {
@@ -55,6 +63,7 @@ public class EditProductDialog {
         this.product = product;
         this.categories = categories;
         this.uploadedImageUrl = product.getImage();
+        this.selectedCategory = product.getCategory();
     }
 
     public void show() {
@@ -71,7 +80,7 @@ public class EditProductDialog {
         }
 
         EditText etProductName = dialog.findViewById(R.id.etProductName);
-        Spinner spinnerCategory = dialog.findViewById(R.id.spinnerCategory);
+        TextView tvCategorySelect = dialog.findViewById(R.id.tvCategorySelect);
         CheckBox cbVisible = dialog.findViewById(R.id.cbVisible);
         CheckBox cbSpecial = dialog.findViewById(R.id.cbSpecial);
         EditText etPriceM = dialog.findViewById(R.id.etPriceM);
@@ -104,15 +113,11 @@ public class EditProductDialog {
 
         setupImageUpload(dialog);
 
-        // Setup Spinner
-        List<String> spinnerCats = new ArrayList<>(categories);
-        spinnerCats.remove(context.getString(R.string.filter_all));
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, spinnerCats);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCategory.setAdapter(adapter);
-        
-        int categoryIndex = spinnerCats.indexOf(product.getCategory());
-        if (categoryIndex >= 0) spinnerCategory.setSelection(categoryIndex);
+        // Setup Category Select
+        if (tvCategorySelect != null) {
+            tvCategorySelect.setText(selectedCategory);
+            tvCategorySelect.setOnClickListener(v -> showCategoryPopup(v));
+        }
 
         btnClose.setOnClickListener(v -> dialog.dismiss());
         btnCancel.setOnClickListener(v -> dialog.dismiss());
@@ -125,7 +130,7 @@ public class EditProductDialog {
             }
 
             product.setName(name);
-            product.setCategory(spinnerCategory.getSelectedItem().toString());
+            product.setCategory(selectedCategory);
             product.setVisible(cbVisible.isChecked());
             product.setSpecial(cbSpecial.isChecked());
             product.setPrice(parsePrice(etPriceM));
@@ -144,6 +149,38 @@ public class EditProductDialog {
         });
 
         dialog.show();
+    }
+
+    private void showCategoryPopup(View anchor) {
+        List<String> popupCats = new ArrayList<>(categories);
+        popupCats.remove(context.getString(R.string.filter_all));
+        if (popupCats.isEmpty()) {
+            popupCats.add(context.getString(R.string.pure_tea));
+            popupCats.add(context.getString(R.string.milk_tea));
+            popupCats.add(context.getString(R.string.tea_latte));
+            popupCats.add(context.getString(R.string.fruit_tea));
+        }
+
+        View popupView = LayoutInflater.from(context).inflate(R.layout.dialog_category_selector, null);
+        PopupWindow popupWindow = new PopupWindow(popupView,
+                anchor.getWidth(),
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
+
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setElevation(10);
+
+        RecyclerView rvCategories = popupView.findViewById(R.id.rvCategoryList);
+        if (rvCategories != null) {
+            rvCategories.setLayoutManager(new LinearLayoutManager(context));
+            rvCategories.setAdapter(new CategoryDialogAdapter(popupCats, selectedCategory, category -> {
+                selectedCategory = category;
+                ((TextView) anchor).setText(selectedCategory);
+                popupWindow.dismiss();
+            }));
+        }
+
+        popupWindow.showAsDropDown(anchor, 0, 5);
     }
 
     private void setupImageUpload(Dialog dialog) {
