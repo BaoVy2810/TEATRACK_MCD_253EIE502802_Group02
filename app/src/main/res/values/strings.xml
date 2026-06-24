@@ -488,7 +488,7 @@
     <string name="str_agency_phone">Phone</string>
     <string name="str_address">Address</string>
     <string name="str_phone_number">Phone Number</string>
-    <string name="str_blog_management">Blog Management</string>
+    <string name="str_blog_management">BLOG MANAGEMENT</string>
     <string name="str_promotion_management">Promotion Management</string>
     <string name="str_promotion_search">Search promotion by code or desc...</string>
     <string name="str_add_promotion">+ Add New Promotion</string>
