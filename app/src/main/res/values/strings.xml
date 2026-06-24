@@ -928,4 +928,31 @@
     <string name="hint_image_url_or_upload">Link ảnh hoặc tải lên</string>
     <string name="hint_maps_url_example">Link Google Maps</string>
     <string name="str_edit_info">Edit</string>
+
+    <!-- Order History Screen -->
+    <string name="str_my_orders">My Orders</string>
+    <string name="str_search_order_hint">Search by Order ID…</string>
+    <string name="str_filter">Filter</string>
+    <string name="str_back">Back</string>
+    <string name="str_tab_all">All</string>
+    <string name="str_tab_pending">Awaiting Confirmation</string>
+    <string name="str_tab_processing">Preparing Order</string>
+    <string name="str_tab_ready">Ready</string>
+    <string name="str_tab_shipping">Out for Delivery</string>
+    <string name="str_tab_delivered">Delivered</string>
+    <string name="str_tab_cancelled">Cancelled</string>
+    <string name="str_status_pending">Awaiting Confirmation</string>
+    <string name="str_status_processing">Preparing Order</string>
+    <string name="str_status_ready">Ready</string>
+    <string name="str_status_shipping">Out for Delivery</string>
+    <string name="str_status_delivered">Delivered</string>
+    <string name="str_status_cancelled">Cancelled</string>
+    <string name="str_order_id_prefix">#%1$s</string>
+    <string name="str_order_total_label">Total</string>
+    <string name="str_view_details">View Details</string>
+    <string name="str_no_orders">No orders yet</string>
+    <string name="str_no_orders_desc">Your order history will appear here once you place an order.</string>
+    <string name="str_branch_unknown">Unknown branch</string>
+    <string name="str_load_orders_error">Failed to load orders. Please try again.</string>
+    <string name="str_order_thumbnail_desc">Order thumbnail</string>
 </resources>

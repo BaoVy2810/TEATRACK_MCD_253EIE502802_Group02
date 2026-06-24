@@ -352,6 +352,9 @@ public class LoginActivity extends BaseActivity {
                             userId = userSnap.getKey();
                             String role = userSnap.child("role").getValue(String.class);
 
+                            // Always persist userId so order history & other screens can read it
+                            sharedPreferences.edit().putString(KEY_USER_ID, userId).apply();
+
                             if (cbRemember.isChecked()) {
                                 saveLoginData(loginName, password, userId);
                             }

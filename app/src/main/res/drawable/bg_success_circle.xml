@@ -25,11 +25,8 @@
         android:bottom="28dp"
         android:left="28dp"
         android:right="28dp"
-        android:top="28dp">
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/ic_sucessfully"
-            android:tint="#FFFFFF" />
-    </item>
+        android:top="28dp"
+        android:drawable="@drawable/ic_sucessfully"
+        android:tint="#FFFFFF" />
 
 </layer-list>

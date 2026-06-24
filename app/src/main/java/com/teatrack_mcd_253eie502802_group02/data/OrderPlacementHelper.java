@@ -8,11 +8,10 @@ import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
 
@@ -36,11 +35,11 @@ public final class OrderPlacementHelper {
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
 
         int subtotal = 0;
-        Map<String, FirebaseOrderItem> orderItems = new HashMap<>();
+        List<FirebaseOrderItem> orderItems = new ArrayList<>();
         for (int i = 0; i < items.size(); i++) {
             CartItem item = items.get(i);
             FirebaseOrderItem line = toOrderItem(item);
-            orderItems.put(String.valueOf(i), line);
+            orderItems.add(line);
             subtotal += item.getLineTotal();
         }
 

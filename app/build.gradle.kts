@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.swiperefreshlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation("androidx.recyclerview:recyclerview:1.3.2")
