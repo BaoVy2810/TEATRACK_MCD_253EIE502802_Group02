@@ -100,6 +100,7 @@ public class ProductDetail extends BaseActivity {
     private LinearLayout toppingRowsContainer;
     private boolean isCustomizationExpanded = true;
     private final Map<String, Integer> toppingQuantities = new LinkedHashMap<>();
+    private final Map<String, Integer> toppingUnitPrices = new LinkedHashMap<>();
     private final FirebaseProductRepository repository = new FirebaseProductRepository();
     private Product currentProduct;
 
@@ -797,6 +798,7 @@ public class ProductDetail extends BaseActivity {
             return;
         }
         toppingRowsContainer.removeAllViews();
+        toppingUnitPrices.clear();
         String[][] toppings = {
                 {"Sương sáo", "3.000đ"},
                 {"Thạch dừa nguyên vị", "3.000đ"},
@@ -834,6 +836,11 @@ public class ProductDetail extends BaseActivity {
 
         tvName.setText(name);
         tvPrice.setText("+ " + price);
+        int unitPrice = ToppingPriceHelper.getPrice(name);
+        if (unitPrice <= 0) {
+            unitPrice = parseToppingPriceLabel(price);
+        }
+        toppingUnitPrices.put(name, unitPrice);
         toppingQuantities.put(name, 0);
 
         btnMinus.setOnClickListener(v -> {
@@ -888,10 +895,25 @@ public class ProductDetail extends BaseActivity {
 
         for (Map.Entry<String, Integer> entry : toppingQuantities.entrySet()) {
             if (entry.getValue() != null && entry.getValue() > 0) {
-                item.addTopping(entry.getKey(), ToppingPriceHelper.getPrice(entry.getKey()), entry.getValue());
+                int toppingPrice = toppingUnitPrices.containsKey(entry.getKey())
+                        ? toppingUnitPrices.get(entry.getKey())
+                        : ToppingPriceHelper.getPrice(entry.getKey());
+                item.addTopping(entry.getKey(), toppingPrice, entry.getValue());
             }
         }
         return item;
+    }
+
+    private int parseToppingPriceLabel(String label) {
+        if (label == null) {
+            return 0;
+        }
+        try {
+            String digits = label.replaceAll("[^0-9]", "");
+            return digits.isEmpty() ? 0 : Integer.parseInt(digits);
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     private Product buildProductFromIntent(String name, String category, String priceM, String priceL,

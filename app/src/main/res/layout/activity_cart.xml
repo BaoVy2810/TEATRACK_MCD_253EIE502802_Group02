@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg_baby_blue">
 
+    <!-- ═══ HEADER ═══ -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/headerClient"
         android:layout_width="0dp"
@@ -35,7 +36,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/brand_blue"  />
+                app:tint="@color/brand_blue" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -104,6 +105,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
+    <!-- ═══ SCROLL CONTENT ═══ -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
@@ -123,6 +125,7 @@
             android:padding="12dp"
             android:paddingBottom="40dp">
 
+            <!-- Pickup / Branch card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -199,9 +202,51 @@
                         android:textColor="@color/on_surface"
                         android:textSize="12sp"
                         android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:background="@color/outline_variant" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/time_circle"
+                            app:tint="@color/brand_blue" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/inter_family"
+                            android:text="@string/order_pickup_time"
+                            android:textColor="@color/secondary"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvOrderPickupTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_family"
+                            android:text="@string/order_pickup_time_value"
+                            android:textColor="@color/on_surface"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Recipient Details card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -261,7 +306,6 @@
                             android:textColor="@color/brand_blue"
                             android:textSize="12sp"
                             android:textStyle="bold" />
-
                     </LinearLayout>
 
                     <TextView
@@ -275,6 +319,18 @@
                         android:textColor="@color/on_surface"
                         android:textSize="12sp"
                         android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvRecipientPickupTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter_family"
+                        android:textColor="@color/secondary"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        tools:text="Pickup: 12:15"
+                        tools:visibility="visible" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -308,6 +364,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Item Removed Banner -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardItemRemoved"
                 android:layout_width="match_parent"
@@ -368,6 +425,7 @@
                 android:textStyle="bold"
                 android:visibility="gone" />
 
+            <!-- Voucher card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -417,6 +475,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Note card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -459,6 +518,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Payment Method card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -537,6 +597,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -559,9 +620,10 @@
             android:id="@+id/layoutSummaryCollapsible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:orientation="vertical">
+            android:layout_marginBottom="12dp"
+            android:orientation="vertical">
 
+            <!-- Drag handle -->
             <View
                 android:id="@+id/dragHandle"
                 android:layout_width="40dp"
@@ -570,6 +632,7 @@
                 android:layout_marginBottom="6dp"
                 android:background="@drawable/bg_drag_handle" />
 
+            <!-- Terms text -->
             <TextView
                 android:id="@+id/tvTerms"
                 android:layout_width="match_parent"
@@ -598,154 +661,154 @@
                     app:strokeColor="#E7EDF9"
                     app:strokeWidth="1dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                        <TextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_family"
-                            android:text="@string/cart_subtotal"
-                            android:textColor="@color/secondary"
-                            android:fontWeight="800"
-                            android:textStyle="bold"
-                            android:textSize="14sp" />
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tvSubtotal"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
+                                android:text="@string/cart_subtotal"
+                                android:textColor="@color/secondary"
+                                android:fontWeight="800"
+                                android:textStyle="bold"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tvSubtotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_family"
+                                android:textColor="@color/on_surface"
+                                android:fontWeight="800"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                tools:text="53.000đ" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_family"
-                            android:textColor="@color/on_surface"
-                            android:fontWeight="800"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            tools:text="53.000đ" />
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
+                                android:text="@string/cart_delivery_fee"
+                                android:textColor="@color/secondary"
+                                android:fontWeight="800"
+                                android:textStyle="bold"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tvDeliveryFee"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_family"
+                                android:text="0đ"
+                                android:fontWeight="800"
+                                android:textStyle="bold"
+                                android:textSize="14sp"
+                                android:textColor="@color/on_surface" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_family"
+                                android:text="@string/cart_voucher"
+                                android:textColor="@color/secondary"
+                                android:fontWeight="800"
+                                android:textStyle="bold"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tvVoucherSummary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_family"
+                                android:text="0đ"
+                                android:textColor="@color/phone_green"
+                                android:fontWeight="800"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="12dp"
+                            android:background="@color/outline_variant" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvTotalLabel"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_semibold"
+                                android:text="@string/cart_total"
+                                android:textColor="@color/on_surface"
+                                android:textSize="16sp"
+                                android:fontWeight="800"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_semibold"
+                                android:textColor="@color/brand_blue"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:fontWeight="800"
+                                tools:text="128.000đ" />
+                        </LinearLayout>
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_family"
-                            android:text="@string/cart_delivery_fee"
-                            android:textColor="@color/secondary"
-                            android:fontWeight="800"
-                            android:textStyle="bold"
-                            android:textSize="14sp"/>
-
-                        <TextView
-                            android:id="@+id/tvDeliveryFee"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_family"
-                            android:text="0đ"
-                            android:fontWeight="800"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:textColor="@color/on_surface" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_family"
-                            android:text="@string/cart_voucher"
-                            android:textColor="@color/secondary"
-                            android:fontWeight="800"
-                            android:textStyle="bold"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/tvVoucherSummary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_family"
-                            android:text="0đ"
-                            android:textColor="@color/phone_green"
-                            android:fontWeight="800"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="12dp"
-                        android:background="@color/outline_variant" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tvTotalLabel"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_semibold"
-                            android:text="@string/cart_total"
-                            android:textColor="@color/on_surface"
-                            android:textSize="16sp"
-                            android:fontWeight="800"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvTotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_semibold"
-                            android:textColor="@color/brand_blue"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:fontWeight="800"
-                            tools:text="128.000đ" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
+                <!-- Payment Picker -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardPaymentPicker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_cart_footer"
+                    android:elevation="24dp"
                     android:visibility="gone"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="#E7EDF9"
-                    app:strokeWidth="1dp">
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="8dp">
+                        android:paddingTop="16dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -781,7 +844,7 @@
                                 android:layout_width="32dp"
                                 android:layout_height="32dp"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_cash_coins"/>
+                                android:src="@drawable/ic_cash_coins" />
 
                             <TextView
                                 android:id="@+id/tvCashOnHandLabel"
@@ -848,7 +911,6 @@
                                 android:visibility="gone"
                                 tools:visibility="visible">
 
-                                <!-- Lựa chọn ZaloPay -->
                                 <LinearLayout
                                     android:id="@+id/optionZaloPay"
                                     android:layout_width="match_parent"
@@ -877,7 +939,6 @@
                                         android:textSize="14sp" />
                                 </LinearLayout>
 
-                                <!-- Lựa chọn MoMo -->
                                 <LinearLayout
                                     android:id="@+id/optionMoMo"
                                     android:layout_width="match_parent"
@@ -906,7 +967,6 @@
                                         android:textSize="14sp" />
                                 </LinearLayout>
 
-                                <!-- Lựa chọn Ví điện tử khác (E-Wallet) -->
                                 <LinearLayout
                                     android:id="@+id/optionEWallet"
                                     android:layout_width="match_parent"
@@ -918,7 +978,6 @@
                                     android:orientation="horizontal"
                                     android:paddingTop="10dp"
                                     android:paddingBottom="10dp">
-
 
                                     <ImageView
                                         android:layout_width="24dp"
@@ -939,9 +998,152 @@
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-        </FrameLayout>
-    </LinearLayout>
 
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardRecipientEditor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="0dp"
+                    app:strokeColor="#E7EDF9"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingTop="14dp">
+
+                        <!-- Drag handle -->
+                        <View
+                            android:layout_width="40dp"
+                            android:layout_height="4dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="12dp"
+                            android:background="@drawable/bg_drag_handle" />
+
+                        <!-- ScrollView bọc nội dung input -->
+                        <androidx.core.widget.NestedScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="350dp"
+                            android:clipToPadding="false"
+                            android:paddingStart="20dp"
+                            android:paddingEnd="20dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <!-- Header Title -->
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="6dp">
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/inter_family"
+                                            android:text="Edit Recipient Details"
+                                            android:textColor="@color/on_surface"
+                                            android:textSize="18sp"
+                                            android:textStyle="bold" />
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Ensure your pickup information is accurate."
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+                                    <ImageButton
+                                        android:id="@+id/btnCloseRecipientEditor"
+                                        android:layout_width="32dp"
+                                        android:layout_height="32dp"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_centerVertical="true"
+                                        android:background="?attr/selectableItemBackgroundBorderless"
+                                        android:padding="6dp"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/ic_close"
+                                        app:tint="@color/secondary" />
+                                </RelativeLayout>
+
+                                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/outline_variant" android:layout_marginVertical="10dp"/>
+
+                                <!-- Field: Recipient Name -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Recipient Name"
+                                    android:textStyle="bold"
+                                    android:textSize="12sp" />
+                                <com.google.android.material.textfield.TextInputLayout
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                    android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" app:boxCornerRadiusTopStart="12dp" app:boxCornerRadiusBottomEnd="12dp">
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etRecipientName" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Alexander Thompson" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <!-- Field: Contact Number -->
+                                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Contact Number" android:textStyle="bold" android:textSize="12sp" android:layout_marginTop="14dp"/>
+                                <com.google.android.material.textfield.TextInputLayout
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                    android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" app:boxCornerRadiusTopStart="12dp" app:boxCornerRadiusBottomEnd="12dp">
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/etRecipientPhone" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="phone" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <!-- Pickup Time -->
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp"
+                                    android:fontFamily="@font/inter_family"
+                                    android:text="@string/cart_pickup_time_label"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <android.widget.GridLayout
+                                    android:id="@+id/gridPickupTimes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    android:columnCount="3"
+                                    android:useDefaultMargins="false" />
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="20dp" />
+                            </LinearLayout>
+                        </androidx.core.widget.NestedScrollView>
+
+                        <!-- Nút Action cố định ở đáy Card -->
+                        <LinearLayout
+                            android:id="@+id/layoutRecipientEditorFooter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="20dp">
+                            <Button
+                                android:id="@+id/btnCancelRecipientEdit"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:layout_marginEnd="8dp" android:text="Cancel" />
+                            <Button
+                                android:id="@+id/btnConfirmRecipientEdit"
+                                android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="2" android:text="Confirm Changes" android:backgroundTint="@color/brand_blue" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Confirm Order button -->
         <FrameLayout
             android:id="@+id/btnConfirmOrder"
             android:layout_width="match_parent"
@@ -950,12 +1152,14 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -965,11 +1169,13 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
                 <FrameLayout
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="12dp"
                     android:background="@drawable/bg_confirm_arrow_box">
+
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
@@ -983,6 +1189,7 @@
 
     </LinearLayout>
 
+    <!-- Overlay scrim -->
     <View
         android:id="@+id/paymentOverlayScrim"
         android:layout_width="0dp"

@@ -717,6 +717,8 @@
     <string name="order_save_error">Không thể lưu đơn hàng. Vui lòng thử lại.</string>
     <string name="order_saving">Đang đặt hàng…</string>
     <string name="order_pickup_time">Thời gian nhận hàng</string>
+    <string name="cart_pickup_time_label">Thời gian nhận hàng</string>
+    <string name="cart_pickup_time_display">Nhận hàng: %1$s</string>
     <string name="order_pickup_address">Địa chỉ nhận hàng</string>
     <string name="order_total_label">Tổng cộng</string>
     <string name="order_track">Theo dõi đơn hàng</string>

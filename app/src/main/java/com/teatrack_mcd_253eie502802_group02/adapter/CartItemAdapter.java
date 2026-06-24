@@ -52,7 +52,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
 
         holder.tvName.setText(item.getProductName());
         holder.tvOptions.setText(item.getOptionsSummary(context));
-        holder.tvPrice.setText(formatPrice(item.getLineUnitPrice()));
+        holder.tvPrice.setText(formatPrice(item.getLineTotal()));
         holder.tvQty.setText(String.valueOf(item.getQuantity()));
 
         Product product = new Product();

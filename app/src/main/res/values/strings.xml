@@ -360,6 +360,8 @@
     <string name="cart_change">Change</string>
     <string name="cart_selected_branch">Selected Branch:</string>
     <string name="cart_recipient_details">Recipient Details</string>
+    <string name="cart_pickup_time_label">Pickup Time</string>
+    <string name="cart_pickup_time_display">Pickup: %1$s</string>
     <string name="cart_apply_voucher">Áp dụng mã giảm giá</string>
     <string name="cart_note">Note</string>
     <string name="cart_note_hint">Please write your note here</string>

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -30,11 +31,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.CartItemAdapter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.data.CartManager;
 import com.teatrack_mcd_253eie502802_group02.data.OrderCheckoutFlow;
+import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
-import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
@@ -43,7 +48,15 @@ import java.util.List;
 import java.util.Locale;
 
 public class Cart extends BaseActivity implements CartManager.CartChangeListener {
-
+    private View cardRecipientEditor;
+    private com.google.android.material.materialswitch.MaterialSwitch switchSaveDetails;
+    private com.google.android.material.textfield.TextInputEditText etRecipientName;
+    private com.google.android.material.textfield.TextInputEditText etRecipientPhone;
+    private TextView tvRecipientPickupTime;
+    private android.widget.GridLayout gridPickupTimes;
+    private View layoutRecipientEditorFooter;
+    private String selectedPickupTime = "";
+    private int navBarInsetBottom;
     private static final int PAYMENT_CASH_ON_HAND = 0;
     private static final int PAYMENT_CASH_IN_BANK = 1;
     private static final int PAYMENT_MOMO = 2;
@@ -60,6 +73,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private TextView tvSelectedPayment;
     private TextView tvSelectedBranchAddress;
     private TextView tvRecipientDetails;
+    private TextView tvOrderPickupTime;
     private EditText etNote;
     private ImageView ivSelectedPaymentIcon;
     private View cardItemRemoved;
@@ -105,7 +119,9 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         tvTotal = findViewById(R.id.tvTotal);
         tvSelectedPayment = findViewById(R.id.tvSelectedPayment);
         tvSelectedBranchAddress = findViewById(R.id.tvSelectedBranchAddress);
+        tvOrderPickupTime = findViewById(R.id.tvOrderPickupTime);
         tvRecipientDetails = findViewById(R.id.tvRecipientDetails);
+        tvRecipientPickupTime = findViewById(R.id.tvRecipientPickupTime);
         etNote = findViewById(R.id.etNote);
         ivSelectedPaymentIcon = findViewById(R.id.ivSelectedPaymentIcon);
         cardItemRemoved = findViewById(R.id.cardItemRemoved);
@@ -134,9 +150,20 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
         setupTermsLink(tvTermsView);
         setupPaymentPicker();
+        setupRecipientEditor();
 
         if (btnConfirmOrder != null) {
-            btnConfirmOrder.setOnClickListener(v -> handleConfirmOrder());
+            btnConfirmOrder.setOnClickListener(v -> {
+                String name = etRecipientName.getText().toString().trim();
+                String phone = etRecipientPhone.getText().toString().trim();
+
+                if (name.isEmpty() || phone.isEmpty()) {
+                    Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin người nhận!", Toast.LENGTH_SHORT).show();
+                    cardRecipientEditor.setVisibility(View.VISIBLE);
+                    return;
+                }
+                processOrder();
+            });
         }
 
         adapter = new CartItemAdapter(cartItems, new CartItemAdapter.CartItemActionListener() {
@@ -167,6 +194,19 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             dragHandle.setOnClickListener(v -> toggleSummary(cardOrderSummary));
             cardOrderSummary.setOnClickListener(v -> toggleSummary(cardOrderSummary));
         }
+        switchSaveDetails = findViewById(R.id.switchSaveDetails);
+        if (switchSaveDetails != null) {
+            switchSaveDetails.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    Toast.makeText(this, "Thông tin thanh toán sẽ được lưu cho lần sau", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Đã tắt tự động lưu thông tin", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        loadSavedRecipientInfo();
+        loadUserRecipientFallback();
     }
 
     @Override
@@ -217,18 +257,35 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
         ViewCompat.setOnApplyWindowInsetsListener(cartRoot, (view, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            navBarInsetBottom = systemBars.bottom;
             view.setPadding(0, systemBars.top, 0, 0);
-            if (layoutCartFooter != null) {
-                int bottomPadding = systemBars.bottom + dp(16);
-                layoutCartFooter.setPadding(
-                        layoutCartFooter.getPaddingLeft(),
-                        layoutCartFooter.getPaddingTop(),
-                        layoutCartFooter.getPaddingRight(),
-                        bottomPadding
-                );
+            restoreFooterPadding();
+            View scrollView = findViewById(R.id.nestedScrollView);
+            if (scrollView != null) {
+                scrollView.setPadding(0, 0, 0, dp(8));
             }
             return insets;
         });
+    }
+
+    private void restoreFooterPadding() {
+        if (layoutCartFooter == null) {
+            return;
+        }
+        layoutCartFooter.setBackgroundResource(R.drawable.bg_cart_footer);
+        layoutCartFooter.setPadding(
+                footerPaddingStart,
+                footerPaddingTop,
+                footerPaddingEnd,
+                footerPaddingBottom + navBarInsetBottom
+        );
+    }
+
+    private void applyOverlayFooterPadding() {
+        if (layoutCartFooter != null) {
+            layoutCartFooter.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+            layoutCartFooter.setPadding(0, 0, 0, navBarInsetBottom);
+        }
     }
 
     private void applyExtraBoldTypeface(TextView... textViews) {
@@ -286,8 +343,13 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             btnPaymentChange.setOnClickListener(v -> showPaymentPicker());
         }
         if (paymentOverlayScrim != null) {
-            paymentOverlayScrim.setOnClickListener(v -> hidePaymentPicker());
-        }
+            paymentOverlayScrim.setOnClickListener(v -> {
+                if (cardPaymentPicker != null && cardPaymentPicker.getVisibility() == View.VISIBLE) {
+                    hidePaymentPicker();
+                } else {
+                    hideRecipientEditor();
+                }
+            });        }
         if (cardPaymentPicker != null) {
             cardPaymentPicker.setClickable(true);
         }
@@ -409,10 +471,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (tvTerms != null) tvTerms.setVisibility(View.GONE);
         if (dragHandle != null) dragHandle.setVisibility(View.GONE);
 
-        if (layoutCartFooter != null) {
-            layoutCartFooter.setBackgroundColor(android.graphics.Color.TRANSPARENT);
-            layoutCartFooter.setPadding(0, 0, 0, 0);
-        }
+        applyOverlayFooterPadding();
 
         if (selectedPaymentMethod >= PAYMENT_CASH_IN_BANK && layoutBankOptions != null) {
             layoutBankOptions.setVisibility(View.VISIBLE);
@@ -431,20 +490,16 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (dragHandle != null) dragHandle.setVisibility(View.VISIBLE);
         if (layoutBankOptions != null) layoutBankOptions.setVisibility(View.GONE);
 
-        if (layoutCartFooter != null) {
-            layoutCartFooter.setBackgroundResource(R.drawable.bg_cart_footer);
-            layoutCartFooter.setPadding(
-                    footerPaddingStart,
-                    footerPaddingTop,
-                    footerPaddingEnd,
-                    footerPaddingBottom
-            );
-        }
-    }    private void handleConfirmOrder() {
+        restoreFooterPadding();
+    }    private void processOrder() {
+        handleConfirmOrder();
+    }
+
+    private void handleConfirmOrder() {
         if (CartManager.getInstance().getItems().isEmpty()) {
             return;
         }
-
+        boolean isSaveEnabled = (switchSaveDetails != null && switchSaveDetails.isChecked());
         String branchAddress = tvSelectedBranchAddress != null ? tvSelectedBranchAddress.getText().toString() : "";
         String recipientDetails = tvRecipientDetails != null ? tvRecipientDetails.getText().toString() : "";
         String note = etNote != null ? etNote.getText().toString() : "";
@@ -506,8 +561,210 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             tvTotal.setText(formatPrice(subtotal));
         }
     }
+    private void setupRecipientEditor() {
+        cardRecipientEditor = findViewById(R.id.cardRecipientEditor);
+        etRecipientName = findViewById(R.id.etRecipientName);
+        etRecipientPhone = findViewById(R.id.etRecipientPhone);
+        gridPickupTimes = findViewById(R.id.gridPickupTimes);
+        layoutRecipientEditorFooter = findViewById(R.id.layoutRecipientEditorFooter);
+        setupPickupTimeSlots();
 
-    private void updateHeaderBadge(int count, boolean visible) {
+        View btnEdit    = findViewById(R.id.btnEditRecipientDetail);
+        View btnClose   = findViewById(R.id.btnCloseRecipientEditor);
+        View btnCancel  = findViewById(R.id.btnCancelRecipientEdit);
+        View btnConfirm = findViewById(R.id.btnConfirmRecipientEdit);
+
+        if (btnEdit != null)
+            btnEdit.setOnClickListener(v -> showRecipientEditor());
+        if (btnClose != null)
+            btnClose.setOnClickListener(v -> hideRecipientEditor());
+        if (btnCancel != null)
+            btnCancel.setOnClickListener(v -> hideRecipientEditor());
+        if (btnConfirm != null)
+            btnConfirm.setOnClickListener(v -> confirmRecipientEdit());
+    }
+
+    private void showRecipientEditor() {
+        // Đọc giá trị hiện tại điền vào form
+        if (tvRecipientDetails != null && etRecipientName != null) {
+            String current = tvRecipientDetails.getText().toString();
+            String[] parts = current.split("\\|");
+            if (parts.length >= 1) etRecipientName.setText(parts[0].trim());
+            if (parts.length >= 2) etRecipientPhone.setText(parts[1].trim());
+        }
+        highlightSavedPickupTime();
+
+        // Ẩn order summary & confirm button, giống showPaymentPicker
+        if (cardOrderSummary != null) cardOrderSummary.setVisibility(View.GONE);
+        if (cardRecipientEditor != null) cardRecipientEditor.setVisibility(View.VISIBLE);
+        if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.VISIBLE);
+        if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.GONE);
+        if (tvTerms != null) tvTerms.setVisibility(View.GONE);
+        if (dragHandle != null) dragHandle.setVisibility(View.GONE);
+
+        applyOverlayFooterPadding();
+        if (layoutRecipientEditorFooter != null) {
+            layoutRecipientEditorFooter.setPadding(
+                    layoutRecipientEditorFooter.getPaddingLeft(),
+                    layoutRecipientEditorFooter.getPaddingTop(),
+                    layoutRecipientEditorFooter.getPaddingRight(),
+                    dp(16)
+            );
+        }
+    }
+
+    private void hideRecipientEditor() {
+        if (cardRecipientEditor != null) cardRecipientEditor.setVisibility(View.GONE);
+        if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.GONE);
+        if (cardOrderSummary != null) {
+            cardOrderSummary.setAlpha(1f);
+            cardOrderSummary.setVisibility(View.VISIBLE);
+        }
+        if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.VISIBLE);
+        if (tvTerms != null) tvTerms.setVisibility(View.VISIBLE);
+        if (dragHandle != null) dragHandle.setVisibility(View.VISIBLE);
+
+        restoreFooterPadding();
+    }
+
+    private void confirmRecipientEdit() {
+        String name = etRecipientName != null ? etRecipientName.getText().toString().trim() : "";
+        String phone = etRecipientPhone != null ? etRecipientPhone.getText().toString().trim() : "";
+
+        if (!name.isEmpty() || !phone.isEmpty()) {
+            updateRecipientDisplay(name, phone, selectedPickupTime);
+            if (switchSaveDetails != null && switchSaveDetails.isChecked()) {
+                android.content.SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                pref.edit()
+                        .putString("saved_name", name)
+                        .putString("saved_phone", phone)
+                        .putString("saved_pickup_time", selectedPickupTime)
+                        .apply();
+            }
+        }
+        hideRecipientEditor();
+    }
+
+    private void updateRecipientDisplay(String name, String phone, String pickupTime) {
+        if (tvRecipientDetails != null) {
+            String display = name;
+            if (!phone.isEmpty()) {
+                display = name.isEmpty() ? phone : name + " | " + phone;
+            }
+            tvRecipientDetails.setText(display);
+        }
+        if (tvOrderPickupTime != null && pickupTime != null && !pickupTime.isEmpty()) {
+            tvOrderPickupTime.setText(pickupTime);
+        }
+        if (tvRecipientPickupTime != null) {
+            if (pickupTime != null && !pickupTime.isEmpty()) {
+                tvRecipientPickupTime.setText(getString(R.string.cart_pickup_time_display, pickupTime));
+                tvRecipientPickupTime.setVisibility(View.VISIBLE);
+            } else {
+                tvRecipientPickupTime.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void setupPickupTimeSlots() {
+        if (gridPickupTimes == null) {
+            return;
+        }
+        gridPickupTimes.removeAllViews();
+        String[] slots = getResources().getStringArray(R.array.cart_pickup_time_slots);
+        for (String slot : slots) {
+            TextView slotView = new TextView(this);
+            android.widget.GridLayout.LayoutParams params = new android.widget.GridLayout.LayoutParams();
+            params.width = 0;
+            params.height = android.widget.GridLayout.LayoutParams.WRAP_CONTENT;
+            params.columnSpec = android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f);
+            params.setMargins(dp(4), dp(4), dp(4), dp(4));
+            slotView.setLayoutParams(params);
+            slotView.setText(slot);
+            slotView.setGravity(android.view.Gravity.CENTER);
+            slotView.setPadding(dp(10), dp(12), dp(10), dp(12));
+            slotView.setTextSize(13f);
+            slotView.setTypeface(slotView.getTypeface(), Typeface.BOLD);
+            slotView.setBackgroundResource(R.drawable.bg_edittext_rounded);
+            slotView.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+            slotView.setOnClickListener(v -> selectPickupTimeSlot(slot, slotView));
+            gridPickupTimes.addView(slotView);
+        }
+    }
+
+    private void selectPickupTimeSlot(String slot, TextView selectedView) {
+        selectedPickupTime = slot;
+        for (int i = 0; i < gridPickupTimes.getChildCount(); i++) {
+            View child = gridPickupTimes.getChildAt(i);
+            if (child instanceof TextView) {
+                TextView tv = (TextView) child;
+                boolean selected = tv == selectedView;
+                tv.setBackgroundResource(selected ? R.drawable.bg_light_blue_rounded_12 : R.drawable.bg_edittext_rounded);
+                tv.setTextColor(ContextCompat.getColor(this,
+                        selected ? R.color.brand_blue : R.color.on_surface));
+            }
+        }
+    }
+
+    private void highlightSavedPickupTime() {
+        if (gridPickupTimes == null || selectedPickupTime == null || selectedPickupTime.isEmpty()) {
+            return;
+        }
+        for (int i = 0; i < gridPickupTimes.getChildCount(); i++) {
+            View child = gridPickupTimes.getChildAt(i);
+            if (child instanceof TextView) {
+                TextView tv = (TextView) child;
+                if (selectedPickupTime.equals(tv.getText().toString())) {
+                    selectPickupTimeSlot(selectedPickupTime, tv);
+                    break;
+                }
+            }
+        }
+    }
+
+    private void loadUserRecipientFallback() {
+        android.content.SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        if (!pref.getString("saved_name", "").isEmpty()) {
+            return;
+        }
+        android.content.SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        String userId = loginPrefs.getString("userId", null);
+        if (userId == null || userId.isEmpty()) {
+            return;
+        }
+        FirebaseDatabase.getInstance().getReference("Users").child(userId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()) {
+                            return;
+                        }
+                        User user = snapshot.getValue(User.class);
+                        if (user == null) {
+                            return;
+                        }
+                        String name = user.getFullName();
+                        String phone = user.getPhoneNumber();
+                        if ((name == null || name.isEmpty()) && (phone == null || phone.isEmpty())) {
+                            return;
+                        }
+                        if (tvRecipientDetails != null
+                                && (tvRecipientDetails.getText() == null
+                                || tvRecipientDetails.getText().toString().trim().isEmpty()
+                                || tvRecipientDetails.getText().toString().contains("Nguyễn Ba Đù"))) {
+                            updateRecipientDisplay(
+                                    name == null ? "" : name,
+                                    phone == null ? "" : phone,
+                                    ""
+                            );
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+    }    private void updateHeaderBadge(int count, boolean visible) {
         if (tvCartHeaderBadge == null) {
             return;
         }
@@ -518,7 +775,16 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             tvCartHeaderBadge.setVisibility(View.GONE);
         }
     }
+    private void loadSavedRecipientInfo() {
+        android.content.SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String savedName = pref.getString("saved_name", "");
+        String savedPhone = pref.getString("saved_phone", "");
+        selectedPickupTime = pref.getString("saved_pickup_time", "");
 
+        if (!savedName.isEmpty() || !savedPhone.isEmpty()) {
+            updateRecipientDisplay(savedName, savedPhone, selectedPickupTime);
+        }
+    }
     private void showRemovedBanner() {
         if (cardItemRemoved == null) {
             return;
