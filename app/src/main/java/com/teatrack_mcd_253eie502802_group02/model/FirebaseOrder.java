@@ -26,9 +26,13 @@ public class FirebaseOrder {
     private String userId;
     private String createdAt;
     private String updatedAt;
+    private String agencyId;
 
     public FirebaseOrder() {
     }
+
+    public String getAgencyId() { return agencyId; }
+    public void setAgencyId(String agencyId) { this.agencyId = agencyId; }
 
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }

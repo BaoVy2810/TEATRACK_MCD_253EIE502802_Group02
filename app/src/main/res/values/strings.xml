@@ -257,7 +257,7 @@
     <!-- Order Statuses -->
     <string name="status_pending">Pending</string>
     <string name="status_processing">Processing</string>
-    <string name="status_ready">Ready for Pickup</string>
+    <string name="status_ready">Ready</string>
     <string name="status_shipping">Shipping</string>
     <string name="status_completed">Completed</string>
     <string name="status_cancelled">Cancelled</string>
@@ -885,14 +885,14 @@
     <string name="order_tracking_id_prefix">#%1$s</string>
     <string name="order_tracking_shipper_status">Shipper is on the way</string>
     <string name="order_tracking_status_title">Order Status</string>
-    <string name="order_tracking_confirmed">Confirmed</string>
-    <string name="order_tracking_preparing">Preparing</string>
-    <string name="order_tracking_ready_for_pickup">Ready for Pickup</string>
-    <string name="order_tracking_waiting_pickup">Waiting for customer to pick up...</string>
-    <string name="order_tracking_out_for_delivery">Out for Delivery</string>
-    <string name="order_tracking_delivered">Delivered</string>
-    <string name="order_tracking_estimated_prefix">Estimated: %1$s</string>
+    <string name="order_tracking_pending">Pending</string>
+    <string name="order_tracking_processing">Processing</string>
+    <string name="order_tracking_ready">Ready</string>
+    <string name="order_tracking_shipping">Shipping</string>
+    <string name="order_tracking_completed">Completed</string>
+    <string name="order_tracking_waiting_pickup">Waiting for shipper to pick up...</string>
     <string name="order_tracking_waiting_shipper">Waiting for shipper...</string>
+    <string name="order_tracking_estimated_prefix">Estimated: %1$s</string>
     <string name="order_tracking_delivery_info">Delivery Information</string>
     <string name="order_tracking_recipient">Recipient:</string>
     <string name="order_tracking_address">Address:</string>

@@ -75,14 +75,10 @@
                 android:layout_height="300dp"
                 android:background="#E0E0E0">
 
-                <!-- Placeholder for actual Google Maps Fragment -->
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/str_agency_location"
-                    android:src="@drawable/location"
-                    app:tint="#808080" />
+                <WebView
+                    android:id="@+id/webViewMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -152,201 +148,245 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="24dp"
                         android:text="@string/order_tracking_status_title"
                         android:textColor="#1A1A1A"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
-                    <!-- Stepper Item 1 -->
+                    <!-- New Horizontal Stepper Structure -->
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <View
-                            android:id="@+id/dot1"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginTop="6dp"
-                            android:background="@drawable/bg_stepper_dot_active" />
+                        <!-- TẦNG 1: Circle row + Lines (Fixed height 56dp) -->
+                        <LinearLayout
+                            android:id="@+id/circleRow"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:baselineAligned="false"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                        <View
-                            android:id="@+id/line1"
-                            android:layout_width="2dp"
-                            android:layout_height="40dp"
-                            android:layout_below="@id/dot1"
-                            android:layout_centerHorizontal="false"
-                            android:layout_marginStart="5dp"
-                            android:background="@drawable/bg_stepper_line" />
+                            <!-- Spacer for alignment (Weight 0.5) -->
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.5" />
 
-                        <TextView
-                            android:id="@+id/txtStatusConfirmed"
-                            android:layout_width="wrap_content"
+                            <FrameLayout
+                                android:id="@+id/stepCircle1"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_step_circle_inactive">
+
+                                <ImageView
+                                    android:id="@+id/stepImg1"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/pending"
+                                    app:tint="#BDBDBD" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_width="0dp"
+                                android:layout_height="3dp"
+                                android:layout_weight="1"
+                                android:background="#E0E0E0">
+
+                                <View
+                                    android:id="@+id/stepLine1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="#4CAF50"
+                                    android:scaleX="0"
+                                    android:transformPivotX="0dp" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/stepCircle2"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_step_circle_inactive">
+
+                                <ImageView
+                                    android:id="@+id/stepImg2"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/processing"
+                                    app:tint="#BDBDBD" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_width="0dp"
+                                android:layout_height="3dp"
+                                android:layout_weight="1"
+                                android:background="#E0E0E0">
+
+                                <View
+                                    android:id="@+id/stepLine2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="#4CAF50"
+                                    android:scaleX="0"
+                                    android:transformPivotX="0dp" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/stepCircle3"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_step_circle_inactive">
+
+                                <ImageView
+                                    android:id="@+id/stepImg3"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/ready"
+                                    app:tint="#BDBDBD" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_width="0dp"
+                                android:layout_height="3dp"
+                                android:layout_weight="1"
+                                android:background="#E0E0E0">
+
+                                <View
+                                    android:id="@+id/stepLine3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="#4CAF50"
+                                    android:scaleX="0"
+                                    android:transformPivotX="0dp" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/stepCircle4"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_step_circle_inactive">
+
+                                <ImageView
+                                    android:id="@+id/stepImg4"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/shipping"
+                                    app:tint="#BDBDBD" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:layout_width="0dp"
+                                android:layout_height="3dp"
+                                android:layout_weight="1"
+                                android:background="#E0E0E0">
+
+                                <View
+                                    android:id="@+id/stepLine4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="#4CAF50"
+                                    android:scaleX="0"
+                                    android:transformPivotX="0dp" />
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/stepCircle5"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/bg_step_circle_inactive">
+
+                                <ImageView
+                                    android:id="@+id/stepImg5"
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/finished"
+                                    app:tint="#BDBDBD" />
+                            </FrameLayout>
+
+                            <!-- Spacer for alignment (Weight 0.5) -->
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.5" />
+                        </LinearLayout>
+
+                        <!-- TẦNG 2: Label row -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/dot1"
-                            android:text="@string/order_tracking_confirmed"
-                            android:textColor="#1A1A1A"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:layout_below="@id/circleRow"
+                            android:layout_marginTop="4dp"
+                            android:baselineAligned="false"
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/txtStatusConfirmed"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/dot1"
-                            android:text="@string/order_tracking_sample_time1"
-                            android:textColor="#666666"
-                            android:textSize="12sp" />
+                            <TextView
+                                android:id="@+id/stepLabel1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:maxLines="2"
+                                android:text="@string/order_tracking_pending"
+                                android:textColor="#999999"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/stepLabel2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:maxLines="2"
+                                android:text="@string/order_tracking_processing"
+                                android:textColor="#999999"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/stepLabel3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:maxLines="2"
+                                android:text="@string/order_tracking_ready"
+                                android:textColor="#999999"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/stepLabel4"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:maxLines="2"
+                                android:text="@string/order_tracking_shipping"
+                                android:textColor="#999999"
+                                android:textSize="10sp" />
+
+                            <TextView
+                                android:id="@+id/stepLabel5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:maxLines="2"
+                                android:text="@string/order_tracking_completed"
+                                android:textColor="#999999"
+                                android:textSize="10sp" />
+                        </LinearLayout>
                     </RelativeLayout>
 
-                    <!-- Stepper Item 2 -->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <View
-                            android:id="@+id/dot2"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginTop="6dp"
-                            android:background="@drawable/bg_stepper_dot_active" />
-
-                        <View
-                            android:id="@+id/line2"
-                            android:layout_width="2dp"
-                            android:layout_height="40dp"
-                            android:layout_below="@id/dot2"
-                            android:layout_marginStart="5dp"
-                            android:background="@drawable/bg_stepper_line" />
-
-                        <TextView
-                            android:id="@+id/txtStatusPreparing"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/dot2"
-                            android:text="@string/order_tracking_preparing"
-                            android:textColor="#1A1A1A"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/txtStatusPreparing"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/dot2"
-                            android:text="@string/order_tracking_sample_time2"
-                            android:textColor="#666666"
-                            android:textSize="12sp" />
-                    </RelativeLayout>
-
-                    <!-- Stepper Item 3: Ready for Pickup -->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <View
-                            android:id="@+id/dot3"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginTop="6dp"
-                            android:background="@drawable/bg_stepper_dot" />
-
-                        <View
-                            android:id="@+id/line3"
-                            android:layout_width="2dp"
-                            android:layout_height="40dp"
-                            android:layout_below="@id/dot3"
-                            android:layout_marginStart="5dp"
-                            android:background="@drawable/bg_stepper_line" />
-
-                        <TextView
-                            android:id="@+id/txtStatusReady"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/dot3"
-                            android:text="@string/order_tracking_ready_for_pickup"
-                            android:textColor="#1A1A1A"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/txtStatusReady"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/dot3"
-                            android:text="@string/order_tracking_waiting_pickup"
-                            android:textColor="#999999"
-                            android:textSize="12sp" />
-                    </RelativeLayout>
-
-                    <!-- Stepper Item 4 -->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <View
-                            android:id="@+id/dot4"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginTop="6dp"
-                            android:background="@drawable/bg_stepper_dot" />
-
-                        <View
-                            android:id="@+id/line4"
-                            android:layout_width="2dp"
-                            android:layout_height="40dp"
-                            android:layout_below="@id/dot4"
-                            android:layout_marginStart="5dp"
-                            android:background="@drawable/bg_stepper_line" />
-
-                        <TextView
-                            android:id="@+id/txtStatusDelivery"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/dot4"
-                            android:text="@string/order_tracking_out_for_delivery"
-                            android:textColor="#1A1A1A"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/txtStatusDelivery"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/dot4"
-                            android:text="@string/order_tracking_waiting_shipper"
-                            android:textColor="#999999"
-                            android:textSize="12sp" />
-                    </RelativeLayout>
-
-                    <!-- Stepper Item 5 -->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <View
-                            android:id="@+id/dot5"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_marginTop="6dp"
-                            android:background="@drawable/bg_stepper_dot" />
-
-                        <TextView
-                            android:id="@+id/txtStatusDelivered"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/dot5"
-                            android:text="@string/order_tracking_delivered"
-                            android:textColor="#1A1A1A"
-                            android:textSize="16sp" />
-                    </RelativeLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -370,12 +410,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
                         android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
                         android:text="@string/order_tracking_delivery_info"
                         android:textColor="#1A1A1A"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:drawableStart="@drawable/ic_info" /><!-- Thay ic_order_info bằng tên file icon của bạn -->
-                        <!-- Căn cho icon và chữ thẳng hàng nhau theo chiều dọc -->/>
+                        app:drawableStartCompat="@drawable/ic_info" />
 
                     <!-- Recipient -->
                     <LinearLayout
