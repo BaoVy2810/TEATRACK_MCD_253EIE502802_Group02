@@ -19,14 +19,14 @@ public final class ProductImageHelper {
     public static void load(ImageView imageView, Product product) {
         if (product == null) return;
 
-        // Ưu tiên URL (Cloudinary)
+        // Ưu tiên URL (Cloudinary / Firebase Storage)
         String imageUrl = product.getImage();
         if (imageUrl != null && imageUrl.trim().startsWith("http")) {
             loadFromUrl(imageView, imageUrl.trim());
             return;
         }
 
-        // Sau đó đến danh sách ảnh (nếu có URL)
+        // Danh sách ảnh nếu có URL
         List<String> images = product.getImages();
         if (images != null && !images.isEmpty()) {
             String firstImage = images.get(0);
@@ -36,13 +36,20 @@ public final class ProductImageHelper {
             }
         }
 
-        // Nếu có resource ID cứng
+        // Resource ID cứng — dùng Glide (không dùng setImageResource để tránh decode trên main thread)
         if (product.getImageRes() != 0) {
-            imageView.setImageResource(product.getImageRes());
+            Glide.with(imageView.getContext())
+                    .load(product.getImageRes())
+                    .apply(new RequestOptions()
+                            .placeholder(R.mipmap.logo_ngo_gia)
+                            .error(R.mipmap.logo_ngo_gia)
+                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                            .centerCrop())
+                    .into(imageView);
             return;
         }
 
-        // Cuối cùng là tìm trong drawable/mipmap dựa trên tên ảnh hoặc fallback
+        // Tìm mipmap theo tên file — dùng Glide
         loadFromSource(imageView, product.getImage(), R.mipmap.logo_ngo_gia);
     }
 
@@ -58,32 +65,28 @@ public final class ProductImageHelper {
     }
 
     public static void loadFromSource(ImageView imageView, String source, int fallbackRes) {
-        if (source == null || source.isEmpty()) {
-            if (fallbackRes != 0) {
-                imageView.setImageResource(fallbackRes);
-            }
-            return;
-        }
-
         Context context = imageView.getContext();
-        String resourceName = source;
-        int slash = resourceName.lastIndexOf('/');
-        if (slash >= 0 && slash < resourceName.length() - 1) {
-            resourceName = resourceName.substring(slash + 1);
-        }
-        resourceName = resourceName.replaceAll("\\.(png|jpg|jpeg|webp)$", "");
-        int resourceId = context.getResources()
-                .getIdentifier(resourceName, "mipmap", context.getPackageName());
-        if (resourceId == 0) {
-            resourceId = context.getResources()
-                    .getIdentifier(resourceName, "drawable", context.getPackageName());
-        }
-        if (resourceId != 0) {
-            imageView.setImageResource(resourceId);
-        } else if (fallbackRes != 0) {
-            imageView.setImageResource(fallbackRes);
-        } else {
-            imageView.setImageResource(R.mipmap.tra_yakult);
-        }
+        int resolvedId = resolveResourceId(context, source);
+        int target = resolvedId != 0 ? resolvedId : (fallbackRes != 0 ? fallbackRes : R.mipmap.logo_ngo_gia);
+        Glide.with(context)
+                .load(target)
+                .apply(new RequestOptions()
+                        .placeholder(R.mipmap.logo_ngo_gia)
+                        .error(R.mipmap.logo_ngo_gia)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .centerCrop())
+                .into(imageView);
+    }
+
+    // getIdentifier() chỉ được gọi một lần per image-name và kết quả nên được cache ở tầng gọi
+    private static int resolveResourceId(Context context, String source) {
+        if (source == null || source.isEmpty()) return 0;
+        String name = source;
+        int slash = name.lastIndexOf('/');
+        if (slash >= 0 && slash < name.length() - 1) name = name.substring(slash + 1);
+        name = name.replaceAll("\\.(png|jpg|jpeg|webp)$", "");
+        int id = context.getResources().getIdentifier(name, "mipmap", context.getPackageName());
+        if (id == 0) id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
+        return id;
     }
 }

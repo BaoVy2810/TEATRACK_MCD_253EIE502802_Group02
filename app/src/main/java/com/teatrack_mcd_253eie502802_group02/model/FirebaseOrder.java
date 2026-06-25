@@ -1,8 +1,9 @@
 package com.teatrack_mcd_253eie502802_group02.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class FirebaseOrder {
+public class FirebaseOrder implements Serializable {
 
     private String id;
     private String orderId;

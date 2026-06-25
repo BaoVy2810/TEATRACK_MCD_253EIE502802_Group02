@@ -12,9 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.firebase.database.DatabaseException;
 import androidx.activity.EdgeToEdge;
 import androidx.core.content.ContextCompat;
+
+import android.graphics.drawable.Drawable;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -30,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.OrderHistoryAdapter;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
@@ -83,6 +88,7 @@ public class OrderHistory extends BaseActivity {
         setupSwipeRefresh();
         setupBackButton();
         setupNavBar();
+        CartBadgeHelper.setup(this);
         loadOrders();
     }
 
@@ -117,14 +123,15 @@ public class OrderHistory extends BaseActivity {
     private void setupAdapter() {
         adapter = new OrderHistoryAdapter(this);
         adapter.setListener(order ->
-                Toast.makeText(this, "#" + order.getOrderId(), Toast.LENGTH_SHORT).show()
+                startActivity(OrderDetails.newIntent(this, order))
         );
         rvOrders.setLayoutManager(new LinearLayoutManager(this));
         rvOrders.setAdapter(adapter);
     }
 
     private void setupBackButton() {
-        findViewById(R.id.btnBack).setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+        View btn = findViewById(R.id.btnBack);
+        if (btn != null) btn.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
     }
 
     private void setupNavBar() {
@@ -158,7 +165,7 @@ public class OrderHistory extends BaseActivity {
             else if (v.getId() == R.id.tabProcessing) selectTab(tabProcessing, "processing");
             else if (v.getId() == R.id.tabReady)      selectTab(tabReady,      "ready");
             else if (v.getId() == R.id.tabShipping)   selectTab(tabShipping,   "shipping");
-            else if (v.getId() == R.id.tabDelivered)  selectTab(tabDelivered,  "delivered");
+            else if (v.getId() == R.id.tabDelivered)  selectTab(tabDelivered,  "completed");
             else if (v.getId() == R.id.tabCancelled)  selectTab(tabCancelled,  "cancelled");
         };
 
@@ -169,6 +176,12 @@ public class OrderHistory extends BaseActivity {
         tabShipping.setOnClickListener(tabClick);
         tabDelivered.setOnClickListener(tabClick);
         tabCancelled.setOnClickListener(tabClick);
+
+        // Apply initial icons
+        int inactiveColor = ContextCompat.getColor(this, R.color.text_secondary);
+        for (TextView t : new TextView[]{tabPending, tabProcessing, tabReady, tabShipping, tabDelivered}) {
+            applyTabIcon(t, inactiveColor);
+        }
     }
 
     private void selectTab(TextView tab, String status) {
@@ -183,12 +196,43 @@ public class OrderHistory extends BaseActivity {
         tab.setBackgroundResource(R.drawable.bg_order_tab_active);
         tab.setTextColor(ContextCompat.getColor(this, R.color.white));
         tab.setTypeface(null, android.graphics.Typeface.BOLD);
+        applyTabIcon(tab, 0xFFFFFFFF);
     }
 
     private void setTabInactive(TextView tab) {
         tab.setBackgroundResource(R.drawable.bg_order_tab_inactive);
         tab.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
         tab.setTypeface(null, android.graphics.Typeface.NORMAL);
+        applyTabIcon(tab, ContextCompat.getColor(this, R.color.text_secondary));
+    }
+
+    private void applyTabIcon(TextView tab, int color) {
+        int iconRes = tabIconRes(tab);
+        if (iconRes == 0) {
+            tab.setCompoundDrawables(null, null, null, null);
+            return;
+        }
+        Drawable icon = AppCompatResources.getDrawable(this, iconRes);
+        if (icon == null) {
+            tab.setCompoundDrawables(null, null, null, null);
+            return;
+        }
+        icon = DrawableCompat.wrap(icon.mutate());
+        DrawableCompat.setTint(icon, color);
+        int size = (int) (13 * getResources().getDisplayMetrics().density);
+        icon.setBounds(0, 0, size, size);
+        tab.setCompoundDrawables(icon, null, null, null);
+        tab.setCompoundDrawablePadding((int) (4 * getResources().getDisplayMetrics().density));
+    }
+
+    private int tabIconRes(TextView tab) {
+        int id = tab.getId();
+        if (id == R.id.tabPending)    return R.drawable.pending_tab;
+        if (id == R.id.tabProcessing) return R.drawable.processing_tab;
+        if (id == R.id.tabReady)      return R.drawable.ready_tab;
+        if (id == R.id.tabShipping)   return R.drawable.shipping_tab;
+        if (id == R.id.tabDelivered)  return R.drawable.finished_tab;
+        return 0;
     }
 
     private void setupSearch() {
@@ -281,7 +325,13 @@ public class OrderHistory extends BaseActivity {
     private void applyFilter() {
         List<FirebaseOrder> filtered = new ArrayList<>();
         for (FirebaseOrder order : allOrders) {
-            if (currentStatus != null && !currentStatus.equals(order.getStatus())) continue;
+            if (currentStatus != null) {
+                String s = order.getStatus();
+                boolean match = currentStatus.equals(s);
+                // "completed" tab also matches legacy "delivered" status
+                if (!match && "completed".equals(currentStatus) && "delivered".equals(s)) match = true;
+                if (!match) continue;
+            }
             if (!currentSearch.isEmpty()) {
                 String id = order.getOrderId() != null ? order.getOrderId().toLowerCase() : "";
                 if (!id.contains(currentSearch)) continue;

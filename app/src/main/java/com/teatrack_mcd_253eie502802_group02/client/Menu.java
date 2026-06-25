@@ -142,7 +142,9 @@ public class Menu extends BaseActivity {
     private void setupProducts() {
         RecyclerView rvMenuProducts = findViewById(R.id.rvMenuProducts);
         rvMenuProducts.setLayoutManager(new GridLayoutManager(this, 1));
-        rvMenuProducts.setNestedScrollingEnabled(false);
+        // Không tắt nested scrolling — tắt sẽ khiến RecyclerView inflate TẤT CẢ items cùng lúc
+        // thay vì chỉ inflate items đang hiển thị (mất virtualization hoàn toàn)
+        rvMenuProducts.setHasFixedSize(true);
         adapter = new MenuProductAdapter(filteredProducts, this::openProductDetail, this::onAddToCart);
         rvMenuProducts.setAdapter(adapter);
     }
@@ -319,7 +321,7 @@ public class Menu extends BaseActivity {
 
         sortProducts(filteredProducts);
         if (adapter != null) {
-            adapter.notifyDataSetChanged();
+            adapter.submitList(new ArrayList<>(filteredProducts));
         }
         if (tvMenuSectionTitle != null) {
             tvMenuSectionTitle.setText(
