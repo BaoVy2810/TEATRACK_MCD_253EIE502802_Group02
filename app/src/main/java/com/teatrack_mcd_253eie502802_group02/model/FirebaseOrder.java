@@ -1,6 +1,6 @@
 package com.teatrack_mcd_253eie502802_group02.model;
 
-import java.util.Map;
+import java.util.List;
 
 public class FirebaseOrder {
 
@@ -18,7 +18,7 @@ public class FirebaseOrder {
     private int shipping;
     private int discount;
     private int total;
-    private Map<String, FirebaseOrderItem> items;
+    private List<FirebaseOrderItem> items;
     private String deliveryDate;
     private String deliveryTime;
     private String note;
@@ -76,8 +76,8 @@ public class FirebaseOrder {
     public int getTotal() { return total; }
     public void setTotal(int total) { this.total = total; }
 
-    public Map<String, FirebaseOrderItem> getItems() { return items; }
-    public void setItems(Map<String, FirebaseOrderItem> items) { this.items = items; }
+    public List<FirebaseOrderItem> getItems() { return items; }
+    public void setItems(List<FirebaseOrderItem> items) { this.items = items; }
 
     public String getDeliveryDate() { return deliveryDate; }
     public void setDeliveryDate(String deliveryDate) { this.deliveryDate = deliveryDate; }
