@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_background"
+    tools:context="com.teatrack_mcd_253eie502802_group02.client.OrderDetails">
+
+    <!-- ── Header bar ─────────────────────────────────────────────────────── -->
+    <LinearLayout
+        android:id="@+id/headerBar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="4dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_left"
+            android:contentDescription="@string/str_back"
+            app:tint="@color/brand_blue" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/str_order_details_title"
+            android:textColor="@color/brand_blue"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:fontFamily="@font/inter_semibold" />
+
+        <TextView
+            android:id="@+id/btnSupport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_support"
+            android:textColor="@color/brand_blue"
+            android:textSize="13sp"
+            android:fontFamily="@font/inter_semibold"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+    <!-- Header shadow -->
+    <View
+        android:id="@+id/vHeaderShadow"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="#14000000"
+        app:layout_constraintTop_toBottomOf="@id/headerBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- ── Scrollable content ─────────────────────────────────────────────── -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/vHeaderShadow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="36dp">
+
+            <!-- ══ Card 1: Order Header ══════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOrderHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Top row: thumbnail + meta + status badge -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <!-- Thumbnail -->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_marginEnd="12dp"
+                            app:cardCornerRadius="14dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="#EFF6FF">
+
+                            <ImageView
+                                android:id="@+id/ivOrderThumbnail"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@mipmap/logo_ngo_gia"
+                                android:contentDescription="@null" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <!-- Order meta (takes remaining width) -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <!-- Order ID + status badge row -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center_vertical">
+
+                                <TextView
+                                    android:id="@+id/tvDetailOrderId"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:textSize="14sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/text_primary"
+                                    android:fontFamily="@font/inter_semibold"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
+                                    tools:text="#HTNG-70969" />
+
+                                <TextView
+                                    android:id="@+id/tvDetailStatusBadge"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:paddingHorizontal="10dp"
+                                    android:paddingVertical="4dp"
+                                    android:textSize="11sp"
+                                    android:textStyle="bold"
+                                    android:drawablePadding="4dp"
+                                    tools:text="Pending"
+                                    tools:background="@drawable/bg_status_pending" />
+
+                            </LinearLayout>
+
+                            <!-- Date -->
+                            <TextView
+                                android:id="@+id/tvDetailDate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="@color/text_secondary"
+                                android:layout_marginTop="3dp"
+                                tools:text="25 Jun 2026 • 08:14 AM" />
+
+                            <!-- Payment chip -->
+                            <TextView
+                                android:id="@+id/tvPaymentChip"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="9dp"
+                                android:paddingVertical="3dp"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:layout_marginTop="6dp"
+                                android:background="@drawable/bg_payment_chip"
+                                android:textColor="#1E40AF"
+                                tools:text="Cash on hand" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Divider -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F3F4F6"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="14dp" />
+
+                    <!-- Stats row: items count + total — each half width -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ITEMS"
+                                android:textSize="10sp"
+                                android:textColor="@color/text_secondary"
+                                android:letterSpacing="0.06" />
+
+                            <TextView
+                                android:id="@+id/tvDetailItemCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:fontFamily="@font/inter_semibold"
+                                android:layout_marginTop="2dp"
+                                tools:text="3 items" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="28dp"
+                            android:background="#E5E7EB" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingStart="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TOTAL"
+                                android:textSize="10sp"
+                                android:textColor="@color/text_secondary"
+                                android:letterSpacing="0.06" />
+
+                            <TextView
+                                android:id="@+id/tvDetailTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/brand_blue"
+                                android:fontFamily="@font/inter_semibold"
+                                android:layout_marginTop="2dp"
+                                tools:text="64.000₫" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Address (shown only when customerAddress non-empty) -->
+                    <View
+                        android:id="@+id/vAddressDivider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#F3F4F6"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/llDetailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="top"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_marginTop="2dp"
+                            android:src="@drawable/ic_location_on"
+                            android:contentDescription="@null"
+                            app:tint="@color/text_secondary" />
+
+                        <TextView
+                            android:id="@+id/tvDetailAddress"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="13sp"
+                            android:textColor="@color/text_secondary"
+                            android:lineSpacingExtra="2dp"
+                            tools:text="H071 - 244 Duong So 8, Linh Xuan, Thu Duc, HCMC" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══ Card 2: Order Items ════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_section_order_items"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_secondary"
+                        android:letterSpacing="0.08"
+                        android:layout_marginBottom="4dp" />
+
+                    <LinearLayout
+                        android:id="@+id/llOrderItems"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══ Card 3: Delivery Information ══════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardDelivery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_section_delivery_info"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_secondary"
+                        android:letterSpacing="0.08"
+                        android:layout_marginBottom="2dp" />
+
+                    <LinearLayout style="@style/OrderDetailInfoRow">
+                        <TextView style="@style/OrderDetailInfoLabel" android:text="@string/str_label_customer_name" />
+                        <TextView android:id="@+id/tvDeliveryName" style="@style/OrderDetailInfoValue" tools:text="Nguyễn Hoàng Đức" />
+                    </LinearLayout>
+                    <View style="@style/OrderDetailRowDivider" />
+
+                    <LinearLayout style="@style/OrderDetailInfoRow">
+                        <TextView style="@style/OrderDetailInfoLabel" android:text="@string/str_label_phone_number" />
+                        <TextView android:id="@+id/tvDeliveryPhone" style="@style/OrderDetailInfoValue" tools:text="033 643 349" />
+                    </LinearLayout>
+                    <View style="@style/OrderDetailRowDivider" />
+
+                    <LinearLayout style="@style/OrderDetailInfoRow">
+                        <TextView style="@style/OrderDetailInfoLabel" android:text="@string/str_label_delivery_address" />
+                        <TextView android:id="@+id/tvDeliveryAddress" style="@style/OrderDetailInfoValue"
+                            android:maxLines="4"
+                            android:ellipsize="none"
+                            tools:text="H071 - 244 Duong So 8, Linh Xuan, Thu Duc, HCMC" />
+                    </LinearLayout>
+                    <View style="@style/OrderDetailRowDivider" />
+
+                    <LinearLayout style="@style/OrderDetailInfoRow">
+                        <TextView style="@style/OrderDetailInfoLabel" android:text="@string/str_label_payment_method" />
+                        <TextView android:id="@+id/tvDeliveryPayment" style="@style/OrderDetailInfoValue" tools:text="Cash on hand" />
+                    </LinearLayout>
+                    <View style="@style/OrderDetailRowDivider" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            style="@style/OrderDetailInfoLabel"
+                            android:text="@string/str_label_order_status" />
+
+                        <TextView
+                            android:id="@+id/tvDeliveryStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:drawablePadding="4dp"
+                            tools:text="Pending"
+                            tools:background="@drawable/bg_status_pending" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══ Card 4: Payment Summary ════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardPayment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_section_payment_summary"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_secondary"
+                        android:letterSpacing="0.08"
+                        android:layout_marginBottom="4dp" />
+
+                    <LinearLayout style="@style/PaymentSummaryRow">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/str_label_subtotal"
+                            android:textSize="13sp" android:textColor="@color/text_secondary" />
+                        <TextView android:id="@+id/tvPaySubtotal"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:textSize="13sp" android:textColor="@color/text_primary"
+                            android:textStyle="bold"
+                            tools:text="73.000₫" />
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/llDiscountRow" style="@style/PaymentSummaryRow"
+                        android:visibility="gone">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/str_label_discount"
+                            android:textSize="13sp" android:textColor="#10B981" />
+                        <TextView android:id="@+id/tvPayDiscount"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:textSize="13sp" android:textColor="#EF4444"
+                            android:textStyle="bold"
+                            tools:text="-9.000₫" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/PaymentSummaryRow">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/str_label_delivery_fee"
+                            android:textSize="13sp" android:textColor="@color/text_secondary" />
+                        <TextView android:id="@+id/tvPayShipping"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:textSize="13sp" android:textColor="@color/text_primary"
+                            android:textStyle="bold"
+                            tools:text="Free" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E5E7EB"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/str_label_total"
+                                android:textSize="15sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:fontFamily="@font/inter_semibold" />
+
+                            <TextView
+                                android:id="@+id/tvTotalSavings"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="11sp"
+                                android:textColor="#10B981"
+                                android:layout_marginTop="2dp"
+                                android:visibility="gone"
+                                tools:text="9.000₫ saved"
+                                tools:visibility="visible" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvPayTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/brand_blue"
+                            android:fontFamily="@font/inter_semibold"
+                            tools:text="64.000₫" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══ Action buttons ════════════════════════════════════════════ -->
+
+            <!-- Two-button row (active + completed statuses) -->
+            <LinearLayout
+                android:id="@+id/llTwoActions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnLeftAction"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    app:strokeColor="@color/brand_blue"
+                    app:strokeWidth="1.5dp"
+                    android:textColor="@color/brand_blue"
+                    app:cornerRadius="14dp"
+                    android:textSize="13sp"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/inter_semibold"
+                    tools:text="Track Order" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRightAction"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    app:backgroundTint="@color/brand_blue"
+                    app:cornerRadius="14dp"
+                    android:textSize="13sp"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/inter_semibold"
+                    tools:text="Contact Support" />
+
+            </LinearLayout>
+
+            <!-- Single full-width button (cancelled) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSingleAction"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="gone"
+                app:backgroundTint="@color/brand_blue"
+                app:cornerRadius="14dp"
+                android:textSize="13sp"
+                android:textAllCaps="false"
+                android:fontFamily="@font/inter_semibold"
+                tools:text="Order Again" />
+
+            <TextView
+                android:id="@+id/tvActionHint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:lineSpacingExtra="2dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
