@@ -55,24 +55,56 @@
             app:layout_constraintEnd_toStartOf="@id/btnCartDelete"
             app:layout_constraintStart_toEndOf="@id/imgCartItem"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Trà Xanh Kem Cheese" />
+            tools:text="Sữa Tươi Khoai Môn Nghiền" />
 
         <TextView
-            android:id="@+id/tvCartItemOptions"
+            android:id="@+id/tvCartItemConfig"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/inter_family"
-            android:lineSpacingExtra="2dp"
-            android:maxLines="6"
             android:textColor="#5A6D8C"
             android:textSize="11sp"
             app:layout_constraintEnd_toStartOf="@id/qtyStepperCard"
             app:layout_constraintStart_toEndOf="@id/imgCartItem"
             app:layout_constraintTop_toBottomOf="@id/tvCartItemName"
-            tools:text="Size L - Ngọt: Vừa - Đá: Nhiều, Topping: Sương sáo x1" />
+            tools:text="Size L - Ngọt: Nhiều - Đá: Vừa," />
+
+        <TextView
+            android:id="@+id/tvCartItemQty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/inter_family"
+            android:textColor="#5A6D8C"
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/qtyStepperCard"
+            app:layout_constraintStart_toEndOf="@id/imgCartItem"
+            app:layout_constraintTop_toBottomOf="@id/tvCartItemConfig"
+            tools:text="Số lượng: 2" />
+
+        <TextView
+            android:id="@+id/tvCartItemToppings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/inter_family"
+            android:lineSpacingExtra="2dp"
+            android:textColor="#5A6D8C"
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/qtyStepperCard"
+            app:layout_constraintStart_toEndOf="@id/imgCartItem"
+            app:layout_constraintTop_toBottomOf="@id/tvCartItemQty"
+            tools:text="Topping:\nSương sáo x1\nTrân châu đường đen x1"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/tvCartItemPrice"
@@ -88,7 +120,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/qtyStepperCard"
             app:layout_constraintStart_toEndOf="@id/imgCartItem"
-            app:layout_constraintTop_toBottomOf="@id/tvCartItemOptions"
+            app:layout_constraintTop_toBottomOf="@id/tvCartItemToppings"
             tools:text="58.000đ" />
 
         <com.google.android.material.card.MaterialCardView

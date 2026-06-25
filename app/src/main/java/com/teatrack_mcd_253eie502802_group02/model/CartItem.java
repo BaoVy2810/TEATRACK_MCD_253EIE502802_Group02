@@ -88,14 +88,35 @@ public class CartItem {
 
     public String getOptionsSummary(Context context) {
         StringBuilder builder = new StringBuilder();
-        builder.append(context.getString(R.string.cart_option_size, size));
-        builder.append(", ").append(context.getString(R.string.cart_option_sugar, sugar));
-        builder.append(", ").append(context.getString(R.string.cart_option_ice, ice));
+        builder.append(getConfigLine(context));
+        builder.append('\n').append(context.getString(R.string.cart_quantity_line, quantity));
+        String toppingsBlock = getToppingsBlock(context);
+        if (!toppingsBlock.isEmpty()) {
+            builder.append('\n').append(toppingsBlock);
+        }
+        return builder.toString();
+    }
+
+    public String getConfigLine(Context context) {
+        return context.getString(
+                R.string.cart_config_line,
+                size,
+                context.getString(R.string.cart_label_sugar),
+                sugar,
+                context.getString(R.string.cart_label_ice),
+                ice
+        );
+    }
+
+    public String getToppingsBlock(Context context) {
+        if (toppings.isEmpty()) {
+            return "";
+        }
+        StringBuilder builder = new StringBuilder();
+        builder.append(context.getString(R.string.cart_topping_header));
         for (ToppingLine topping : toppings) {
-            builder.append(", ").append(topping.name);
-            if (topping.quantity > 1) {
-                builder.append(" x").append(topping.quantity);
-            }
+            builder.append('\n')
+                    .append(context.getString(R.string.cart_topping_item, topping.name, topping.quantity));
         }
         return builder.toString();
     }

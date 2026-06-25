@@ -41,10 +41,9 @@ public class Checkout extends BaseActivity {
         String orderId = getIntent().getStringExtra(EXTRA_ORDER_ID);
         TextView tvOrderId = findViewById(R.id.tvOrderId);
         if (tvOrderId != null && orderId != null && !orderId.isEmpty()) {
-            String boldOrderId = "<b>" + orderId + "</b>";
-            String finalHtml = getString(R.string.order_success_order_line, boldOrderId);
-
-            tvOrderId.setText(Html.fromHtml(finalHtml, Html.FROM_HTML_MODE_LEGACY));
+            String raw = getString(R.string.order_success_message);
+            String formatted = String.format(raw, orderId);
+            tvOrderId.setText(Html.fromHtml(formatted, Html.FROM_HTML_MODE_LEGACY));
         }
 
         String pickupAddress = getIntent().getStringExtra(EXTRA_PICKUP_ADDRESS);

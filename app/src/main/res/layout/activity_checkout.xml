@@ -86,7 +86,7 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/inter_family"
                 android:gravity="center"
-                android:text="@string/order_success_thanks"
+                android:text="@string/order_success_message"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 

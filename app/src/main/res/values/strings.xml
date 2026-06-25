@@ -347,6 +347,18 @@
     <string name="cart_option_size">Size %1$s</string>
     <string name="cart_option_sugar">%1$s sugar</string>
     <string name="cart_option_ice">%1$s ice</string>
+    <string name="cart_config_line">Size %1$s - %2$s: %3$s - %4$s: %5$s,</string>
+    <string name="cart_label_sugar">Sugar</string>
+    <string name="cart_label_ice">Ice</string>
+    <string name="cart_quantity_line">Quantity: %1$d</string>
+    <string name="cart_topping_header">Topping:</string>
+    <string name="cart_topping_item">%1$s x%2$d</string>
+    <string name="cart_pickup_date_label">Pickup Date</string>
+    <string name="cart_pickup_date_hint">Select date</string>
+    <string name="cart_custom_time_request">Custom Time Request</string>
+    <string name="cart_custom_time_hint">e.g. Please prepare at 5:30 PM</string>
+    <string name="cart_pickup_display">Pickup: %1$s</string>
+    <string name="cart_pickup_display_with_date">%1$s • %2$s</string>
     <string name="cart_vip_discount_format">VIP discount: -%1$s</string>
     <string name="cart_remove_item">Remove item</string>
     <string name="cart_empty">Your cart is empty</string>
@@ -909,18 +921,16 @@
     <string name="payment_waiting_format">Waiting for payment... (%1$ds)</string>
     <string name="payment_momo">MoMo</string>
     <string name="payment_zalopay">ZaloPay</string>
-    <string name="payment_ewallet">Ví điện tử</string>
+    <string name="payment_ewallet">E-wallet</string>
 
     <string name="app_brand_name">HỒNG TRÀ NGÔ GIA</string>
     <string name="app_brand_chinese">吴家红茶水</string>
     <string name="topping_price_format">+ %s</string>
-    <string name="order_pickup_time_value">15 - 20 phút</string>
+    <string name="order_pickup_time_value">15 - 20 minutes</string>
 
-    <!-- Thêm các chuỗi bị thiếu để tránh lỗi Java (Không ảnh hưởng đến Icon Cart) -->
     <string name="order_save_error">Lỗi lưu đơn hàng!</string>
     <string name="order_saving">Đang lưu đơn hàng...</string>
-    <string name="order_success_order_line">Mã đơn: %s</string>
-    <string name="order_success_thanks">Cảm ơn bạn đã mua hàng!</string>
+    <string name="order_success_order_line">Order &lt;b&gt;%s&lt;/b&gt; is being prepared.</string>
 
     <!-- Agency/Order Hints -->
     <string name="hint_agency_id_example">Ví dụ: AG01</string>

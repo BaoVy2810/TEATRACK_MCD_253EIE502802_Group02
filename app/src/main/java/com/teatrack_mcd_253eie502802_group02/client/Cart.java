@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.app.DatePickerDialog;
+
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,7 +45,9 @@ import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -53,9 +57,16 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private com.google.android.material.textfield.TextInputEditText etRecipientName;
     private com.google.android.material.textfield.TextInputEditText etRecipientPhone;
     private TextView tvRecipientPickupTime;
+    private TextView tvPickupDate;
+    private TextView tvCustomTimeToggle;
+    private com.google.android.material.textfield.TextInputLayout layoutCustomTime;
+    private com.google.android.material.textfield.TextInputEditText etCustomTimeRequest;
     private android.widget.GridLayout gridPickupTimes;
     private View layoutRecipientEditorFooter;
+    private View cardPaymentPickerContent;
     private String selectedPickupTime = "";
+    private String selectedPickupDate = "";
+    private String customPickupTime = "";
     private int navBarInsetBottom;
     private static final int PAYMENT_CASH_ON_HAND = 0;
     private static final int PAYMENT_CASH_IN_BANK = 1;
@@ -111,7 +122,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         cardOrderSummary = findViewById(R.id.cardOrderSummary);
         cardPaymentPicker = findViewById(R.id.cardPaymentPicker);
         setupWindowInsets();
-
+        tvOrderPickupTime = findViewById(R.id.tvOrderPickupTime);
         tvItemsSelected = findViewById(R.id.tvItemsSelected);
         tvCartHeaderBadge = findViewById(R.id.tvCartHeaderBadge);
         tvEmptyCart = findViewById(R.id.tvEmptyCart);
@@ -121,7 +132,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         tvSelectedBranchAddress = findViewById(R.id.tvSelectedBranchAddress);
         tvOrderPickupTime = findViewById(R.id.tvOrderPickupTime);
         tvRecipientDetails = findViewById(R.id.tvRecipientDetails);
-        tvRecipientPickupTime = findViewById(R.id.tvRecipientPickupTime);
         etNote = findViewById(R.id.etNote);
         ivSelectedPaymentIcon = findViewById(R.id.ivSelectedPaymentIcon);
         cardItemRemoved = findViewById(R.id.cardItemRemoved);
@@ -162,7 +172,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                     cardRecipientEditor.setVisibility(View.VISIBLE);
                     return;
                 }
-                processOrder();
+                handleConfirmOrder();
             });
         }
 
@@ -266,6 +276,12 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             }
             return insets;
         });
+        ViewCompat.requestApplyInsets(cartRoot);
+        WindowInsetsCompat currentInsets = ViewCompat.getRootWindowInsets(cartRoot);
+        if (currentInsets != null) {
+            navBarInsetBottom = currentInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+            restoreFooterPadding();
+        }
     }
 
     private void restoreFooterPadding() {
@@ -282,10 +298,25 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     }
 
     private void applyOverlayFooterPadding() {
-        if (layoutCartFooter != null) {
-            layoutCartFooter.setBackgroundColor(android.graphics.Color.TRANSPARENT);
-            layoutCartFooter.setPadding(0, 0, 0, navBarInsetBottom);
+        if (layoutCartFooter == null) {
+            return;
         }
+        layoutCartFooter.setBackgroundResource(R.drawable.bg_cart_footer);
+        layoutCartFooter.setPadding(0, 0, 0, navBarInsetBottom);
+        applyOverlayBottomInset(layoutRecipientEditorFooter, dp(16));
+        applyOverlayBottomInset(cardPaymentPickerContent, dp(8));
+    }
+
+    private void applyOverlayBottomInset(View target, int basePadding) {
+        if (target == null) {
+            return;
+        }
+        target.setPadding(
+                target.getPaddingLeft(),
+                target.getPaddingTop(),
+                target.getPaddingRight(),
+                basePadding + navBarInsetBottom
+        );
     }
 
     private void applyExtraBoldTypeface(TextView... textViews) {
@@ -377,19 +408,21 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     }
 
     private void highlightCashOnHand(boolean selected) {
-        if (tvCashOnHandLabel == null) return;
-        tvCashOnHandLabel.setTextColor(ContextCompat.getColor(this,
-                selected ? R.color.on_surface : R.color.secondary));
-        tvCashOnHandLabel.setTypeface(tvCashOnHandLabel.getTypeface(),
-                selected ? Typeface.BOLD : Typeface.NORMAL);
+        if (tvCashOnHandLabel == null) {
+            return;
+        }
+        tvCashOnHandLabel.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
+        int color = ContextCompat.getColor(this, selected ? R.color.on_surface : R.color.on_surface);
+        tvCashOnHandLabel.setTextColor(color);
     }
 
     private void highlightBankHeader(boolean selected) {
-        if (tvCashInBankLabel == null) return;
-        tvCashInBankLabel.setTextColor(ContextCompat.getColor(this,
-                selected ? R.color.on_surface : R.color.secondary));
-        tvCashInBankLabel.setTypeface(tvCashInBankLabel.getTypeface(),
-                selected ? Typeface.BOLD : Typeface.NORMAL);
+        if (tvCashInBankLabel == null) {
+            return;
+        }
+        tvCashInBankLabel.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
+        int color = ContextCompat.getColor(this, selected ? R.color.on_surface : R.color.on_surface);
+        tvCashInBankLabel.setTextColor(color);
     }
 
     private void highlightBankOption(View optionRow, boolean selected) {
@@ -397,20 +430,21 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             return;
         }
         ViewGroup group = (ViewGroup) optionRow;
-        TextView label = null;
         for (int i = 0; i < group.getChildCount(); i++) {
             View child = group.getChildAt(i);
             if (child instanceof TextView) {
-                label = (TextView) child;
+                highlightPaymentLabel((TextView) child, selected);
                 break;
             }
         }
+    }
+
+    private void highlightPaymentLabel(TextView label, boolean selected) {
         if (label == null) {
             return;
-        }
-        label.setTextColor(ContextCompat.getColor(this,
-                selected ? R.color.brand_blue : R.color.secondary));
-        label.setTypeface(label.getTypeface(), selected ? Typeface.BOLD : Typeface.NORMAL);
+        }label.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
+        int color = ContextCompat.getColor(this, selected ? R.color.on_surface : R.color.on_surface);
+        label.setTextColor(color);
     }
 
     private void selectPaymentMethod(int method) {
@@ -491,10 +525,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (layoutBankOptions != null) layoutBankOptions.setVisibility(View.GONE);
 
         restoreFooterPadding();
-    }    private void processOrder() {
-        handleConfirmOrder();
     }
-
     private void handleConfirmOrder() {
         if (CartManager.getInstance().getItems().isEmpty()) {
             return;
@@ -565,9 +596,16 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         cardRecipientEditor = findViewById(R.id.cardRecipientEditor);
         etRecipientName = findViewById(R.id.etRecipientName);
         etRecipientPhone = findViewById(R.id.etRecipientPhone);
+        tvPickupDate = findViewById(R.id.tvPickupDate);
+        tvCustomTimeToggle = findViewById(R.id.tvCustomTimeToggle);
+        layoutCustomTime = findViewById(R.id.layoutCustomTime);
+        etCustomTimeRequest = findViewById(R.id.etCustomTimeRequest);
         gridPickupTimes = findViewById(R.id.gridPickupTimes);
         layoutRecipientEditorFooter = findViewById(R.id.layoutRecipientEditorFooter);
+        cardPaymentPickerContent = findViewById(R.id.cardPaymentPickerContent);
         setupPickupTimeSlots();
+        setupPickupDatePicker();
+        setupCustomTimeRequest();
 
         View btnEdit    = findViewById(R.id.btnEditRecipientDetail);
         View btnClose   = findViewById(R.id.btnCloseRecipientEditor);
@@ -585,14 +623,25 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     }
 
     private void showRecipientEditor() {
-        // Đọc giá trị hiện tại điền vào form
-        if (tvRecipientDetails != null && etRecipientName != null) {
-            String current = tvRecipientDetails.getText().toString();
-            String[] parts = current.split("\\|");
-            if (parts.length >= 1) etRecipientName.setText(parts[0].trim());
-            if (parts.length >= 2) etRecipientPhone.setText(parts[1].trim());
+        if (tvRecipientDetails != null && etRecipientName != null && etRecipientPhone != null) {
+            CharSequence detailsSeq = tvRecipientDetails.getText();
+            if (detailsSeq != null) {
+                String current = detailsSeq.toString();
+                String[] parts = current.split("\\|");
+                if (parts.length >= 1) etRecipientName.setText(parts[0].trim());
+                if (parts.length >= 2) etRecipientPhone.setText(parts[1].trim());
+            }
         }
         highlightSavedPickupTime();
+        if (tvPickupDate != null && !selectedPickupDate.isEmpty()) {
+            tvPickupDate.setText(selectedPickupDate);
+        }
+        if (etCustomTimeRequest != null) {
+            etCustomTimeRequest.setText(customPickupTime);
+        }
+        if (layoutCustomTime != null) {
+            layoutCustomTime.setVisibility(customPickupTime.isEmpty() ? View.GONE : View.VISIBLE);
+        }
 
         // Ẩn order summary & confirm button, giống showPaymentPicker
         if (cardOrderSummary != null) cardOrderSummary.setVisibility(View.GONE);
@@ -603,14 +652,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (dragHandle != null) dragHandle.setVisibility(View.GONE);
 
         applyOverlayFooterPadding();
-        if (layoutRecipientEditorFooter != null) {
-            layoutRecipientEditorFooter.setPadding(
-                    layoutRecipientEditorFooter.getPaddingLeft(),
-                    layoutRecipientEditorFooter.getPaddingTop(),
-                    layoutRecipientEditorFooter.getPaddingRight(),
-                    dp(16)
-            );
-        }
     }
 
     private void hideRecipientEditor() {
@@ -630,22 +671,26 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private void confirmRecipientEdit() {
         String name = etRecipientName != null ? etRecipientName.getText().toString().trim() : "";
         String phone = etRecipientPhone != null ? etRecipientPhone.getText().toString().trim() : "";
+        customPickupTime = etCustomTimeRequest != null ? etCustomTimeRequest.getText().toString().trim() : "";
 
         if (!name.isEmpty() || !phone.isEmpty()) {
-            updateRecipientDisplay(name, phone, selectedPickupTime);
+            updateRecipientDisplay(name, phone, selectedPickupTime, selectedPickupDate, customPickupTime);
             if (switchSaveDetails != null && switchSaveDetails.isChecked()) {
                 android.content.SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                 pref.edit()
                         .putString("saved_name", name)
                         .putString("saved_phone", phone)
                         .putString("saved_pickup_time", selectedPickupTime)
+                        .putString("saved_pickup_date", selectedPickupDate)
+                        .putString("saved_custom_pickup_time", customPickupTime)
                         .apply();
             }
         }
         hideRecipientEditor();
     }
 
-    private void updateRecipientDisplay(String name, String phone, String pickupTime) {
+    private void updateRecipientDisplay(String name, String phone, String pickupTime,
+                                        String pickupDate, String customTime) {
         if (tvRecipientDetails != null) {
             String display = name;
             if (!phone.isEmpty()) {
@@ -653,12 +698,27 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             }
             tvRecipientDetails.setText(display);
         }
-        if (tvOrderPickupTime != null && pickupTime != null && !pickupTime.isEmpty()) {
-            tvOrderPickupTime.setText(pickupTime);
+        String timeLabel = (customTime != null && !customTime.isEmpty()) ? customTime : pickupTime;
+        String pickupLabel = "";
+        if (pickupDate != null && !pickupDate.isEmpty() && timeLabel != null && !timeLabel.isEmpty()) {
+            pickupLabel = getString(R.string.cart_pickup_display_with_date, pickupDate, timeLabel);
+        } else if (timeLabel != null && !timeLabel.isEmpty()) {
+            pickupLabel = getString(R.string.cart_pickup_display, timeLabel);
+        } else if (pickupDate != null && !pickupDate.isEmpty()) {
+            pickupLabel = pickupDate;
+        }
+
+        if (tvOrderPickupTime != null) {
+            if (pickupDate != null && !pickupDate.isEmpty() && timeLabel != null && !timeLabel.isEmpty()) {
+                tvOrderPickupTime.setText(pickupDate + " " + timeLabel);
+            } else {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                tvOrderPickupTime.setText(sdf.format(new java.util.Date()));
+            }
         }
         if (tvRecipientPickupTime != null) {
-            if (pickupTime != null && !pickupTime.isEmpty()) {
-                tvRecipientPickupTime.setText(getString(R.string.cart_pickup_time_display, pickupTime));
+            if (!pickupLabel.isEmpty()) {
+                tvRecipientPickupTime.setText(pickupLabel);
                 tvRecipientPickupTime.setVisibility(View.VISIBLE);
             } else {
                 tvRecipientPickupTime.setVisibility(View.GONE);
@@ -694,6 +754,13 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
     private void selectPickupTimeSlot(String slot, TextView selectedView) {
         selectedPickupTime = slot;
+        customPickupTime = "";
+        if (etCustomTimeRequest != null) {
+            etCustomTimeRequest.setText("");
+        }
+        if (layoutCustomTime != null) {
+            layoutCustomTime.setVisibility(View.GONE);
+        }
         for (int i = 0; i < gridPickupTimes.getChildCount(); i++) {
             View child = gridPickupTimes.getChildAt(i);
             if (child instanceof TextView) {
@@ -718,6 +785,71 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                     selectPickupTimeSlot(selectedPickupTime, tv);
                     break;
                 }
+            }
+        }
+    }
+
+    private void setupPickupDatePicker() {
+        if (tvPickupDate == null) {
+            return;
+        }
+        if (selectedPickupDate.isEmpty()) {
+            Calendar today = Calendar.getInstance();
+            selectedPickupDate = String.format(Locale.getDefault(), "%02d/%02d/%04d",
+                    today.get(Calendar.DAY_OF_MONTH),
+                    today.get(Calendar.MONTH) + 1,
+                    today.get(Calendar.YEAR));
+            tvPickupDate.setText(selectedPickupDate);
+        }
+        tvPickupDate.setOnClickListener(v -> {
+            Calendar calendar = Calendar.getInstance();
+            DatePickerDialog dialog = new DatePickerDialog(
+                    this,
+                    (view, year, month, dayOfMonth) -> {
+                        selectedPickupDate = String.format(Locale.getDefault(), "%02d/%02d/%04d",
+                                dayOfMonth, month + 1, year);
+                        tvPickupDate.setText(selectedPickupDate);
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+            );
+            dialog.show();
+        });
+    }
+
+    private void setupCustomTimeRequest() {
+        if (tvCustomTimeToggle == null || layoutCustomTime == null) {
+            return;
+        }
+        tvCustomTimeToggle.setOnClickListener(v -> {
+            boolean show = layoutCustomTime.getVisibility() != View.VISIBLE;
+            layoutCustomTime.setVisibility(show ? View.VISIBLE : View.GONE);
+            if (show && etCustomTimeRequest != null) {
+                etCustomTimeRequest.requestFocus();
+            }
+        });
+        if (etCustomTimeRequest != null) {
+            etCustomTimeRequest.setOnFocusChangeListener((v, hasFocus) -> {
+                if (hasFocus) {
+                    clearPickupSlotSelection();
+                }
+            });
+        }
+    }
+
+    private void clearPickupSlotSelection() {
+        selectedPickupTime = "";
+        if (gridPickupTimes == null) {
+            return;
+        }
+        for (int i = 0; i < gridPickupTimes.getChildCount(); i++) {
+            View child = gridPickupTimes.getChildAt(i);
+            if (child instanceof TextView) {
+                TextView tv = (TextView) child;
+                tv.setBackgroundResource(R.drawable.bg_edittext_rounded);
+                tv.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+                tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
             }
         }
     }
@@ -755,6 +887,8 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                             updateRecipientDisplay(
                                     name == null ? "" : name,
                                     phone == null ? "" : phone,
+                                    "",
+                                    "",
                                     ""
                             );
                         }
@@ -780,9 +914,17 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         String savedName = pref.getString("saved_name", "");
         String savedPhone = pref.getString("saved_phone", "");
         selectedPickupTime = pref.getString("saved_pickup_time", "");
+        selectedPickupDate = pref.getString("saved_pickup_date", "");
+        customPickupTime = pref.getString("saved_custom_pickup_time", "");
 
         if (!savedName.isEmpty() || !savedPhone.isEmpty()) {
-            updateRecipientDisplay(savedName, savedPhone, selectedPickupTime);
+            updateRecipientDisplay(savedName, savedPhone, selectedPickupTime, selectedPickupDate, customPickupTime);
+        }
+        if (tvPickupDate != null && !selectedPickupDate.isEmpty()) {
+            tvPickupDate.setText(selectedPickupDate);
+        }
+        if (etCustomTimeRequest != null && !customPickupTime.isEmpty()) {
+            etCustomTimeRequest.setText(customPickupTime);
         }
     }
     private void showRemovedBanner() {

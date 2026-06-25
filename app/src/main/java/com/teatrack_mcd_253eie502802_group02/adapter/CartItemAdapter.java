@@ -51,7 +51,19 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         Context context = holder.itemView.getContext();
 
         holder.tvName.setText(item.getProductName());
-        holder.tvOptions.setText(item.getOptionsSummary(context));
+        holder.tvConfig.setText(item.getConfigLine(context));
+        holder.tvQtyLine.setText(context.getString(R.string.cart_quantity_line, item.getQuantity()));
+
+        String toppingsBlock = item.getToppingsBlock(context);
+        if (holder.tvToppings != null) {
+            if (toppingsBlock.isEmpty()) {
+                holder.tvToppings.setVisibility(View.GONE);
+            } else {
+                holder.tvToppings.setVisibility(View.VISIBLE);
+                holder.tvToppings.setText(toppingsBlock);
+            }
+        }
+
         holder.tvPrice.setText(formatPrice(item.getLineTotal()));
         holder.tvQty.setText(String.valueOf(item.getQuantity()));
 
@@ -124,7 +136,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
     static class ViewHolder extends RecyclerView.ViewHolder {
         final ShapeableImageView imgProduct;
         final TextView tvName;
-        final TextView tvOptions;
+        final TextView tvConfig;
+        final TextView tvQtyLine;
+        final TextView tvToppings;
         final TextView tvPrice;
         final TextView tvQty;
         final ImageButton btnMinus;
@@ -135,7 +149,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgCartItem);
             tvName = itemView.findViewById(R.id.tvCartItemName);
-            tvOptions = itemView.findViewById(R.id.tvCartItemOptions);
+            tvConfig = itemView.findViewById(R.id.tvCartItemConfig);
+            tvQtyLine = itemView.findViewById(R.id.tvCartItemQty);
+            tvToppings = itemView.findViewById(R.id.tvCartItemToppings);
             tvPrice = itemView.findViewById(R.id.tvCartItemPrice);
             tvQty = itemView.findViewById(R.id.tvCartQty);
             btnMinus = itemView.findViewById(R.id.btnCartQtyMinus);
