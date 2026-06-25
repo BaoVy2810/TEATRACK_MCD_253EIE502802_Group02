@@ -106,7 +106,8 @@
             android:exported="false" />
         <activity
             android:name=".client.OrderTracking"
-            android:exported="false" />
+            android:exported="false"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".client.OrderHistory"
             android:exported="false" />
@@ -119,6 +120,7 @@
         <activity
             android:name=".client.RegisterActivity"
             android:exported="false" />
+
         <activity
             android:name=".admin.AdminOrders"
             android:exported="false" />
