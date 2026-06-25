@@ -249,6 +249,13 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
+                            // Existing Google user — read and save role
+                            String existingRole = "Customer";
+                            for (DataSnapshot child : snapshot.getChildren()) {
+                                String r = child.child("role").getValue(String.class);
+                                if (r != null) { existingRole = r; break; }
+                            }
+                            sharedPreferences.edit().putString("userRole", existingRole).apply();
                             startActivity(new Intent(LoginActivity.this, Homepage.class));
                             finish();
                             return;
@@ -267,7 +274,10 @@ public class LoginActivity extends BaseActivity {
                                 userMap.put("provider", "google");
                                 databaseReference.child(csId).setValue(userMap);
 
-                                sharedPreferences.edit().putString(KEY_USER_ID, csId).apply();
+                                sharedPreferences.edit()
+                                        .putString(KEY_USER_ID, csId)
+                                        .putString("userRole", "Customer")
+                                        .apply();
 
                                 startActivity(new Intent(LoginActivity.this, Homepage.class));
                                 finish();
@@ -352,8 +362,11 @@ public class LoginActivity extends BaseActivity {
                             userId = userSnap.getKey();
                             String role = userSnap.child("role").getValue(String.class);
 
-                            // Always persist userId so order history & other screens can read it
-                            sharedPreferences.edit().putString(KEY_USER_ID, userId).apply();
+                            // Always persist userId + role so other screens can read them
+                            sharedPreferences.edit()
+                                    .putString(KEY_USER_ID, userId)
+                                    .putString("userRole", role != null ? role : "Customer")
+                                    .apply();
 
                             if (cbRemember.isChecked()) {
                                 saveLoginData(loginName, password, userId);

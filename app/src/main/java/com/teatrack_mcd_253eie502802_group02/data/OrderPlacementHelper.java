@@ -43,7 +43,10 @@ public final class OrderPlacementHelper {
             subtotal += item.getLineTotal();
         }
 
-        int discount = CartManager.getInstance().getVipDiscountTotal();
+        String userRole = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getString("userRole", "Customer");
+        boolean isVip = "Customer Vip".equalsIgnoreCase(userRole);
+        int discount = isVip ? CartManager.getInstance().getVipDiscountTotal() : 0;
         int total = subtotal - discount;
 
         String[] recipient = parseRecipient(recipientDetails);

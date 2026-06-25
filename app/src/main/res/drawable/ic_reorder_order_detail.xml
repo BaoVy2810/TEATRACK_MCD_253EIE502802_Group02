@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Upper arc: left to right across top half -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M5,12 C5,8.13 8.13,5 12,5 C14.32,5 16.38,6.05 17.73,7.71" />
+
+    <!-- Arrowhead at end of upper arc (pointing right-down) -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M15.5,6 L18,8 L20.5,6" />
+
+    <!-- Lower arc: right to left across bottom half -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M19,12 C19,15.87 15.87,19 12,19 C9.68,19 7.62,17.95 6.27,16.29" />
+
+    <!-- Arrowhead at end of lower arc (pointing left-up) -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M8.5,18 L6,16 L3.5,18" />
+
+</vector>

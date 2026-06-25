@@ -21,39 +21,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_arrow_left"
-            android:contentDescription="@string/str_back"
-            app:tint="@color/brand_blue" />
-
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/str_order_details_title"
             android:textColor="@color/brand_blue"
             android:textSize="17sp"
             android:textStyle="bold"
             android:gravity="center"
             android:fontFamily="@font/inter_semibold" />
-
-        <TextView
-            android:id="@+id/btnSupport"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_support"
-            android:textColor="@color/brand_blue"
-            android:textSize="13sp"
-            android:fontFamily="@font/inter_semibold"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:focusable="true" />
 
     </LinearLayout>
 
@@ -321,44 +297,7 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- ══ Card 2: Order Items ════════════════════════════════════════ -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardItems"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/white"
-                app:strokeWidth="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/str_section_order_items"
-                        android:textSize="11sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_secondary"
-                        android:letterSpacing="0.08"
-                        android:layout_marginBottom="4dp" />
-
-                    <LinearLayout
-                        android:id="@+id/llOrderItems"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- ══ Card 3: Delivery Information ══════════════════════════════ -->
+            <!-- ══ Card 2: Delivery Information ══════════════════════════════ -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardDelivery"
                 android:layout_width="match_parent"
@@ -438,6 +377,43 @@
                             tools:background="@drawable/bg_status_pending" />
 
                     </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══ Card 3: Order Items ════════════════════════════════════════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_section_order_items"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_secondary"
+                        android:letterSpacing="0.08"
+                        android:layout_marginBottom="4dp" />
+
+                    <LinearLayout
+                        android:id="@+id/llOrderItems"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
 
                 </LinearLayout>
 
@@ -566,58 +542,91 @@
 
             <!-- ══ Action buttons ════════════════════════════════════════════ -->
 
-            <!-- Two-button row (active + completed statuses) -->
+            <!-- Two-button row: primary left + secondary right -->
             <LinearLayout
                 android:id="@+id/llTwoActions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="4dp"
                 android:visibility="gone">
 
+                <!-- Primary: filled brand_blue pill -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLeftAction"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    app:strokeColor="@color/brand_blue"
-                    app:strokeWidth="1.5dp"
-                    android:textColor="@color/brand_blue"
-                    app:cornerRadius="14dp"
-                    android:textSize="13sp"
-                    android:textAllCaps="false"
-                    android:fontFamily="@font/inter_semibold"
-                    tools:text="Track Order" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnRightAction"
                     style="@style/Widget.MaterialComponents.Button"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
                     app:backgroundTint="@color/brand_blue"
-                    app:cornerRadius="14dp"
-                    android:textSize="13sp"
+                    app:cornerRadius="24dp"
+                    app:elevation="2dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
                     android:textAllCaps="false"
                     android:fontFamily="@font/inter_semibold"
-                    tools:text="Contact Support" />
+                    app:iconSize="18dp"
+                    app:iconPadding="8dp"
+                    app:iconTint="@color/white"
+                    tools:text="Track Order"
+                    tools:icon="@drawable/ic_track_order_order_detail" />
+
+                <!-- Secondary: white bg, brand_blue outline -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRightAction"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    app:strokeColor="@color/brand_blue"
+                    app:strokeWidth="1.5dp"
+                    app:backgroundTint="@color/white"
+                    app:cornerRadius="24dp"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="14sp"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/inter_semibold"
+                    app:iconSize="18dp"
+                    app:iconPadding="8dp"
+                    app:iconTint="@color/brand_blue"
+                    tools:text="Contact Support"
+                    tools:icon="@drawable/ic_contact_support_order_detail" />
 
             </LinearLayout>
 
-            <!-- Single full-width button (cancelled) -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSingleAction"
-                style="@style/Widget.MaterialComponents.Button"
+            <!-- Single button row (cancelled): centered primary pill -->
+            <LinearLayout
+                android:id="@+id/llSingleAction"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:visibility="gone"
-                app:backgroundTint="@color/brand_blue"
-                app:cornerRadius="14dp"
-                android:textSize="13sp"
-                android:textAllCaps="false"
-                android:fontFamily="@font/inter_semibold"
-                tools:text="Order Again" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingTop="4dp"
+                android:visibility="gone">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSingleAction"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:paddingHorizontal="32dp"
+                    app:backgroundTint="@color/brand_blue"
+                    app:cornerRadius="24dp"
+                    app:elevation="2dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/inter_semibold"
+                    app:iconSize="18dp"
+                    app:iconPadding="8dp"
+                    app:iconTint="@color/white"
+                    tools:text="Order Again"
+                    tools:icon="@drawable/ic_reorder_order_detail" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvActionHint"
