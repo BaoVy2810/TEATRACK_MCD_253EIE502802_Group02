@@ -2,7 +2,6 @@ package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -55,8 +53,6 @@ public class OrderTracking extends AppCompatActivity {
     private WebView webViewMap;
     private String currentMapUrl = null;
     private String lastLoadedAddress = null;
-    private View deliveryDot;
-    private ValueAnimator mapAnimator;
 
     private final List<View> icons = new ArrayList<>();
     private final List<ImageView> stepImages = new ArrayList<>();
@@ -154,7 +150,6 @@ public class OrderTracking extends AppCompatActivity {
                     String status = snapshot.child("status").getValue(String.class);
                     Log.d("MapDebug", "status value: " + status);
                     if (status != null) {
-                        // Reset map nếu status thay đổi
                         if (!status.equals(currentStatus)) {
                             lastLoadedAddress = null;
                             currentMapUrl = null;
@@ -163,7 +158,6 @@ public class OrderTracking extends AppCompatActivity {
 
                         updateStepper(status);
                         updateStatusLabel(status);
-                        handleMapSimulation(status);
                         updateDeliveryInfo(snapshot);
 
                         String address = snapshot.child("customerAddress").getValue(String.class);
@@ -338,12 +332,12 @@ public class OrderTracking extends AppCompatActivity {
         return null;
     }
 
-    private String buildMapHtml(double lat, double lng, String branchName, boolean isShipping) {
+    private String buildMapHtml(double lat, double lng, boolean isShipping, boolean isCompleted) {
         return "<!DOCTYPE html><html><head>"
                 + "<meta name='viewport' content='width=device-width, initial-scale=1.0'>"
                 + "<style>"
                 + "* { margin:0; padding:0; box-sizing:border-box; }"
-                + "body { width:100vw; height:100vh; overflow:hidden; position:relative; }"
+                + "body { width:100vw; height:100vh; overflow:hidden; position:relative; background:#f5f0e8; }"
                 + "iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; z-index:1; }"
                 + "canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; pointer-events:none; }"
                 + "</style>"
@@ -353,104 +347,220 @@ public class OrderTracking extends AppCompatActivity {
                 + "<script>"
                 + "const canvas = document.getElementById('c');"
                 + "const ctx = canvas.getContext('2d');"
-                + "canvas.width = window.innerWidth;"
-                + "canvas.height = window.innerHeight;"
-                + "const W = canvas.width, H = canvas.height;"
+                + "function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }"
+                + "resize();"
+                + "window.addEventListener('resize', resize);"
                 + "const isShipping = " + isShipping + ";"
-                + "const points = ["
-                + "  {x: W*0.15, y: H*0.82},"
-                + "  {x: W*0.15, y: H*0.55},"
-                + "  {x: W*0.45, y: H*0.55},"
-                + "  {x: W*0.45, y: H*0.28},"
-                + "  {x: W*0.75, y: H*0.28}"
-                + "];"
-                + "let totalLen = 0;"
-                + "const segLens = [];"
-                + "for(let i=1;i<points.length;i++){"
-                + "  const dx=points[i].x-points[i-1].x, dy=points[i].y-points[i-1].y;"
-                + "  const l=Math.sqrt(dx*dx+dy*dy);"
-                + "  segLens.push(l); totalLen+=l;"
+                + "const isCompleted = " + isCompleted + ";"
+                + "const CENTER_LAT = " + lat + ";"
+                + "const CENTER_LNG = " + lng + ";"
+                + "const ZOOM = 16;"
+
+                // Mercator projection: lat/lng → world pixel
+                + "function lngLatToWorld(lat, lng) {"
+                + "  const TILE = 256;"
+                + "  const scale = TILE * Math.pow(2, ZOOM);"
+                + "  const x = (lng + 180) / 360 * scale;"
+                + "  const sinLat = Math.sin(lat * Math.PI / 180);"
+                + "  const y = (0.5 - Math.log((1 + sinLat) / (1 - sinLat)) / (4 * Math.PI)) * scale;"
+                + "  return {x, y};"
                 + "}"
-                + "function getPosAtProgress(p){"
-                + "  let dist=p*totalLen, acc=0;"
-                + "  for(let i=0;i<segLens.length;i++){"
-                + "    if(dist<=acc+segLens[i]){"
-                + "      const t=(dist-acc)/segLens[i];"
-                + "      return {x:points[i].x+(points[i+1].x-points[i].x)*t,"
-                + "              y:points[i].y+(points[i+1].y-points[i].y)*t};"
-                + "    }"
-                + "    acc+=segLens[i];"
-                + "  }"
-                + "  return points[points.length-1];"
+
+                // Convert lat/lng → canvas pixel relative to center
+                + "function lngLatToCanvas(lat, lng) {"
+                + "  const W = canvas.width, H = canvas.height;"
+                + "  const center = lngLatToWorld(CENTER_LAT, CENTER_LNG);"
+                + "  const pt = lngLatToWorld(lat, lng);"
+                + "  return { x: W/2 + (pt.x - center.x), y: H/2 + (pt.y - center.y) };"
                 + "}"
-                + "function drawRoute(progress){"
-                + "  ctx.beginPath();"
-                + "  ctx.moveTo(points[0].x,points[0].y);"
-                + "  for(let i=1;i<points.length;i++) ctx.lineTo(points[i].x,points[i].y);"
-                + "  ctx.strokeStyle='rgba(255,255,255,0.3)';"
-                + "  ctx.lineWidth=5; ctx.lineCap='round'; ctx.lineJoin='round';"
-                + "  ctx.setLineDash([8,6]); ctx.stroke(); ctx.setLineDash([]);"
-                + "  if(!isShipping) return;"
-                + "  ctx.beginPath();"
-                + "  ctx.moveTo(points[0].x,points[0].y);"
-                + "  let acc2=0;"
-                + "  for(let i=0;i<segLens.length;i++){"
-                + "    const dist=progress*totalLen;"
-                + "    if(acc2+segLens[i]>=dist){"
-                + "      const t=(dist-acc2)/segLens[i];"
-                + "      const x=points[i].x+(points[i+1].x-points[i].x)*t;"
-                + "      const y=points[i].y+(points[i+1].y-points[i].y)*t;"
-                + "      ctx.lineTo(x,y); break;"
-                + "    }"
-                + "    ctx.lineTo(points[i+1].x,points[i+1].y);"
-                + "    acc2+=segLens[i];"
+
+                // Route: điểm đầu = vị trí chi nhánh trên map, sau đó offset mô phỏng
+                + "function getPoints() {"
+                + "  const W = canvas.width, H = canvas.height;"
+                + "  const origin = lngLatToCanvas(CENTER_LAT, CENTER_LNG);"
+                + "  const ox = origin.x, oy = origin.y;"
+                + "  return ["
+                + "    {x: ox,            y: oy},"
+                + "    {x: ox,            y: oy - H*0.18},"
+                + "    {x: ox + W*0.25,   y: oy - H*0.18},"
+                + "    {x: ox + W*0.40,   y: oy - H*0.35}"
+                + "  ];"
+                + "}"
+
+                // Compute segment lengths + total
+                + "function buildSegments(points) {"
+                + "  let total = 0; const segs = [];"
+                + "  for (let i = 1; i < points.length; i++) {"
+                + "    const dx = points[i].x - points[i-1].x, dy = points[i].y - points[i-1].y;"
+                + "    const l = Math.sqrt(dx*dx + dy*dy);"
+                + "    segs.push(l); total += l;"
                 + "  }"
-                + "  ctx.strokeStyle='#FF6B35';"
-                + "  ctx.lineWidth=5; ctx.lineCap='round'; ctx.lineJoin='round';"
+                + "  return {segs, total};"
+                + "}"
+
+                // Position along route at progress 0..1
+                + "function posAtProgress(points, segs, total, p) {"
+                + "  let dist = p * total, acc = 0;"
+                + "  for (let i = 0; i < segs.length; i++) {"
+                + "    if (dist <= acc + segs[i]) {"
+                + "      const t = (dist - acc) / segs[i];"
+                + "      return { x: points[i].x + (points[i+1].x - points[i].x) * t,"
+                + "               y: points[i].y + (points[i+1].y - points[i].y) * t };"
+                + "    }"
+                + "    acc += segs[i];"
+                + "  }"
+                + "  return points[points.length - 1];"
+                + "}"
+
+                // Draw full route: xám khi chưa shipping, xám + xanh #0088FF khi shipping
+                // Vẽ path cong tại các góc gấp khúc (quadraticCurveTo bo góc)
+                + "function buildCurvedPath(ctx, points, r) {"
+                + "  ctx.moveTo(points[0].x, points[0].y);"
+                + "  for (let i = 1; i < points.length - 1; i++) {"
+                + "    const prev = points[i-1], cur = points[i], next = points[i+1];"
+                + "    const d1 = Math.sqrt((cur.x-prev.x)**2+(cur.y-prev.y)**2);"
+                + "    const d2 = Math.sqrt((next.x-cur.x)**2+(next.y-cur.y)**2);"
+                + "    const t1 = Math.min(r, d1/2) / d1;"
+                + "    const t2 = Math.min(r, d2/2) / d2;"
+                + "    const bx = cur.x - (cur.x-prev.x)*t1, by = cur.y - (cur.y-prev.y)*t1;"
+                + "    const ex = cur.x + (next.x-cur.x)*t2, ey = cur.y + (next.y-cur.y)*t2;"
+                + "    ctx.lineTo(bx, by);"
+                + "    ctx.quadraticCurveTo(cur.x, cur.y, ex, ey);"
+                + "  }"
+                + "  const last = points[points.length-1];"
+                + "  ctx.lineTo(last.x, last.y);"
+                + "}"
+
+                + "function drawRoute(points, segs, total, progress) {"
+                + "  const r = 28;"
+                // Nền xám toàn bộ route
+                + "  ctx.beginPath();"
+                + "  buildCurvedPath(ctx, points, r);"
+                + "  ctx.strokeStyle = '#CCCCCC';"
+                + "  ctx.lineWidth = 3;"
+                + "  ctx.lineCap = 'round';"
+                + "  ctx.lineJoin = 'round';"
+                + "  ctx.setLineDash([8, 5]);"
+                + "  ctx.stroke();"
+                + "  ctx.setLineDash([]);"
+                // Phần đã đi qua — clip theo progress, chỉ vẽ khi isShipping
+                + "  if (!isShipping || progress <= 0) return;"
+                + "  let acc = 0, drawn = false;"
+                + "  const targetDist = progress * total;"
+                + "  const partialPoints = [points[0]];"
+                + "  for (let i = 0; i < segs.length; i++) {"
+                + "    if (acc + segs[i] >= targetDist) {"
+                + "      const t = (targetDist - acc) / segs[i];"
+                + "      partialPoints.push({"
+                + "        x: points[i].x + (points[i+1].x - points[i].x) * t,"
+                + "        y: points[i].y + (points[i+1].y - points[i].y) * t"
+                + "      });"
+                + "      drawn = true; break;"
+                + "    }"
+                + "    partialPoints.push(points[i+1]);"
+                + "    acc += segs[i];"
+                + "  }"
+                + "  if (!drawn) partialPoints.push(points[points.length-1]);"
+                + "  ctx.beginPath();"
+                + "  buildCurvedPath(ctx, partialPoints, r);"
+                + "  ctx.strokeStyle = '#0088FF';"
+                + "  ctx.lineWidth = 3;"
+                + "  ctx.lineCap = 'round';"
+                + "  ctx.lineJoin = 'round';"
                 + "  ctx.stroke();"
                 + "}"
-                + "function drawDestination(t){"
-                + "  const dest=points[points.length-1];"
-                + "  const pulse=1+0.3*Math.sin(t*0.05);"
+
+                // Destination pin
+                + "function drawDestinationPin(x, y, t) {"
+                + "  const pulse = 1 + 0.15 * Math.sin(t * 0.06);"
                 + "  ctx.beginPath();"
-                + "  ctx.arc(dest.x,dest.y,20*pulse,0,Math.PI*2);"
-                + "  ctx.fillStyle='rgba(255,107,53,0.2)'; ctx.fill();"
+                + "  ctx.arc(x, y, 26 * pulse, 0, Math.PI*2);"
+                + "  ctx.fillStyle = 'rgba(0,136,255,0.15)';"
+                + "  ctx.fill();"
                 + "  ctx.beginPath();"
-                + "  ctx.arc(dest.x,dest.y,12,0,Math.PI*2);"
-                + "  ctx.fillStyle='#FF6B35'; ctx.fill();"
+                + "  ctx.arc(x, y, 17, 0, Math.PI*2);"
+                + "  ctx.fillStyle = '#0088FF';"
+                + "  ctx.shadowColor = 'rgba(0,136,255,0.5)';"
+                + "  ctx.shadowBlur = 8;"
+                + "  ctx.fill();"
+                + "  ctx.shadowBlur = 0;"
+                + "  const px = x, py = y - 2;"
                 + "  ctx.beginPath();"
-                + "  ctx.arc(dest.x,dest.y,6,0,Math.PI*2);"
-                + "  ctx.fillStyle='#fff'; ctx.fill();"
+                + "  ctx.arc(px, py - 3, 5, 0, Math.PI*2);"
+                + "  ctx.fillStyle = '#fff';"
+                + "  ctx.fill();"
+                + "  ctx.beginPath();"
+                + "  ctx.moveTo(px - 4, py - 3);"
+                + "  ctx.quadraticCurveTo(px - 4, py + 2, px, py + 7);"
+                + "  ctx.quadraticCurveTo(px + 4, py + 2, px + 4, py - 3);"
+                + "  ctx.fillStyle = '#0088FF';"
+                + "  ctx.fill();"
+                + "  ctx.beginPath();"
+                + "  ctx.arc(px, py - 3, 5, 0, Math.PI*2);"
+                + "  ctx.fillStyle = '#fff';"
+                + "  ctx.fill();"
+                + "  ctx.beginPath();"
+                + "  ctx.arc(px, py - 3, 2, 0, Math.PI*2);"
+                + "  ctx.fillStyle = '#0088FF';"
+                + "  ctx.fill();"
                 + "}"
-                + "function drawShipper(pos){"
+
+                // Shipper navigation icon
+                + "function drawShipperIcon(x, y, angle) {"
                 + "  ctx.beginPath();"
-                + "  ctx.arc(pos.x+2,pos.y+2,16,0,Math.PI*2);"
-                + "  ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fill();"
+                + "  ctx.arc(x, y, 22, 0, Math.PI*2);"
+                + "  ctx.fillStyle = 'rgba(0,136,255,0.2)';"
+                + "  ctx.fill();"
                 + "  ctx.beginPath();"
-                + "  ctx.arc(pos.x,pos.y,16,0,Math.PI*2);"
-                + "  ctx.fillStyle='#2d2d2d'; ctx.fill();"
+                + "  ctx.arc(x, y, 15, 0, Math.PI*2);"
+                + "  ctx.fillStyle = '#0088FF';"
+                + "  ctx.shadowColor = 'rgba(0,0,0,0.25)';"
+                + "  ctx.shadowBlur = 6;"
+                + "  ctx.fill();"
+                + "  ctx.shadowBlur = 0;"
+                + "  ctx.save();"
+                + "  ctx.translate(x, y);"
+                + "  ctx.rotate(angle);"
                 + "  ctx.beginPath();"
-                + "  ctx.moveTo(pos.x,pos.y-8);"
-                + "  ctx.lineTo(pos.x+6,pos.y+5);"
-                + "  ctx.lineTo(pos.x-6,pos.y+5);"
+                + "  ctx.moveTo(0, -7);"
+                + "  ctx.lineTo(5, 5);"
+                + "  ctx.lineTo(0, 2);"
+                + "  ctx.lineTo(-5, 5);"
                 + "  ctx.closePath();"
-                + "  ctx.fillStyle='#fff'; ctx.fill();"
+                + "  ctx.fillStyle = '#fff';"
+                + "  ctx.fill();"
+                + "  ctx.restore();"
                 + "}"
-                + "let frame=0, duration=300;"
-                + "function loop(){"
-                + "  ctx.clearRect(0,0,W,H);"
-                + "  const progress = isShipping ? (frame % duration) / duration : 0;"
-                + "  drawRoute(progress);"
-                + "  drawDestination(frame);"
-                + "  const pos = getPosAtProgress(progress);"
-                + "  drawShipper(pos);"
+
+                // Angle of travel
+                + "function angleAtProgress(points, segs, total, p) {"
+                + "  const p2 = Math.min(p + 0.01, 1);"
+                + "  const a = posAtProgress(points, segs, total, p);"
+                + "  const b = posAtProgress(points, segs, total, p2);"
+                + "  return Math.atan2(b.y - a.y, b.x - a.x) + Math.PI / 2;"
+                + "}"
+
+                + "let frame = 0;"
+                + "const DURATION = 360;"
+                + "function loop() {"
+                + "  ctx.clearRect(0, 0, canvas.width, canvas.height);"
+                + "  const points = getPoints();"
+                + "  const {segs, total} = buildSegments(points);"
+                + "  const progress = isCompleted ? 1 : (isShipping ? (frame % DURATION) / DURATION : 0);"
+                + "  drawRoute(points, segs, total, progress);"
+                + "  const dest = points[points.length - 1];"
+                + "  drawDestinationPin(dest.x, dest.y, frame);"
+                + "  if (isShipping) {"
+                + "    const pos = posAtProgress(points, segs, total, progress);"
+                + "    const angle = angleAtProgress(points, segs, total, progress);"
+                + "    drawShipperIcon(pos.x, pos.y, angle);"
+                + "  }"
                 + "  frame++;"
                 + "  requestAnimationFrame(loop);"
                 + "}"
                 + "loop();"
                 + "</script>"
                 + "</body></html>";
-
     }
 
     private void loadAgencyMapByAddress(String pickupAddress) {
@@ -485,23 +595,20 @@ public class OrderTracking extends AppCompatActivity {
                         Log.d("MapDebug", "MATCH: " + agency.getKey());
                         lastLoadedAddress = pickupAddress;
                         String mapEmbed = agency.child("mapEmbed").getValue(String.class);
-                        String branchName = agency.child("name").getValue(String.class);
-                        if (branchName == null) branchName = "Chi nhánh";
-                        final String finalBranchName = branchName;
 
                         if (mapEmbed != null && !mapEmbed.equals(currentMapUrl)) {
                             currentMapUrl = mapEmbed;
                             double[] latLng = parseLatLngFromEmbedUrl(mapEmbed);
 
                             if (latLng != null) {
-                                final boolean shipping = "shipping".equalsIgnoreCase(currentStatus)
-                                        || "out for delivery".equalsIgnoreCase(currentStatus);
                                 runOnUiThread(() -> {
                                     configureWebView();
-                                    String html = buildMapHtml(latLng[0], latLng[1], finalBranchName, shipping);
+                                    boolean isShipping = "shipping".equalsIgnoreCase(currentStatus)
+                                            || "out for delivery".equalsIgnoreCase(currentStatus);
+                                    boolean isCompleted = "completed".equalsIgnoreCase(currentStatus)
+                                            || "delivered".equalsIgnoreCase(currentStatus);
+                                    String html = buildMapHtml(latLng[0], latLng[1], isShipping, isCompleted);
                                     Log.d("MapDebug", "latLng: " + latLng[0] + ", " + latLng[1]);
-                                    Log.d("MapDebug", "html length: " + html.length());
-                                    Log.d("MapDebug", "webViewMap null? " + (webViewMap == null));
                                     webViewMap.loadDataWithBaseURL(
                                             "https://openstreetmap.org",
                                             html,
@@ -528,53 +635,13 @@ public class OrderTracking extends AppCompatActivity {
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
         webViewMap.setWebChromeClient(new WebChromeClient());
-        webViewMap.setWebViewClient(new WebViewClient());
-    }
-
-    private void handleMapSimulation(String status) {
-        if ("shipping".equalsIgnoreCase(status) || "out for delivery".equalsIgnoreCase(status)) {
-            startMapAnimation();
-        } else {
-            stopMapAnimation();
-        }
-    }
-
-    private void startMapAnimation() {
-        if (deliveryDot == null) {
-            deliveryDot = new View(this);
-            int size = (int) (12 * getResources().getDisplayMetrics().density);
-            deliveryDot.setLayoutParams(new FrameLayout.LayoutParams(size, size));
-            deliveryDot.setBackgroundResource(R.drawable.bg_stepper_dot_active);
-            mapContainer.addView(deliveryDot);
-        }
-        deliveryDot.setVisibility(View.VISIBLE);
-
-        if (mapAnimator != null && mapAnimator.isRunning()) return;
-
-        mapAnimator = ValueAnimator.ofFloat(0f, 1f);
-        mapAnimator.setDuration(8000);
-        mapAnimator.setRepeatCount(ValueAnimator.INFINITE);
-        mapAnimator.setInterpolator(new LinearInterpolator());
-        mapAnimator.addUpdateListener(animation -> {
-            float fraction = (float) animation.getAnimatedValue();
-            int width = mapContainer.getWidth() - deliveryDot.getWidth();
-            int height = mapContainer.getHeight() - deliveryDot.getHeight();
-            if (width > 0 && height > 0) {
-                deliveryDot.setX(width * fraction);
-                deliveryDot.setY(height * fraction);
+        webViewMap.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, android.webkit.WebResourceRequest request) {
+                return true; // block tất cả link
             }
         });
-        mapAnimator.start();
-    }
-
-    private void stopMapAnimation() {
-        if (mapAnimator != null) {
-            mapAnimator.cancel();
-            mapAnimator = null;
-        }
-        if (deliveryDot != null) {
-            deliveryDot.setVisibility(View.GONE);
-        }
+        webViewMap.setOnTouchListener((v, event) -> true); // disable touch interaction
     }
 
     @Override
@@ -583,12 +650,6 @@ public class OrderTracking extends AppCompatActivity {
         if (orderRef != null && statusListener != null) {
             orderRef.removeEventListener(statusListener);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        stopMapAnimation();
     }
 
     public void btnBackHome(View view) {
