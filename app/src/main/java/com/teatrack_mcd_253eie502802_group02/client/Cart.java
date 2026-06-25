@@ -14,6 +14,7 @@ import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,11 +57,17 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private com.google.android.material.materialswitch.MaterialSwitch switchSaveDetails;
     private com.google.android.material.textfield.TextInputEditText etRecipientName;
     private com.google.android.material.textfield.TextInputEditText etRecipientPhone;
+    private com.google.android.material.textfield.TextInputEditText etRecipientAddress;
+    private com.google.android.material.textfield.TextInputLayout layoutRecipientAddress;
     private TextView tvRecipientPickupTime;
     private TextView tvPickupDate;
-    private TextView tvCustomTimeToggle;
-    private com.google.android.material.textfield.TextInputLayout layoutCustomTime;
-    private com.google.android.material.textfield.TextInputEditText etCustomTimeRequest;
+    private View tvCustomTimeToggle;
+    private View layoutCustomTime;
+    private android.widget.NumberPicker pickerHour;
+    private android.widget.NumberPicker pickerMinute;
+    private android.widget.CalendarView calendarViewCustomTime;
+    private int customPickupHour = 8;
+    private int customPickupMinute = 0;
     private android.widget.GridLayout gridPickupTimes;
     private View layoutRecipientEditorFooter;
     private View cardPaymentPickerContent;
@@ -93,6 +100,18 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private View paymentOverlayScrim;
     private View cardOrderSummary;
     private View cardPaymentPicker;
+    private View cardVoucherPicker;
+    private android.widget.LinearLayout layoutVoucherList;
+    private com.google.android.material.textfield.TextInputEditText etVoucherCode;
+    private View layoutVoucherAdd;
+    private View layoutVoucherApplied;
+    private TextView tvVoucherValue;
+    private TextView tvVoucherSummary;
+    private com.teatrack_mcd_253eie502802_group02.model.Promotion appliedVoucher = null;
+    private final java.util.List<com.teatrack_mcd_253eie502802_group02.model.Promotion> availableVouchers = new java.util.ArrayList<>();
+    private View cardBranchPicker;
+    private android.widget.LinearLayout layoutBranchOptions;
+    private int selectedBranchIndex = 0;
     private View layoutBankOptions;
     private View rowCashInBankHeader;
     private View btnConfirmOrder;
@@ -121,6 +140,15 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         paymentOverlayScrim = findViewById(R.id.paymentOverlayScrim);
         cardOrderSummary = findViewById(R.id.cardOrderSummary);
         cardPaymentPicker = findViewById(R.id.cardPaymentPicker);
+        cardVoucherPicker = findViewById(R.id.cardVoucherPicker);
+        layoutVoucherList = findViewById(R.id.layoutVoucherList);
+        etVoucherCode = findViewById(R.id.etVoucherCode);
+        layoutVoucherAdd = findViewById(R.id.layoutVoucherAdd);
+        layoutVoucherApplied = findViewById(R.id.layoutVoucherApplied);
+        tvVoucherValue = findViewById(R.id.tvVoucherValue);
+        tvVoucherSummary = findViewById(R.id.tvVoucherSummary);
+        cardBranchPicker = findViewById(R.id.cardBranchPicker);
+        layoutBranchOptions = findViewById(R.id.layoutBranchOptions);
         setupWindowInsets();
         tvOrderPickupTime = findViewById(R.id.tvOrderPickupTime);
         tvItemsSelected = findViewById(R.id.tvItemsSelected);
@@ -160,16 +188,16 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
         setupTermsLink(tvTermsView);
         setupPaymentPicker();
+        setupBranchPicker();
+        setupVoucherPicker();
         setupRecipientEditor();
 
         if (btnConfirmOrder != null) {
             btnConfirmOrder.setOnClickListener(v -> {
-                String name = etRecipientName.getText().toString().trim();
-                String phone = etRecipientPhone.getText().toString().trim();
-
-                if (name.isEmpty() || phone.isEmpty()) {
+                String details = tvRecipientDetails != null ? tvRecipientDetails.getText().toString().trim() : "";
+                if (details.isEmpty()) {
                     Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin người nhận!", Toast.LENGTH_SHORT).show();
-                    cardRecipientEditor.setVisibility(View.VISIBLE);
+                    showRecipientEditor();
                     return;
                 }
                 handleConfirmOrder();
@@ -208,7 +236,9 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (switchSaveDetails != null) {
             switchSaveDetails.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    Toast.makeText(this, "Thông tin thanh toán sẽ được lưu cho lần sau", Toast.LENGTH_SHORT).show();
+                    loadSavedRecipientInfo();
+                    loadUserRecipientFallback();
+                    saveCurrentRecipientToPrefs();
                 } else {
                     Toast.makeText(this, "Đã tắt tự động lưu thông tin", Toast.LENGTH_SHORT).show();
                 }
@@ -512,6 +542,153 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
         updatePaymentUi();
     }
+    private static final String[][] BRANCH_DATA = {
+        {"H071", "244 Duong So 8, Linh Xuan, Thu Duc, HCMC"},
+        {"H042", "78 Nguyen Hue, Ben Nghe, Quan 1, HCMC"},
+        {"H055", "156 Tran Hung Dao, Nguyen Cu Trinh, Quan 5, HCMC"},
+        {"H088", "321 Le Van Viet, Tang Nhon Phu B, Quan 9, HCMC"},
+    };
+
+    private void setupBranchPicker() {
+        View btnChangeBranch = findViewById(R.id.btnChangeBranch);
+        if (btnChangeBranch != null) {
+            btnChangeBranch.setOnClickListener(v -> showBranchPicker());
+        }
+        if (layoutBranchOptions == null) return;
+        android.util.TypedValue rippleValue = new android.util.TypedValue();
+        getTheme().resolveAttribute(android.R.attr.selectableItemBackground, rippleValue, true);
+        int rippleResId = rippleValue.resourceId;
+
+        layoutBranchOptions.removeAllViews();
+        for (int i = 0; i < BRANCH_DATA.length; i++) {
+            final int idx = i;
+            String code = BRANCH_DATA[i][0];
+            String addr = BRANCH_DATA[i][1];
+
+            android.widget.LinearLayout row = new android.widget.LinearLayout(this);
+            row.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+            row.setGravity(android.view.Gravity.CENTER_VERTICAL);
+            row.setPadding(dp(20), dp(16), dp(20), dp(16));
+            if (rippleResId != 0) row.setBackgroundResource(rippleResId);
+            row.setClickable(true);
+            row.setFocusable(true);
+            row.setTag(idx);
+
+            android.widget.ImageView icon = new android.widget.ImageView(this);
+            android.widget.LinearLayout.LayoutParams iconParams =
+                    new android.widget.LinearLayout.LayoutParams(dp(32), dp(32));
+            icon.setLayoutParams(iconParams);
+            icon.setImageResource(R.drawable.ic_store);
+            icon.setColorFilter(ContextCompat.getColor(this, R.color.brand_blue));
+
+            android.widget.LinearLayout textCol = new android.widget.LinearLayout(this);
+            textCol.setOrientation(android.widget.LinearLayout.VERTICAL);
+            android.widget.LinearLayout.LayoutParams textParams =
+                    new android.widget.LinearLayout.LayoutParams(0,
+                            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            textParams.setMarginStart(dp(14));
+            textCol.setLayoutParams(textParams);
+
+            TextView tvCode = new TextView(this);
+            tvCode.setText(code);
+            tvCode.setTextSize(14f);
+            tvCode.setTypeface(tvCode.getTypeface(), Typeface.BOLD);
+
+            TextView tvAddr = new TextView(this);
+            tvAddr.setText(addr);
+            tvAddr.setTextSize(12f);
+            tvAddr.setTextColor(ContextCompat.getColor(this, R.color.secondary));
+
+            textCol.addView(tvCode);
+            textCol.addView(tvAddr);
+            row.addView(icon);
+            row.addView(textCol);
+
+            row.setOnClickListener(v -> selectBranch(idx));
+            layoutBranchOptions.addView(row);
+
+            if (i < BRANCH_DATA.length - 1) {
+                View divider = new View(this);
+                android.widget.LinearLayout.LayoutParams dp1 =
+                        new android.widget.LinearLayout.LayoutParams(
+                                android.widget.LinearLayout.LayoutParams.MATCH_PARENT, dp(1));
+                divider.setLayoutParams(dp1);
+                divider.setBackgroundColor(ContextCompat.getColor(this, R.color.outline_variant));
+                layoutBranchOptions.addView(divider);
+            }
+        }
+        updateBranchUi();
+    }
+
+    private void selectBranch(int idx) {
+        selectedBranchIndex = idx;
+        updateBranchUi();
+        hideBranchPicker();
+    }
+
+    private void updateBranchUi() {
+        if (tvSelectedBranchAddress != null && selectedBranchIndex < BRANCH_DATA.length) {
+            String code = BRANCH_DATA[selectedBranchIndex][0];
+            String addr = BRANCH_DATA[selectedBranchIndex][1];
+            tvSelectedBranchAddress.setText(code + " - " + addr);
+        }
+        if (layoutBranchOptions == null) return;
+        for (int i = 0; i < layoutBranchOptions.getChildCount(); i++) {
+            View child = layoutBranchOptions.getChildAt(i);
+            if (!(child.getTag() instanceof Integer)) continue;
+            int idx = (int) child.getTag();
+            boolean sel = idx == selectedBranchIndex;
+            if (sel) {
+                child.setBackgroundResource(R.drawable.bg_light_blue_rounded_12);
+            } else {
+                android.util.TypedValue rv = new android.util.TypedValue();
+                getTheme().resolveAttribute(android.R.attr.selectableItemBackground, rv, true);
+                if (rv.resourceId != 0) child.setBackgroundResource(rv.resourceId);
+                else child.setBackground(null);
+            }
+            if (child instanceof android.widget.LinearLayout) {
+                android.widget.LinearLayout row = (android.widget.LinearLayout) child;
+                for (int j = 0; j < row.getChildCount(); j++) {
+                    View inner = row.getChildAt(j);
+                    if (inner instanceof android.widget.LinearLayout) {
+                        android.widget.LinearLayout tc = (android.widget.LinearLayout) inner;
+                        for (int k = 0; k < tc.getChildCount(); k++) {
+                            if (tc.getChildAt(k) instanceof TextView) {
+                                TextView tv = (TextView) tc.getChildAt(k);
+                                tv.setTextColor(ContextCompat.getColor(this,
+                                        sel ? R.color.brand_blue : (k == 0 ? R.color.on_surface : R.color.secondary)));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void showBranchPicker() {
+        if (cardOrderSummary != null) cardOrderSummary.setVisibility(View.GONE);
+        if (cardBranchPicker != null) cardBranchPicker.setVisibility(View.VISIBLE);
+        if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.VISIBLE);
+        if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.GONE);
+        if (tvTerms != null) tvTerms.setVisibility(View.GONE);
+        if (dragHandle != null) dragHandle.setVisibility(View.GONE);
+        applyOverlayFooterPadding();
+        updateBranchUi();
+    }
+
+    private void hideBranchPicker() {
+        if (cardBranchPicker != null) cardBranchPicker.setVisibility(View.GONE);
+        if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.GONE);
+        if (cardOrderSummary != null) {
+            cardOrderSummary.setAlpha(1f);
+            cardOrderSummary.setVisibility(View.VISIBLE);
+        }
+        if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.VISIBLE);
+        if (tvTerms != null) tvTerms.setVisibility(View.VISIBLE);
+        if (dragHandle != null) dragHandle.setVisibility(View.VISIBLE);
+        restoreFooterPadding();
+    }
+
     private void hidePaymentPicker() {
         if (cardPaymentPicker != null) cardPaymentPicker.setVisibility(View.GONE);
         if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.GONE);
@@ -592,14 +769,296 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             tvTotal.setText(formatPrice(subtotal));
         }
     }
+    // ─── Voucher Picker ───────────────────────────────────────────────────────
+
+    private void setupVoucherPicker() {
+        if (layoutVoucherAdd != null) {
+            layoutVoucherAdd.setOnClickListener(v -> showVoucherPicker());
+        }
+        if (layoutVoucherApplied != null) {
+            layoutVoucherApplied.setOnClickListener(v -> showVoucherPicker());
+        }
+        View btnClose = (cardVoucherPicker != null) ? cardVoucherPicker.findViewById(R.id.btnCloseVoucherPicker) : null;
+        if (btnClose != null) btnClose.setOnClickListener(v -> hideVoucherPicker());
+
+        View btnConfirm = (cardVoucherPicker != null) ? cardVoucherPicker.findViewById(R.id.btnConfirmVoucherCode) : null;
+        if (btnConfirm != null) {
+            btnConfirm.setOnClickListener(v -> {
+                if (etVoucherCode == null) return;
+                String code = etVoucherCode.getText().toString().trim();
+                if (code.isEmpty()) {
+                    Toast.makeText(this, "Vui lòng nhập mã ưu đãi", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                validateAndApplyCode(code);
+            });
+        }
+        loadVouchersFromFirebase();
+    }
+
+    private void loadVouchersFromFirebase() {
+        android.content.SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        String userId = loginPrefs.getString("userId", null);
+        com.google.firebase.database.FirebaseDatabase.getInstance()
+                .getReference("vouchers")
+                .addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                    @Override
+                    public void onDataChange(@androidx.annotation.NonNull com.google.firebase.database.DataSnapshot snapshot) {
+                        availableVouchers.clear();
+                        for (com.google.firebase.database.DataSnapshot child : snapshot.getChildren()) {
+                            com.teatrack_mcd_253eie502802_group02.model.Promotion p =
+                                    child.getValue(com.teatrack_mcd_253eie502802_group02.model.Promotion.class);
+                            if (p != null) {
+                                p.setId(child.getKey());
+                                availableVouchers.add(p);
+                            }
+                        }
+                        buildVoucherRows();
+                    }
+                    @Override
+                    public void onCancelled(@androidx.annotation.NonNull com.google.firebase.database.DatabaseError error) {
+                        buildVoucherRows();
+                    }
+                });
+    }
+
+    private void buildVoucherRows() {
+        if (layoutVoucherList == null) return;
+        layoutVoucherList.removeAllViews();
+        if (availableVouchers.isEmpty()) {
+            TextView empty = new TextView(this);
+            empty.setText("Không có ưu đãi nào");
+            empty.setTextColor(ContextCompat.getColor(this, R.color.secondary));
+            empty.setGravity(android.view.Gravity.CENTER);
+            empty.setPadding(dp(16), dp(24), dp(16), dp(24));
+            layoutVoucherList.addView(empty);
+            return;
+        }
+        int subtotal = com.teatrack_mcd_253eie502802_group02.data.CartManager.getInstance().getSubtotal();
+        android.util.TypedValue ripple = new android.util.TypedValue();
+        getTheme().resolveAttribute(android.R.attr.selectableItemBackground, ripple, true);
+
+        for (com.teatrack_mcd_253eie502802_group02.model.Promotion v : availableVouchers) {
+            boolean eligible = subtotal >= v.getMinSubtotal();
+
+            android.widget.LinearLayout row = new android.widget.LinearLayout(this);
+            row.setOrientation(android.widget.LinearLayout.VERTICAL);
+            row.setPadding(dp(16), dp(12), dp(16), dp(4));
+
+            // Main row: icon + content + action
+            android.widget.LinearLayout mainRow = new android.widget.LinearLayout(this);
+            mainRow.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+            mainRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
+            if (ripple.resourceId != 0) mainRow.setBackgroundResource(ripple.resourceId);
+            mainRow.setClickable(true);
+            mainRow.setFocusable(true);
+            mainRow.setPadding(0, dp(4), 0, dp(4));
+
+            // Icon circle
+            FrameLayout iconCircle = new FrameLayout(this);
+            android.widget.LinearLayout.LayoutParams iconCircleParams =
+                    new android.widget.LinearLayout.LayoutParams(dp(44), dp(44));
+            iconCircle.setLayoutParams(iconCircleParams);
+            iconCircle.setBackgroundResource(R.drawable.bg_light_blue_rounded_12);
+            android.widget.ImageView ivIcon = new android.widget.ImageView(this);
+            FrameLayout.LayoutParams ivParams = new FrameLayout.LayoutParams(dp(24), dp(24));
+            ivParams.gravity = android.view.Gravity.CENTER;
+            ivIcon.setLayoutParams(ivParams);
+            ivIcon.setImageResource(R.drawable.ic_local_offer);
+            ivIcon.setColorFilter(ContextCompat.getColor(this, R.color.brand_blue));
+            iconCircle.addView(ivIcon);
+
+            // Content column
+            android.widget.LinearLayout content = new android.widget.LinearLayout(this);
+            content.setOrientation(android.widget.LinearLayout.VERTICAL);
+            android.widget.LinearLayout.LayoutParams contentParams =
+                    new android.widget.LinearLayout.LayoutParams(0,
+                            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            contentParams.setMarginStart(dp(12));
+            content.setLayoutParams(contentParams);
+
+            if (!v.getCategory().isEmpty()) {
+                TextView tvCat = new TextView(this);
+                tvCat.setText(v.getCategory());
+                tvCat.setTextSize(11f);
+                tvCat.setTextColor(ContextCompat.getColor(this, R.color.secondary));
+                content.addView(tvCat);
+            }
+            TextView tvTitle = new TextView(this);
+            tvTitle.setText(v.getTitle().isEmpty() ? v.getDescription() : v.getTitle());
+            tvTitle.setTextSize(13f);
+            tvTitle.setTypeface(tvTitle.getTypeface(), Typeface.BOLD);
+            tvTitle.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+            content.addView(tvTitle);
+
+            if (!v.getDescription().isEmpty() && !v.getDescription().equals(v.getTitle())) {
+                TextView tvDesc = new TextView(this);
+                tvDesc.setText(v.getDescription());
+                tvDesc.setTextSize(11f);
+                tvDesc.setTextColor(ContextCompat.getColor(this, R.color.secondary));
+                content.addView(tvDesc);
+            }
+            if (!v.getExpiry().isEmpty()) {
+                TextView tvExp = new TextView(this);
+                tvExp.setText("HSD: " + v.getExpiry());
+                tvExp.setTextSize(11f);
+                tvExp.setTextColor(ContextCompat.getColor(this, R.color.secondary));
+                content.addView(tvExp);
+            }
+
+            // Action button
+            TextView btnAction = new TextView(this);
+            btnAction.setText(eligible ? "Dùng ngay" : "Điều kiện");
+            btnAction.setTextSize(12f);
+            btnAction.setTypeface(btnAction.getTypeface(), Typeface.BOLD);
+            btnAction.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
+            android.widget.LinearLayout.LayoutParams btnParams =
+                    new android.widget.LinearLayout.LayoutParams(
+                            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+            btnParams.setMarginStart(dp(8));
+            btnAction.setLayoutParams(btnParams);
+
+            mainRow.addView(iconCircle);
+            mainRow.addView(content);
+            mainRow.addView(btnAction);
+
+            if (eligible) {
+                mainRow.setOnClickListener(view -> {
+                    applyVoucher(v);
+                    hideVoucherPicker();
+                });
+                btnAction.setOnClickListener(view -> {
+                    applyVoucher(v);
+                    hideVoucherPicker();
+                });
+            } else {
+                // Show condition info bar
+                android.widget.LinearLayout infoBar = new android.widget.LinearLayout(this);
+                infoBar.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+                infoBar.setGravity(android.view.Gravity.CENTER_VERTICAL);
+                infoBar.setBackgroundColor(0xFFFFF3CD);
+                infoBar.setPadding(dp(10), dp(8), dp(10), dp(8));
+                android.widget.LinearLayout.LayoutParams infoParams =
+                        new android.widget.LinearLayout.LayoutParams(
+                                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+                infoParams.topMargin = dp(4);
+                infoBar.setLayoutParams(infoParams);
+                android.widget.ImageView ivInfo = new android.widget.ImageView(this);
+                android.widget.LinearLayout.LayoutParams infoIconParams =
+                        new android.widget.LinearLayout.LayoutParams(dp(14), dp(14));
+                ivInfo.setLayoutParams(infoIconParams);
+                ivInfo.setImageResource(R.drawable.ic_info_outline);
+                ivInfo.setColorFilter(0xFFB8860B);
+                TextView tvInfo = new TextView(this);
+                android.widget.LinearLayout.LayoutParams tvInfoParams =
+                        new android.widget.LinearLayout.LayoutParams(
+                                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+                tvInfoParams.setMarginStart(dp(6));
+                tvInfo.setLayoutParams(tvInfoParams);
+                String minStr = formatPrice((int) v.getMinSubtotal());
+                tvInfo.setText("Đơn hàng tối thiểu " + minStr + " để sử dụng ưu đãi này");
+                tvInfo.setTextSize(11f);
+                tvInfo.setTextColor(0xFF7A5800);
+                tvInfo.setMaxLines(2);
+                infoBar.addView(ivInfo);
+                infoBar.addView(tvInfo);
+                row.addView(mainRow);
+                row.addView(infoBar);
+                layoutVoucherList.addView(row);
+
+                View divider = new View(this);
+                divider.setBackgroundColor(ContextCompat.getColor(this, R.color.outline_variant));
+                layoutVoucherList.addView(divider,
+                        new android.widget.LinearLayout.LayoutParams(
+                                android.widget.LinearLayout.LayoutParams.MATCH_PARENT, dp(1)));
+                continue;
+            }
+
+            row.addView(mainRow);
+            layoutVoucherList.addView(row);
+
+            View divider = new View(this);
+            divider.setBackgroundColor(ContextCompat.getColor(this, R.color.outline_variant));
+            layoutVoucherList.addView(divider,
+                    new android.widget.LinearLayout.LayoutParams(
+                            android.widget.LinearLayout.LayoutParams.MATCH_PARENT, dp(1)));
+        }
+    }
+
+    private void applyVoucher(com.teatrack_mcd_253eie502802_group02.model.Promotion voucher) {
+        appliedVoucher = voucher;
+        int discount = (int) voucher.getValue();
+        if (tvVoucherValue != null) tvVoucherValue.setText("-" + formatPrice(discount));
+        if (tvVoucherSummary != null) tvVoucherSummary.setText("-" + formatPrice(discount));
+        if (layoutVoucherAdd != null) layoutVoucherAdd.setVisibility(View.GONE);
+        if (layoutVoucherApplied != null) layoutVoucherApplied.setVisibility(View.VISIBLE);
+    }
+
+    private void clearVoucher() {
+        appliedVoucher = null;
+        if (tvVoucherValue != null) tvVoucherValue.setText("");
+        if (tvVoucherSummary != null) tvVoucherSummary.setText("0đ");
+        if (layoutVoucherAdd != null) layoutVoucherAdd.setVisibility(View.VISIBLE);
+        if (layoutVoucherApplied != null) layoutVoucherApplied.setVisibility(View.GONE);
+    }
+
+    private void validateAndApplyCode(String code) {
+        for (com.teatrack_mcd_253eie502802_group02.model.Promotion v : availableVouchers) {
+            if (code.equalsIgnoreCase(v.getCode())) {
+                int subtotal = com.teatrack_mcd_253eie502802_group02.data.CartManager.getInstance().getSubtotal();
+                if (subtotal < v.getMinSubtotal()) {
+                    Toast.makeText(this,
+                            "Đơn hàng tối thiểu " + formatPrice((int) v.getMinSubtotal()),
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                applyVoucher(v);
+                hideVoucherPicker();
+                return;
+            }
+        }
+        Toast.makeText(this, "Mã ưu đãi không hợp lệ", Toast.LENGTH_SHORT).show();
+    }
+
+    private void showVoucherPicker() {
+        buildVoucherRows();
+        if (cardOrderSummary != null) cardOrderSummary.setVisibility(View.GONE);
+        if (cardVoucherPicker != null) cardVoucherPicker.setVisibility(View.VISIBLE);
+        if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.VISIBLE);
+        if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.GONE);
+        if (tvTerms != null) tvTerms.setVisibility(View.GONE);
+        if (dragHandle != null) dragHandle.setVisibility(View.GONE);
+        applyOverlayFooterPadding();
+    }
+
+    private void hideVoucherPicker() {
+        if (cardVoucherPicker != null) cardVoucherPicker.setVisibility(View.GONE);
+        if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.GONE);
+        if (cardOrderSummary != null) {
+            cardOrderSummary.setAlpha(1f);
+            cardOrderSummary.setVisibility(View.VISIBLE);
+        }
+        if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.VISIBLE);
+        if (tvTerms != null) tvTerms.setVisibility(View.VISIBLE);
+        if (dragHandle != null) dragHandle.setVisibility(View.VISIBLE);
+        restoreFooterPadding();
+    }
+
     private void setupRecipientEditor() {
         cardRecipientEditor = findViewById(R.id.cardRecipientEditor);
         etRecipientName = findViewById(R.id.etRecipientName);
         etRecipientPhone = findViewById(R.id.etRecipientPhone);
+        etRecipientAddress = findViewById(R.id.etRecipientAddress);
+        layoutRecipientAddress = findViewById(R.id.layoutRecipientAddress);
         tvPickupDate = findViewById(R.id.tvPickupDate);
         tvCustomTimeToggle = findViewById(R.id.tvCustomTimeToggle);
         layoutCustomTime = findViewById(R.id.layoutCustomTime);
-        etCustomTimeRequest = findViewById(R.id.etCustomTimeRequest);
+        pickerHour = findViewById(R.id.pickerHour);
+        pickerMinute = findViewById(R.id.pickerMinute);
+        calendarViewCustomTime = findViewById(R.id.calendarViewCustomTime);
         gridPickupTimes = findViewById(R.id.gridPickupTimes);
         layoutRecipientEditorFooter = findViewById(R.id.layoutRecipientEditorFooter);
         cardPaymentPickerContent = findViewById(R.id.cardPaymentPickerContent);
@@ -632,15 +1091,19 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                 if (parts.length >= 2) etRecipientPhone.setText(parts[1].trim());
             }
         }
+        if (etRecipientAddress != null) {
+            android.content.SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            etRecipientAddress.setText(pref.getString("saved_address", ""));
+        }
         highlightSavedPickupTime();
         if (tvPickupDate != null && !selectedPickupDate.isEmpty()) {
             tvPickupDate.setText(selectedPickupDate);
         }
-        if (etCustomTimeRequest != null) {
-            etCustomTimeRequest.setText(customPickupTime);
-        }
         if (layoutCustomTime != null) {
             layoutCustomTime.setVisibility(customPickupTime.isEmpty() ? View.GONE : View.VISIBLE);
+        }
+        if (!customPickupTime.isEmpty()) {
+            restorePickerValues();
         }
 
         // Ẩn order summary & confirm button, giống showPaymentPicker
@@ -671,22 +1134,63 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private void confirmRecipientEdit() {
         String name = etRecipientName != null ? etRecipientName.getText().toString().trim() : "";
         String phone = etRecipientPhone != null ? etRecipientPhone.getText().toString().trim() : "";
-        customPickupTime = etCustomTimeRequest != null ? etCustomTimeRequest.getText().toString().trim() : "";
+        String address = etRecipientAddress != null ? etRecipientAddress.getText().toString().trim() : "";
+        if (layoutCustomTime != null && layoutCustomTime.getVisibility() == View.VISIBLE) {
+            buildCustomPickupTime();
+        }
 
-        if (!name.isEmpty() || !phone.isEmpty()) {
-            updateRecipientDisplay(name, phone, selectedPickupTime, selectedPickupDate, customPickupTime);
-            if (switchSaveDetails != null && switchSaveDetails.isChecked()) {
-                android.content.SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                pref.edit()
-                        .putString("saved_name", name)
-                        .putString("saved_phone", phone)
-                        .putString("saved_pickup_time", selectedPickupTime)
-                        .putString("saved_pickup_date", selectedPickupDate)
-                        .putString("saved_custom_pickup_time", customPickupTime)
-                        .apply();
-            }
+        boolean hasError = false;
+        if (name.isEmpty()) {
+            if (etRecipientName != null) etRecipientName.setError("Required");
+            hasError = true;
+        } else {
+            if (etRecipientName != null) etRecipientName.setError(null);
+        }
+        if (phone.isEmpty()) {
+            if (etRecipientPhone != null) etRecipientPhone.setError("Required");
+            hasError = true;
+        } else {
+            if (etRecipientPhone != null) etRecipientPhone.setError(null);
+        }
+        if (address.isEmpty()) {
+            if (etRecipientAddress != null) etRecipientAddress.setError("Required");
+            hasError = true;
+        } else {
+            if (etRecipientAddress != null) etRecipientAddress.setError(null);
+        }
+        if (hasError) return;
+
+        updateRecipientDisplay(name, phone, selectedPickupTime, selectedPickupDate, customPickupTime);
+        if (switchSaveDetails != null && switchSaveDetails.isChecked()) {
+            getSharedPreferences("UserPrefs", MODE_PRIVATE).edit()
+                    .putString("saved_name", name)
+                    .putString("saved_phone", phone)
+                    .putString("saved_address", address)
+                    .putString("saved_pickup_time", selectedPickupTime)
+                    .putString("saved_pickup_date", selectedPickupDate)
+                    .putString("saved_custom_pickup_time", customPickupTime)
+                    .apply();
         }
         hideRecipientEditor();
+    }
+
+    private void saveCurrentRecipientToPrefs() {
+        if (tvRecipientDetails == null) return;
+        String details = tvRecipientDetails.getText().toString().trim();
+        if (details.isEmpty()) return;
+        String[] parts = details.split("\\|");
+        String name = parts.length >= 1 ? parts[0].trim() : "";
+        String phone = parts.length >= 2 ? parts[1].trim() : "";
+        android.content.SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String existingAddress = pref.getString("saved_address", "");
+        pref.edit()
+                .putString("saved_name", name)
+                .putString("saved_phone", phone)
+                .putString("saved_address", existingAddress)
+                .putString("saved_pickup_time", selectedPickupTime)
+                .putString("saved_pickup_date", selectedPickupDate)
+                .putString("saved_custom_pickup_time", customPickupTime)
+                .apply();
     }
 
     private void updateRecipientDisplay(String name, String phone, String pickupTime,
@@ -726,49 +1230,105 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
     }
 
+    private static final String[][] PICKUP_SLOT_DATA = {
+        {"09:00 AM", "Early Bird", "false"},
+        {"10:30 AM", "Morning Tea", "false"},
+        {"12:15 PM", "Midday", "false"},
+        {"02:30 PM", "Afternoon", "false"},
+        {"04:45 PM", "Closing", "false"},
+        {"06:00 PM", "Full", "true"},
+    };
+
     private void setupPickupTimeSlots() {
         if (gridPickupTimes == null) {
             return;
         }
         gridPickupTimes.removeAllViews();
-        String[] slots = getResources().getStringArray(R.array.cart_pickup_time_slots);
-        for (String slot : slots) {
-            TextView slotView = new TextView(this);
+        for (String[] slotData : PICKUP_SLOT_DATA) {
+            String time = slotData[0];
+            String label = slotData[1];
+            boolean isFull = Boolean.parseBoolean(slotData[2]);
+
+            android.widget.LinearLayout card = new android.widget.LinearLayout(this);
+            card.setOrientation(android.widget.LinearLayout.VERTICAL);
+            card.setGravity(android.view.Gravity.CENTER);
+            card.setPadding(dp(10), dp(14), dp(10), dp(14));
+            card.setTag(time);
+            card.setTag(R.id.tvCustomTimeToggle, label);
+
             android.widget.GridLayout.LayoutParams params = new android.widget.GridLayout.LayoutParams();
             params.width = 0;
             params.height = android.widget.GridLayout.LayoutParams.WRAP_CONTENT;
             params.columnSpec = android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f);
             params.setMargins(dp(4), dp(4), dp(4), dp(4));
-            slotView.setLayoutParams(params);
-            slotView.setText(slot);
-            slotView.setGravity(android.view.Gravity.CENTER);
-            slotView.setPadding(dp(10), dp(12), dp(10), dp(12));
-            slotView.setTextSize(13f);
-            slotView.setTypeface(slotView.getTypeface(), Typeface.BOLD);
-            slotView.setBackgroundResource(R.drawable.bg_edittext_rounded);
-            slotView.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
-            slotView.setOnClickListener(v -> selectPickupTimeSlot(slot, slotView));
-            gridPickupTimes.addView(slotView);
+            card.setLayoutParams(params);
+
+            TextView tvTime = new TextView(this);
+            tvTime.setText(time);
+            tvTime.setGravity(android.view.Gravity.CENTER);
+            tvTime.setTextSize(13f);
+            tvTime.setTypeface(tvTime.getTypeface(), Typeface.BOLD);
+
+            TextView tvLabel = new TextView(this);
+            tvLabel.setGravity(android.view.Gravity.CENTER);
+            tvLabel.setTextSize(11f);
+
+            if (isFull) {
+                card.setBackgroundResource(R.drawable.bg_edittext_rounded);
+                card.setAlpha(0.5f);
+                android.text.SpannableString strikeTime = new android.text.SpannableString(time);
+                strikeTime.setSpan(new android.text.style.StrikethroughSpan(), 0, time.length(), android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                tvTime.setText(strikeTime);
+                tvTime.setTextColor(ContextCompat.getColor(this, R.color.secondary));
+                tvLabel.setText(label);
+                tvLabel.setTextColor(ContextCompat.getColor(this, R.color.secondary));
+            } else {
+                card.setBackgroundResource(R.drawable.bg_edittext_rounded);
+                tvTime.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+                tvLabel.setText(label);
+                tvLabel.setTextColor(ContextCompat.getColor(this, R.color.secondary));
+                card.setOnClickListener(v -> selectPickupTimeSlot(time, card));
+            }
+
+            card.addView(tvTime);
+            card.addView(tvLabel);
+            gridPickupTimes.addView(card);
         }
     }
 
-    private void selectPickupTimeSlot(String slot, TextView selectedView) {
+    private void selectPickupTimeSlot(String slot, View selectedView) {
         selectedPickupTime = slot;
         customPickupTime = "";
-        if (etCustomTimeRequest != null) {
-            etCustomTimeRequest.setText("");
-        }
         if (layoutCustomTime != null) {
             layoutCustomTime.setVisibility(View.GONE);
         }
         for (int i = 0; i < gridPickupTimes.getChildCount(); i++) {
             View child = gridPickupTimes.getChildAt(i);
-            if (child instanceof TextView) {
-                TextView tv = (TextView) child;
-                boolean selected = tv == selectedView;
-                tv.setBackgroundResource(selected ? R.drawable.bg_light_blue_rounded_12 : R.drawable.bg_edittext_rounded);
-                tv.setTextColor(ContextCompat.getColor(this,
-                        selected ? R.color.brand_blue : R.color.on_surface));
+            boolean selected = child == selectedView;
+            Object labelTag = child.getTag(R.id.tvCustomTimeToggle);
+            boolean isFull = "Full".equals(labelTag);
+            if (isFull) continue;
+            child.setBackgroundResource(selected ? R.drawable.bg_light_blue_rounded_12 : R.drawable.bg_edittext_rounded);
+            child.setAlpha(1f);
+            if (child instanceof android.widget.LinearLayout) {
+                android.widget.LinearLayout card = (android.widget.LinearLayout) child;
+                for (int j = 0; j < card.getChildCount(); j++) {
+                    View inner = card.getChildAt(j);
+                    if (inner instanceof TextView) {
+                        TextView tv = (TextView) inner;
+                        if (j == 0) {
+                            tv.setText((String) child.getTag());
+                            tv.setTextColor(ContextCompat.getColor(this,
+                                    selected ? R.color.brand_blue : R.color.on_surface));
+                        } else {
+                            Object origLabel = child.getTag(R.id.tvCustomTimeToggle);
+                            String labelText = origLabel != null ? origLabel.toString() : tv.getText().toString();
+                            tv.setText(selected ? "Selected" : labelText);
+                            tv.setTextColor(ContextCompat.getColor(this,
+                                    selected ? R.color.brand_blue : R.color.secondary));
+                        }
+                    }
+                }
             }
         }
     }
@@ -779,12 +1339,9 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
         for (int i = 0; i < gridPickupTimes.getChildCount(); i++) {
             View child = gridPickupTimes.getChildAt(i);
-            if (child instanceof TextView) {
-                TextView tv = (TextView) child;
-                if (selectedPickupTime.equals(tv.getText().toString())) {
-                    selectPickupTimeSlot(selectedPickupTime, tv);
-                    break;
-                }
+            if (selectedPickupTime.equals(child.getTag())) {
+                selectPickupTimeSlot(selectedPickupTime, child);
+                break;
             }
         }
     }
@@ -825,16 +1382,56 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         tvCustomTimeToggle.setOnClickListener(v -> {
             boolean show = layoutCustomTime.getVisibility() != View.VISIBLE;
             layoutCustomTime.setVisibility(show ? View.VISIBLE : View.GONE);
-            if (show && etCustomTimeRequest != null) {
-                etCustomTimeRequest.requestFocus();
+            if (show) {
+                clearPickupSlotSelection();
             }
         });
-        if (etCustomTimeRequest != null) {
-            etCustomTimeRequest.setOnFocusChangeListener((v, hasFocus) -> {
-                if (hasFocus) {
-                    clearPickupSlotSelection();
-                }
+        if (pickerHour != null) {
+            pickerHour.setMinValue(0);
+            pickerHour.setMaxValue(23);
+            pickerHour.setValue(customPickupHour);
+            pickerHour.setFormatter(value -> String.format(Locale.getDefault(), "%02d", value));
+            pickerHour.setOnValueChangedListener((picker, oldVal, newVal) -> {
+                customPickupHour = newVal;
+                buildCustomPickupTime();
             });
+        }
+        if (pickerMinute != null) {
+            pickerMinute.setMinValue(0);
+            pickerMinute.setMaxValue(59);
+            pickerMinute.setValue(customPickupMinute);
+            pickerMinute.setFormatter(value -> String.format(Locale.getDefault(), "%02d", value));
+            pickerMinute.setOnValueChangedListener((picker, oldVal, newVal) -> {
+                customPickupMinute = newVal;
+                buildCustomPickupTime();
+            });
+        }
+        if (calendarViewCustomTime != null) {
+            calendarViewCustomTime.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+                selectedPickupDate = String.format(Locale.getDefault(), "%02d/%02d/%04d",
+                        dayOfMonth, month + 1, year);
+                if (tvPickupDate != null) {
+                    tvPickupDate.setText(selectedPickupDate);
+                }
+                buildCustomPickupTime();
+            });
+        }
+    }
+
+    private void buildCustomPickupTime() {
+        customPickupTime = String.format(Locale.getDefault(), "%02d:%02d", customPickupHour, customPickupMinute);
+    }
+
+    private void restorePickerValues() {
+        if (customPickupTime == null || customPickupTime.isEmpty()) return;
+        String[] parts = customPickupTime.split(":");
+        if (parts.length == 2) {
+            try {
+                customPickupHour = Integer.parseInt(parts[0]);
+                customPickupMinute = Integer.parseInt(parts[1]);
+                if (pickerHour != null) pickerHour.setValue(customPickupHour);
+                if (pickerMinute != null) pickerMinute.setValue(customPickupMinute);
+            } catch (NumberFormatException ignored) {}
         }
     }
 
@@ -845,11 +1442,16 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
         for (int i = 0; i < gridPickupTimes.getChildCount(); i++) {
             View child = gridPickupTimes.getChildAt(i);
-            if (child instanceof TextView) {
-                TextView tv = (TextView) child;
-                tv.setBackgroundResource(R.drawable.bg_edittext_rounded);
-                tv.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
-                tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+            child.setBackgroundResource(R.drawable.bg_edittext_rounded);
+            if (child instanceof android.widget.LinearLayout) {
+                android.widget.LinearLayout card = (android.widget.LinearLayout) child;
+                for (int j = 0; j < card.getChildCount(); j++) {
+                    View inner = card.getChildAt(j);
+                    if (inner instanceof TextView) {
+                        ((TextView) inner).setTextColor(ContextCompat.getColor(this,
+                                j == 0 ? R.color.on_surface : R.color.secondary));
+                    }
+                }
             }
         }
     }
@@ -884,13 +1486,17 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                                 && (tvRecipientDetails.getText() == null
                                 || tvRecipientDetails.getText().toString().trim().isEmpty()
                                 || tvRecipientDetails.getText().toString().contains("Nguyễn Ba Đù"))) {
-                            updateRecipientDisplay(
-                                    name == null ? "" : name,
-                                    phone == null ? "" : phone,
-                                    "",
-                                    "",
-                                    ""
-                            );
+                            String safeName = name == null ? "" : name;
+                            String safePhone = phone == null ? "" : phone;
+                            String safeAddress = user.getAddress();
+                            updateRecipientDisplay(safeName, safePhone, "", "", "");
+                            if (switchSaveDetails != null && switchSaveDetails.isChecked()) {
+                                getSharedPreferences("UserPrefs", MODE_PRIVATE).edit()
+                                        .putString("saved_name", safeName)
+                                        .putString("saved_phone", safePhone)
+                                        .putString("saved_address", safeAddress)
+                                        .apply();
+                            }
                         }
                     }
 
@@ -923,8 +1529,8 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (tvPickupDate != null && !selectedPickupDate.isEmpty()) {
             tvPickupDate.setText(selectedPickupDate);
         }
-        if (etCustomTimeRequest != null && !customPickupTime.isEmpty()) {
-            etCustomTimeRequest.setText(customPickupTime);
+        if (!customPickupTime.isEmpty()) {
+            restorePickerValues();
         }
     }
     private void showRemovedBanner() {

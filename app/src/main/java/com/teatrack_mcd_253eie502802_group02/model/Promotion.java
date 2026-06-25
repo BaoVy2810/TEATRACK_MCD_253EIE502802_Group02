@@ -5,7 +5,10 @@ import java.io.Serializable;
 public class Promotion implements Serializable {
     private String id;
     private String code;
+    private String title;
     private String description;
+    private String category;
+    private String expiry;
     private double minSubtotal;
     private String type;
     private double value;
@@ -36,6 +39,15 @@ public class Promotion implements Serializable {
 
     public String getCode() { return code; }
     public void setCode(String code) { this.code = code; }
+
+    public String getTitle() { return title == null ? "" : title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getCategory() { return category == null ? "" : category; }
+    public void setCategory(String category) { this.category = category; }
+
+    public String getExpiry() { return expiry == null ? "" : expiry; }
+    public void setExpiry(String expiry) { this.expiry = expiry; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
