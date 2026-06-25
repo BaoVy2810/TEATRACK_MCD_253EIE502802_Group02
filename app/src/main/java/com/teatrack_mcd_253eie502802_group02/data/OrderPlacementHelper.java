@@ -95,6 +95,7 @@ public final class OrderPlacementHelper {
         return new FirebaseOrderItem(
                 item.getProductId(),
                 item.getProductName(),
+                item.getImage(),
                 item.getQuantity(),
                 item.getLineUnitPrice(),
                 item.getLineTotal(),

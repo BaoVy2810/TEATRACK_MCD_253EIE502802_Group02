@@ -112,6 +112,9 @@
             android:name=".client.OrderHistory"
             android:exported="false" />
         <activity
+            android:name=".client.OrderDetails"
+            android:exported="false" />
+        <activity
             android:name=".client.UserProfile"
             android:exported="false" />
         <activity

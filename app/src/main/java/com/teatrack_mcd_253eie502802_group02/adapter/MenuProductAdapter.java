@@ -8,7 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
@@ -26,18 +30,43 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
         void onAddToCart(Product product);
     }
 
-    private final List<Product> products;
+    private final List<Product> products = new ArrayList<>();
     private final OnProductClickListener productClickListener;
     private final OnAddToCartClickListener addToCartClickListener;
 
     public MenuProductAdapter(
-            List<Product> products,
+            List<Product> initialProducts,
             OnProductClickListener productClickListener,
             OnAddToCartClickListener addToCartClickListener
     ) {
-        this.products = products;
         this.productClickListener = productClickListener;
         this.addToCartClickListener = addToCartClickListener;
+        if (initialProducts != null) this.products.addAll(initialProducts);
+    }
+
+    /** Dùng thay cho notifyDataSetChanged() — tính diff trên background thread */
+    public void submitList(List<Product> newList) {
+        if (newList == null) newList = new ArrayList<>();
+        final List<Product> oldList = new ArrayList<>(products);
+        final List<Product> finalNew = new ArrayList<>(newList);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override public int getOldListSize() { return oldList.size(); }
+            @Override public int getNewListSize() { return finalNew.size(); }
+            @Override public boolean areItemsTheSame(int o, int n) {
+                String oldName = oldList.get(o).getName();
+                String newName = finalNew.get(n).getName();
+                return Objects.equals(oldName, newName);
+            }
+            @Override public boolean areContentsTheSame(int o, int n) {
+                Product a = oldList.get(o), b = finalNew.get(n);
+                return Objects.equals(a.getName(), b.getName())
+                        && a.getPriceM() == b.getPriceM()
+                        && a.getPriceL() == b.getPriceL();
+            }
+        });
+        products.clear();
+        products.addAll(finalNew);
+        result.dispatchUpdatesTo(this);
     }
 
     @NonNull
