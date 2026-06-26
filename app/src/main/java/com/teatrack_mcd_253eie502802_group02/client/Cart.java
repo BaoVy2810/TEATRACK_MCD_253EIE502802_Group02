@@ -407,10 +407,15 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             paymentOverlayScrim.setOnClickListener(v -> {
                 if (cardPaymentPicker != null && cardPaymentPicker.getVisibility() == View.VISIBLE) {
                     hidePaymentPicker();
-                } else {
+                } else if (cardVoucherPicker != null && cardVoucherPicker.getVisibility() == View.VISIBLE) {
+                    hideVoucherPicker();
+                } else if (cardBranchPicker != null && cardBranchPicker.getVisibility() == View.VISIBLE) {
+                    hideBranchPicker();
+                } else if (cardRecipientEditor != null && cardRecipientEditor.getVisibility() == View.VISIBLE) {
                     hideRecipientEditor();
                 }
-            });        }
+            });
+        }
         if (cardPaymentPicker != null) {
             cardPaymentPicker.setClickable(true);
         }
@@ -554,6 +559,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (btnChangeBranch != null) {
             btnChangeBranch.setOnClickListener(v -> showBranchPicker());
         }
+
         if (layoutBranchOptions == null) return;
         android.util.TypedValue rippleValue = new android.util.TypedValue();
         getTheme().resolveAttribute(android.R.attr.selectableItemBackground, rippleValue, true);
@@ -672,7 +678,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.GONE);
         if (tvTerms != null) tvTerms.setVisibility(View.GONE);
         if (dragHandle != null) dragHandle.setVisibility(View.GONE);
-        applyOverlayFooterPadding();
         updateBranchUi();
     }
 
@@ -778,8 +783,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (layoutVoucherApplied != null) {
             layoutVoucherApplied.setOnClickListener(v -> showVoucherPicker());
         }
-        View btnClose = (cardVoucherPicker != null) ? cardVoucherPicker.findViewById(R.id.btnCloseVoucherPicker) : null;
-        if (btnClose != null) btnClose.setOnClickListener(v -> hideVoucherPicker());
 
         View btnConfirm = (cardVoucherPicker != null) ? cardVoucherPicker.findViewById(R.id.btnConfirmVoucherCode) : null;
         if (btnConfirm != null) {
@@ -1031,7 +1034,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.GONE);
         if (tvTerms != null) tvTerms.setVisibility(View.GONE);
         if (dragHandle != null) dragHandle.setVisibility(View.GONE);
-        applyOverlayFooterPadding();
     }
 
     private void hideVoucherPicker() {
@@ -1067,14 +1069,11 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         setupCustomTimeRequest();
 
         View btnEdit    = findViewById(R.id.btnEditRecipientDetail);
-        View btnClose   = findViewById(R.id.btnCloseRecipientEditor);
         View btnCancel  = findViewById(R.id.btnCancelRecipientEdit);
         View btnConfirm = findViewById(R.id.btnConfirmRecipientEdit);
 
         if (btnEdit != null)
             btnEdit.setOnClickListener(v -> showRecipientEditor());
-        if (btnClose != null)
-            btnClose.setOnClickListener(v -> hideRecipientEditor());
         if (btnCancel != null)
             btnCancel.setOnClickListener(v -> hideRecipientEditor());
         if (btnConfirm != null)

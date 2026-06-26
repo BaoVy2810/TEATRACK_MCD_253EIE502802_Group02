@@ -995,4 +995,9 @@
     <string name="str_vnd_format">%1$s₫</string>
     <string name="str_items_count_format">%1$d item(s)</string>
     <string name="str_qty_unit_format">x%1$d • %2$s₫/item</string>
+    <string name="str_add_voucher">Thêm ưu đãi</string>
+    <string name="str_subtitle_voucher">Chọn để khám phá nhiều ưu đãi</string>
+    <string name="cart_picker_voucher_title">Select Voucher</string>
+    <string name="cart_picker_branch_title">Select Branch</string>
+    <string name="cart_recipient_edit_title">Edit Recipient Details</string>
 </resources>

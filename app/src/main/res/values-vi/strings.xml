@@ -780,4 +780,9 @@
     <string name="order_tracking_sample_time1">10:30, 12 Th10 2023</string>
     <string name="order_tracking_sample_time2">10:45, 12 Th10 2023</string>
     <string name="order_tracking_sample_id">#ORD12345</string>
+    <string name="str_add_voucher">Thêm ưu đãi</string>
+    <string name="str_subtitle_voucher">Chọn để khám phá nhiều ưu đãi</string>
+    <string name="cart_picker_voucher_title">Chọn Mã Giảm Giá</string>
+    <string name="cart_picker_branch_title">Chọn Chi Nhánh</string>
+    <string name="cart_recipient_edit_title">Chỉnh Sửa Thông Tin Người Nhận</string>
 </resources>

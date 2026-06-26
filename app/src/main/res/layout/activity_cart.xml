@@ -467,7 +467,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter_family"
-                                android:text="Thêm ưu đãi"
+                                android:text="@string/str_add_voucher"
                                 android:textColor="@color/on_surface"
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
@@ -476,7 +476,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter_family"
-                                android:text="Chọn để khám phá nhiều ưu đãi"
+                                android:text="@string/str_subtitle_voucher"
                                 android:textColor="@color/secondary"
                                 android:textSize="12sp" />
 
@@ -599,7 +599,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
@@ -617,7 +616,6 @@
                             android:id="@+id/btnPaymentChange"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_account_action_button"
                             android:clickable="true"
                             android:focusable="true"
                             android:fontFamily="@font/inter_family"
@@ -858,12 +856,12 @@
                     android:id="@+id/cardPaymentPicker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_cart_footer"
-                    android:elevation="24dp"
+                    android:elevation="0dp"
                     android:visibility="gone"
                     app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp">
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
 
                     <LinearLayout
                         android:id="@+id/cardPaymentPickerContent"
@@ -922,8 +920,7 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/outline_variant" />
+                            android:layout_height="1dp" />
 
                         <LinearLayout
                             android:id="@+id/optionCashInBank"
@@ -942,6 +939,7 @@
                                 android:orientation="horizontal"
                                 android:paddingStart="20dp"
                                 android:paddingTop="16dp"
+                                android:paddingBottom="16dp"
                                 android:paddingEnd="20dp">
 
                                 <ImageView
@@ -1068,39 +1066,29 @@
                     android:elevation="24dp"
                     android:visibility="gone"
                     app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp">
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <!-- Header -->
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingStart="4dp"
+                            android:paddingStart="16dp"
                             android:paddingTop="14dp"
                             android:paddingEnd="16dp"
                             android:paddingBottom="10dp">
-
-                            <ImageButton
-                                android:id="@+id/btnCloseVoucherPicker"
-                                android:layout_width="36dp"
-                                android:layout_height="36dp"
-                                android:layout_centerVertical="true"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:padding="6dp"
-                                android:src="@drawable/ic_arrow_left"
-                                app:tint="@color/on_surface" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:fontFamily="@font/inter_family"
-                                android:text="Chọn hoặc nhập ưu đãi"
+                                android:text="@string/cart_picker_voucher_title"
                                 android:textColor="@color/on_surface"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
@@ -1190,8 +1178,9 @@
                     android:elevation="24dp"
                     android:visibility="gone"
                     app:cardBackgroundColor="@color/white"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="0dp">
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1199,20 +1188,29 @@
                         android:orientation="vertical"
                         android:paddingTop="16dp">
 
-                        <TextView
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_family"
-                            android:gravity="center"
-                            android:text="Select Branch"
-                            android:textColor="@color/on_surface"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:paddingStart="16dp"
+                            android:paddingTop="14dp"
+                            android:paddingEnd="16dp"
+                            android:paddingBottom="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/inter_family"
+                                android:text="@string/cart_picker_branch_title"
+                                android:textColor="@color/on_surface"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+
+                        </RelativeLayout>
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
-                            android:layout_marginTop="12dp"
                             android:background="@color/outline_variant" />
 
                         <ScrollView
@@ -1225,8 +1223,8 @@
                                 android:id="@+id/layoutBranchOptions"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical" />
-
+                                android:orientation="vertical"
+                                android:paddingBottom="12dp" />
                         </ScrollView>
 
                     </LinearLayout>
@@ -1240,8 +1238,7 @@
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
-                    app:strokeColor="#E7EDF9"
-                    app:strokeWidth="1dp">
+                    app:strokeWidth="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1283,7 +1280,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/inter_family"
-                                            android:text="Edit Recipient Details"
+                                            android:text="@string/cart_recipient_edit_title"
                                             android:textColor="@color/on_surface"
                                             android:textSize="18sp"
                                             android:textStyle="bold" />
@@ -1293,18 +1290,6 @@
                                             android:text="Ensure your pickup information is accurate."
                                             android:textSize="12sp" />
                                     </LinearLayout>
-
-                                    <ImageButton
-                                        android:id="@+id/btnCloseRecipientEditor"
-                                        android:layout_width="32dp"
-                                        android:layout_height="32dp"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_centerVertical="true"
-                                        android:background="?attr/selectableItemBackgroundBorderless"
-                                        android:padding="6dp"
-                                        android:scaleType="fitCenter"
-                                        android:src="@drawable/ic_close"
-                                        app:tint="@color/secondary" />
                                 </RelativeLayout>
 
                                 <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/outline_variant" android:layout_marginVertical="10dp"/>
