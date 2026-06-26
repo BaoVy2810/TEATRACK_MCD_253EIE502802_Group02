@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +29,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.data.CartManager;
+import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
@@ -59,9 +60,6 @@ public class OrderDetails extends BaseActivity {
     }
 
     // ── Views ────────────────────────────────────────────────────────────────
-
-    private ImageButton btnBack;
-    private TextView btnSupport;
 
     // Header card
     private ImageView ivOrderThumbnail;
@@ -95,10 +93,13 @@ public class OrderDetails extends BaseActivity {
 
     // Actions
     private LinearLayout llTwoActions;
+    private LinearLayout llSingleAction;
     private MaterialButton btnLeftAction;
     private MaterialButton btnRightAction;
     private MaterialButton btnSingleAction;
     private TextView tvActionHint;
+
+    private FirebaseOrder currentOrder;
 
     // ── Status constants ──────────────────────────────────────────────────────
 
@@ -129,6 +130,7 @@ public class OrderDetails extends BaseActivity {
             return;
         }
 
+        currentOrder = order;
         bindViews();
         setupButtons();
         populateOrder(order);
@@ -137,9 +139,6 @@ public class OrderDetails extends BaseActivity {
     // ── Bind ──────────────────────────────────────────────────────────────────
 
     private void bindViews() {
-        btnBack    = findViewById(R.id.btnBack);
-        btnSupport = findViewById(R.id.btnSupport);
-
         ivOrderThumbnail    = findViewById(R.id.ivOrderThumbnail);
         tvDetailOrderId     = findViewById(R.id.tvDetailOrderId);
         tvDetailDate        = findViewById(R.id.tvDetailDate);
@@ -167,6 +166,7 @@ public class OrderDetails extends BaseActivity {
         tvTotalSavings = findViewById(R.id.tvTotalSavings);
 
         llTwoActions    = findViewById(R.id.llTwoActions);
+        llSingleAction  = findViewById(R.id.llSingleAction);
         btnLeftAction   = findViewById(R.id.btnLeftAction);
         btnRightAction  = findViewById(R.id.btnRightAction);
         btnSingleAction = findViewById(R.id.btnSingleAction);
@@ -174,11 +174,6 @@ public class OrderDetails extends BaseActivity {
     }
 
     private void setupButtons() {
-        if (btnBack != null)
-            btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
-        if (btnSupport != null)
-            btnSupport.setOnClickListener(v ->
-                    Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show());
     }
 
     // ── Populate ─────────────────────────────────────────────────────────────
@@ -333,9 +328,10 @@ public class OrderDetails extends BaseActivity {
             case STATUS_SHIPPING: {
                 llTwoActions.setVisibility(View.VISIBLE);
                 btnLeftAction.setText(R.string.str_btn_track_order);
+                btnLeftAction.setIconResource(R.drawable.ic_track_order_order_detail);
                 btnRightAction.setText(R.string.str_btn_contact_support);
-                btnLeftAction.setOnClickListener(v ->
-                        Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show());
+                btnRightAction.setIconResource(R.drawable.ic_contact_support_order_detail);
+                btnLeftAction.setOnClickListener(v -> launchTrackOrder());
                 btnRightAction.setOnClickListener(v ->
                         Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show());
                 tvActionHint.setText(R.string.str_hint_active_order);
@@ -344,25 +340,82 @@ public class OrderDetails extends BaseActivity {
             case STATUS_COMPLETED: {
                 llTwoActions.setVisibility(View.VISIBLE);
                 btnLeftAction.setText(R.string.str_btn_reorder);
+                btnLeftAction.setIconResource(R.drawable.ic_reorder_order_detail);
                 btnRightAction.setText(R.string.str_btn_contact_support);
-                btnLeftAction.setOnClickListener(v ->
-                        Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show());
+                btnRightAction.setIconResource(R.drawable.ic_contact_support_order_detail);
+                btnLeftAction.setOnClickListener(v -> launchReorder());
                 btnRightAction.setOnClickListener(v ->
                         Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show());
                 tvActionHint.setText(R.string.str_hint_completed_order);
                 break;
             }
             case STATUS_CANCELLED: {
-                btnSingleAction.setVisibility(View.VISIBLE);
+                llSingleAction.setVisibility(View.VISIBLE);
                 btnSingleAction.setText(R.string.str_btn_order_again);
-                btnSingleAction.setOnClickListener(v ->
-                        Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show());
+                btnSingleAction.setIconResource(R.drawable.ic_reorder_order_detail);
+                btnSingleAction.setOnClickListener(v -> launchReorder());
                 tvActionHint.setText(R.string.str_hint_cancelled_order);
                 break;
             }
             default:
                 break;
         }
+    }
+
+    private void launchTrackOrder() {
+        String orderId = safe(currentOrder != null ? currentOrder.getOrderId() : "");
+        if (orderId.isEmpty()) orderId = safe(currentOrder != null ? currentOrder.getId() : "");
+        Intent intent = new Intent(this, OrderTracking.class);
+        intent.putExtra("orderId", orderId);
+        startActivity(intent);
+    }
+
+    private void launchReorder() {
+        if (currentOrder == null || currentOrder.getItems() == null
+                || currentOrder.getItems().isEmpty()) {
+            Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        CartManager cart = CartManager.getInstance();
+        cart.clear();
+
+        for (FirebaseOrderItem src : currentOrder.getItems()) {
+            CartItem item = new CartItem();
+            item.setProductId(safe(src.getProductId()));
+            item.setProductName(safe(src.getProductName()));
+            item.setImage(safe(src.getImage()));
+            item.setSize(safe(src.getSize(), "M"));
+            item.setSugar(safe(src.getSugar(), "Medium"));
+            item.setIce(safe(src.getIce(), "Medium"));
+            item.setQuantity(Math.max(1, src.getQuantity()));
+            item.setUnitPrice(src.getUnitPrice());
+            item.setVipUnitPrice(0);
+
+            // Restore toppings as display-only (price already in unitPrice)
+            String toppingStr = safe(src.getToppings());
+            if (!toppingStr.isEmpty()) {
+                for (String part : toppingStr.split(",")) {
+                    part = part.trim();
+                    if (part.isEmpty()) continue;
+                    // Parse "Name x2" or just "Name"
+                    int qty = 1;
+                    String name = part;
+                    int xIdx = part.lastIndexOf(" x");
+                    if (xIdx > 0) {
+                        try {
+                            qty = Integer.parseInt(part.substring(xIdx + 2).trim());
+                            name = part.substring(0, xIdx).trim();
+                        } catch (NumberFormatException ignored) {}
+                    }
+                    item.addTopping(name, 0, qty);
+                }
+            }
+
+            cart.addItem(item);
+        }
+
+        startActivity(new Intent(this, Cart.class));
     }
 
     // ── Image loading (mirrors OrderHistoryAdapter logic) ─────────────────────
