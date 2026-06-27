@@ -55,11 +55,9 @@ import java.util.Locale;
 public class Cart extends BaseActivity implements CartManager.CartChangeListener {
     private View cardRecipientEditor;
     private com.google.android.material.materialswitch.MaterialSwitch switchSaveDetails;
-    private com.google.android.material.textfield.TextInputEditText etRecipientName;
-    private com.google.android.material.textfield.TextInputEditText etRecipientPhone;
-    private com.google.android.material.textfield.TextInputEditText etRecipientAddress;
-    private com.google.android.material.textfield.TextInputLayout layoutRecipientAddress;
-    private TextView tvRecipientPickupTime;
+    private android.widget.EditText etRecipientName;
+    private android.widget.EditText etRecipientPhone;
+    private android.widget.EditText etRecipientAddress;
     private TextView tvPickupDate;
     private View tvCustomTimeToggle;
     private View layoutCustomTime;
@@ -102,16 +100,18 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private View cardPaymentPicker;
     private View cardVoucherPicker;
     private android.widget.LinearLayout layoutVoucherList;
-    private com.google.android.material.textfield.TextInputEditText etVoucherCode;
+    private android.widget.EditText etVoucherCode;
     private View layoutVoucherAdd;
     private View layoutVoucherApplied;
     private TextView tvVoucherValue;
     private TextView tvVoucherSummary;
     private com.teatrack_mcd_253eie502802_group02.model.Promotion appliedVoucher = null;
     private final java.util.List<com.teatrack_mcd_253eie502802_group02.model.Promotion> availableVouchers = new java.util.ArrayList<>();
+    private final java.util.List<com.teatrack_mcd_253eie502802_group02.model.Agency> availableBranches = new java.util.ArrayList<>();
     private View cardBranchPicker;
     private android.widget.LinearLayout layoutBranchOptions;
-    private int selectedBranchIndex = 0;
+    private int selectedBranchIndex = -1;
+    private String selectedBranchId = "";
     private View layoutBankOptions;
     private View rowCashInBankHeader;
     private View btnConfirmOrder;
@@ -224,7 +224,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
         CartManager.getInstance().addListener(this);
         refreshCartUi();
-        View layoutSummaryCollapsible = findViewById(R.id.layoutSummaryCollapsible);
         View cardOrderSummary = findViewById(R.id.cardOrderSummary);
         View dragHandle = findViewById(R.id.dragHandle);
 
@@ -333,8 +332,13 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
         layoutCartFooter.setBackgroundResource(R.drawable.bg_cart_footer);
         layoutCartFooter.setPadding(0, 0, 0, navBarInsetBottom);
-        applyOverlayBottomInset(layoutRecipientEditorFooter, dp(16));
-        applyOverlayBottomInset(cardPaymentPickerContent, dp(8));
+        
+        int bottomPadding = dp(16);
+        
+        applyOverlayBottomInset(layoutRecipientEditorFooter, bottomPadding);
+        applyOverlayBottomInset(cardPaymentPickerContent, bottomPadding);
+        applyOverlayBottomInset(findViewById(R.id.layoutVoucherPickerContent), bottomPadding);
+        applyOverlayBottomInset(findViewById(R.id.layoutBranchPickerContent), bottomPadding);
     }
 
     private void applyOverlayBottomInset(View target, int basePadding) {
@@ -447,8 +451,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             return;
         }
         tvCashOnHandLabel.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
-        int color = ContextCompat.getColor(this, selected ? R.color.on_surface : R.color.on_surface);
-        tvCashOnHandLabel.setTextColor(color);
+        tvCashOnHandLabel.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
     }
 
     private void highlightBankHeader(boolean selected) {
@@ -456,8 +459,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             return;
         }
         tvCashInBankLabel.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
-        int color = ContextCompat.getColor(this, selected ? R.color.on_surface : R.color.on_surface);
-        tvCashInBankLabel.setTextColor(color);
+        tvCashInBankLabel.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
     }
 
     private void highlightBankOption(View optionRow, boolean selected) {
@@ -477,9 +479,9 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private void highlightPaymentLabel(TextView label, boolean selected) {
         if (label == null) {
             return;
-        }label.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
-        int color = ContextCompat.getColor(this, selected ? R.color.on_surface : R.color.on_surface);
-        label.setTextColor(color);
+        }
+        label.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
+        label.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
     }
 
     private void selectPaymentMethod(int method) {
@@ -547,29 +549,52 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
         updatePaymentUi();
     }
-    private static final String[][] BRANCH_DATA = {
-        {"H071", "244 Duong So 8, Linh Xuan, Thu Duc, HCMC"},
-        {"H042", "78 Nguyen Hue, Ben Nghe, Quan 1, HCMC"},
-        {"H055", "156 Tran Hung Dao, Nguyen Cu Trinh, Quan 5, HCMC"},
-        {"H088", "321 Le Van Viet, Tang Nhon Phu B, Quan 9, HCMC"},
-    };
-
     private void setupBranchPicker() {
         View btnChangeBranch = findViewById(R.id.btnChangeBranch);
         if (btnChangeBranch != null) {
             btnChangeBranch.setOnClickListener(v -> showBranchPicker());
         }
+        loadBranchesFromFirebase();
+    }
 
+    private void loadBranchesFromFirebase() {
+        FirebaseDatabase.getInstance().getReference("agencies")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        availableBranches.clear();
+                        for (DataSnapshot child : snapshot.getChildren()) {
+                            com.teatrack_mcd_253eie502802_group02.model.Agency agency =
+                                    child.getValue(com.teatrack_mcd_253eie502802_group02.model.Agency.class);
+                            if (agency != null) {
+                                agency.setId(child.getKey());
+                                if (agency.isVisible()) {
+                                    availableBranches.add(agency);
+                                }
+                            }
+                        }
+                        buildBranchRows();
+                        updateBranchUi();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {}
+                });
+    }
+
+    private void buildBranchRows() {
         if (layoutBranchOptions == null) return;
+        layoutBranchOptions.removeAllViews();
+
         android.util.TypedValue rippleValue = new android.util.TypedValue();
         getTheme().resolveAttribute(android.R.attr.selectableItemBackground, rippleValue, true);
         int rippleResId = rippleValue.resourceId;
 
-        layoutBranchOptions.removeAllViews();
-        for (int i = 0; i < BRANCH_DATA.length; i++) {
+        for (int i = 0; i < availableBranches.size(); i++) {
             final int idx = i;
-            String code = BRANCH_DATA[i][0];
-            String addr = BRANCH_DATA[i][1];
+            com.teatrack_mcd_253eie502802_group02.model.Agency agency = availableBranches.get(i);
+            String code = agency.getName();
+            String addr = agency.getAddress();
 
             android.widget.LinearLayout row = new android.widget.LinearLayout(this);
             row.setOrientation(android.widget.LinearLayout.HORIZONTAL);
@@ -613,7 +638,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             row.setOnClickListener(v -> selectBranch(idx));
             layoutBranchOptions.addView(row);
 
-            if (i < BRANCH_DATA.length - 1) {
+            if (i < availableBranches.size() - 1) {
                 View divider = new View(this);
                 android.widget.LinearLayout.LayoutParams dp1 =
                         new android.widget.LinearLayout.LayoutParams(
@@ -623,20 +648,27 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                 layoutBranchOptions.addView(divider);
             }
         }
-        updateBranchUi();
+        
+        // Initial selection if empty
+        if (selectedBranchIndex == -1 && !availableBranches.isEmpty()) {
+            selectedBranchIndex = 0;
+            selectedBranchId = availableBranches.get(0).getId();
+        }
     }
 
     private void selectBranch(int idx) {
         selectedBranchIndex = idx;
+        if (idx >= 0 && idx < availableBranches.size()) {
+            selectedBranchId = availableBranches.get(idx).getId();
+        }
         updateBranchUi();
         hideBranchPicker();
     }
 
     private void updateBranchUi() {
-        if (tvSelectedBranchAddress != null && selectedBranchIndex < BRANCH_DATA.length) {
-            String code = BRANCH_DATA[selectedBranchIndex][0];
-            String addr = BRANCH_DATA[selectedBranchIndex][1];
-            tvSelectedBranchAddress.setText(code + " - " + addr);
+        if (tvSelectedBranchAddress != null && selectedBranchIndex >= 0 && selectedBranchIndex < availableBranches.size()) {
+            com.teatrack_mcd_253eie502802_group02.model.Agency agency = availableBranches.get(selectedBranchIndex);
+            tvSelectedBranchAddress.setText(agency.getName() + " - " + agency.getAddress());
         }
         if (layoutBranchOptions == null) return;
         for (int i = 0; i < layoutBranchOptions.getChildCount(); i++) {
@@ -679,6 +711,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (tvTerms != null) tvTerms.setVisibility(View.GONE);
         if (dragHandle != null) dragHandle.setVisibility(View.GONE);
         updateBranchUi();
+        applyOverlayFooterPadding();
     }
 
     private void hideBranchPicker() {
@@ -712,7 +745,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (CartManager.getInstance().getItems().isEmpty()) {
             return;
         }
-        boolean isSaveEnabled = (switchSaveDetails != null && switchSaveDetails.isChecked());
         String branchAddress = tvSelectedBranchAddress != null ? tvSelectedBranchAddress.getText().toString() : "";
         String recipientDetails = tvRecipientDetails != null ? tvRecipientDetails.getText().toString() : "";
         String note = etNote != null ? etNote.getText().toString() : "";
@@ -767,11 +799,15 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
 
         int subtotal = CartManager.getInstance().getSubtotal();
+        int discount = 0;
+        if (appliedVoucher != null) {
+            discount = (int) appliedVoucher.getValue();
+        }
         if (tvSubtotal != null) {
             tvSubtotal.setText(formatPrice(subtotal));
         }
         if (tvTotal != null) {
-            tvTotal.setText(formatPrice(subtotal));
+            tvTotal.setText(formatPrice(subtotal - discount));
         }
     }
     // ─── Voucher Picker ───────────────────────────────────────────────────────
@@ -883,13 +919,13 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             if (!v.getCategory().isEmpty()) {
                 TextView tvCat = new TextView(this);
                 tvCat.setText(v.getCategory());
-                tvCat.setTextSize(11f);
+                tvCat.setTextSize(12f);
                 tvCat.setTextColor(ContextCompat.getColor(this, R.color.secondary));
                 content.addView(tvCat);
             }
             TextView tvTitle = new TextView(this);
             tvTitle.setText(v.getTitle().isEmpty() ? v.getDescription() : v.getTitle());
-            tvTitle.setTextSize(13f);
+            tvTitle.setTextSize(14f);
             tvTitle.setTypeface(tvTitle.getTypeface(), Typeface.BOLD);
             tvTitle.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
             content.addView(tvTitle);
@@ -897,14 +933,14 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             if (!v.getDescription().isEmpty() && !v.getDescription().equals(v.getTitle())) {
                 TextView tvDesc = new TextView(this);
                 tvDesc.setText(v.getDescription());
-                tvDesc.setTextSize(11f);
+                tvDesc.setTextSize(12f);
                 tvDesc.setTextColor(ContextCompat.getColor(this, R.color.secondary));
                 content.addView(tvDesc);
             }
             if (!v.getExpiry().isEmpty()) {
                 TextView tvExp = new TextView(this);
                 tvExp.setText("HSD: " + v.getExpiry());
-                tvExp.setTextSize(11f);
+                tvExp.setTextSize(12f);
                 tvExp.setTextColor(ContextCompat.getColor(this, R.color.secondary));
                 content.addView(tvExp);
             }
@@ -912,7 +948,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             // Action button
             TextView btnAction = new TextView(this);
             btnAction.setText(eligible ? "Dùng ngay" : "Điều kiện");
-            btnAction.setTextSize(12f);
+            btnAction.setTextSize(14f);
             btnAction.setTypeface(btnAction.getTypeface(), Typeface.BOLD);
             btnAction.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
             android.widget.LinearLayout.LayoutParams btnParams =
@@ -963,7 +999,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                 tvInfo.setLayoutParams(tvInfoParams);
                 String minStr = formatPrice((int) v.getMinSubtotal());
                 tvInfo.setText("Đơn hàng tối thiểu " + minStr + " để sử dụng ưu đãi này");
-                tvInfo.setTextSize(11f);
+                tvInfo.setTextSize(12f);
                 tvInfo.setTextColor(0xFF7A5800);
                 tvInfo.setMaxLines(2);
                 infoBar.addView(ivInfo);
@@ -998,6 +1034,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (tvVoucherSummary != null) tvVoucherSummary.setText("-" + formatPrice(discount));
         if (layoutVoucherAdd != null) layoutVoucherAdd.setVisibility(View.GONE);
         if (layoutVoucherApplied != null) layoutVoucherApplied.setVisibility(View.VISIBLE);
+        refreshCartUi();
     }
 
     private void clearVoucher() {
@@ -1034,6 +1071,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (btnConfirmOrder != null) btnConfirmOrder.setVisibility(View.GONE);
         if (tvTerms != null) tvTerms.setVisibility(View.GONE);
         if (dragHandle != null) dragHandle.setVisibility(View.GONE);
+        applyOverlayFooterPadding();
     }
 
     private void hideVoucherPicker() {
@@ -1054,7 +1092,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         etRecipientName = findViewById(R.id.etRecipientName);
         etRecipientPhone = findViewById(R.id.etRecipientPhone);
         etRecipientAddress = findViewById(R.id.etRecipientAddress);
-        layoutRecipientAddress = findViewById(R.id.layoutRecipientAddress);
         tvPickupDate = findViewById(R.id.tvPickupDate);
         tvCustomTimeToggle = findViewById(R.id.tvCustomTimeToggle);
         layoutCustomTime = findViewById(R.id.layoutCustomTime);
@@ -1064,6 +1101,16 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         gridPickupTimes = findViewById(R.id.gridPickupTimes);
         layoutRecipientEditorFooter = findViewById(R.id.layoutRecipientEditorFooter);
         cardPaymentPickerContent = findViewById(R.id.cardPaymentPickerContent);
+
+        // Ensure default date before setting up slots
+        if (selectedPickupDate == null || selectedPickupDate.isEmpty()) {
+            Calendar today = Calendar.getInstance();
+            selectedPickupDate = String.format(Locale.getDefault(), "%02d/%02d/%04d",
+                    today.get(Calendar.DAY_OF_MONTH),
+                    today.get(Calendar.MONTH) + 1,
+                    today.get(Calendar.YEAR));
+        }
+
         setupPickupTimeSlots();
         setupPickupDatePicker();
         setupCustomTimeRequest();
@@ -1081,16 +1128,21 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     }
 
     private void showRecipientEditor() {
-        if (tvRecipientDetails != null && etRecipientName != null && etRecipientPhone != null) {
-            CharSequence detailsSeq = tvRecipientDetails.getText();
-            if (detailsSeq != null) {
-                String current = detailsSeq.toString();
-                String[] parts = current.split("\\|");
-                if (parts.length >= 1) etRecipientName.setText(parts[0].trim());
-                if (parts.length >= 2) etRecipientPhone.setText(parts[1].trim());
+        if (tvRecipientDetails != null) {
+            String current = tvRecipientDetails.getText().toString().trim();
+            if (!current.isEmpty()) {
+                String[] lines = current.split("\n");
+                if (lines.length >= 1) {
+                    String[] namePhone = lines[0].split("\\|");
+                    if (namePhone.length >= 1 && etRecipientName != null) etRecipientName.setText(namePhone[0].trim());
+                    if (namePhone.length >= 2 && etRecipientPhone != null) etRecipientPhone.setText(namePhone[1].trim());
+                }
+                if (lines.length >= 2 && etRecipientAddress != null) {
+                    etRecipientAddress.setText(lines[1].trim());
+                }
             }
         }
-        if (etRecipientAddress != null) {
+        if (etRecipientAddress != null && etRecipientAddress.getText().toString().isEmpty()) {
             android.content.SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
             etRecipientAddress.setText(pref.getString("saved_address", ""));
         }
@@ -1159,7 +1211,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
         if (hasError) return;
 
-        updateRecipientDisplay(name, phone, selectedPickupTime, selectedPickupDate, customPickupTime);
+        updateRecipientDisplay(name, phone, address, selectedPickupTime, selectedPickupDate, customPickupTime);
         if (switchSaveDetails != null && switchSaveDetails.isChecked()) {
             getSharedPreferences("UserPrefs", MODE_PRIVATE).edit()
                     .putString("saved_name", name)
@@ -1177,39 +1229,50 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (tvRecipientDetails == null) return;
         String details = tvRecipientDetails.getText().toString().trim();
         if (details.isEmpty()) return;
-        String[] parts = details.split("\\|");
-        String name = parts.length >= 1 ? parts[0].trim() : "";
-        String phone = parts.length >= 2 ? parts[1].trim() : "";
+
+        String name = "";
+        String phone = "";
+        String address = "";
+
+        String[] lines = details.split("\n");
+        if (lines.length >= 1) {
+            String[] parts = lines[0].split("\\|");
+            if (parts.length >= 1) name = parts[0].trim();
+            if (parts.length >= 2) phone = parts[1].trim();
+        }
+        if (lines.length >= 2) {
+            address = lines[1].trim();
+        }
+
         android.content.SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        String existingAddress = pref.getString("saved_address", "");
         pref.edit()
                 .putString("saved_name", name)
                 .putString("saved_phone", phone)
-                .putString("saved_address", existingAddress)
+                .putString("saved_address", address)
                 .putString("saved_pickup_time", selectedPickupTime)
                 .putString("saved_pickup_date", selectedPickupDate)
                 .putString("saved_custom_pickup_time", customPickupTime)
                 .apply();
     }
 
-    private void updateRecipientDisplay(String name, String phone, String pickupTime,
+    private void updateRecipientDisplay(String name, String phone, String address, String pickupTime,
                                         String pickupDate, String customTime) {
         if (tvRecipientDetails != null) {
-            String display = name;
-            if (!phone.isEmpty()) {
-                display = name.isEmpty() ? phone : name + " | " + phone;
+            StringBuilder display = new StringBuilder();
+            if (name != null && !name.isEmpty()) {
+                display.append(name);
             }
-            tvRecipientDetails.setText(display);
+            if (phone != null && !phone.isEmpty()) {
+                if (display.length() > 0) display.append(" | ");
+                display.append(phone);
+            }
+            if (address != null && !address.isEmpty()) {
+                if (display.length() > 0) display.append("\n");
+                display.append(address);
+            }
+            tvRecipientDetails.setText(display.toString());
         }
         String timeLabel = (customTime != null && !customTime.isEmpty()) ? customTime : pickupTime;
-        String pickupLabel = "";
-        if (pickupDate != null && !pickupDate.isEmpty() && timeLabel != null && !timeLabel.isEmpty()) {
-            pickupLabel = getString(R.string.cart_pickup_display_with_date, pickupDate, timeLabel);
-        } else if (timeLabel != null && !timeLabel.isEmpty()) {
-            pickupLabel = getString(R.string.cart_pickup_display, timeLabel);
-        } else if (pickupDate != null && !pickupDate.isEmpty()) {
-            pickupLabel = pickupDate;
-        }
 
         if (tvOrderPickupTime != null) {
             if (pickupDate != null && !pickupDate.isEmpty() && timeLabel != null && !timeLabel.isEmpty()) {
@@ -1217,14 +1280,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             } else {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
                 tvOrderPickupTime.setText(sdf.format(new java.util.Date()));
-            }
-        }
-        if (tvRecipientPickupTime != null) {
-            if (!pickupLabel.isEmpty()) {
-                tvRecipientPickupTime.setText(pickupLabel);
-                tvRecipientPickupTime.setVisibility(View.VISIBLE);
-            } else {
-                tvRecipientPickupTime.setVisibility(View.GONE);
             }
         }
     }
@@ -1243,16 +1298,41 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             return;
         }
         gridPickupTimes.removeAllViews();
+        
+        Calendar now = Calendar.getInstance();
+        boolean dateIsToday = isToday(selectedPickupDate);
+        int currentHour = now.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = now.get(Calendar.MINUTE);
+
         for (String[] slotData : PICKUP_SLOT_DATA) {
-            String time = slotData[0];
+            String timeStr = slotData[0];
             String label = slotData[1];
-            boolean isFull = Boolean.parseBoolean(slotData[2]);
+            boolean isFullInConfig = Boolean.parseBoolean(slotData[2]);
+            
+            // Check if slot is in the past
+            boolean isPast = false;
+            if (dateIsToday) {
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.US);
+                    Calendar slotTime = Calendar.getInstance();
+                    slotTime.setTime(sdf.parse(timeStr));
+                    
+                    int slotHour = slotTime.get(Calendar.HOUR_OF_DAY);
+                    int slotMinute = slotTime.get(Calendar.MINUTE);
+                    
+                    if (slotHour < currentHour || (slotHour == currentHour && slotMinute <= currentMinute)) {
+                        isPast = true;
+                    }
+                } catch (Exception ignored) {}
+            }
+
+            boolean isDisabled = isFullInConfig || isPast;
 
             android.widget.LinearLayout card = new android.widget.LinearLayout(this);
             card.setOrientation(android.widget.LinearLayout.VERTICAL);
             card.setGravity(android.view.Gravity.CENTER);
             card.setPadding(dp(10), dp(14), dp(10), dp(14));
-            card.setTag(time);
+            card.setTag(timeStr);
             card.setTag(R.id.tvCustomTimeToggle, label);
 
             android.widget.GridLayout.LayoutParams params = new android.widget.GridLayout.LayoutParams();
@@ -1263,30 +1343,30 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             card.setLayoutParams(params);
 
             TextView tvTime = new TextView(this);
-            tvTime.setText(time);
+            tvTime.setText(timeStr);
             tvTime.setGravity(android.view.Gravity.CENTER);
-            tvTime.setTextSize(13f);
+            tvTime.setTextSize(14f);
             tvTime.setTypeface(tvTime.getTypeface(), Typeface.BOLD);
 
             TextView tvLabel = new TextView(this);
             tvLabel.setGravity(android.view.Gravity.CENTER);
-            tvLabel.setTextSize(11f);
+            tvLabel.setTextSize(12f);
 
-            if (isFull) {
+            if (isDisabled) {
                 card.setBackgroundResource(R.drawable.bg_edittext_rounded);
                 card.setAlpha(0.5f);
-                android.text.SpannableString strikeTime = new android.text.SpannableString(time);
-                strikeTime.setSpan(new android.text.style.StrikethroughSpan(), 0, time.length(), android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                android.text.SpannableString strikeTime = new android.text.SpannableString(timeStr);
+                strikeTime.setSpan(new android.text.style.StrikethroughSpan(), 0, timeStr.length(), android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 tvTime.setText(strikeTime);
                 tvTime.setTextColor(ContextCompat.getColor(this, R.color.secondary));
-                tvLabel.setText(label);
+                tvLabel.setText(isPast ? "Expired" : label);
                 tvLabel.setTextColor(ContextCompat.getColor(this, R.color.secondary));
             } else {
                 card.setBackgroundResource(R.drawable.bg_edittext_rounded);
                 tvTime.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
                 tvLabel.setText(label);
                 tvLabel.setTextColor(ContextCompat.getColor(this, R.color.secondary));
-                card.setOnClickListener(v -> selectPickupTimeSlot(time, card));
+                card.setOnClickListener(v -> selectPickupTimeSlot(timeStr, card));
             }
 
             card.addView(tvTime);
@@ -1349,14 +1429,15 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (tvPickupDate == null) {
             return;
         }
-        if (selectedPickupDate.isEmpty()) {
+        if (selectedPickupDate == null || selectedPickupDate.isEmpty()) {
             Calendar today = Calendar.getInstance();
             selectedPickupDate = String.format(Locale.getDefault(), "%02d/%02d/%04d",
                     today.get(Calendar.DAY_OF_MONTH),
                     today.get(Calendar.MONTH) + 1,
                     today.get(Calendar.YEAR));
-            tvPickupDate.setText(selectedPickupDate);
         }
+        tvPickupDate.setText(selectedPickupDate);
+
         tvPickupDate.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             DatePickerDialog dialog = new DatePickerDialog(
@@ -1365,11 +1446,16 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                         selectedPickupDate = String.format(Locale.getDefault(), "%02d/%02d/%04d",
                                 dayOfMonth, month + 1, year);
                         tvPickupDate.setText(selectedPickupDate);
+                        // Re-validate everything when date changes
+                        validateCustomTimePickers();
+                        setupPickupTimeSlots();
                     },
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
                     calendar.get(Calendar.DAY_OF_MONTH)
             );
+            // Disable past dates
+            dialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
             dialog.show();
         });
     }
@@ -1383,6 +1469,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             layoutCustomTime.setVisibility(show ? View.VISIBLE : View.GONE);
             if (show) {
                 clearPickupSlotSelection();
+                validateCustomTimePickers();
             }
         });
         if (pickerHour != null) {
@@ -1392,7 +1479,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             pickerHour.setFormatter(value -> String.format(Locale.getDefault(), "%02d", value));
             pickerHour.setOnValueChangedListener((picker, oldVal, newVal) -> {
                 customPickupHour = newVal;
-                buildCustomPickupTime();
+                validateCustomTimePickers();
             });
         }
         if (pickerMinute != null) {
@@ -1402,19 +1489,79 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             pickerMinute.setFormatter(value -> String.format(Locale.getDefault(), "%02d", value));
             pickerMinute.setOnValueChangedListener((picker, oldVal, newVal) -> {
                 customPickupMinute = newVal;
-                buildCustomPickupTime();
+                validateCustomTimePickers();
             });
         }
         if (calendarViewCustomTime != null) {
+            // Set min date for calendar view
+            calendarViewCustomTime.setMinDate(System.currentTimeMillis() - 1000);
             calendarViewCustomTime.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
                 selectedPickupDate = String.format(Locale.getDefault(), "%02d/%02d/%04d",
                         dayOfMonth, month + 1, year);
                 if (tvPickupDate != null) {
                     tvPickupDate.setText(selectedPickupDate);
                 }
-                buildCustomPickupTime();
+                // Reset pickers to 0 when date changes to future, or validate if today
+                if (!isToday(selectedPickupDate)) {
+                    if (pickerHour != null) {
+                        pickerHour.setMinValue(0);
+                    }
+                    if (pickerMinute != null) {
+                        pickerMinute.setMinValue(0);
+                    }
+                }
+                validateCustomTimePickers();
+                setupPickupTimeSlots();
             });
         }
+    }
+
+    private void validateCustomTimePickers() {
+        Calendar now = Calendar.getInstance();
+        boolean today = isToday(selectedPickupDate);
+        
+        if (today) {
+            int currentHour = now.get(Calendar.HOUR_OF_DAY);
+            int currentMin = now.get(Calendar.MINUTE);
+            
+            if (pickerHour != null) {
+                pickerHour.setMinValue(currentHour);
+                if (pickerHour.getValue() < currentHour) {
+                    pickerHour.setValue(currentHour);
+                    customPickupHour = currentHour;
+                }
+            }
+            
+            if (pickerMinute != null) {
+                if (customPickupHour == currentHour) {
+                    pickerMinute.setMinValue(currentMin);
+                    if (pickerMinute.getValue() < currentMin) {
+                        pickerMinute.setValue(currentMin);
+                        customPickupMinute = currentMin;
+                    }
+                } else {
+                    pickerMinute.setMinValue(0);
+                }
+            }
+        } else {
+            if (pickerHour != null) {
+                pickerHour.setMinValue(0);
+            }
+            if (pickerMinute != null) {
+                pickerMinute.setMinValue(0);
+            }
+        }
+        buildCustomPickupTime();
+    }
+
+    private boolean isToday(String dateStr) {
+        if (dateStr == null || dateStr.isEmpty()) return false;
+        Calendar today = Calendar.getInstance();
+        String todayStr = String.format(Locale.getDefault(), "%02d/%02d/%04d",
+                today.get(Calendar.DAY_OF_MONTH),
+                today.get(Calendar.MONTH) + 1,
+                today.get(Calendar.YEAR));
+        return dateStr.equals(todayStr);
     }
 
     private void buildCustomPickupTime() {
@@ -1481,21 +1628,16 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                         if ((name == null || name.isEmpty()) && (phone == null || phone.isEmpty())) {
                             return;
                         }
-                        if (tvRecipientDetails != null
-                                && (tvRecipientDetails.getText() == null
-                                || tvRecipientDetails.getText().toString().trim().isEmpty()
-                                || tvRecipientDetails.getText().toString().contains("Nguyễn Ba Đù"))) {
-                            String safeName = name == null ? "" : name;
-                            String safePhone = phone == null ? "" : phone;
-                            String safeAddress = user.getAddress();
-                            updateRecipientDisplay(safeName, safePhone, "", "", "");
-                            if (switchSaveDetails != null && switchSaveDetails.isChecked()) {
-                                getSharedPreferences("UserPrefs", MODE_PRIVATE).edit()
-                                        .putString("saved_name", safeName)
-                                        .putString("saved_phone", safePhone)
-                                        .putString("saved_address", safeAddress)
-                                        .apply();
-                            }
+                        String safeName = name == null ? "" : name;
+                        String safePhone = phone == null ? "" : phone;
+                        String safeAddress = user.getAddress() == null ? "" : user.getAddress();
+                        updateRecipientDisplay(safeName, safePhone, safeAddress, "", "", "");
+                        if (switchSaveDetails != null && switchSaveDetails.isChecked()) {
+                            getSharedPreferences("UserPrefs", MODE_PRIVATE).edit()
+                                    .putString("saved_name", safeName)
+                                    .putString("saved_phone", safePhone)
+                                    .putString("saved_address", safeAddress)
+                                    .apply();
                         }
                     }
 
@@ -1518,12 +1660,13 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         android.content.SharedPreferences pref = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         String savedName = pref.getString("saved_name", "");
         String savedPhone = pref.getString("saved_phone", "");
+        String savedAddress = pref.getString("saved_address", "");
         selectedPickupTime = pref.getString("saved_pickup_time", "");
         selectedPickupDate = pref.getString("saved_pickup_date", "");
         customPickupTime = pref.getString("saved_custom_pickup_time", "");
 
-        if (!savedName.isEmpty() || !savedPhone.isEmpty()) {
-            updateRecipientDisplay(savedName, savedPhone, selectedPickupTime, selectedPickupDate, customPickupTime);
+        if (!savedName.isEmpty() || !savedPhone.isEmpty() || !savedAddress.isEmpty()) {
+            updateRecipientDisplay(savedName, savedPhone, savedAddress, selectedPickupTime, selectedPickupDate, customPickupTime);
         }
         if (tvPickupDate != null && !selectedPickupDate.isEmpty()) {
             tvPickupDate.setText(selectedPickupDate);

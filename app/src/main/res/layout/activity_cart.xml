@@ -321,7 +321,8 @@
                         android:text="Nguyễn Ba Đù | 0971651652"
                         android:textColor="@color/on_surface"
                         android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:lineHeight="20sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -583,7 +584,6 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="18dp"
                 app:cardElevation="2dp"
@@ -619,6 +619,7 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:fontFamily="@font/inter_family"
+                            android:background="@drawable/bg_account_action_button"
                             android:fontWeight="800"
                             android:paddingStart="8dp"
                             android:paddingTop="2dp"
@@ -868,7 +869,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingTop="16dp">
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -883,6 +885,8 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
                             android:layout_marginTop="12dp"
                             android:background="@color/outline_variant" />
 
@@ -1063,7 +1067,7 @@
                     android:id="@+id/cardVoucherPicker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="24dp"
+                    android:elevation="0dp"
                     android:visibility="gone"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="24dp"
@@ -1071,29 +1075,29 @@
                     app:strokeWidth="0dp">
 
                     <LinearLayout
+                        android:id="@+id/layoutVoucherPickerContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingTop="16dp">
 
-                        <RelativeLayout
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingStart="16dp"
-                            android:paddingTop="14dp"
-                            android:paddingEnd="16dp"
-                            android:paddingBottom="10dp">
+                            android:fontFamily="@font/inter_family"
+                            android:gravity="center"
+                            android:text="@string/cart_picker_voucher_title"
+                            android:textColor="@color/on_surface"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:fontFamily="@font/inter_family"
-                                android:text="@string/cart_picker_voucher_title"
-                                android:textColor="@color/on_surface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                        </RelativeLayout>
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/outline_variant" />
 
                         <!-- Manual code input -->
                         <LinearLayout
@@ -1103,25 +1107,23 @@
                             android:orientation="horizontal"
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"
+                            android:paddingTop="16dp"
                             android:paddingBottom="12dp">
 
-                            <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            <EditText
+                                android:id="@+id/etVoucherCode"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="48dp"
                                 android:layout_weight="1"
-                                app:boxCornerRadiusTopStart="12dp"
-                                app:boxCornerRadiusBottomEnd="12dp">
-
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/etVoucherCode"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Nhập mã ưu đãi"
-                                    android:inputType="textCapCharacters"
-                                    android:maxLines="1" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
+                                android:background="@drawable/bg_edittext_rounded"
+                                android:fontFamily="@font/inter_family"
+                                android:gravity="center_vertical"
+                                android:hint="Nhập mã ưu đãi"
+                                android:inputType="textCapCharacters"
+                                android:maxLines="1"
+                                android:padding="10dp"
+                                android:textColorHint="@color/secondary"
+                                android:textSize="12sp" />
 
                             <Button
                                 android:id="@+id/btnConfirmVoucherCode"
@@ -1130,13 +1132,15 @@
                                 android:layout_marginStart="8dp"
                                 android:backgroundTint="@color/brand_blue"
                                 android:text="Xác nhận"
-                                android:textSize="13sp" />
+                                android:textSize="14sp" />
 
                         </LinearLayout>
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
                             android:background="@color/outline_variant" />
 
                         <!-- Section label -->
@@ -1149,7 +1153,7 @@
                             android:fontFamily="@font/inter_family"
                             android:text="Ưu đãi từ voucher"
                             android:textColor="@color/on_surface"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <!-- Voucher list -->
@@ -1162,10 +1166,13 @@
                                 android:id="@+id/layoutVoucherList"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:paddingBottom="12dp" />
+                                android:orientation="vertical" />
 
                         </ScrollView>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="16dp" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -1183,49 +1190,46 @@
                     app:strokeWidth="0dp">
 
                     <LinearLayout
+                        android:id="@+id/layoutBranchPickerContent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:paddingTop="16dp">
 
-                        <RelativeLayout
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingStart="16dp"
-                            android:paddingTop="14dp"
-                            android:paddingEnd="16dp"
-                            android:paddingBottom="10dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:fontFamily="@font/inter_family"
-                                android:text="@string/cart_picker_branch_title"
-                                android:textColor="@color/on_surface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                        </RelativeLayout>
+                            android:fontFamily="@font/inter_family"
+                            android:gravity="center"
+                            android:text="@string/cart_picker_branch_title"
+                            android:textColor="@color/on_surface"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginTop="12dp"
                             android:background="@color/outline_variant" />
 
                         <ScrollView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:maxHeight="260dp"
+                            android:layout_height="300dp"
+                            android:layout_marginTop="4dp"
                             android:overScrollMode="never">
 
                             <LinearLayout
                                 android:id="@+id/layoutBranchOptions"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:paddingBottom="12dp" />
+                                android:orientation="vertical" />
                         </ScrollView>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="16dp" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -1244,21 +1248,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingTop="14dp">
+                        android:paddingTop="16dp">
 
-                        <!-- Drag handle -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_family"
+                            android:gravity="center"
+                            android:text="@string/cart_recipient_edit_title"
+                            android:textColor="@color/on_surface"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
                         <View
-                            android:layout_width="40dp"
-                            android:layout_height="4dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginBottom="12dp"
-                            android:background="@drawable/bg_drag_handle" />
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/outline_variant" />
 
                         <!-- ScrollView bọc nội dung input -->
                         <androidx.core.widget.NestedScrollView
                             android:layout_width="match_parent"
                             android:layout_height="350dp"
                             android:clipToPadding="false"
+                            android:paddingTop="16dp"
                             android:paddingStart="20dp"
                             android:paddingEnd="20dp">
 
@@ -1267,52 +1282,24 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
 
-                                <!-- Header Title -->
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginBottom="6dp">
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/inter_family"
-                                            android:text="@string/cart_recipient_edit_title"
-                                            android:textColor="@color/on_surface"
-                                            android:textSize="18sp"
-                                            android:textStyle="bold" />
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Ensure your pickup information is accurate."
-                                            android:textSize="12sp" />
-                                    </LinearLayout>
-                                </RelativeLayout>
-
-                                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/outline_variant" android:layout_marginVertical="10dp"/>
-
                                 <!-- Field: Recipient Name -->
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Recipient Name"
                                     android:textStyle="bold"
-                                    android:textSize="12sp" />
-                                <com.google.android.material.textfield.TextInputLayout
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                    android:textSize="14sp" />
+                                <EditText
+                                    android:id="@+id/etRecipientName"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="48dp"
                                     android:layout_marginTop="6dp"
-                                    app:boxCornerRadiusTopStart="12dp"
-                                    app:boxCornerRadiusBottomEnd="12dp">
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/etRecipientName"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"/>
-                                </com.google.android.material.textfield.TextInputLayout>
+                                    android:background="@drawable/bg_edittext_rounded"
+                                    android:fontFamily="@font/inter_family"
+                                    android:gravity="center_vertical"
+                                    android:padding="10dp"
+                                    android:textColorHint="@color/secondary"
+                                    android:textSize="12sp" />
 
                                 <!-- Field: Contact Number -->
                                 <TextView
@@ -1320,21 +1307,20 @@
                                     android:layout_height="wrap_content"
                                     android:text="Contact Number"
                                     android:textStyle="bold"
-                                    android:textSize="12sp"
+                                    android:textSize="14sp"
                                     android:layout_marginTop="14dp"/>
-                                <com.google.android.material.textfield.TextInputLayout
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                <EditText
+                                    android:id="@+id/etRecipientPhone"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="48dp"
                                     android:layout_marginTop="6dp"
-                                    app:boxCornerRadiusTopStart="12dp"
-                                    app:boxCornerRadiusBottomEnd="12dp">
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/etRecipientPhone"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:inputType="phone" />
-                                </com.google.android.material.textfield.TextInputLayout>
+                                    android:background="@drawable/bg_edittext_rounded"
+                                    android:fontFamily="@font/inter_family"
+                                    android:gravity="center_vertical"
+                                    android:inputType="phone"
+                                    android:padding="10dp"
+                                    android:textColorHint="@color/secondary"
+                                    android:textSize="12sp" />
 
                                 <!-- Field: Recipient Address -->
                                 <TextView
@@ -1342,22 +1328,20 @@
                                     android:layout_height="wrap_content"
                                     android:text="Recipient Address"
                                     android:textStyle="bold"
-                                    android:textSize="12sp"
+                                    android:textSize="14sp"
                                     android:layout_marginTop="14dp"/>
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/layoutRecipientAddress"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                <EditText
+                                    android:id="@+id/etRecipientAddress"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="48dp"
                                     android:layout_marginTop="6dp"
-                                    app:boxCornerRadiusTopStart="12dp"
-                                    app:boxCornerRadiusBottomEnd="12dp">
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/etRecipientAddress"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:inputType="textPostalAddress|textCapWords" />
-                                </com.google.android.material.textfield.TextInputLayout>
+                                    android:background="@drawable/bg_edittext_rounded"
+                                    android:fontFamily="@font/inter_family"
+                                    android:gravity="center_vertical"
+                                    android:inputType="textPostalAddress|textCapWords"
+                                    android:padding="10dp"
+                                    android:textColorHint="@color/secondary"
+                                    android:textSize="12sp" />
 
                                 <!-- Pickup Time Header -->
                                 <LinearLayout
@@ -1413,7 +1397,7 @@
                                     android:fontFamily="@font/inter_family"
                                     android:text="Available Windows"
                                     android:textColor="@color/secondary"
-                                    android:textSize="12sp"
+                                    android:textSize="14sp"
                                     android:textStyle="bold" />
 
                                 <android.widget.GridLayout
@@ -1457,7 +1441,7 @@
                                         android:fontFamily="@font/inter_family"
                                         android:text="@string/cart_custom_time_request"
                                         android:textColor="@color/brand_blue"
-                                        android:textSize="13sp"
+                                        android:textSize="14sp"
                                         android:textStyle="bold" />
 
                                 </LinearLayout>
@@ -1505,8 +1489,9 @@
                                     <CalendarView
                                         android:id="@+id/calendarViewCustomTime"
                                         android:layout_width="match_parent"
-                                        android:layout_height="300dp"
-                                        android:layout_marginTop="8dp" />
+                                        android:layout_height="320dp"
+                                        android:layout_marginTop="8dp"
+                                        android:theme="@style/CustomMaterialCalendar" />
 
                                 </LinearLayout>
 
@@ -1522,7 +1507,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:padding="20dp">
+                            android:paddingHorizontal="20dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="16dp">
                             <Button
                                 android:id="@+id/btnCancelRecipientEdit"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
