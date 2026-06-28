@@ -128,6 +128,9 @@
             android:name=".admin.AdminOrders"
             android:exported="false" />
         <activity
+            android:name=".admin.AdminOrderDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".admin.AdminPromotion"
             android:exported="false" />
         <activity

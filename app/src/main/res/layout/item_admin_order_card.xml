@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginBottom="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <!-- ── Row 1: Order ID + Status badge + Arrow ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/tvOrderId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="#HTNG-52422" />
+
+            <TextView
+                android:id="@+id/tvStatusBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:background="@drawable/bg_badge_pending_admin"
+                tools:text="Chờ xác nhận"
+                tools:textColor="#854D0E" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/text_muted" />
+
+        </LinearLayout>
+
+        <!-- ── Row 2: Thumbnail + Info ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivOrderThumbnail"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/bg_order_thumbnail"
+                android:contentDescription="@string/str_order_thumbnail_desc"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Row 1: Date -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp">
+
+                    <ImageView
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_marginEnd="4dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/alarm_clock"
+                        app:tint="@color/brand_blue" />
+
+                    <TextView
+                        android:id="@+id/tvOrderDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        tools:text="26 Jun 2026 • 02:19 PM" />
+
+                </LinearLayout>
+
+                <!-- Row 2: Customer name + Phone -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp">
+
+                    <TextView
+                        android:id="@+id/tvCustomerName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/text_primary"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        tools:text="Nguyễn Ba Dũng" />
+
+                    <ImageView
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_marginEnd="3dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/call"
+                        app:tint="@color/brand_blue" />
+
+                    <TextView
+                        android:id="@+id/tvCustomerPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/brand_blue"
+                        android:textSize="11sp"
+                        tools:text="0971651652" />
+
+                </LinearLayout>
+
+                <!-- Row 3: Items count + Total -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp">
+
+                    <ImageView
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_marginEnd="4dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/bag1"
+                        app:tint="@color/brand_blue" />
+
+                    <TextView
+                        android:id="@+id/tvItemCount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        tools:text="1 items" />
+
+                    <TextView
+                        android:id="@+id/tvOrderTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/brand_blue"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        tools:text="48.000₫" />
+
+                </LinearLayout>
+
+                <!-- Row 4: Payment method -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="4dp">
+
+                    <ImageView
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_marginEnd="4dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/wallet"
+                        app:tint="@color/brand_blue" />
+
+                    <TextView
+                        android:id="@+id/tvPaymentMethod"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        tools:text="Cash on hand" />
+
+                </LinearLayout>
+
+                <!-- Row 5: Branch -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="1dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_location_on"
+                        app:tint="@color/brand_blue" />
+
+                    <TextView
+                        android:id="@+id/tvOrderBranch"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        tools:text="CN Linh Xuân - Thủ Đức" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- ── Divider ── -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/divider" />
+
+        <!-- ── Order Progress Stepper (giống order tracking khách hàng) ── -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <!-- Tầng 1: Circle row + connecting lines -->
+            <LinearLayout
+                android:id="@+id/stepCircleRow"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:baselineAligned="false"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="0.5" />
+
+                <!-- Step 1: Pending -->
+                <FrameLayout
+                    android:id="@+id/stepCircle1"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_step_circle_inactive">
+
+                    <ImageView
+                        android:id="@+id/stepImg1"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@null"
+                        android:src="@drawable/pending"
+                        app:tint="#BDBDBD" />
+
+                </FrameLayout>
+
+                <!-- Line 1-2 -->
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:layout_weight="1"
+                    android:background="#E0E0E0">
+
+                    <View
+                        android:id="@+id/stepLine1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#4CAF50"
+                        android:scaleX="0"
+                        android:transformPivotX="0dp" />
+
+                </FrameLayout>
+
+                <!-- Step 2: Processing -->
+                <FrameLayout
+                    android:id="@+id/stepCircle2"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_step_circle_inactive">
+
+                    <ImageView
+                        android:id="@+id/stepImg2"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@null"
+                        android:src="@drawable/processing"
+                        app:tint="#BDBDBD" />
+
+                </FrameLayout>
+
+                <!-- Line 2-3 -->
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:layout_weight="1"
+                    android:background="#E0E0E0">
+
+                    <View
+                        android:id="@+id/stepLine2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#4CAF50"
+                        android:scaleX="0"
+                        android:transformPivotX="0dp" />
+
+                </FrameLayout>
+
+                <!-- Step 3: Ready -->
+                <FrameLayout
+                    android:id="@+id/stepCircle3"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_step_circle_inactive">
+
+                    <ImageView
+                        android:id="@+id/stepImg3"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ready"
+                        app:tint="#BDBDBD" />
+
+                </FrameLayout>
+
+                <!-- Line 3-4 -->
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:layout_weight="1"
+                    android:background="#E0E0E0">
+
+                    <View
+                        android:id="@+id/stepLine3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#4CAF50"
+                        android:scaleX="0"
+                        android:transformPivotX="0dp" />
+
+                </FrameLayout>
+
+                <!-- Step 4: Shipping -->
+                <FrameLayout
+                    android:id="@+id/stepCircle4"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_step_circle_inactive">
+
+                    <ImageView
+                        android:id="@+id/stepImg4"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@null"
+                        android:src="@drawable/shipping"
+                        app:tint="#BDBDBD" />
+
+                </FrameLayout>
+
+                <!-- Line 4-5 -->
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:layout_weight="1"
+                    android:background="#E0E0E0">
+
+                    <View
+                        android:id="@+id/stepLine4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#4CAF50"
+                        android:scaleX="0"
+                        android:transformPivotX="0dp" />
+
+                </FrameLayout>
+
+                <!-- Step 5: Completed -->
+                <FrameLayout
+                    android:id="@+id/stepCircle5"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/bg_step_circle_inactive">
+
+                    <ImageView
+                        android:id="@+id/stepImg5"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="@null"
+                        android:src="@drawable/finished"
+                        app:tint="#BDBDBD" />
+
+                </FrameLayout>
+
+                <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="0.5" />
+
+            </LinearLayout>
+
+            <!-- Tầng 2: Label row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/stepCircleRow"
+                android:layout_marginTop="4dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/stepLabel1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@string/order_tracking_pending"
+                    android:textColor="#999999"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/stepLabel2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@string/order_tracking_processing"
+                    android:textColor="#999999"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/stepLabel3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@string/order_tracking_ready"
+                    android:textColor="#999999"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/stepLabel4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@string/order_tracking_shipping"
+                    android:textColor="#999999"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/stepLabel5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:text="@string/order_tracking_completed"
+                    android:textColor="#999999"
+                    android:textSize="9sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <!-- ── Action buttons (visible/gone set programmatically) ── -->
+        <LinearLayout
+            android:id="@+id/layoutActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="4dp">
+
+            <!-- Confirm (pending only) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnConfirmOrder"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="@color/brand_blue"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:minWidth="0dp"
+                android:text="@string/btn_admin_confirm_order"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/check"
+                app:iconGravity="textStart"
+                app:iconPadding="3dp"
+                app:iconSize="13dp"
+                app:iconTint="@color/white" />
+
+            <!-- View Detail -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnViewDetail"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:backgroundTint="#EAF3FF"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:minWidth="0dp"
+                android:text="@string/btn_admin_view_detail"
+                android:textAllCaps="false"
+                android:textColor="@color/brand_blue"
+                android:textSize="11sp"
+                android:visibility="gone"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/eye"
+                app:iconGravity="textStart"
+                app:iconPadding="3dp"
+                app:iconSize="13dp"
+                app:iconTint="@color/brand_blue" />
+
+            <!-- Cancel order (pending, processing) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancelOrder"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:backgroundTint="#FEE2E2"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:minWidth="0dp"
+                android:text="@string/btn_admin_cancel_order"
+                android:textAllCaps="false"
+                android:textColor="@color/danger"
+                android:textSize="11sp"
+                android:visibility="gone"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/trash_can"
+                app:iconGravity="textStart"
+                app:iconPadding="3dp"
+                app:iconSize="13dp"
+                app:iconTint="@color/danger" />
+
+            <!-- Update status (shipping) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdateStatus"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/brand_blue"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:minWidth="0dp"
+                android:text="@string/btn_admin_update_status"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/edit_1"
+                app:iconGravity="textStart"
+                app:iconPadding="3dp"
+                app:iconSize="13dp"
+                app:iconTint="@color/white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

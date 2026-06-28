@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Handle bar -->
+        <View
+            android:layout_width="36dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="4dp"
+            android:background="#E0E0E0"
+            android:backgroundTint="#E0E0E0" />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:text="Update Order Status"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
+
+        <!-- Thin divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:layout_marginTop="8dp" />
+
+        <!-- Radio group -->
+        <RadioGroup
+            android:id="@+id/rgStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+
+            <!-- Pending -->
+            <RadioButton
+                android:id="@+id/rbPending"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:gravity="center_vertical"
+                android:text="Pending"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:drawableStart="@drawable/pending_tab"
+                android:drawablePadding="10dp"
+                android:button="@null"
+                android:background="?attr/selectableItemBackground" />
+
+            <!-- Processing -->
+            <RadioButton
+                android:id="@+id/rbProcessing"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:gravity="center_vertical"
+                android:text="Processing"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:drawableStart="@drawable/processing_tab"
+                android:drawablePadding="10dp"
+                android:button="@null"
+                android:background="?attr/selectableItemBackground" />
+
+            <!-- Ready -->
+            <RadioButton
+                android:id="@+id/rbReady"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:gravity="center_vertical"
+                android:text="Ready"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:drawableStart="@drawable/ready_tab"
+                android:drawablePadding="10dp"
+                android:button="@null"
+                android:background="?attr/selectableItemBackground" />
+
+            <!-- Shipping -->
+            <RadioButton
+                android:id="@+id/rbShipping"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:gravity="center_vertical"
+                android:text="Shipping"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:drawableStart="@drawable/shipping_tab"
+                android:drawablePadding="10dp"
+                android:button="@null"
+                android:background="?attr/selectableItemBackground" />
+
+            <!-- Completed -->
+            <RadioButton
+                android:id="@+id/rbCompleted"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:gravity="center_vertical"
+                android:text="Completed"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:drawableStart="@drawable/finished_tab"
+                android:drawablePadding="10dp"
+                android:button="@null"
+                android:background="?attr/selectableItemBackground" />
+
+            <!-- Cancelled -->
+            <RadioButton
+                android:id="@+id/rbCancelled"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:gravity="center_vertical"
+                android:text="Cancelled"
+                android:textSize="13sp"
+                android:textColor="@color/text_primary"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:drawableStart="@drawable/cancel"
+                android:drawablePadding="10dp"
+                android:button="@null"
+                android:background="?attr/selectableItemBackground" />
+
+        </RadioGroup>
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDialogCancel"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textColor="#666666"
+                android:textSize="14sp"
+                app:cornerRadius="12dp"
+                app:strokeColor="#E0E0E0"
+                app:strokeWidth="1dp"
+                app:rippleColor="#F5F5F5" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDialogConfirm"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:backgroundTint="#0088FF"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Confirm"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"
+                app:rippleColor="#006ACC" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

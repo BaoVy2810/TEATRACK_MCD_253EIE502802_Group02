@@ -679,6 +679,30 @@
     <!-- Admin Section Titles -->
     <string name="title_account_management">ACCOUNT MANAGEMENT</string>
     <string name="title_orders_management">ORDERS MANAGEMENT</string>
+    <string name="subtitle_orders_management">Manage and process orders</string>
+
+    <!-- Admin Orders - Filter Tabs -->
+    <string name="tab_all_orders">All</string>
+    <string name="tab_pending_orders">Pending</string>
+    <string name="tab_processing_orders">Processing</string>
+    <string name="tab_shipping_orders">Shipping</string>
+    <string name="tab_completed_orders">Completed</string>
+    <string name="tab_cancelled_orders">Cancelled</string>
+
+    <!-- Admin Orders - Search & Actions -->
+    <string name="hint_search_orders">Search orders, phone, customer…</string>
+    <string name="btn_admin_confirm_order">Confirm</string>
+    <string name="btn_admin_view_detail">Details</string>
+    <string name="btn_admin_cancel_order">Cancel</string>
+    <string name="btn_admin_update_status">Update</string>
+
+    <!-- Admin Orders - Status Badge Labels -->
+    <string name="badge_pending">Pending</string>
+    <string name="badge_processing">Processing</string>
+    <string name="badge_shipping">Shipping</string>
+    <string name="badge_completed">Completed</string>
+    <string name="badge_cancelled">Cancelled</string>
+    <string name="str_item_unit">items</string>
     <string name="title_forum_management">FORUM MANAGEMENT</string>
     <string name="title_branch_management">BRANCH MANAGEMENT</string>
     <string name="title_feedback_management">FEEDBACK MANAGEMENT</string>
