@@ -29,7 +29,8 @@ public final class OrderPlacementHelper {
     }
 
     public static FirebaseOrder buildOrder(Context context, List<CartItem> items, int paymentMethod,
-                                           String pickupAddress, String recipientDetails, String note) {
+                                           String pickupAddress, String agencyId,
+                                           String recipientDetails, String note) {
         String orderId = generateOrderId(context);
         String nowIso = isoNow();
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
@@ -63,6 +64,7 @@ public final class OrderPlacementHelper {
         order.setCustomerPhone(recipient[1]);
         order.setCustomerAddress(recipient[2]);
         order.setBranchAddress(pickupAddress);
+        order.setAgencyId(agencyId != null ? agencyId : "");
         order.setPaymentMethod(resolvePaymentMethod(context, paymentMethod));
         order.setStatus("pending");
         order.setSubtotal(subtotal);

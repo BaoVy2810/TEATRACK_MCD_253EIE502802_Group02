@@ -39,6 +39,9 @@ import java.util.List;
 
 public class OrderTracking extends AppCompatActivity {
 
+    private static final String DB_URL =
+            "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
+
     private FirebaseOrderRepository repository;
     private DatabaseReference orderRef;
     private ValueEventListener statusListener;
@@ -177,10 +180,13 @@ public class OrderTracking extends AppCompatActivity {
                         if (agencyId != null && !agencyId.isEmpty()) {
                             loadMapByAgencyId(agencyId);
                         } else {
-                            // fallback cho order cũ chưa có agencyId
-                            String customerAddress = snapshot.child("customerAddress").getValue(String.class);
-                            if (customerAddress != null) {
-                                loadAgencyMapByAddress(customerAddress);
+                            // fallback cho order cũ chưa có agencyId — dùng branchAddress
+                            String branchAddress = snapshot.child("branchAddress").getValue(String.class);
+                            if (branchAddress == null || branchAddress.isEmpty()) {
+                                branchAddress = snapshot.child("customerAddress").getValue(String.class);
+                            }
+                            if (branchAddress != null && !branchAddress.isEmpty()) {
+                                loadAgencyMapByAddress(branchAddress);
                             }
                         }
                     }
@@ -331,19 +337,44 @@ public class OrderTracking extends AppCompatActivity {
     }
 
     private double[] parseLatLngFromEmbedUrl(String embedUrl) {
+        if (embedUrl == null || embedUrl.isEmpty()) return null;
         try {
-            java.util.regex.Pattern lonPattern =
-                    java.util.regex.Pattern.compile("!2d([\\d.-]+)");
-            java.util.regex.Pattern latPattern =
-                    java.util.regex.Pattern.compile("!3d([\\d.-]+)");
+            // Format 1: Google Maps pb= URL — !2d<lng>!3d<lat>
+            java.util.regex.Matcher lonM = java.util.regex.Pattern
+                    .compile("!2d([\\d.-]+)").matcher(embedUrl);
+            java.util.regex.Matcher latM = java.util.regex.Pattern
+                    .compile("!3d([\\d.-]+)").matcher(embedUrl);
+            if (lonM.find() && latM.find()) {
+                return new double[]{Double.parseDouble(latM.group(1)),
+                                    Double.parseDouble(lonM.group(1))};
+            }
 
-            java.util.regex.Matcher lonMatcher = lonPattern.matcher(embedUrl);
-            java.util.regex.Matcher latMatcher = latPattern.matcher(embedUrl);
+            // Format 2: ?q=lat,lng hoặc &q=lat,lng
+            java.util.regex.Matcher qM = java.util.regex.Pattern
+                    .compile("[?&]q=([\\d.-]+),([\\d.-]+)").matcher(embedUrl);
+            if (qM.find()) {
+                return new double[]{Double.parseDouble(qM.group(1)),
+                                    Double.parseDouble(qM.group(2))};
+            }
 
-            if (lonMatcher.find() && latMatcher.find()) {
-                double lng = Double.parseDouble(lonMatcher.group(1));
-                double lat = Double.parseDouble(latMatcher.group(1));
-                return new double[]{lat, lng};
+            // Format 3: ll=lat,lng
+            java.util.regex.Matcher llM = java.util.regex.Pattern
+                    .compile("[?&]ll=([\\d.-]+),([\\d.-]+)").matcher(embedUrl);
+            if (llM.find()) {
+                return new double[]{Double.parseDouble(llM.group(1)),
+                                    Double.parseDouble(llM.group(2))};
+            }
+
+            // Format 4: OSM bbox — lấy trung tâm bbox
+            java.util.regex.Matcher bboxM = java.util.regex.Pattern
+                    .compile("[?&]bbox=([\\d.-]+),([\\d.-]+),([\\d.-]+),([\\d.-]+)")
+                    .matcher(embedUrl);
+            if (bboxM.find()) {
+                double minLon = Double.parseDouble(bboxM.group(1));
+                double minLat = Double.parseDouble(bboxM.group(2));
+                double maxLon = Double.parseDouble(bboxM.group(3));
+                double maxLat = Double.parseDouble(bboxM.group(4));
+                return new double[]{(minLat + maxLat) / 2, (minLon + maxLon) / 2};
             }
         } catch (Exception e) {
             Log.e("OrderTracking", "parseLatLng error: " + e.getMessage());
@@ -353,17 +384,24 @@ public class OrderTracking extends AppCompatActivity {
 
     private String buildMapHtml(double lat, double lng, boolean isShipping, boolean isCompleted) {
         return "<!DOCTYPE html><html><head>"
-                + "<meta name='viewport' content='width=device-width, initial-scale=1.0'>"
+                + "<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>"
+                + "<link rel='stylesheet' href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'/>"
+                + "<script src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'></script>"
                 + "<style>"
                 + "* { margin:0; padding:0; box-sizing:border-box; }"
-                + "body { width:100vw; height:100vh; overflow:hidden; position:relative; background:#f5f0e8; }"
-                + "iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; z-index:1; }"
-                + "canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; pointer-events:none; }"
+                + "html, body { width:100vw; height:100vh; overflow:hidden; }"
+                + "#map { position:absolute; top:0; left:0; width:100vw; height:100vh; }"
+                + "canvas { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1000; pointer-events:none; }"
                 + "</style>"
                 + "</head><body>"
-                + "<iframe src='https://maps.google.com/maps?q=" + lat + "," + lng + "&z=16&output=embed' allowfullscreen></iframe>"
+                + "<div id='map'></div>"
                 + "<canvas id='c'></canvas>"
                 + "<script>"
+                + "var map = L.map('map', {zoomControl:false, attributionControl:false}).setView([" + lat + "," + lng + "], 16);"
+                + "L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, crossOrigin:true}).addTo(map);"
+                + "var pin = L.divIcon({className:'', html:'<div style=\"width:16px;height:16px;border-radius:50%;background:#0088FF;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.4)\"></div>', iconAnchor:[8,8]});"
+                + "L.marker([" + lat + "," + lng + "], {icon:pin}).addTo(map);"
+                + "setTimeout(function(){ map.invalidateSize(true); }, 400);"
                 + "const canvas = document.getElementById('c');"
                 + "const ctx = canvas.getContext('2d');"
                 + "function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }"
@@ -563,7 +601,7 @@ public class OrderTracking extends AppCompatActivity {
     private void loadMapByAgencyId(String agencyId) {
         if (agencyId == null || agencyId.isEmpty()) return;
 
-        FirebaseDatabase.getInstance().getReference("agencies")
+        FirebaseDatabase.getInstance(DB_URL).getReference("agencies")
                 .child(agencyId).get()
                 .addOnSuccessListener(snapshot -> {
                     String mapEmbed = snapshot.child("mapEmbed").getValue(String.class);
@@ -581,7 +619,7 @@ public class OrderTracking extends AppCompatActivity {
                         boolean isCompleted = "completed".equalsIgnoreCase(currentStatus)
                                 || "delivered".equalsIgnoreCase(currentStatus);
                         webViewMap.loadDataWithBaseURL(
-                                "https://openstreetmap.org",
+                                "https://tile.openstreetmap.org",
                                 buildMapHtml(lat, lng, isShipping, isCompleted),
                                 "text/html", "UTF-8", null
                         );
@@ -596,7 +634,7 @@ public class OrderTracking extends AppCompatActivity {
     private void loadAgencyMapByAddress(String pickupAddress) {
         if (pickupAddress == null || pickupAddress.isEmpty() || pickupAddress.equals(lastLoadedAddress)) return;
 
-        FirebaseDatabase.getInstance().getReference("agencies")
+        FirebaseDatabase.getInstance(DB_URL).getReference("agencies")
                 .get().addOnSuccessListener(snapshot -> {
                     String normCustomer = normalizeAddr(pickupAddress);
                     String bestKey = null;
@@ -633,7 +671,7 @@ public class OrderTracking extends AppCompatActivity {
                         boolean isCompleted = "completed".equalsIgnoreCase(currentStatus)
                                 || "delivered".equalsIgnoreCase(currentStatus);
                         webViewMap.loadDataWithBaseURL(
-                                "https://openstreetmap.org",
+                                "https://tile.openstreetmap.org",
                                 buildMapHtml(lat, lng, isShipping, isCompleted),
                                 "text/html", "UTF-8", null
                         );
@@ -674,11 +712,15 @@ public class OrderTracking extends AppCompatActivity {
         settings.setDomStorageEnabled(true);
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        settings.setBlockNetworkLoads(false);
+        settings.setBlockNetworkImage(false);
+        settings.setCacheMode(android.webkit.WebSettings.LOAD_NO_CACHE);
         webViewMap.setWebChromeClient(new WebChromeClient());
         webViewMap.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, android.webkit.WebResourceRequest request) {
-                return true;
+                return false;
             }
         });
         webViewMap.setOnTouchListener((v, event) -> true);
