@@ -27,10 +27,12 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseOrderRepository;
+import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,7 @@ public class OrderTracking extends AppCompatActivity {
     private ValueEventListener statusListener;
     private String orderId;
     private String currentStatus = "";
+    private FirebaseOrder currentOrder;
 
     private View stepCircle1, stepCircle2, stepCircle3, stepCircle4, stepCircle5;
     private ImageView stepImg1, stepImg2, stepImg3, stepImg4, stepImg5;
@@ -80,7 +83,12 @@ public class OrderTracking extends AppCompatActivity {
             finish();
         }
 
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        findViewById(R.id.btnBack).setOnClickListener(v -> {
+            if (currentOrder != null) {
+                startActivity(OrderDetails.newIntent(OrderTracking.this, currentOrder));
+            }
+            finish();
+        });
     }
 
     private void initViews() {
@@ -147,6 +155,11 @@ public class OrderTracking extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.d("MapDebug", "onDataChange fired, exists: " + snapshot.exists() + ", key: " + snapshot.getKey());
                 if (snapshot.exists()) {
+                    currentOrder = snapshot.getValue(FirebaseOrder.class);
+                    if (currentOrder != null && (currentOrder.getId() == null || currentOrder.getId().isEmpty())) {
+                        currentOrder.setId(snapshot.getKey());
+                    }
+
                     String status = snapshot.child("status").getValue(String.class);
                     Log.d("MapDebug", "status value: " + status);
                     if (status != null) {
@@ -160,9 +173,15 @@ public class OrderTracking extends AppCompatActivity {
                         updateStatusLabel(status);
                         updateDeliveryInfo(snapshot);
 
-                        String address = snapshot.child("customerAddress").getValue(String.class);
-                        if (address != null) {
-                            loadAgencyMapByAddress(address);
+                        String agencyId = snapshot.child("agencyId").getValue(String.class);
+                        if (agencyId != null && !agencyId.isEmpty()) {
+                            loadMapByAgencyId(agencyId);
+                        } else {
+                            // fallback cho order cũ chưa có agencyId
+                            String customerAddress = snapshot.child("customerAddress").getValue(String.class);
+                            if (customerAddress != null) {
+                                loadAgencyMapByAddress(customerAddress);
+                            }
                         }
                     }
                 }
@@ -355,8 +374,6 @@ public class OrderTracking extends AppCompatActivity {
                 + "const CENTER_LAT = " + lat + ";"
                 + "const CENTER_LNG = " + lng + ";"
                 + "const ZOOM = 16;"
-
-                // Mercator projection: lat/lng → world pixel
                 + "function lngLatToWorld(lat, lng) {"
                 + "  const TILE = 256;"
                 + "  const scale = TILE * Math.pow(2, ZOOM);"
@@ -365,16 +382,12 @@ public class OrderTracking extends AppCompatActivity {
                 + "  const y = (0.5 - Math.log((1 + sinLat) / (1 - sinLat)) / (4 * Math.PI)) * scale;"
                 + "  return {x, y};"
                 + "}"
-
-                // Convert lat/lng → canvas pixel relative to center
                 + "function lngLatToCanvas(lat, lng) {"
                 + "  const W = canvas.width, H = canvas.height;"
                 + "  const center = lngLatToWorld(CENTER_LAT, CENTER_LNG);"
                 + "  const pt = lngLatToWorld(lat, lng);"
                 + "  return { x: W/2 + (pt.x - center.x), y: H/2 + (pt.y - center.y) };"
                 + "}"
-
-                // Route: điểm đầu = vị trí chi nhánh trên map, sau đó offset mô phỏng
                 + "function getPoints() {"
                 + "  const W = canvas.width, H = canvas.height;"
                 + "  const origin = lngLatToCanvas(CENTER_LAT, CENTER_LNG);"
@@ -386,8 +399,6 @@ public class OrderTracking extends AppCompatActivity {
                 + "    {x: ox + W*0.40,   y: oy - H*0.35}"
                 + "  ];"
                 + "}"
-
-                // Compute segment lengths + total
                 + "function buildSegments(points) {"
                 + "  let total = 0; const segs = [];"
                 + "  for (let i = 1; i < points.length; i++) {"
@@ -397,8 +408,6 @@ public class OrderTracking extends AppCompatActivity {
                 + "  }"
                 + "  return {segs, total};"
                 + "}"
-
-                // Position along route at progress 0..1
                 + "function posAtProgress(points, segs, total, p) {"
                 + "  let dist = p * total, acc = 0;"
                 + "  for (let i = 0; i < segs.length; i++) {"
@@ -411,9 +420,6 @@ public class OrderTracking extends AppCompatActivity {
                 + "  }"
                 + "  return points[points.length - 1];"
                 + "}"
-
-                // Draw full route: xám khi chưa shipping, xám + xanh #0088FF khi shipping
-                // Vẽ path cong tại các góc gấp khúc (quadraticCurveTo bo góc)
                 + "function buildCurvedPath(ctx, points, r) {"
                 + "  ctx.moveTo(points[0].x, points[0].y);"
                 + "  for (let i = 1; i < points.length - 1; i++) {"
@@ -430,10 +436,8 @@ public class OrderTracking extends AppCompatActivity {
                 + "  const last = points[points.length-1];"
                 + "  ctx.lineTo(last.x, last.y);"
                 + "}"
-
                 + "function drawRoute(points, segs, total, progress) {"
                 + "  const r = 28;"
-                // Nền xám toàn bộ route
                 + "  ctx.beginPath();"
                 + "  buildCurvedPath(ctx, points, r);"
                 + "  ctx.strokeStyle = '#CCCCCC';"
@@ -443,7 +447,6 @@ public class OrderTracking extends AppCompatActivity {
                 + "  ctx.setLineDash([8, 5]);"
                 + "  ctx.stroke();"
                 + "  ctx.setLineDash([]);"
-                // Phần đã đi qua — clip theo progress, chỉ vẽ khi isShipping
                 + "  if (!isShipping || progress <= 0) return;"
                 + "  let acc = 0, drawn = false;"
                 + "  const targetDist = progress * total;"
@@ -469,8 +472,6 @@ public class OrderTracking extends AppCompatActivity {
                 + "  ctx.lineJoin = 'round';"
                 + "  ctx.stroke();"
                 + "}"
-
-                // Destination pin
                 + "function drawDestinationPin(x, y, t) {"
                 + "  const pulse = 1 + 0.15 * Math.sin(t * 0.06);"
                 + "  ctx.beginPath();"
@@ -504,8 +505,6 @@ public class OrderTracking extends AppCompatActivity {
                 + "  ctx.fillStyle = '#0088FF';"
                 + "  ctx.fill();"
                 + "}"
-
-                // Shipper navigation icon
                 + "function drawShipperIcon(x, y, angle) {"
                 + "  ctx.beginPath();"
                 + "  ctx.arc(x, y, 22, 0, Math.PI*2);"
@@ -531,15 +530,12 @@ public class OrderTracking extends AppCompatActivity {
                 + "  ctx.fill();"
                 + "  ctx.restore();"
                 + "}"
-
-                // Angle of travel
                 + "function angleAtProgress(points, segs, total, p) {"
                 + "  const p2 = Math.min(p + 0.01, 1);"
                 + "  const a = posAtProgress(points, segs, total, p);"
                 + "  const b = posAtProgress(points, segs, total, p2);"
                 + "  return Math.atan2(b.y - a.y, b.x - a.x) + Math.PI / 2;"
                 + "}"
-
                 + "let frame = 0;"
                 + "const DURATION = 360;"
                 + "function loop() {"
@@ -563,69 +559,113 @@ public class OrderTracking extends AppCompatActivity {
                 + "</body></html>";
     }
 
+    // Dùng khi order đã có agencyId (order mới)
+    private void loadMapByAgencyId(String agencyId) {
+        if (agencyId == null || agencyId.isEmpty()) return;
+
+        FirebaseDatabase.getInstance().getReference("agencies")
+                .child(agencyId).get()
+                .addOnSuccessListener(snapshot -> {
+                    String mapEmbed = snapshot.child("mapEmbed").getValue(String.class);
+                    if (mapEmbed == null || mapEmbed.equals(currentMapUrl)) return;
+                    currentMapUrl = mapEmbed;
+
+                    double[] latLng = parseLatLngFromEmbedUrl(mapEmbed);
+                    if (latLng == null) return;
+
+                    final double lat = latLng[0], lng = latLng[1];
+                    runOnUiThread(() -> {
+                        configureWebView();
+                        boolean isShipping = "shipping".equalsIgnoreCase(currentStatus)
+                                || "out for delivery".equalsIgnoreCase(currentStatus);
+                        boolean isCompleted = "completed".equalsIgnoreCase(currentStatus)
+                                || "delivered".equalsIgnoreCase(currentStatus);
+                        webViewMap.loadDataWithBaseURL(
+                                "https://openstreetmap.org",
+                                buildMapHtml(lat, lng, isShipping, isCompleted),
+                                "text/html", "UTF-8", null
+                        );
+                    });
+                })
+                .addOnFailureListener(e ->
+                        Log.e("OrderTracking", "loadMapByAgencyId error: " + e.getMessage())
+                );
+    }
+
+    // Fallback cho order cũ chưa có agencyId
     private void loadAgencyMapByAddress(String pickupAddress) {
         if (pickupAddress == null || pickupAddress.isEmpty() || pickupAddress.equals(lastLoadedAddress)) return;
 
-        com.google.firebase.database.DatabaseReference agenciesRef =
-                com.google.firebase.database.FirebaseDatabase.getInstance().getReference("agencies");
+        FirebaseDatabase.getInstance().getReference("agencies")
+                .get().addOnSuccessListener(snapshot -> {
+                    String normCustomer = normalizeAddr(pickupAddress);
+                    String bestKey = null;
+                    String bestEmbed = null;
+                    int bestScore = 0;
 
-        agenciesRef.get().addOnSuccessListener(snapshot -> {
-            Log.d("MapDebug", "agencies count: " + snapshot.getChildrenCount());
-            for (com.google.firebase.database.DataSnapshot agency : snapshot.getChildren()) {
-                String address = agency.child("address").getValue(String.class);
-                Log.d("MapDebug", "checking agency: " + agency.getKey() + " | address: " + address);
-                if (address != null) {
-                    String[] pickupWords = pickupAddress.replaceAll("[^0-9]", " ").trim().split("\\s+");
-                    String[] agencyWords = address.replaceAll("[^0-9]", " ").trim().split("\\s+");
-
-                    boolean matched = false;
-                    for (String pNum : pickupWords) {
-                        if (pNum.length() >= 3) {
-                            for (String aNum : agencyWords) {
-                                if (pNum.equals(aNum)) {
-                                    matched = true;
-                                    break;
-                                }
-                            }
+                    for (DataSnapshot agency : snapshot.getChildren()) {
+                        String agencyAddr = agency.child("address").getValue(String.class);
+                        if (agencyAddr == null) continue;
+                        int score = scoreMatch(normCustomer, normalizeAddr(agencyAddr));
+                        Log.d("MapDebug", agency.getKey() + " score=" + score);
+                        if (score > bestScore) {
+                            bestScore = score;
+                            bestKey = agency.getKey();
+                            bestEmbed = agency.child("mapEmbed").getValue(String.class);
                         }
-                        if (matched) break;
                     }
 
-                    if (matched) {
-                        Log.d("MapDebug", "MATCH: " + agency.getKey());
-                        lastLoadedAddress = pickupAddress;
-                        String mapEmbed = agency.child("mapEmbed").getValue(String.class);
+                    if (bestKey == null || bestScore == 0) return;
+                    Log.d("MapDebug", "BEST MATCH: " + bestKey + " score=" + bestScore);
+                    lastLoadedAddress = pickupAddress;
 
-                        if (mapEmbed != null && !mapEmbed.equals(currentMapUrl)) {
-                            currentMapUrl = mapEmbed;
-                            double[] latLng = parseLatLngFromEmbedUrl(mapEmbed);
+                    if (bestEmbed == null || bestEmbed.equals(currentMapUrl)) return;
+                    currentMapUrl = bestEmbed;
 
-                            if (latLng != null) {
-                                runOnUiThread(() -> {
-                                    configureWebView();
-                                    boolean isShipping = "shipping".equalsIgnoreCase(currentStatus)
-                                            || "out for delivery".equalsIgnoreCase(currentStatus);
-                                    boolean isCompleted = "completed".equalsIgnoreCase(currentStatus)
-                                            || "delivered".equalsIgnoreCase(currentStatus);
-                                    String html = buildMapHtml(latLng[0], latLng[1], isShipping, isCompleted);
-                                    Log.d("MapDebug", "latLng: " + latLng[0] + ", " + latLng[1]);
-                                    webViewMap.loadDataWithBaseURL(
-                                            "https://openstreetmap.org",
-                                            html,
-                                            "text/html",
-                                            "UTF-8",
-                                            null
-                                    );
-                                });
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        }).addOnFailureListener(e ->
-                Log.e("OrderTracking", "loadAgencyMapByAddress error: " + e.getMessage())
-        );
+                    double[] latLng = parseLatLngFromEmbedUrl(bestEmbed);
+                    if (latLng == null) return;
+
+                    final double lat = latLng[0], lng = latLng[1];
+                    runOnUiThread(() -> {
+                        configureWebView();
+                        boolean isShipping = "shipping".equalsIgnoreCase(currentStatus)
+                                || "out for delivery".equalsIgnoreCase(currentStatus);
+                        boolean isCompleted = "completed".equalsIgnoreCase(currentStatus)
+                                || "delivered".equalsIgnoreCase(currentStatus);
+                        webViewMap.loadDataWithBaseURL(
+                                "https://openstreetmap.org",
+                                buildMapHtml(lat, lng, isShipping, isCompleted),
+                                "text/html", "UTF-8", null
+                        );
+                    });
+                })
+                .addOnFailureListener(e ->
+                        Log.e("OrderTracking", "loadAgencyMapByAddress error: " + e.getMessage())
+                );
+    }
+
+    private String normalizeAddr(String s) {
+        return s.toLowerCase()
+                .replaceAll("[àáạảãăắặẳẵâấậẩẫ]", "a")
+                .replaceAll("[èéẹẻẽêếệểễ]", "e")
+                .replaceAll("[ìíịỉĩ]", "i")
+                .replaceAll("[òóọỏõôốộổỗơớợởỡ]", "o")
+                .replaceAll("[ùúụủũưứựửữ]", "u")
+                .replaceAll("[ỳýỵỷỹ]", "y")
+                .replaceAll("[đ]", "d")
+                .replaceAll("[^a-z0-9 ]", " ")
+                .replaceAll("\\s+", " ")
+                .trim();
+    }
+
+    private int scoreMatch(String customer, String agency) {
+        java.util.Set<String> setA = new java.util.HashSet<>(
+                java.util.Arrays.asList(customer.split(" ")));
+        int count = 0;
+        for (String token : agency.split(" ")) {
+            if (token.length() >= 4 && setA.contains(token)) count++;
+        }
+        return count;
     }
 
     private void configureWebView() {
@@ -638,10 +678,10 @@ public class OrderTracking extends AppCompatActivity {
         webViewMap.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, android.webkit.WebResourceRequest request) {
-                return true; // block tất cả link
+                return true;
             }
         });
-        webViewMap.setOnTouchListener((v, event) -> true); // disable touch interaction
+        webViewMap.setOnTouchListener((v, event) -> true);
     }
 
     @Override
