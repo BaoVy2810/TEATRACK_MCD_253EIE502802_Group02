@@ -869,8 +869,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp">
+                        android:paddingTop="16dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -1170,10 +1169,6 @@
 
                         </ScrollView>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="16dp" />
-
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -1226,10 +1221,6 @@
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical" />
                         </ScrollView>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="16dp" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -1509,7 +1500,7 @@
                             android:orientation="horizontal"
                             android:paddingHorizontal="20dp"
                             android:paddingTop="12dp"
-                            android:paddingBottom="16dp">
+                            android:paddingBottom="12dp">
                             <Button
                                 android:id="@+id/btnCancelRecipientEdit"
                                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"

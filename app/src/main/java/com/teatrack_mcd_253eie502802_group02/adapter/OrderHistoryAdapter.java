@@ -83,8 +83,9 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         h.tvItemCount.setText(context.getResources().getQuantityString(
                 R.plurals.str_item_count, count, count));
 
-        // Branch / address
-        String address = order.getCustomerAddress();
+        // Branch / address — prefer branchAddress, fall back to customerAddress for legacy orders
+        String address = order.getBranchAddress();
+        if (address == null || address.isEmpty()) address = order.getCustomerAddress();
         h.tvBranch.setText((address != null && !address.isEmpty()) ? address
                 : context.getString(R.string.str_branch_unknown));
 

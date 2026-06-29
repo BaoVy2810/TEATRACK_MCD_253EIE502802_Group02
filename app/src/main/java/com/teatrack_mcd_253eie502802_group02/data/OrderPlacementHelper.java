@@ -61,7 +61,8 @@ public final class OrderPlacementHelper {
         order.setDate(nowIso);
         order.setCustomerName(recipient[0]);
         order.setCustomerPhone(recipient[1]);
-        order.setCustomerAddress(pickupAddress);
+        order.setCustomerAddress(recipient[2]);
+        order.setBranchAddress(pickupAddress);
         order.setPaymentMethod(resolvePaymentMethod(context, paymentMethod));
         order.setStatus("pending");
         order.setSubtotal(subtotal);
@@ -109,15 +110,17 @@ public final class OrderPlacementHelper {
         );
     }
 
+    // Returns [name, phone, address]. Display format: "name | phone\naddress"
     private static String[] parseRecipient(String recipientDetails) {
         if (recipientDetails == null || recipientDetails.trim().isEmpty()) {
-            return new String[]{"", ""};
+            return new String[]{"", "", ""};
         }
-        String[] parts = recipientDetails.split("\\|");
-        if (parts.length >= 2) {
-            return new String[]{parts[0].trim(), parts[1].trim()};
-        }
-        return new String[]{recipientDetails.trim(), ""};
+        String[] lines = recipientDetails.split("\n", 2);
+        String address = lines.length >= 2 ? lines[1].trim() : "";
+        String[] nameParts = lines[0].split("\\|", 2);
+        String name  = nameParts[0].trim();
+        String phone = nameParts.length >= 2 ? nameParts[1].trim() : "";
+        return new String[]{name, phone, address};
     }
 
     private static String resolvePaymentMethod(Context context, int paymentMethod) {

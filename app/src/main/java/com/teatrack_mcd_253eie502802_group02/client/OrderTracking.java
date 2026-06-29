@@ -160,7 +160,10 @@ public class OrderTracking extends AppCompatActivity {
                         updateStatusLabel(status);
                         updateDeliveryInfo(snapshot);
 
-                        String address = snapshot.child("customerAddress").getValue(String.class);
+                        String address = snapshot.child("branchAddress").getValue(String.class);
+                        if (address == null || address.isEmpty()) {
+                            address = snapshot.child("customerAddress").getValue(String.class);
+                        }
                         if (address != null) {
                             loadAgencyMapByAddress(address);
                         }
@@ -297,7 +300,10 @@ public class OrderTracking extends AppCompatActivity {
 
     private void updateDeliveryInfo(DataSnapshot snapshot) {
         String recipient = snapshot.child("customerName").getValue(String.class);
-        String address = snapshot.child("customerAddress").getValue(String.class);
+        String address = snapshot.child("branchAddress").getValue(String.class);
+        if (address == null || address.isEmpty()) {
+            address = snapshot.child("customerAddress").getValue(String.class);
+        }
         String payment = snapshot.child("paymentMethod").getValue(String.class);
 
         if (recipient != null) txtRecipient.setText(recipient);
