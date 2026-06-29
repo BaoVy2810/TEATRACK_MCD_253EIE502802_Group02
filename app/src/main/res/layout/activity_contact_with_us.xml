@@ -80,8 +80,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="40dp">
+            android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -115,10 +114,11 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
                                 android:fontFamily="@font/inter"
                                 android:text="@string/str_contact_info"
                                 android:textColor="@android:color/white"
-                                android:textSize="18sp"
+                                android:textSize="14sp"
                                 android:textStyle="bold" />
 
                             <TextView
@@ -129,7 +129,7 @@
                                 android:lineSpacingMultiplier="1.5"
                                 android:text="@string/str_contact_desc"
                                 android:textColor="@android:color/white"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -140,7 +140,7 @@
                                 android:gravity="center_vertical"
                                 android:text="@string/str_phone"
                                 android:textColor="@android:color/white"
-                                android:textSize="14sp"
+                                android:textSize="12sp"
                                 android:textStyle="bold"
                                 app:drawableStartCompat="@drawable/call"
                                 app:drawableTint="@android:color/white" />
@@ -154,7 +154,7 @@
                                 android:gravity="center_vertical"
                                 android:text="@string/str_email"
                                 android:textColor="@android:color/white"
-                                android:textSize="14sp"
+                                android:textSize="12sp"
                                 android:textStyle="bold"
                                 app:drawableStartCompat="@drawable/mail"
                                 app:drawableTint="@android:color/white" />
@@ -175,88 +175,75 @@
                             android:layout_height="wrap_content"
                             android:text="@string/str_fullname"
                             android:textColor="@color/brand_blue"
-                            android:textSize="18sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/edtFullName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="8dp"
                             android:autofillHints="name"
-                            android:background="@null"
+                            android:background="@drawable/bg_edittext_contact"
+                            android:textColor="@color/edittext_text_color"
+                            android:padding="12dp"
                             android:hint="@string/str_fullname_hint"
                             android:inputType="textPersonName"
-                            android:paddingVertical="12dp"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#d9d9d9" />
+                            android:textSize="12sp" />
 
                         <!-- Email -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
                             android:text="@string/str_email_hint"
+                            android:layout_marginTop="16dp"
                             android:textColor="@color/brand_blue"
-                            android:textSize="18sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
-
                         <EditText
                             android:id="@+id/edtEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="8dp"
                             android:autofillHints="emailAddress"
-                            android:background="@null"
+                            android:background="@drawable/bg_edittext_contact"
+                            android:textColor="@color/edittext_text_color"
+                            android:padding="12dp"
                             android:hint="@string/str_email_prompt"
                             android:inputType="textEmailAddress"
-                            android:paddingVertical="12dp"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#d9d9d9" />
+                            android:textSize="12sp" />
 
                         <!-- Phone -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="16dp"
                             android:text="@string/str_phone_hint"
                             android:textColor="@color/brand_blue"
-                            android:textSize="18sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/edtPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="8dp"
                             android:autofillHints="phone"
-                            android:background="@null"
+                            android:background="@drawable/bg_edittext_contact"
+                            android:textColor="@color/edittext_text_color"
+                            android:padding="12dp"
                             android:hint="@string/str_phone_prompt"
                             android:inputType="phone"
-                            android:paddingVertical="12dp"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="#d9d9d9" />
+                            android:textSize="12sp" />
 
                         <!-- Branch -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="12dp"
                             android:text="@string/str_branch_label"
                             android:textColor="@color/brand_blue"
-                            android:textSize="18sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -264,11 +251,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            app:boxCornerRadiusBottomEnd="12dp"
-                            app:boxCornerRadiusBottomStart="12dp"
-                            app:boxCornerRadiusTopEnd="12dp"
-                            app:boxCornerRadiusTopStart="12dp"
-                            app:boxStrokeColor="@color/brand_blue"
+                            app:boxStrokeWidth="0dp"
+                            app:boxStrokeWidthFocused="0dp"
+                            app:endIconTint="@color/brand_blue"
                             app:hintEnabled="false">
 
                             <AutoCompleteTextView
@@ -276,21 +261,25 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="none"
-                                android:paddingVertical="12dp"
-                                android:textSize="14sp"
+                                android:textSize="12sp"
                                 android:fontFamily="@font/inter"
                                 android:hint="@string/str_branch_prompt"
-                                android:background="@null" />
+                                android:background="@drawable/bg_edittext_contact"
+                                android:textColor="@color/edittext_text_color"
+                                android:padding="12dp"
+                                android:popupBackground="@drawable/bg_filter_panel"
+                                android:dropDownHeight="180dp"
+                                android:dropDownVerticalOffset="4dp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <!-- Topic -->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="12dp"
                             android:text="@string/str_feedback_topic"
                             android:textColor="@color/brand_blue"
-                            android:textSize="18sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <RadioGroup
@@ -304,8 +293,10 @@
                                 android:id="@+id/rbComplain"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:buttonTint="@color/brand_blue"
+                                app:buttonTint="@color/radio_button_selector"
+                                android:textColor="@color/radio_text_color"
                                 android:text="@string/str_topic_complain"
+                                android:fontFamily="@font/inter"
                                 android:textSize="14sp"
                                 android:paddingVertical="4dp" />
 
@@ -313,8 +304,10 @@
                                 android:id="@+id/rbPraise"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:buttonTint="@color/brand_blue"
+                                app:buttonTint="@color/radio_button_selector"
+                                android:textColor="@color/radio_text_color"
                                 android:text="@string/str_topic_praise"
+                                android:fontFamily="@font/inter"
                                 android:textSize="14sp"
                                 android:paddingVertical="4dp" />
 
@@ -322,8 +315,10 @@
                                 android:id="@+id/rbSuggest"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:buttonTint="@color/brand_blue"
+                                app:buttonTint="@color/radio_button_selector"
+                                android:textColor="@color/radio_text_color"
                                 android:text="@string/str_topic_suggest"
+                                android:fontFamily="@font/inter"
                                 android:textSize="14sp"
                                 android:paddingVertical="4dp" />
 
@@ -331,8 +326,10 @@
                                 android:id="@+id/rbOther"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:buttonTint="@color/brand_blue"
+                                app:buttonTint="@color/radio_button_selector"
+                                android:textColor="@color/radio_text_color"
                                 android:text="@string/str_topic_other"
+                                android:fontFamily="@font/inter"
                                 android:textSize="14sp"
                                 android:paddingVertical="4dp" />
                         </RadioGroup>
@@ -341,38 +338,54 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="12dp"
                             android:text="@string/str_feedback_content"
                             android:textColor="@color/brand_blue"
-                            android:textSize="18sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <EditText
                             android:id="@+id/edtContent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/bg_contact_card"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/bg_edittext_contact"
+                            android:textColor="@color/edittext_text_color"
+                            android:padding="12dp"
                             android:gravity="top"
                             android:hint="@string/str_feedback_content_hint"
                             android:inputType="textMultiLine"
                             android:minHeight="120dp"
-                            android:padding="16dp"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
 
-                        <com.google.android.material.button.MaterialButton
+                        <FrameLayout
                             android:id="@+id/btnSubmit"
                             android:layout_width="match_parent"
-                            android:layout_height="54dp"
-                            android:layout_marginTop="32dp"
-                            android:backgroundTint="#0088ff"
-                            android:text="@string/str_send"
-                            android:textAllCaps="true"
-                            android:textColor="@android:color/white"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            app:cornerRadius="12dp" />
+                            android:layout_height="52dp"
+                            android:background="@drawable/bg_confirm_order_button"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:layout_marginTop="12dp"
+                            android:foreground="?attr/selectableItemBackground">
 
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter_family"
+                                    android:fontWeight="800"
+                                    android:text="@string/str_send"
+                                    android:textColor="@color/white"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </FrameLayout>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

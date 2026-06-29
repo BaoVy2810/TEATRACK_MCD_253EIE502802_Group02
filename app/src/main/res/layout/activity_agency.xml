@@ -110,19 +110,6 @@
                 android:textColor="@color/brand_blue"
                 android:textColorHint="@color/brand_blue"
                 android:textSize="11sp" />
-
-            <ImageButton
-                android:id="@+id/btnAgencyFilter"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_filter_icon_button"
-                android:contentDescription="@string/menu_filter_desc"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:padding="7dp"
-                android:src="@drawable/ic_filter"
-                app:tint="@color/brand_blue" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

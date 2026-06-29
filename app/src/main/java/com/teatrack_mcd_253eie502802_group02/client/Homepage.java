@@ -273,7 +273,7 @@ public class Homepage extends BaseActivity {
         View tvViewAllPromotions = findViewById(R.id.tvViewAllPromotions);
         if (tvViewAllPromotions != null) {
             tvViewAllPromotions.setOnClickListener(v -> {
-                Intent intent = new Intent(this, BlogGeneral.class);
+                Intent intent = new Intent(this, PromotionClient.class);
                 intent.putExtra("CATEGORY_FILTER", "Promotions");
                 startActivity(intent);
             });

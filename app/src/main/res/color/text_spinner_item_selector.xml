@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Khi được nhấn hoặc chọn -->
+    <item android:color="@color/white" android:state_pressed="true" />
+    <item android:color="@color/white" android:state_activated="true" />
+    <!-- Mặc định -->
+    <item android:color="#252B37" />
+</selector>

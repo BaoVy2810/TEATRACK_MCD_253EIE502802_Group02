@@ -736,9 +736,10 @@
     <string name="order_track">Theo dõi đơn hàng</string>
     <string name="order_back_to_menu">Quay lại thực đơn</string>
     <string name="order_id_format">HTNG-%1$d</string>
-    <string name="str_agency_title">HỆ THỐNG CHI NHÁNH</string>
+    <string name="str_agency_title">Hệ Thống Chi Nhánh</string>
     <string name="str_breadcrumb_agency">Trang chủ / Chi nhánh</string>
-    <string name="str_contact">LIÊN HỆ VỚI CHÚNG TÔI</string>    <string name="str_contact_breadcrumb">Trang chủ / Liên hệ</string>
+    <string name="str_contact">Liên hệ với chúng tôi</string>
+    <string name="str_contact_breadcrumb">Trang chủ / Liên hệ</string>
     <string name="str_contact_info">Thông tin liên hệ</string>
     <string name="str_contact_desc">Chúng tôi luôn lắng nghe ý kiến của bạn để hoàn thiện hơn mỗi ngày.</string>
     <string name="str_phone">Hotline: 02-723-979-518</string>

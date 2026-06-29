@@ -4,34 +4,41 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class ContactRequest {
-    private String id;
-    private String fullName;
+    private String _id;
+    private String fullname;
     private String email;
     private String phone;
     private String branch;
     private String topic;
     private String content;
-    private long timestamp;
+    private String time;
+    private int status;
+    private boolean read;
+    private String note;
 
     public ContactRequest() {
     }
 
-    public ContactRequest(String id, String fullName, String email, String phone, String branch, String topic, String content, long timestamp) {
-        this.id = id;
-        this.fullName = fullName;
+    public ContactRequest(String _id, String fullname, String email, String phone, String branch, String topic, String content, String time, int status, boolean read, String note) {
+        this._id = _id;
+        this.fullname = fullname;
         this.email = email;
         this.phone = phone;
         this.branch = branch;
         this.topic = topic;
         this.content = content;
-        this.timestamp = timestamp;
+        this.time = time;
+        this.status = status;
+        this.read = read;
+        this.note = note;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public String get_id() { return _id; }
+    public void set_id(String _id) { this._id = _id; }
 
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
+    public String getFullname() { return fullname; }
+    public void setFullname(String fullname) { this.fullname = fullname; }
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
@@ -47,6 +54,15 @@ public class ContactRequest {
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
 
-    public long getTimestamp() { return timestamp; }
-    public void setTimestamp(long timestamp) { this.timestamp = timestamp; }
+    public String getTime() { return time; }
+    public void setTime(String time) { this.time = time; }
+
+    public int getStatus() { return status; }
+    public void setStatus(int status) { this.status = status; }
+
+    public boolean isRead() { return read; }
+    public void setRead(boolean read) { this.read = read; }
+
+    public String getNote() { return note; }
+    public void setNote(String note) { this.note = note; }
 }

@@ -31,7 +31,9 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.ContactRequest;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -41,7 +43,7 @@ public class ContactWithUs extends AppCompatActivity {
     private EditText edtFullName, edtEmail, edtPhone, edtContent;
     private AutoCompleteTextView spinnerBranch;
     private RadioGroup radioTopic;
-    private MaterialButton btnSubmit;
+    private View btnSubmit;
     private DatabaseReference mDatabase;
     private List<String> branchNames = new ArrayList<>();
     private ArrayAdapter<String> branchAdapter;
@@ -81,12 +83,50 @@ public class ContactWithUs extends AppCompatActivity {
         spinnerBranch = findViewById(R.id.spinnerBranch);
         radioTopic = findViewById(R.id.radioTopic);
         btnSubmit = findViewById(R.id.btnSubmit);
-        
-        // Reset text
-        edtFullName.setText("");
-        edtEmail.setText("");
-        edtPhone.setText("");
-        edtContent.setText("");
+
+        // Setup TextWatchers to maintain blue color when text is present
+        setupTextWatcher(edtFullName);
+        setupTextWatcher(edtEmail);
+        setupTextWatcher(edtPhone);
+        setupTextWatcher(edtContent);
+        setupTextWatcher(spinnerBranch);
+
+        radioTopic.setOnCheckedChangeListener((group, checkedId) -> {
+            for (int i = 0; i < group.getChildCount(); i++) {
+                View child = group.getChildAt(i);
+                if (child instanceof android.widget.RadioButton) {
+                    android.widget.RadioButton rb = (android.widget.RadioButton) child;
+                    if (rb.getId() == checkedId) {
+                        rb.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.brand_blue));
+                        // Sử dụng font SemiBold (thay cho Bold) để không bị lỗi font mặc định
+                        rb.setTypeface(androidx.core.content.res.ResourcesCompat.getFont(this, R.font.inter_semibold));
+                    } else {
+                        rb.setTextColor(0xFF333333);
+                        // Quay lại font Regular
+                        rb.setTypeface(androidx.core.content.res.ResourcesCompat.getFont(this, R.font.inter));
+                    }
+                }
+            }
+        });
+        spinnerBranch.setOnItemClickListener((parent, view, position, id) -> {
+            spinnerBranch.setActivated(true);
+            spinnerBranch.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.brand_blue));
+        });
+    }
+
+    private void setupTextWatcher(EditText editText) {
+        editText.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                editText.setActivated(s.length() > 0);
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
     }
 
     private void setupHeader() {
@@ -113,7 +153,7 @@ public class ContactWithUs extends AppCompatActivity {
     private void setupBranchSpinner() {
         branchAdapter = new ArrayAdapter<>(
                 this,
-                android.R.layout.simple_list_item_1, // Dùng layout mặc định của Android
+                R.layout.item_spinner_branch,
                 branchNames
         );
         spinnerBranch.setAdapter(branchAdapter);
@@ -180,10 +220,24 @@ public class ContactWithUs extends AppCompatActivity {
                 
                 // Nếu xóa hết sạch folder contacts, maxId sẽ là 0 -> customId = CT01
                 String customId = String.format(Locale.US, "CT%02d", maxId + 1);
+                
+                // Định dạng thời gian theo MongoDB mẫu: 16/03/2026 10:23
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                String currentTime = sdf.format(new Date());
 
-                // Tạo đối tượng yêu cầu với ID tùy chỉnh (mã CTxx)
+                // Tạo đối tượng yêu cầu với ID tùy chỉnh và các thuộc tính chuẩn MongoDB
                 ContactRequest request = new ContactRequest(
-                        customId, fullname, email, phone, branch, topic, content, System.currentTimeMillis()
+                        customId, 
+                        fullname, 
+                        email, 
+                        phone, 
+                        branch, 
+                        topic.toLowerCase(), // Lưu topic viết thường (complain, praise...)
+                        content, 
+                        currentTime,
+                        1, // status: 1 (Chờ xử lý)
+                        false, // read: false
+                        "" // note: rỗng
                 );
 
                 // Sử dụng customId (CT01, CT02...) làm Key
@@ -250,5 +304,12 @@ public class ContactWithUs extends AppCompatActivity {
         edtContent.setText("");
         radioTopic.clearCheck();
         spinnerBranch.setText(""); // Xóa text của dropdown
+        
+        // Reset activated states
+        edtFullName.setActivated(false);
+        edtEmail.setActivated(false);
+        edtPhone.setActivated(false);
+        edtContent.setActivated(false);
+        spinnerBranch.setActivated(false);
     }
 }

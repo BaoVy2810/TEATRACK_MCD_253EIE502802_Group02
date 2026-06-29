@@ -578,7 +578,7 @@
 
     <string name="blog_image_desc">Blog post image</string>
     <string name="blog_detail_related_title">Related posts</string>
-    <string name="str_agency_title">AGENCY SYSTEM</string>
+    <string name="str_agency_title">Agency System</string>
     <string name="str_breadcrumb_agency">Home / Agencies</string>
     <string name="str_contact">CONTACT US</string>
     <string name="str_contact_breadcrumb">Home / Contact</string>
@@ -600,7 +600,7 @@
     <string name="str_feedback_content_hint">Enter your feedback here</string>
     <string name="str_send">Send</string>
     <string name="str_contact_success_title">Sent successfully!</string>
-    <string name="str_contact_success_msg">Thank you for your feedback. We will get back to you soon.</string>
+    <string name="str_contact_success_msg">Thank you for your feedback. <br/>We will get back to you soon.</string>
     <string name="blog_related_image_desc">Related blog image</string>
     <string name="blog_detail_view_detail">View detail</string>
     <string name="blog_detail_image_desc">Blog post main image</string>
