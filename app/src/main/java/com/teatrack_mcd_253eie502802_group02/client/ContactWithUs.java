@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -13,8 +14,12 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
@@ -44,7 +49,17 @@ public class ContactWithUs extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_contact_with_us);
+
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
 
         // Khởi tạo Firebase với URL Singapore
         mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference();
@@ -75,36 +90,24 @@ public class ContactWithUs extends AppCompatActivity {
     }
 
     private void setupHeader() {
-        findViewById(R.id.btn_cart).setOnClickListener(v ->
-                startActivity(new Intent(this, Cart.class)));
+        View btnBack = findViewById(R.id.btnBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
 
-        findViewById(R.id.btn_profile).setOnClickListener(v ->
-                startActivity(new Intent(this, UserProfile.class)));
+        View btnShare = findViewById(R.id.btnShare);
+        if (btnShare != null) {
+            btnShare.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.str_contact_title));
+                startActivity(Intent.createChooser(intent, getString(R.string.blog_detail_share)));
+            });
+        }
     }
 
     private void setupNavBar() {
-        int[] navItemIds = {
-                R.id.nav_home,
-                R.id.nav_menu,
-                R.id.nav_orders,
-                R.id.nav_promotion,
-                R.id.nav_profile
-        };
-
-        NavBarHelper.setupNavBar(this, navItemIds, -1, v -> {
-            int id = v.getId();
-            if (id == R.id.nav_home) {
-                startActivity(new Intent(this, Homepage.class));
-            } else if (id == R.id.nav_menu) {
-                startActivity(new Intent(this, Menu.class));
-            } else if (id == R.id.nav_orders) {
-                startActivity(new Intent(this, OrderHistory.class));
-            } else if (id == R.id.nav_promotion) {
-                startActivity(new Intent(this, BlogGeneral.class));
-            } else if (id == R.id.nav_profile) {
-                startActivity(new Intent(this, UserProfile.class));
-            }
-        });
+        // Nav bar removed from layout
     }
 
     private void setupBranchSpinner() {

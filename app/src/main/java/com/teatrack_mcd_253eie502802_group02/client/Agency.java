@@ -46,6 +46,15 @@ public class Agency extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_agency);
 
+        View mainView = findViewById(R.id.main);
+        if (mainView != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
+
         initViews();
         setupRecyclerView();
         setupHeader();
@@ -66,40 +75,24 @@ public class Agency extends AppCompatActivity {
     }
 
     private void setupHeader() {
-        View btnCart = findViewById(R.id.btn_cart);
-        if (btnCart != null) {
-            btnCart.setOnClickListener(v -> startActivity(new Intent(this, Cart.class)));
+        View btnBack = findViewById(R.id.btnBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
         }
-        View btnProfile = findViewById(R.id.btn_profile);
-        if (btnProfile != null) {
-            btnProfile.setOnClickListener(v -> startActivity(new Intent(this, UserProfile.class)));
+
+        View btnShare = findViewById(R.id.btnShare);
+        if (btnShare != null) {
+            btnShare.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.str_agency_title));
+                startActivity(Intent.createChooser(intent, getString(R.string.blog_detail_share)));
+            });
         }
     }
 
     private void setupNavBar() {
-        int[] navIds = {
-                R.id.nav_home,
-                R.id.nav_menu,
-                R.id.nav_orders,
-                R.id.nav_promotion,
-                R.id.nav_profile
-        };
-
-        NavBarHelper.setupNavBar(this, navIds, -1, v -> {
-            int id = v.getId();
-            if (id == R.id.nav_home) {
-                startActivity(new Intent(this, Homepage.class));
-            } else if (id == R.id.nav_menu) {
-                startActivity(new Intent(this, Menu.class));
-            } else if (id == R.id.nav_orders) {
-                startActivity(new Intent(this, OrderHistory.class));
-            } else if (id == R.id.nav_promotion) {
-                startActivity(new Intent(this, BlogGeneral.class));
-            } else if (id == R.id.nav_profile) {
-                startActivity(new Intent(this, UserProfile.class));
-            }
-        });
-        ProfileBackHelper.setupBackToProfile(this);
+        // Nav bar removed from layout
     }
 
     private void initFirebase() {

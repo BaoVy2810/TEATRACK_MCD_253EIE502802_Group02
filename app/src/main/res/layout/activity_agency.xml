@@ -5,119 +5,135 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f9fe">
+    android:background="#f2f9fe"
+    tools:context="com.teatrack_mcd_253eie502802_group02.client.Agency">
 
     <!-- Header -->
-    <include
-        android:id="@+id/header"
-        layout="@layout/activity_header_client"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/header_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="@dimen/header_height"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="@dimen/header_elevation"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.BottomRounded">
 
-    <LinearLayout
-        android:id="@+id/searchContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/header">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="12dp">
 
-        <!-- Breadcrumb Banner -->
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_arrow_circle"
+                android:contentDescription="@string/product_detail_back"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_left"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/brand_blue" />
+
+            <TextView
+                android:id="@+id/tvTopTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:fontFamily="@font/inter_family"
+                android:gravity="center"
+                android:text="@string/str_agency_title"
+                android:textColor="@color/brand_blue"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnShare"
+                app:layout_constraintStart_toEndOf="@+id/btnBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btnShare"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_arrow_circle"
+                android:contentDescription="@string/blog_detail_share"
+                android:padding="8dp"
+                android:src="@drawable/share"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/brand_blue" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Search bar -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/agencySearchCard"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="14dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_container">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#d4edfc"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingVertical="20dp">
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="14dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter"
-                android:text="@string/str_agency_title"
-                android:textColor="#0b1320"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="@string/cd_search"
+                android:src="@drawable/search"
+                app:tint="@color/brand_blue" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:fontFamily="@font/inter"
-                android:text="@string/str_breadcrumb_agency"
-                android:textColor="#808080"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:autofillHints=""
+                android:background="@android:color/transparent"
+                android:hint="@string/str_agency_search"
+                android:paddingStart="10dp"
+                android:textColor="@color/brand_blue"
+                android:textColorHint="@color/brand_blue"
+                android:textSize="11sp" />
+
+            <ImageButton
+                android:id="@+id/btnAgencyFilter"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_filter_icon_button"
+                android:contentDescription="@string/menu_filter_desc"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="7dp"
+                android:src="@drawable/ic_filter"
+                app:tint="@color/brand_blue" />
         </LinearLayout>
-
-        <!-- Search Bar -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
-            app:strokeWidth="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/search"
-                    app:tint="@color/brand_blue"
-                    android:contentDescription="@string/cd_search" />
-
-                <EditText
-                    android:id="@+id/etSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:background="@null"
-                    android:hint="@string/str_agency_search"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/inter"
-                    android:inputType="text" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAgencies"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:clipToPadding="false"
-        android:paddingBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/nav_bar"
-        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+        android:paddingVertical="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/agencySearchCard"
         tools:listitem="@layout/item_agency_client" />
-
-    <!-- Navigation Bar -->
-    <include
-        android:id="@+id/nav_bar"
-        layout="@layout/activity_nav_bar_client"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <ImageView
-        android:id="@+id/btnProfileBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/bg_profile_back_button"
-        android:contentDescription="@string/product_detail_back"
-        android:padding="8dp"
-        android:src="@drawable/ic_arrow_left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
