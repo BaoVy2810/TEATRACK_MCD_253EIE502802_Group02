@@ -863,7 +863,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
             android.widget.LinearLayout row = new android.widget.LinearLayout(this);
             row.setOrientation(android.widget.LinearLayout.VERTICAL);
-            row.setPadding(dp(16), dp(12), dp(16), dp(4));
 
             // Main row: icon + content + action
             android.widget.LinearLayout mainRow = new android.widget.LinearLayout(this);
@@ -872,7 +871,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             if (ripple.resourceId != 0) mainRow.setBackgroundResource(ripple.resourceId);
             mainRow.setClickable(true);
             mainRow.setFocusable(true);
-            mainRow.setPadding(0, dp(4), 0, dp(4));
+            mainRow.setPadding(dp(16), dp(12), dp(16), dp(12));
 
             // Icon circle
             FrameLayout iconCircle = new FrameLayout(this);
@@ -897,28 +896,22 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             contentParams.setMarginStart(dp(12));
             content.setLayoutParams(contentParams);
 
-            if (!v.getCategory().isEmpty()) {
-                TextView tvCat = new TextView(this);
-                tvCat.setText(v.getCategory());
-                tvCat.setTextSize(12f);
-                tvCat.setTextColor(ContextCompat.getColor(this, R.color.secondary));
-                content.addView(tvCat);
-            }
+            // PRIMARY BOLD TEXT: voucherID (v.getId())
+            TextView tvId = new TextView(this);
+            tvId.setText(v.getId());
+            tvId.setTextSize(16f);
+            tvId.setTypeface(null, Typeface.BOLD);
+            tvId.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+            content.addView(tvId);
+
+            // Secondary text: Title or Description
             TextView tvTitle = new TextView(this);
             tvTitle.setText(v.getTitle().isEmpty() ? v.getDescription() : v.getTitle());
-            tvTitle.setTextSize(14f);
-            tvTitle.setTypeface(tvTitle.getTypeface(), Typeface.BOLD);
-            tvTitle.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+            tvTitle.setTextSize(13f);
+            tvTitle.setTextColor(ContextCompat.getColor(this, R.color.secondary));
             content.addView(tvTitle);
 
-            if (!v.getDescription().isEmpty() && !v.getDescription().equals(v.getTitle())) {
-                TextView tvDesc = new TextView(this);
-                tvDesc.setText(v.getDescription());
-                tvDesc.setTextSize(12f);
-                tvDesc.setTextColor(ContextCompat.getColor(this, R.color.secondary));
-                content.addView(tvDesc);
-            }
-            if (!v.getExpiry().isEmpty()) {
+            if (v.getExpiry() != null && !v.getExpiry().isEmpty()) {
                 TextView tvExp = new TextView(this);
                 tvExp.setText("HSD: " + v.getExpiry());
                 tvExp.setTextSize(12f);
@@ -930,7 +923,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             TextView btnAction = new TextView(this);
             btnAction.setText(eligible ? "Dùng ngay" : "Điều kiện");
             btnAction.setTextSize(14f);
-            btnAction.setTypeface(btnAction.getTypeface(), Typeface.BOLD);
+            btnAction.setTypeface(null, Typeface.BOLD);
             btnAction.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
             android.widget.LinearLayout.LayoutParams btnParams =
                     new android.widget.LinearLayout.LayoutParams(
@@ -943,34 +936,28 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             mainRow.addView(content);
             mainRow.addView(btnAction);
 
-            if (eligible) {
-                mainRow.setOnClickListener(view -> {
-                    applyVoucher(v);
-                    hideVoucherPicker();
-                });
-                btnAction.setOnClickListener(view -> {
-                    applyVoucher(v);
-                    hideVoucherPicker();
-                });
-            } else {
+            row.addView(mainRow);
+
+            if (!eligible) {
                 // Show condition info bar
                 android.widget.LinearLayout infoBar = new android.widget.LinearLayout(this);
                 infoBar.setOrientation(android.widget.LinearLayout.HORIZONTAL);
                 infoBar.setGravity(android.view.Gravity.CENTER_VERTICAL);
                 infoBar.setBackgroundColor(0xFFFFF3CD);
-                infoBar.setPadding(dp(10), dp(8), dp(10), dp(8));
+                infoBar.setPadding(dp(16), dp(8), dp(16), dp(8));
                 android.widget.LinearLayout.LayoutParams infoParams =
                         new android.widget.LinearLayout.LayoutParams(
                                 android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
                                 android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-                infoParams.topMargin = dp(4);
                 infoBar.setLayoutParams(infoParams);
+                
                 android.widget.ImageView ivInfo = new android.widget.ImageView(this);
                 android.widget.LinearLayout.LayoutParams infoIconParams =
                         new android.widget.LinearLayout.LayoutParams(dp(14), dp(14));
                 ivInfo.setLayoutParams(infoIconParams);
-                ivInfo.setImageResource(R.drawable.ic_info_outline);
+                ivIcon.setImageResource(R.drawable.ic_local_offer);
                 ivInfo.setColorFilter(0xFFB8860B);
+                
                 TextView tvInfo = new TextView(this);
                 android.widget.LinearLayout.LayoutParams tvInfoParams =
                         new android.widget.LinearLayout.LayoutParams(
@@ -983,30 +970,39 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                 tvInfo.setTextSize(12f);
                 tvInfo.setTextColor(0xFF7A5800);
                 tvInfo.setMaxLines(2);
+                
                 infoBar.addView(ivInfo);
                 infoBar.addView(tvInfo);
-                row.addView(mainRow);
                 row.addView(infoBar);
-                layoutVoucherList.addView(row);
-
-                View divider = new View(this);
-                divider.setBackgroundColor(ContextCompat.getColor(this, R.color.outline_variant));
-                layoutVoucherList.addView(divider,
-                        new android.widget.LinearLayout.LayoutParams(
-                                android.widget.LinearLayout.LayoutParams.MATCH_PARENT, dp(1)));
-                continue;
             }
 
-            row.addView(mainRow);
+            if (eligible) {
+                mainRow.setOnClickListener(view -> {
+                    applyVoucher(v);
+                    hideVoucherPicker();
+                });
+            } else {
+                mainRow.setOnClickListener(view -> {
+                    android.widget.Toast.makeText(this,
+                            "Cần đơn tối thiểu " + formatPrice((int)v.getMinSubtotal()),
+                            android.widget.Toast.LENGTH_SHORT).show();
+                });
+            }
+
             layoutVoucherList.addView(row);
 
+            // Divider
             View divider = new View(this);
             divider.setBackgroundColor(ContextCompat.getColor(this, R.color.outline_variant));
-            layoutVoucherList.addView(divider,
+            android.widget.LinearLayout.LayoutParams divParams =
                     new android.widget.LinearLayout.LayoutParams(
-                            android.widget.LinearLayout.LayoutParams.MATCH_PARENT, dp(1)));
+                            android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 1);
+            // We can use dp(1) for height
+            divParams.height = dp(1);
+            layoutVoucherList.addView(divider, divParams);
         }
     }
+
 
     private void applyVoucher(com.teatrack_mcd_253eie502802_group02.model.Promotion voucher) {
         appliedVoucher = voucher;
@@ -1423,6 +1419,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             Calendar calendar = Calendar.getInstance();
             DatePickerDialog dialog = new DatePickerDialog(
                     this,
+                    R.style.CustomMaterialCalendar,
                     (view, year, month, dayOfMonth) -> {
                         selectedPickupDate = String.format(Locale.getDefault(), "%02d/%02d/%04d",
                                 dayOfMonth, month + 1, year);

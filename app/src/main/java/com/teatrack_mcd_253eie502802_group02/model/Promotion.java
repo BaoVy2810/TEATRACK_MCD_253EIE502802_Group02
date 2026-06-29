@@ -10,9 +10,13 @@ public class Promotion implements Serializable {
     private String category;
     private String expiry;
     private double minSubtotal;
+    private double max;
+    private boolean isActive;
     private String type;
     private double value;
     private int imageRes;
+    private String createdAt;
+    private String updatedAt;
 
     public Promotion() {}
 
@@ -55,6 +59,12 @@ public class Promotion implements Serializable {
     public double getMinSubtotal() { return minSubtotal; }
     public void setMinSubtotal(double minSubtotal) { this.minSubtotal = minSubtotal; }
 
+    public double getMax() { return max; }
+    public void setMax(double max) { this.max = max; }
+
+    public boolean getIsActive() { return isActive; }
+    public void setIsActive(boolean isActive) { this.isActive = isActive; }
+
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
 
@@ -63,4 +73,10 @@ public class Promotion implements Serializable {
 
     public int getImageRes() { return imageRes; }
     public void setImageRes(int imageRes) { this.imageRes = imageRes; }
+
+    public String getCreatedAt() { return createdAt; }
+    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+
+    public String getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(String updatedAt) { this.updatedAt = updatedAt; }
 }

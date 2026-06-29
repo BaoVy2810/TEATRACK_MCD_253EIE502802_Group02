@@ -1290,7 +1290,7 @@
                                     android:gravity="center_vertical"
                                     android:padding="10dp"
                                     android:textColorHint="@color/secondary"
-                                    android:textSize="12sp" />
+                                    android:textSize="14sp" />
 
                                 <!-- Field: Contact Number -->
                                 <TextView
@@ -1311,7 +1311,7 @@
                                     android:inputType="phone"
                                     android:padding="10dp"
                                     android:textColorHint="@color/secondary"
-                                    android:textSize="12sp" />
+                                    android:textSize="14sp" />
 
                                 <!-- Field: Recipient Address -->
                                 <TextView
@@ -1332,7 +1332,7 @@
                                     android:inputType="textPostalAddress|textCapWords"
                                     android:padding="10dp"
                                     android:textColorHint="@color/secondary"
-                                    android:textSize="12sp" />
+                                    android:textSize="14sp" />
 
                                 <!-- Pickup Time Header -->
                                 <LinearLayout
@@ -1372,7 +1372,7 @@
                                             android:focusable="true"
                                             android:fontFamily="@font/inter_family"
                                             android:textColor="@color/secondary"
-                                            android:textSize="12sp"
+                                            android:textSize="14sp"
                                             tools:text="Today, Jun 25" />
 
                                     </LinearLayout>
@@ -1501,21 +1501,33 @@
                             android:paddingHorizontal="20dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp">
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnCancelRecipientEdit"
-                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                                 android:layout_width="0dp"
                                 android:layout_height="52dp"
                                 android:layout_weight="1"
                                 android:layout_marginEnd="8dp"
-                                android:text="Cancel" />
-                            <Button
+                                android:text="Cancel"
+                                android:textAllCaps="false"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textColor="@color/text_cancel_button"
+                                app:backgroundTint="@null"
+                                android:background="@drawable/bg_cancel_button"
+                                app:cornerRadius="26dp" />
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnConfirmRecipientEdit"
                                 android:layout_width="0dp"
                                 android:layout_height="52dp"
                                 android:layout_weight="2"
                                 android:text="Confirm Changes"
-                                android:backgroundTint="@color/brand_blue" />
+                                android:textAllCaps="false"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                android:textColor="@color/white"
+                                app:backgroundTint="@null"
+                                android:background="@drawable/bg_confirm_button_blue"
+                                app:cornerRadius="26dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
