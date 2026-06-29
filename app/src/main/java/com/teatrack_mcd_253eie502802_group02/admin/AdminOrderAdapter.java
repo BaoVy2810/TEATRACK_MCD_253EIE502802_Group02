@@ -111,9 +111,10 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Vi
         // Total
         h.tvOrderTotal.setText(formatVnd(order.getTotal()));
 
-        // Branch (agencyId as fallback)
-        String branch = safe(order.getAgencyId(), "—");
-        h.tvOrderBranch.setText(branch);
+        // Branch address — prefer branchAddress, fall back to agencyId for legacy orders
+        String branch = safe(order.getBranchAddress());
+        if (branch.isEmpty()) branch = safe(order.getAgencyId());
+        h.tvOrderBranch.setText(branch.isEmpty() ? "—" : branch);
 
         // Status badge
         applyStatusBadge(h.tvStatusBadge, status);

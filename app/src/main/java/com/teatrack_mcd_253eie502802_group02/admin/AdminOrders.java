@@ -1,11 +1,14 @@
 package com.teatrack_mcd_253eie502802_group02.admin;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -285,24 +288,50 @@ public class AdminOrders extends AppCompatActivity {
     }
 
     private void showCancelDialog(FirebaseOrder order) {
-        new AlertDialog.Builder(this)
-                .setTitle("Cancel Order")
-                .setMessage("Cancel this order?")
-                .setPositiveButton("Yes, cancel", (d, w) -> {
-                    String key = getOrderKey(order);
-                    if (key == null) return;
-                    FirebaseDatabase.getInstance(DB_URL)
-                            .getReference("orders")
-                            .child(key)
-                            .child("status")
-                            .setValue("cancelled")
-                            .addOnSuccessListener(unused ->
-                                    Toast.makeText(this, "Order cancelled", Toast.LENGTH_SHORT).show())
-                            .addOnFailureListener(e ->
-                                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show());
-                })
-                .setNegativeButton("No", null)
-                .show();
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_delete_confirm, null);
+        dialog.setContentView(dialogView);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.getWindow().setLayout(
+                    (int) (getResources().getDisplayMetrics().widthPixels * 0.88),
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
+        TextView tvTitle   = dialogView.findViewById(R.id.tvDeleteTitle);
+        TextView tvMessage = dialogView.findViewById(R.id.tvDeleteMessage);
+        com.google.android.material.button.MaterialButton btnConfirm =
+                dialogView.findViewById(R.id.btnConfirmDelete);
+
+        tvTitle.setText("Cancel Order");
+        tvTitle.setTextColor(getColor(R.color.brand_blue));
+        String orderId = order.getOrderId() != null ? order.getOrderId() : "";
+        tvMessage.setText("Are you sure you want to cancel order #" + orderId + "?");
+        btnConfirm.setText("Yes, Cancel");
+        btnConfirm.setBackgroundTintList(
+                android.content.res.ColorStateList.valueOf(getColor(R.color.brand_blue)));
+
+        dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+        btnConfirm.setOnClickListener(v -> {
+            String key = getOrderKey(order);
+            if (key == null) { dialog.dismiss(); return; }
+            FirebaseDatabase.getInstance(DB_URL)
+                    .getReference("orders")
+                    .child(key)
+                    .child("status")
+                    .setValue("cancelled")
+                    .addOnSuccessListener(unused -> {
+                        dialog.dismiss();
+                        Toast.makeText(this, "Order cancelled", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        dialog.dismiss();
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        });
+
+        dialog.show();
     }
 
     private void openOrderDetail(FirebaseOrder order) {

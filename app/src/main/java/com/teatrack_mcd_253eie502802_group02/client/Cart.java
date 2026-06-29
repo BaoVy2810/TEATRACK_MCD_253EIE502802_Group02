@@ -332,25 +332,6 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
         layoutCartFooter.setBackgroundResource(R.drawable.bg_cart_footer);
         layoutCartFooter.setPadding(0, 0, 0, navBarInsetBottom);
-        
-        int bottomPadding = dp(16);
-        
-        applyOverlayBottomInset(layoutRecipientEditorFooter, bottomPadding);
-        applyOverlayBottomInset(cardPaymentPickerContent, bottomPadding);
-        applyOverlayBottomInset(findViewById(R.id.layoutVoucherPickerContent), bottomPadding);
-        applyOverlayBottomInset(findViewById(R.id.layoutBranchPickerContent), bottomPadding);
-    }
-
-    private void applyOverlayBottomInset(View target, int basePadding) {
-        if (target == null) {
-            return;
-        }
-        target.setPadding(
-                target.getPaddingLeft(),
-                target.getPaddingTop(),
-                target.getPaddingRight(),
-                basePadding + navBarInsetBottom
-        );
     }
 
     private void applyExtraBoldTypeface(TextView... textViews) {

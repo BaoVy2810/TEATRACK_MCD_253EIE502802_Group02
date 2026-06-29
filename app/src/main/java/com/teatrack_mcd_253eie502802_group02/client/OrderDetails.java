@@ -218,8 +218,9 @@ public class OrderDetails extends BaseActivity {
         // Total
         tvDetailTotal.setText(formatVnd(order.getTotal()));
 
-        // Address row
-        String addr = safe(order.getCustomerAddress());
+        // Address row in summary card — show branch (pickup) address
+        String addr = safe(order.getBranchAddress());
+        if (addr.isEmpty()) addr = safe(order.getCustomerAddress()); // legacy fallback
         if (!addr.isEmpty()) {
             vAddressDivider.setVisibility(View.VISIBLE);
             llDetailAddress.setVisibility(View.VISIBLE);

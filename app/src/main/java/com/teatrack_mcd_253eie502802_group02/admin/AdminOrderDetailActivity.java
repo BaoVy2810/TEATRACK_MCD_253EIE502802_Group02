@@ -291,25 +291,43 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     }
 
     private void showDeleteDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("Delete Order")
-                .setMessage("Delete this order permanently?")
-                .setPositiveButton("Delete", (d, w) -> {
-                    String key = safe(currentOrder.getId());
-                    if (key.isEmpty()) return;
-                    FirebaseDatabase.getInstance(DB_URL)
-                            .getReference("orders")
-                            .child(key)
-                            .removeValue()
-                            .addOnSuccessListener(unused -> {
-                                Toast.makeText(this, "Order deleted", Toast.LENGTH_SHORT).show();
-                                finish();
-                            })
-                            .addOnFailureListener(e ->
-                                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show());
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+        android.app.Dialog dialog = new android.app.Dialog(this);
+        dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
+        View dialogView = android.view.LayoutInflater.from(this)
+                .inflate(R.layout.dialog_delete_confirm, null);
+        dialog.setContentView(dialogView);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            dialog.getWindow().setLayout(
+                    (int) (getResources().getDisplayMetrics().widthPixels * 0.88),
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
+        TextView tvTitle   = dialogView.findViewById(R.id.tvDeleteTitle);
+        TextView tvMessage = dialogView.findViewById(R.id.tvDeleteMessage);
+        tvTitle.setText("Delete Order");
+        tvMessage.setText("This order will be permanently removed from the system.");
+
+        dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
+        dialogView.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
+            String key = safe(currentOrder.getId());
+            if (key.isEmpty()) { dialog.dismiss(); return; }
+            FirebaseDatabase.getInstance(DB_URL)
+                    .getReference("orders")
+                    .child(key)
+                    .removeValue()
+                    .addOnSuccessListener(unused -> {
+                        dialog.dismiss();
+                        Toast.makeText(this, "Order deleted", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        dialog.dismiss();
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        });
+
+        dialog.show();
     }
 
     // ── Populate ──────────────────────────────────────────────────────────────
@@ -408,7 +426,9 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         tvDeliveryPhone.setText(safe(order.getCustomerPhone(), "—"));
         tvDeliveryAddress.setText(safe(order.getCustomerAddress(), "—"));
         tvDeliveryPayment.setText(safe(order.getPaymentMethod(), "—"));
-        tvDeliveryBranch.setText(safe(order.getAgencyId(), "—"));
+        String branchAddr = safe(order.getBranchAddress());
+        if (branchAddr.isEmpty()) branchAddr = safe(order.getAgencyId()); // legacy fallback
+        tvDeliveryBranch.setText(branchAddr.isEmpty() ? "—" : branchAddr);
     }
 
     private void populatePaymentCard(FirebaseOrder order) {

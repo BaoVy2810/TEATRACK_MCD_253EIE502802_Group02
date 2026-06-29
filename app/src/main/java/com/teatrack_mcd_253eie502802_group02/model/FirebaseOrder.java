@@ -13,6 +13,7 @@ public class FirebaseOrder implements Serializable {
     private String customerName;
     private String customerPhone;
     private String customerAddress;
+    private String branchAddress;
     private String paymentMethod;
     private String status;
     private int subtotal;
@@ -58,6 +59,9 @@ public class FirebaseOrder implements Serializable {
 
     public String getCustomerAddress() { return customerAddress; }
     public void setCustomerAddress(String customerAddress) { this.customerAddress = customerAddress; }
+
+    public String getBranchAddress() { return branchAddress; }
+    public void setBranchAddress(String branchAddress) { this.branchAddress = branchAddress; }
 
     public String getPaymentMethod() { return paymentMethod; }
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
