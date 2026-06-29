@@ -366,6 +366,10 @@
     <string name="cart_subtotal">Subtotal</string>
     <string name="cart_delivery_fee">Delivery Fee</string>
     <string name="cart_voucher">Voucher</string>
+    <string name="cart_voucher_empty">Không có ưu đãi nào</string>
+    <string name="cart_voucher_use_now">Dùng ngay</string>
+    <string name="cart_voucher_conditions">Điều kiện</string>
+    <string name="cart_voucher_min_order">Đơn hàng tối thiểu %1$s để sử dụng ưu đãi này</string>
     <string name="cart_total">Total</string>
     <string name="cart_confirm_order">Confirm Order</string>
     <string name="cart_order_pickup">Order for Pickup</string>
@@ -1021,7 +1025,7 @@
     <string name="str_qty_unit_format">x%1$d • %2$s₫/item</string>
     <string name="str_add_voucher">Thêm ưu đãi</string>
     <string name="str_subtitle_voucher">Chọn để khám phá nhiều ưu đãi</string>
-    <string name="cart_picker_voucher_title">Select Voucher</string>
-    <string name="cart_picker_branch_title">Select Branch</string>
-    <string name="cart_recipient_edit_title">Edit Recipient Details</string>
+    <string name="cart_picker_voucher_title">Chọn mã giảm giá</string>
+    <string name="cart_picker_branch_title">Chọn chi nhánh</string>
+    <string name="cart_recipient_edit_title">Chỉnh sửa thông tin người nhận</string>
 </resources>

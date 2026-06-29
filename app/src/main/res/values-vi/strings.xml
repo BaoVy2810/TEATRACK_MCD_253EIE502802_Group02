@@ -100,12 +100,12 @@
     <string name="firebase_field_date">date</string>
     <string name="firebase_field_visible">visible</string>
 
-    <string name="pure_tea">Trà nguyên chất</string>
-    <string name="tea_latte">Trà Latte</string>
-    <string name="milk_tea">Trà sữa</string>
-    <string name="new_arrivals">Sản phẩm mới</string>
-    <string name="best_sellers">Bán chạy nhất</string>
-    <string name="fruit_tea">Trà trái cây</string>
+    <string name="pure_tea">Loại Thuần Trà</string>
+    <string name="tea_latte">Loại Trà Latte</string>
+    <string name="milk_tea">Loại Trà Sữa</string>
+    <string name="new_arrivals">Thức Uống Mới</string>
+    <string name="best_sellers">Thức Uống Hot</string>
+    <string name="fruit_tea">Loại Trà Trái Cây</string>
 
     <!-- Quản trị Dashboard và Phân tích (Admin Context) -->
     <string name="title_overview_dashboard">BẢNG ĐIỀU KHIỂN TỔNG QUAN</string>
@@ -785,5 +785,9 @@
     <string name="str_subtitle_voucher">Chọn để khám phá nhiều ưu đãi</string>
     <string name="cart_picker_voucher_title">Chọn Mã Giảm Giá</string>
     <string name="cart_picker_branch_title">Chọn Chi Nhánh</string>
-    <string name="cart_recipient_edit_title">Chỉnh Sửa Thông Tin Người Nhận</string>
+    <string name="cart_recipient_edit_title">Chỉnh sửa thông tin người nhận</string>
+    <string name="cart_voucher_empty">Không có ưu đãi nào</string>
+    <string name="cart_voucher_use_now">Dùng ngay</string>
+    <string name="cart_voucher_conditions">Điều kiện</string>
+    <string name="cart_voucher_min_order">Đơn hàng tối thiểu %1$s để sử dụng ưu đãi này</string>
 </resources>

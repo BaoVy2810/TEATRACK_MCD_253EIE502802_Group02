@@ -142,10 +142,8 @@ public class Menu extends BaseActivity {
     private void setupProducts() {
         RecyclerView rvMenuProducts = findViewById(R.id.rvMenuProducts);
         rvMenuProducts.setLayoutManager(new GridLayoutManager(this, 1));
-        // Không tắt nested scrolling — tắt sẽ khiến RecyclerView inflate TẤT CẢ items cùng lúc
-        // thay vì chỉ inflate items đang hiển thị (mất virtualization hoàn toàn)
         rvMenuProducts.setHasFixedSize(true);
-        adapter = new MenuProductAdapter(filteredProducts, this::openProductDetail, this::onAddToCart);
+        adapter = new MenuProductAdapter(this::openProductDetail, this::onAddToCart);
         rvMenuProducts.setAdapter(adapter);
     }
 
@@ -324,10 +322,10 @@ public class Menu extends BaseActivity {
             adapter.submitList(new ArrayList<>(filteredProducts));
         }
         if (tvMenuSectionTitle != null) {
-            tvMenuSectionTitle.setText(
-                    selectedCategory == null || selectedCategory.isEmpty()
-                            ? getString(R.string.menu_all_products_title)
-                            : selectedCategory.toUpperCase(Locale.getDefault()));
+            String title = (selectedCategory == null || selectedCategory.isEmpty())
+                    ? getString(R.string.menu_all_products_title)
+                    : selectedCategory;
+            tvMenuSectionTitle.setText(title.toUpperCase(Locale.getDefault()));
         }
         if (tvMenuSectionSubtitle != null) {
             if (!searchQuery.isEmpty()) {
