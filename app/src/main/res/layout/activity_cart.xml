@@ -1122,7 +1122,7 @@
                                 android:maxLines="1"
                                 android:padding="10dp"
                                 android:textColorHint="@color/secondary"
-                                android:textSize="12sp" />
+                                android:textSize="14sp" />
 
                             <Button
                                 android:id="@+id/btnConfirmVoucherCode"

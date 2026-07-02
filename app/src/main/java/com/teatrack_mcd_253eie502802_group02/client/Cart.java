@@ -653,7 +653,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private void updateBranchUi() {
         if (tvSelectedBranchAddress != null && selectedBranchIndex >= 0 && selectedBranchIndex < availableBranches.size()) {
             com.teatrack_mcd_253eie502802_group02.model.Agency agency = availableBranches.get(selectedBranchIndex);
-            tvSelectedBranchAddress.setText(agency.getName() + " - " + agency.getAddress());
+            tvSelectedBranchAddress.setText(agency.getAddress());
         }
         if (layoutBranchOptions == null) return;
         for (int i = 0; i < layoutBranchOptions.getChildCount(); i++) {
@@ -853,7 +853,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         layoutVoucherList.removeAllViews();
         if (availableVouchers.isEmpty()) {
             TextView empty = new TextView(this);
-            empty.setText("Không có ưu đãi nào");
+            empty.setText(R.string.cart_voucher_empty);
             empty.setTextColor(ContextCompat.getColor(this, R.color.secondary));
             empty.setGravity(android.view.Gravity.CENTER);
             empty.setPadding(dp(16), dp(24), dp(16), dp(24));
@@ -927,7 +927,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
             // Action button
             TextView btnAction = new TextView(this);
-            btnAction.setText(eligible ? "Dùng ngay" : "Điều kiện");
+            btnAction.setText(eligible ? getString(R.string.cart_voucher_use_now) : getString(R.string.cart_voucher_conditions));
             btnAction.setTextSize(14f);
             btnAction.setTypeface(null, Typeface.BOLD);
             btnAction.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
@@ -972,7 +972,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                 tvInfoParams.setMarginStart(dp(6));
                 tvInfo.setLayoutParams(tvInfoParams);
                 String minStr = formatPrice((int) v.getMinSubtotal());
-                tvInfo.setText("Đơn hàng tối thiểu " + minStr + " để sử dụng ưu đãi này");
+                tvInfo.setText(getString(R.string.cart_voucher_min_order, minStr));
                 tvInfo.setTextSize(12f);
                 tvInfo.setTextColor(0xFF7A5800);
                 tvInfo.setMaxLines(2);

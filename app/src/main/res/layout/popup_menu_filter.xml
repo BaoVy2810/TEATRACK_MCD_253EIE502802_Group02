@@ -33,13 +33,13 @@
 
             <TextView
                 android:id="@+id/optCategoryAll"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:background="@android:color/transparent"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/menu_all_categories"
                 android:textColor="#252B37"
@@ -47,12 +47,12 @@
 
             <TextView
                 android:id="@+id/optCategoryPureTea"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/firebase_category_pure_tea"
                 android:textColor="#252B37"
@@ -60,12 +60,12 @@
 
             <TextView
                 android:id="@+id/optCategoryMilkTea"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/firebase_category_milk_tea"
                 android:textColor="#252B37"
@@ -73,12 +73,12 @@
 
             <TextView
                 android:id="@+id/optCategoryTeaLatte"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/firebase_category_tea_latte"
                 android:textColor="#252B37"
@@ -86,12 +86,12 @@
 
             <TextView
                 android:id="@+id/optCategoryFruitTea"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/firebase_category_fruit_tea"
                 android:textColor="#252B37"
@@ -99,12 +99,12 @@
 
             <TextView
                 android:id="@+id/optCategoryNewArrivals"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/firebase_category_new_arrivals"
                 android:textColor="#252B37"
@@ -112,12 +112,12 @@
 
             <TextView
                 android:id="@+id/optCategoryBestSellers"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/firebase_category_best_sellers"
                 android:textColor="#252B37"
@@ -151,12 +151,12 @@
 
             <TextView
                 android:id="@+id/optSortFeatured"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/menu_sort_featured"
                 android:textColor="#252B37"
@@ -164,12 +164,12 @@
 
             <TextView
                 android:id="@+id/optSortNameAsc"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/menu_sort_name_asc"
                 android:textColor="#252B37"
@@ -177,12 +177,12 @@
 
             <TextView
                 android:id="@+id/optSortNameDesc"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/menu_sort_name_desc"
                 android:textColor="#252B37"
@@ -190,12 +190,12 @@
 
             <TextView
                 android:id="@+id/optSortPriceAsc"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/menu_sort_price_asc"
                 android:textColor="#252B37"
@@ -203,12 +203,12 @@
 
             <TextView
                 android:id="@+id/optSortPriceDesc"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
                 android:paddingStart="8dp"
                 android:paddingTop="8dp"
-                android:paddingEnd="8dp"
+                android:paddingEnd="32dp"
                 android:paddingBottom="8dp"
                 android:text="@string/menu_sort_price_desc"
                 android:textColor="#252B37"

@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import com.teatrack_mcd_253eie502802_group02.R;
@@ -20,7 +20,7 @@ import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 import java.util.List;
 
-public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.ProductViewHolder> {
+public class MenuProductAdapter extends ListAdapter<Product, MenuProductAdapter.ProductViewHolder> {
 
     public interface OnProductClickListener {
         void onProductClick(Product product);
@@ -30,43 +30,16 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
         void onAddToCart(Product product);
     }
 
-    private final List<Product> products = new ArrayList<>();
     private final OnProductClickListener productClickListener;
     private final OnAddToCartClickListener addToCartClickListener;
 
     public MenuProductAdapter(
-            List<Product> initialProducts,
             OnProductClickListener productClickListener,
             OnAddToCartClickListener addToCartClickListener
     ) {
+        super(new ProductDiffCallback());
         this.productClickListener = productClickListener;
         this.addToCartClickListener = addToCartClickListener;
-        if (initialProducts != null) this.products.addAll(initialProducts);
-    }
-
-    /** Dùng thay cho notifyDataSetChanged() — tính diff trên background thread */
-    public void submitList(List<Product> newList) {
-        if (newList == null) newList = new ArrayList<>();
-        final List<Product> oldList = new ArrayList<>(products);
-        final List<Product> finalNew = new ArrayList<>(newList);
-        DiffUtil.DiffResult result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-            @Override public int getOldListSize() { return oldList.size(); }
-            @Override public int getNewListSize() { return finalNew.size(); }
-            @Override public boolean areItemsTheSame(int o, int n) {
-                String oldName = oldList.get(o).getName();
-                String newName = finalNew.get(n).getName();
-                return Objects.equals(oldName, newName);
-            }
-            @Override public boolean areContentsTheSame(int o, int n) {
-                Product a = oldList.get(o), b = finalNew.get(n);
-                return Objects.equals(a.getName(), b.getName())
-                        && a.getPriceM() == b.getPriceM()
-                        && a.getPriceL() == b.getPriceL();
-            }
-        });
-        products.clear();
-        products.addAll(finalNew);
-        result.dispatchUpdatesTo(this);
     }
 
     @NonNull
@@ -74,12 +47,12 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_menu_product_card, parent, false);
-        return new ProductViewHolder(view);
+        return new ProductViewHolder(view, productClickListener, addToCartClickListener, this);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product product = products.get(position);
+        Product product = getItem(position);
         ProductImageHelper.load(holder.imgProduct, product);
         holder.tvProductName.setText(product.getName());
         holder.tvRating.setText(String.valueOf(product.getRating()));
@@ -88,23 +61,11 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
         holder.tvPriceL.setText(formatPrice(product.getPriceL()));
         holder.tvVipPriceM.setText(formatPrice(product.getVipPriceM()));
         holder.tvVipPriceL.setText(formatPrice(product.getVipPriceL()));
-
-        holder.itemView.setOnClickListener(v -> {
-            if (productClickListener != null) {
-                productClickListener.onProductClick(product);
-            }
-        });
-
-        holder.btnAddToCartMini.setOnClickListener(v -> {
-            if (addToCartClickListener != null) {
-                addToCartClickListener.onAddToCart(product);
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        return products.size();
+        return getCurrentList().size();
     }
 
     private String formatPrice(int price) {
@@ -122,7 +83,10 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
         final TextView tvVipPriceL;
         final ImageButton btnAddToCartMini;
 
-        ProductViewHolder(@NonNull View itemView) {
+        ProductViewHolder(@NonNull View itemView,
+                          OnProductClickListener productClickListener,
+                          OnAddToCartClickListener addToCartClickListener,
+                          MenuProductAdapter adapter) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
             tvProductName = itemView.findViewById(R.id.tvProductName);
@@ -133,6 +97,41 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
             tvVipPriceM = itemView.findViewById(R.id.tvVipPriceM);
             tvVipPriceL = itemView.findViewById(R.id.tvVipPriceL);
             btnAddToCartMini = itemView.findViewById(R.id.btnAddToCartMini);
+
+            itemView.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION && productClickListener != null) {
+                    productClickListener.onProductClick(adapter.getItem(pos));
+                }
+            });
+
+            btnAddToCartMini.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION && addToCartClickListener != null) {
+                    addToCartClickListener.onAddToCart(adapter.getItem(pos));
+                }
+            });
+        }
+    }
+
+    private static class ProductDiffCallback extends DiffUtil.ItemCallback<Product> {
+        @Override
+        public boolean areItemsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
+            if (oldItem.getId() != null && newItem.getId() != null) {
+                return oldItem.getId().equals(newItem.getId());
+            }
+            return Objects.equals(oldItem.getName(), newItem.getName());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
+            return Objects.equals(oldItem.getName(), newItem.getName())
+                    && oldItem.getPriceM() == newItem.getPriceM()
+                    && oldItem.getPriceL() == newItem.getPriceL()
+                    && oldItem.getVipPriceM() == newItem.getVipPriceM()
+                    && oldItem.getVipPriceL() == newItem.getVipPriceL()
+                    && Float.compare(oldItem.getRating(), newItem.getRating()) == 0
+                    && Objects.equals(oldItem.getReviewCount(), newItem.getReviewCount());
         }
     }
 }
