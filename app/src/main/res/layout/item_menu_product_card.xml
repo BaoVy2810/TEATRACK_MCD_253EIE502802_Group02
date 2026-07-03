@@ -111,6 +111,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tvSizeBadgeM"
                             android:layout_width="24dp"
                             android:layout_height="18dp"
                             android:background="@drawable/bg_size_tag"
@@ -139,6 +140,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tvVipBadgeM"
                             android:layout_width="24dp"
                             android:layout_height="18dp"
                             android:background="@drawable/bg_vip_tag"
@@ -173,6 +175,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tvSizeBadgeL"
                             android:layout_width="24dp"
                             android:layout_height="18dp"
                             android:background="@drawable/bg_size_tag"
@@ -201,6 +204,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tvVipBadgeL"
                             android:layout_width="24dp"
                             android:layout_height="18dp"
                             android:background="@drawable/bg_vip_tag"

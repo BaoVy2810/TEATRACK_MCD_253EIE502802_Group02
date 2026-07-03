@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
+import com.teatrack_mcd_253eie502802_group02.util.ReviewStatsHelper;
+import com.teatrack_mcd_253eie502802_group02.util.VipPriceUiHelper;
 
 import java.util.List;
 
@@ -75,12 +77,17 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
         Product item = products.get(position);
         ProductImageHelper.load(holder.imgProduct, item);
         holder.tvProductName.setText(item.getName());
-        holder.tvRating.setText(String.valueOf(item.getRating()));
-        holder.tvReviews.setText(item.getReviewCount() + " Đánh giá");
+        holder.tvRating.setText(ReviewStatsHelper.formatRating(item.getRating()));
+        String reviewCount = item.getReviewCount() != null ? item.getReviewCount() : "0";
+        holder.tvReviews.setText(holder.itemView.getContext().getString(
+                R.string.product_card_reviews_format, reviewCount));
         holder.tvPriceM.setText(formatPrice(item.getPrice()));
         holder.tvPriceL.setText(formatPrice(item.getPriceL()));
         holder.tvVipPriceM.setText(formatPrice(item.getVipPriceM()));
         holder.tvVipPriceL.setText(formatPrice(item.getVipPriceL()));
+        VipPriceUiHelper.applyCardPrices(holder.itemView.getContext(),
+                holder.tvSizeM, holder.tvPriceM, holder.tvVipM, holder.tvVipPriceM,
+                holder.tvSizeL, holder.tvPriceL, holder.tvVipL, holder.tvVipPriceL);
         holder.itemView.setOnClickListener(v -> {
             if (clickListener != null) {
                 clickListener.onProductClick(item);
@@ -109,7 +116,8 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
         ImageView imgProduct;
         ImageButton btnAddToCartMini;
         TextView tvProductName, tvRating, tvReviews;
-        TextView tvPriceM, tvPriceL, tvVipPriceM, tvVipPriceL;
+        TextView tvSizeM, tvSizeL, tvPriceM, tvPriceL, tvVipPriceM, tvVipPriceL;
+        TextView tvVipM, tvVipL;
 
         ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -118,10 +126,14 @@ public class ProductCardAdapter extends RecyclerView.Adapter<ProductCardAdapter.
             tvProductName = itemView.findViewById(R.id.tvProductName);
             tvRating = itemView.findViewById(R.id.tvRating);
             tvReviews = itemView.findViewById(R.id.tvReviews);
+            tvSizeM = itemView.findViewById(R.id.tvSizeM);
+            tvSizeL = itemView.findViewById(R.id.tvSizeL);
             tvPriceM = itemView.findViewById(R.id.tvPriceM);
             tvPriceL = itemView.findViewById(R.id.tvPriceL);
             tvVipPriceM = itemView.findViewById(R.id.tvVipPriceM);
             tvVipPriceL = itemView.findViewById(R.id.tvVipPriceL);
+            tvVipM = itemView.findViewById(R.id.tvVipM);
+            tvVipL = itemView.findViewById(R.id.tvVipL);
         }
     }
 }

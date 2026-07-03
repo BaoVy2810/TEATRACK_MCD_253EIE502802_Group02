@@ -17,6 +17,8 @@ import java.util.Objects;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
+import com.teatrack_mcd_253eie502802_group02.util.ReviewStatsHelper;
+import com.teatrack_mcd_253eie502802_group02.util.VipPriceUiHelper;
 
 import java.util.List;
 
@@ -55,12 +57,17 @@ public class MenuProductAdapter extends ListAdapter<Product, MenuProductAdapter.
         Product product = getItem(position);
         ProductImageHelper.load(holder.imgProduct, product);
         holder.tvProductName.setText(product.getName());
-        holder.tvRating.setText(String.valueOf(product.getRating()));
-        holder.tvReviews.setText(product.getReviewCount() + " đánh giá");
+        holder.tvRating.setText(ReviewStatsHelper.formatRating(product.getRating()));
+        String reviewCount = product.getReviewCount() != null ? product.getReviewCount() : "0";
+        holder.tvReviews.setText(holder.itemView.getContext().getString(
+                R.string.product_card_reviews_format, reviewCount));
         holder.tvPriceM.setText(formatPrice(product.getPriceM()));
         holder.tvPriceL.setText(formatPrice(product.getPriceL()));
         holder.tvVipPriceM.setText(formatPrice(product.getVipPriceM()));
         holder.tvVipPriceL.setText(formatPrice(product.getVipPriceL()));
+        VipPriceUiHelper.applyMenuPrices(holder.itemView.getContext(),
+                holder.tvSizeBadgeM, holder.tvPriceM, holder.tvVipBadgeM, holder.tvVipPriceM,
+                holder.tvSizeBadgeL, holder.tvPriceL, holder.tvVipBadgeL, holder.tvVipPriceL);
     }
 
     @Override
@@ -77,10 +84,14 @@ public class MenuProductAdapter extends ListAdapter<Product, MenuProductAdapter.
         final TextView tvProductName;
         final TextView tvRating;
         final TextView tvReviews;
+        final TextView tvSizeBadgeM;
+        final TextView tvSizeBadgeL;
         final TextView tvPriceM;
         final TextView tvPriceL;
         final TextView tvVipPriceM;
         final TextView tvVipPriceL;
+        final TextView tvVipBadgeM;
+        final TextView tvVipBadgeL;
         final ImageButton btnAddToCartMini;
 
         ProductViewHolder(@NonNull View itemView,
@@ -92,10 +103,14 @@ public class MenuProductAdapter extends ListAdapter<Product, MenuProductAdapter.
             tvProductName = itemView.findViewById(R.id.tvProductName);
             tvRating = itemView.findViewById(R.id.tvRating);
             tvReviews = itemView.findViewById(R.id.tvReviews);
+            tvSizeBadgeM = itemView.findViewById(R.id.tvSizeBadgeM);
+            tvSizeBadgeL = itemView.findViewById(R.id.tvSizeBadgeL);
             tvPriceM = itemView.findViewById(R.id.tvPriceM);
             tvPriceL = itemView.findViewById(R.id.tvPriceL);
             tvVipPriceM = itemView.findViewById(R.id.tvVipPriceM);
             tvVipPriceL = itemView.findViewById(R.id.tvVipPriceL);
+            tvVipBadgeM = itemView.findViewById(R.id.tvVipBadgeM);
+            tvVipBadgeL = itemView.findViewById(R.id.tvVipBadgeL);
             btnAddToCartMini = itemView.findViewById(R.id.btnAddToCartMini);
 
             itemView.setOnClickListener(v -> {
