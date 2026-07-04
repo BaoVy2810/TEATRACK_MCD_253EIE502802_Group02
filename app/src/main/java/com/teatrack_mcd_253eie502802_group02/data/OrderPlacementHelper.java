@@ -47,6 +47,17 @@ public final class OrderPlacementHelper {
                 .getString("userRole", "Customer");
         boolean isVip = "Customer Vip".equalsIgnoreCase(userRole);
         int discount = isVip ? CartManager.getInstance().getVipDiscountTotal() : 0;
+        
+        String appliedVoucherId = null;
+        String freeItemName = null;
+        if (context instanceof com.teatrack_mcd_253eie502802_group02.client.Cart) {
+            com.teatrack_mcd_253eie502802_group02.client.Cart cartActivity = (com.teatrack_mcd_253eie502802_group02.client.Cart) context;
+            int voucherDiscount = (int) cartActivity.getAppliedVoucherValue();
+            discount += voucherDiscount;
+            appliedVoucherId = cartActivity.getAppliedVoucherId();
+            freeItemName = cartActivity.getFreeItemName();
+        }
+
         int total = subtotal - discount;
 
         String[] recipient = parseRecipient(recipientDetails);
@@ -79,6 +90,8 @@ public final class OrderPlacementHelper {
         order.setDeliveryDate(pickupDate == null || pickupDate.isEmpty() ? today : pickupDate);
         order.setNote(note == null || note.trim().isEmpty() ? "" : note.trim());
         order.setCouponCode("");
+        order.setAppliedVoucherId(appliedVoucherId);
+        order.setFreeItemName(freeItemName);
         order.setUserId(userId == null ? "" : userId);
         order.setCreatedAt(nowIso);
         order.setUpdatedAt(nowIso);

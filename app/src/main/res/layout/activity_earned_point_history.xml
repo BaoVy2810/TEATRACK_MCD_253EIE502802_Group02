@@ -79,6 +79,7 @@
                     android:padding="24dp">
 
                     <TextView
+                        android:id="@+id/tvProfileName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
@@ -95,10 +96,11 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/tvTotalPoints"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_family"
-                android:textStyle="bold"
+                            android:textStyle="bold"
                             android:text="@string/history_dummy_points"
                             android:textColor="@color/brand_blue"
                             android:textSize="48sp" />
@@ -132,336 +134,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cvUserPoints" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPointsHistory"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:orientation="vertical"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvStoreListLabel">
+                app:layout_constraintTop_toBottomOf="@id/tvStoreListLabel" />
 
-                <!-- Store 1 -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:id="@+id/tvStore1Name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/inter_family"
-                            android:textStyle="bold"
-                            android:text="@string/history_dummy_store1_name"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            app:layout_constraintEnd_toStartOf="@id/llStore1Points"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/inter_family"
-                            android:text="@string/history_dummy_store1_addr"
-                            android:textColor="@color/Gray"
-                            android:textSize="12sp"
-                            app:layout_constraintEnd_toEndOf="@id/tvStore1Name"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvStore1Name" />
-
-                        <LinearLayout
-                            android:id="@+id/llStore1Points"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/inter_family"
-                android:textStyle="bold"
-                                android:text="2"
-                                android:textColor="@color/brand_blue"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:fontFamily="@font/inter_family"
-                android:textStyle="bold"
-                                android:text="@string/history_points_unit"
-                                android:textColor="#1A1A2E"
-                                android:textSize="12sp" />
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:layout_marginStart="4dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/right"
-                                app:tint="@color/Gray" />
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Store 2 -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:id="@+id/tvStore2Name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/inter_family"
-                            android:textStyle="bold"
-                            android:text="@string/history_dummy_store2_name"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            app:layout_constraintEnd_toStartOf="@id/llStore2Points"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/inter_family"
-                            android:text="@string/history_dummy_store2_addr"
-                            android:textColor="@color/Gray"
-                            android:textSize="12sp"
-                            app:layout_constraintEnd_toEndOf="@id/tvStore2Name"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvStore2Name" />
-
-                        <LinearLayout
-                            android:id="@+id/llStore2Points"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/inter_family"
-                android:textStyle="bold"
-                                android:text="1"
-                                android:textColor="@color/brand_blue"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:fontFamily="@font/inter_family"
-                android:textStyle="bold"
-                                android:text="@string/history_points_unit"
-                                android:textColor="#1A1A2E"
-                                android:textSize="12sp" />
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:layout_marginStart="4dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/right"
-                                app:tint="@color/Gray" />
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Store 3 -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:id="@+id/tvStore3Name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/inter_family"
-                            android:textStyle="bold"
-                            android:text="@string/history_dummy_store3_name"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            app:layout_constraintEnd_toStartOf="@id/llStore3Points"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/inter_family"
-                            android:text="@string/history_dummy_store3_addr"
-                            android:textColor="@color/Gray"
-                            android:textSize="12sp"
-                            app:layout_constraintEnd_toEndOf="@id/tvStore3Name"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvStore3Name" />
-
-                        <LinearLayout
-                            android:id="@+id/llStore3Points"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/inter_family"
-                android:textStyle="bold"
-                                android:text="1"
-                                android:textColor="@color/brand_blue"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:fontFamily="@font/inter_family"
-                android:textStyle="bold"
-                                android:text="@string/history_points_unit"
-                                android:textColor="#1A1A2E"
-                                android:textSize="12sp" />
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:layout_marginStart="4dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/right"
-                                app:tint="@color/Gray" />
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-
-                <!-- Store 4 -->
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_marginBottom="12dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:id="@+id/tvStore4Name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:fontFamily="@font/inter_family"
-                            android:textStyle="bold"
-                            android:text="@string/history_dummy_store4_name"
-                            android:textColor="@color/black"
-                            android:textSize="14sp"
-                            app:layout_constraintEnd_toStartOf="@id/llStore4Points"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/inter_family"
-                            android:text="@string/history_dummy_store4_addr"
-                            android:textColor="@color/Gray"
-                            android:textSize="12sp"
-                            app:layout_constraintEnd_toEndOf="@id/tvStore4Name"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvStore4Name" />
-
-                        <LinearLayout
-                            android:id="@+id/llStore4Points"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/inter_family"
-                android:textStyle="bold"
-                                android:text="0"
-                                android:textColor="@color/brand_blue"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:fontFamily="@font/inter_family"
-                android:textStyle="bold"
-                                android:text="@string/history_points_unit"
-                                android:textColor="@color/brand_blue"
-                                android:textSize="12sp" />
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:layout_marginStart="4dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/right"
-                                app:tint="@color/Gray" />
-                        </LinearLayout>
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tvEmptyHistory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/inter_family"
+                android:text="@string/history_empty"
+                android:textColor="@color/Gray"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvPointsHistory" />
 
             <ImageView
                 android:id="@+id/imgLogo"

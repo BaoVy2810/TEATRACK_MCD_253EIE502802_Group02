@@ -711,7 +711,10 @@ public class ProductDetail extends BaseActivity {
                 startActivity(intent);
                 overridePendingTransition(0, 0);
             } else if (id == R.id.nav_promotion) {
-                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, PromotionClient.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
             } else if (id == R.id.nav_profile) {
                 Intent intent = new Intent(this, UserProfile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

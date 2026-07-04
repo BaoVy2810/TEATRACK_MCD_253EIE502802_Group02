@@ -31,7 +31,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
@@ -278,6 +281,12 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
                     .addOnSuccessListener(unused -> {
                         currentOrder.setStatus(finalStatus);
                         populateOrder(currentOrder);
+                        
+                        // Loyalty Points Logic
+                        if (STATUS_COMPLETED.equals(finalStatus) && !currentOrder.isPointsAwarded()) {
+                            awardPointsToUser(currentOrder);
+                        }
+                        
                         Toast.makeText(this, "Status updated", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     })
@@ -288,6 +297,51 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private void awardPointsToUser(FirebaseOrder order) {
+        String userId = order.getUserId();
+        if (userId == null || userId.isEmpty()) return;
+
+        DatabaseReference userPointsRef = FirebaseDatabase.getInstance(DB_URL)
+                .getReference("Users").child(userId).child("points");
+
+        userPointsRef.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                Long points = currentData.getValue(Long.class);
+                if (points == null) points = 0L;
+                currentData.setValue(points + 1);
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError error, boolean committed, DataSnapshot snapshot) {
+                if (committed) {
+                    // Mark order as points awarded
+                    FirebaseDatabase.getInstance(DB_URL)
+                            .getReference("orders")
+                            .child(order.getId())
+                            .child("pointsAwarded")
+                            .setValue(true);
+                    order.setPointsAwarded(true);
+
+                    // Add to PointsHistory
+                    DatabaseReference historyRef = FirebaseDatabase.getInstance(DB_URL)
+                            .getReference("PointsHistory").child(userId).push();
+                    
+                    Map<String, Object> historyEntry = new HashMap<>();
+                    historyEntry.put("orderId", order.getOrderId() != null ? order.getOrderId() : order.getId());
+                    historyEntry.put("pointsChange", 1);
+                    historyEntry.put("createdAt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+                    historyEntry.put("type", "earn");
+                    historyEntry.put("description", "Tích điểm từ đơn hàng #" + (order.getOrderId() != null ? order.getOrderId() : order.getId()));
+                    
+                    historyRef.setValue(historyEntry);
+                }
+            }
+        });
     }
 
     private void showDeleteDialog() {

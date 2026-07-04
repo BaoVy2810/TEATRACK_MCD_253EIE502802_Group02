@@ -151,7 +151,7 @@ public class Homepage extends BaseActivity {
         } else if (id == R.id.nav_orders) {
             intent = new Intent(this, OrderHistory.class);
         } else if (id == R.id.nav_promotion) {
-            Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
+            intent = new Intent(this, PromotionClient.class);
         } else if (id == R.id.nav_profile) {
             intent = new Intent(this, UserProfile.class);
         }

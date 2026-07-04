@@ -112,6 +112,9 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private android.widget.LinearLayout layoutBranchOptions;
     private int selectedBranchIndex = -1;
     private String selectedBranchId = "";
+    private List<com.teatrack_mcd_253eie502802_group02.model.Promotion> personalVouchers = new java.util.ArrayList<>();
+    private String appliedPersonalVoucherId = null;
+    private String freeItemName = null;
     private View layoutBankOptions;
     private View rowCashInBankHeader;
     private View btnConfirmOrder;
@@ -280,6 +283,14 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
     @Override
     public void onCartChanged() {
+        if (appliedVoucher != null || appliedPersonalVoucherId != null) {
+            // Re-calculate discount if cart changed
+            if (appliedPersonalVoucherId != null) {
+                applyPersonalVoucherById(appliedPersonalVoucherId);
+            } else {
+                applyVoucher(appliedVoucher);
+            }
+        }
         refreshCartUi();
     }
     @Override
@@ -788,7 +799,15 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             tvSubtotal.setText(formatPrice(subtotal));
         }
         if (tvTotal != null) {
-            tvTotal.setText(formatPrice(subtotal - discount));
+            tvTotal.setText(formatPrice(Math.max(0, subtotal - discount)));
+        }
+
+        if (tvVoucherSummary != null) {
+            if (freeItemName != null) {
+                tvVoucherSummary.setText("Miễn phí 1 " + freeItemName);
+            } else {
+                tvVoucherSummary.setText("-" + formatPrice(discount));
+            }
         }
     }
     // ─── Voucher Picker ───────────────────────────────────────────────────────
@@ -814,6 +833,35 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             });
         }
         loadVouchersFromFirebase();
+        loadPersonalVouchers();
+    }
+
+    private void loadPersonalVouchers() {
+        android.content.SharedPreferences loginPrefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
+        String userId = loginPrefs.getString("userId", null);
+        if (userId == null) return;
+
+        com.google.firebase.database.FirebaseDatabase.getInstance()
+                .getReference("Users").child(userId).child("vouchers")
+                .addListenerForSingleValueEvent(new com.google.firebase.database.ValueEventListener() {
+                    @Override
+                    public void onDataChange(@androidx.annotation.NonNull com.google.firebase.database.DataSnapshot snapshot) {
+                        personalVouchers.clear();
+                        for (com.google.firebase.database.DataSnapshot child : snapshot.getChildren()) {
+                            com.teatrack_mcd_253eie502802_group02.model.Promotion p =
+                                    child.getValue(com.teatrack_mcd_253eie502802_group02.model.Promotion.class);
+                            Boolean isUsed = child.child("isUsed").getValue(Boolean.class);
+                            if (p != null && (isUsed == null || !isUsed)) {
+                                p.setId(child.getKey());
+                                p.setType("personal");
+                                personalVouchers.add(p);
+                            }
+                        }
+                        buildVoucherRows();
+                    }
+                    @Override
+                    public void onCancelled(@androidx.annotation.NonNull com.google.firebase.database.DatabaseError error) {}
+                });
     }
 
     private void loadVouchersFromFirebase() {
@@ -845,7 +893,8 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     private void buildVoucherRows() {
         if (layoutVoucherList == null) return;
         layoutVoucherList.removeAllViews();
-        if (availableVouchers.isEmpty()) {
+
+        if (availableVouchers.isEmpty() && personalVouchers.isEmpty()) {
             TextView empty = new TextView(this);
             empty.setText(R.string.cart_voucher_empty);
             empty.setTextColor(ContextCompat.getColor(this, R.color.secondary));
@@ -854,161 +903,175 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             layoutVoucherList.addView(empty);
             return;
         }
-        int subtotal = com.teatrack_mcd_253eie502802_group02.data.CartManager.getInstance().getSubtotal();
-        android.util.TypedValue ripple = new android.util.TypedValue();
-        getTheme().resolveAttribute(android.R.attr.selectableItemBackground, ripple, true);
 
-        for (com.teatrack_mcd_253eie502802_group02.model.Promotion v : availableVouchers) {
-            boolean eligible = subtotal >= v.getMinSubtotal();
-
-            android.widget.LinearLayout row = new android.widget.LinearLayout(this);
-            row.setOrientation(android.widget.LinearLayout.VERTICAL);
-
-            // Main row: icon + content + action
-            android.widget.LinearLayout mainRow = new android.widget.LinearLayout(this);
-            mainRow.setOrientation(android.widget.LinearLayout.HORIZONTAL);
-            mainRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
-            if (ripple.resourceId != 0) mainRow.setBackgroundResource(ripple.resourceId);
-            mainRow.setClickable(true);
-            mainRow.setFocusable(true);
-            mainRow.setPadding(dp(16), dp(12), dp(16), dp(12));
-
-            // Icon circle
-            FrameLayout iconCircle = new FrameLayout(this);
-            android.widget.LinearLayout.LayoutParams iconCircleParams =
-                    new android.widget.LinearLayout.LayoutParams(dp(44), dp(44));
-            iconCircle.setLayoutParams(iconCircleParams);
-            iconCircle.setBackgroundResource(R.drawable.bg_light_blue_rounded_12);
-            android.widget.ImageView ivIcon = new android.widget.ImageView(this);
-            FrameLayout.LayoutParams ivParams = new FrameLayout.LayoutParams(dp(24), dp(24));
-            ivParams.gravity = android.view.Gravity.CENTER;
-            ivIcon.setLayoutParams(ivParams);
-            ivIcon.setImageResource(R.drawable.ic_local_offer);
-            ivIcon.setColorFilter(ContextCompat.getColor(this, R.color.brand_blue));
-            iconCircle.addView(ivIcon);
-
-            // Content column
-            android.widget.LinearLayout content = new android.widget.LinearLayout(this);
-            content.setOrientation(android.widget.LinearLayout.VERTICAL);
-            android.widget.LinearLayout.LayoutParams contentParams =
-                    new android.widget.LinearLayout.LayoutParams(0,
-                            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            contentParams.setMarginStart(dp(12));
-            content.setLayoutParams(contentParams);
-
-            // PRIMARY BOLD TEXT: voucherID (v.getId())
-            TextView tvId = new TextView(this);
-            tvId.setText(v.getId());
-            tvId.setTextSize(16f);
-            tvId.setTypeface(null, Typeface.BOLD);
-            tvId.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
-            content.addView(tvId);
-
-            // Secondary text: Title or Description
-            TextView tvTitle = new TextView(this);
-            tvTitle.setText(v.getTitle().isEmpty() ? v.getDescription() : v.getTitle());
-            tvTitle.setTextSize(13f);
-            tvTitle.setTextColor(ContextCompat.getColor(this, R.color.secondary));
-            content.addView(tvTitle);
-
-            if (v.getExpiry() != null && !v.getExpiry().isEmpty()) {
-                TextView tvExp = new TextView(this);
-                tvExp.setText("HSD: " + v.getExpiry());
-                tvExp.setTextSize(12f);
-                tvExp.setTextColor(ContextCompat.getColor(this, R.color.secondary));
-                content.addView(tvExp);
+        // --- Personal Vouchers Section ---
+        if (!personalVouchers.isEmpty()) {
+            addSectionHeader("Ưu đãi của bạn");
+            for (com.teatrack_mcd_253eie502802_group02.model.Promotion v : personalVouchers) {
+                addVoucherRow(v, true);
             }
+        }
 
-            // Action button
-            TextView btnAction = new TextView(this);
-            btnAction.setText(eligible ? getString(R.string.cart_voucher_use_now) : getString(R.string.cart_voucher_conditions));
-            btnAction.setTextSize(14f);
-            btnAction.setTypeface(null, Typeface.BOLD);
-            btnAction.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
-            android.widget.LinearLayout.LayoutParams btnParams =
-                    new android.widget.LinearLayout.LayoutParams(
-                            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-                            android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-            btnParams.setMarginStart(dp(8));
-            btnAction.setLayoutParams(btnParams);
-
-            mainRow.addView(iconCircle);
-            mainRow.addView(content);
-            mainRow.addView(btnAction);
-
-            row.addView(mainRow);
-
-            if (!eligible) {
-                // Show condition info bar
-                android.widget.LinearLayout infoBar = new android.widget.LinearLayout(this);
-                infoBar.setOrientation(android.widget.LinearLayout.HORIZONTAL);
-                infoBar.setGravity(android.view.Gravity.CENTER_VERTICAL);
-                infoBar.setBackgroundColor(0xFFFFF3CD);
-                infoBar.setPadding(dp(16), dp(8), dp(16), dp(8));
-                android.widget.LinearLayout.LayoutParams infoParams =
-                        new android.widget.LinearLayout.LayoutParams(
-                                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
-                                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-                infoBar.setLayoutParams(infoParams);
-                
-                android.widget.ImageView ivInfo = new android.widget.ImageView(this);
-                android.widget.LinearLayout.LayoutParams infoIconParams =
-                        new android.widget.LinearLayout.LayoutParams(dp(14), dp(14));
-                ivInfo.setLayoutParams(infoIconParams);
-                ivIcon.setImageResource(R.drawable.ic_local_offer);
-                ivInfo.setColorFilter(0xFFB8860B);
-                
-                TextView tvInfo = new TextView(this);
-                android.widget.LinearLayout.LayoutParams tvInfoParams =
-                        new android.widget.LinearLayout.LayoutParams(
-                                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
-                                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
-                tvInfoParams.setMarginStart(dp(6));
-                tvInfo.setLayoutParams(tvInfoParams);
-                String minStr = formatPrice((int) v.getMinSubtotal());
-                tvInfo.setText(getString(R.string.cart_voucher_min_order, minStr));
-                tvInfo.setTextSize(12f);
-                tvInfo.setTextColor(0xFF7A5800);
-                tvInfo.setMaxLines(2);
-                
-                infoBar.addView(ivInfo);
-                infoBar.addView(tvInfo);
-                row.addView(infoBar);
+        // --- Global Vouchers Section ---
+        if (!availableVouchers.isEmpty()) {
+            addSectionHeader("Ưu đãi từ TeaTrack");
+            for (com.teatrack_mcd_253eie502802_group02.model.Promotion v : availableVouchers) {
+                addVoucherRow(v, false);
             }
-
-            if (eligible) {
-                mainRow.setOnClickListener(view -> {
-                    applyVoucher(v);
-                    hideVoucherPicker();
-                });
-            } else {
-                mainRow.setOnClickListener(view -> {
-                    android.widget.Toast.makeText(this,
-                            "Cần đơn tối thiểu " + formatPrice((int)v.getMinSubtotal()),
-                            android.widget.Toast.LENGTH_SHORT).show();
-                });
-            }
-
-            layoutVoucherList.addView(row);
-
-            // Divider
-            View divider = new View(this);
-            divider.setBackgroundColor(ContextCompat.getColor(this, R.color.outline_variant));
-            android.widget.LinearLayout.LayoutParams divParams =
-                    new android.widget.LinearLayout.LayoutParams(
-                            android.widget.LinearLayout.LayoutParams.MATCH_PARENT, 1);
-            // We can use dp(1) for height
-            divParams.height = dp(1);
-            layoutVoucherList.addView(divider, divParams);
         }
     }
 
+    private void addSectionHeader(String title) {
+        TextView header = new TextView(this);
+        header.setText(title);
+        header.setTextSize(14f);
+        header.setTypeface(null, Typeface.BOLD);
+        header.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
+        header.setPadding(dp(16), dp(16), dp(16), dp(8));
+        layoutVoucherList.addView(header);
+    }
+
+    private void addVoucherRow(com.teatrack_mcd_253eie502802_group02.model.Promotion v, boolean isPersonal) {
+        int subtotal = com.teatrack_mcd_253eie502802_group02.data.CartManager.getInstance().getSubtotal();
+        boolean eligible = isPersonal ? (subtotal > 0) : (subtotal >= v.getMinSubtotal());
+
+        android.util.TypedValue ripple = new android.util.TypedValue();
+        getTheme().resolveAttribute(android.R.attr.selectableItemBackground, ripple, true);
+
+        android.widget.LinearLayout row = new android.widget.LinearLayout(this);
+        row.setOrientation(android.widget.LinearLayout.VERTICAL);
+
+        android.widget.LinearLayout mainRow = new android.widget.LinearLayout(this);
+        mainRow.setOrientation(android.widget.LinearLayout.HORIZONTAL);
+        mainRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        if (ripple.resourceId != 0) mainRow.setBackgroundResource(ripple.resourceId);
+        mainRow.setClickable(true);
+        mainRow.setFocusable(true);
+        mainRow.setPadding(dp(16), dp(12), dp(16), dp(12));
+
+        FrameLayout iconCircle = new FrameLayout(this);
+        android.widget.LinearLayout.LayoutParams iconCircleParams = new android.widget.LinearLayout.LayoutParams(dp(44), dp(44));
+        iconCircle.setLayoutParams(iconCircleParams);
+        iconCircle.setBackgroundResource(isPersonal ? R.drawable.bg_light_blue_rounded_12 : R.drawable.bg_light_blue_rounded_12);
+        
+        android.widget.ImageView ivIcon = new android.widget.ImageView(this);
+        FrameLayout.LayoutParams ivParams = new FrameLayout.LayoutParams(dp(24), dp(24));
+        ivParams.gravity = android.view.Gravity.CENTER;
+        ivIcon.setLayoutParams(ivParams);
+        ivIcon.setImageResource(R.drawable.ic_local_offer);
+        ivIcon.setColorFilter(ContextCompat.getColor(this, R.color.brand_blue));
+        iconCircle.addView(ivIcon);
+
+        android.widget.LinearLayout content = new android.widget.LinearLayout(this);
+        content.setOrientation(android.widget.LinearLayout.VERTICAL);
+        android.widget.LinearLayout.LayoutParams contentParams = new android.widget.LinearLayout.LayoutParams(0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        contentParams.setMarginStart(dp(12));
+        content.setLayoutParams(contentParams);
+
+        TextView tvId = new TextView(this);
+        tvId.setText(isPersonal ? v.getTitle() : v.getId());
+        tvId.setTextSize(15f);
+        tvId.setTypeface(null, Typeface.BOLD);
+        tvId.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+        content.addView(tvId);
+
+        TextView tvTitle = new TextView(this);
+        tvTitle.setText(isPersonal ? v.getDescription() : (v.getTitle().isEmpty() ? v.getDescription() : v.getTitle()));
+        tvTitle.setTextSize(12f);
+        tvTitle.setTextColor(ContextCompat.getColor(this, R.color.secondary));
+        content.addView(tvTitle);
+
+        TextView btnAction = new TextView(this);
+        btnAction.setText(eligible ? getString(R.string.cart_voucher_use_now) : getString(R.string.cart_voucher_conditions));
+        btnAction.setTextSize(14f);
+        btnAction.setTypeface(null, Typeface.BOLD);
+        btnAction.setTextColor(ContextCompat.getColor(this, eligible ? R.color.brand_blue : R.color.secondary));
+        
+        mainRow.addView(iconCircle);
+        mainRow.addView(content);
+        mainRow.addView(btnAction);
+        row.addView(mainRow);
+
+        if (!eligible && !isPersonal) {
+            android.widget.LinearLayout infoBar = new android.widget.LinearLayout(this);
+            infoBar.setBackgroundColor(0xFFFFF3CD);
+            infoBar.setPadding(dp(16), dp(8), dp(16), dp(8));
+            TextView tvInfo = new TextView(this);
+            String minStr = formatPrice((int) v.getMinSubtotal());
+            tvInfo.setText(getString(R.string.cart_voucher_min_order, minStr));
+            tvInfo.setTextSize(11f);
+            tvInfo.setTextColor(0xFF7A5800);
+            infoBar.addView(tvInfo);
+            row.addView(infoBar);
+        }
+
+        mainRow.setOnClickListener(view -> {
+            if (eligible) {
+                if (isPersonal) {
+                    applyPersonalVoucher(v);
+                } else {
+                    applyVoucher(v);
+                }
+                hideVoucherPicker();
+            } else {
+                Toast.makeText(this, "Chưa đủ điều kiện áp dụng", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        layoutVoucherList.addView(row);
+        View divider = new View(this);
+        divider.setBackgroundColor(ContextCompat.getColor(this, R.color.outline_variant));
+        layoutVoucherList.addView(divider, new android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.MATCH_PARENT, dp(1)));
+    }
+
+    private void applyPersonalVoucher(com.teatrack_mcd_253eie502802_group02.model.Promotion voucher) {
+        clearVoucher();
+        List<com.teatrack_mcd_253eie502802_group02.model.CartItem> items = CartManager.getInstance().getItems();
+        if (items.isEmpty()) {
+            Toast.makeText(this, "Giỏ hàng rỗng", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        com.teatrack_mcd_253eie502802_group02.model.CartItem cheapest = null;
+        for (com.teatrack_mcd_253eie502802_group02.model.CartItem item : items) {
+            if (cheapest == null || item.getUnitPrice() < cheapest.getUnitPrice()) {
+                cheapest = item;
+            }
+        }
+
+        if (cheapest != null) {
+            appliedPersonalVoucherId = voucher.getId();
+            freeItemName = cheapest.getProductName();
+            int discountValue = cheapest.getUnitPrice();
+            
+            appliedVoucher = new com.teatrack_mcd_253eie502802_group02.model.Promotion();
+            appliedVoucher.setId(voucher.getId());
+            appliedVoucher.setValue(discountValue);
+            appliedVoucher.setType("personal");
+            
+            if (tvVoucherValue != null) tvVoucherValue.setText("- " + formatPrice(discountValue));
+            if (layoutVoucherAdd != null) layoutVoucherAdd.setVisibility(View.GONE);
+            if (layoutVoucherApplied != null) layoutVoucherApplied.setVisibility(View.VISIBLE);
+            refreshCartUi();
+        }
+    }
+
+    private void applyPersonalVoucherById(String voucherId) {
+        for (com.teatrack_mcd_253eie502802_group02.model.Promotion v : personalVouchers) {
+            if (v.getId().equals(voucherId)) {
+                applyPersonalVoucher(v);
+                return;
+            }
+        }
+    }
 
     private void applyVoucher(com.teatrack_mcd_253eie502802_group02.model.Promotion voucher) {
+        clearVoucher();
         appliedVoucher = voucher;
+        appliedPersonalVoucherId = null;
+        freeItemName = null;
         int discount = (int) voucher.getValue();
         if (tvVoucherValue != null) tvVoucherValue.setText("-" + formatPrice(discount));
-        if (tvVoucherSummary != null) tvVoucherSummary.setText("-" + formatPrice(discount));
         if (layoutVoucherAdd != null) layoutVoucherAdd.setVisibility(View.GONE);
         if (layoutVoucherApplied != null) layoutVoucherApplied.setVisibility(View.VISIBLE);
         refreshCartUi();
@@ -1016,6 +1079,8 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
     private void clearVoucher() {
         appliedVoucher = null;
+        appliedPersonalVoucherId = null;
+        freeItemName = null;
         if (tvVoucherValue != null) tvVoucherValue.setText("");
         if (tvVoucherSummary != null) tvVoucherSummary.setText("0đ");
         if (layoutVoucherAdd != null) layoutVoucherAdd.setVisibility(View.VISIBLE);
@@ -1668,6 +1733,18 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
 
     private String formatPrice(int price) {
         return String.format(Locale.US, "%,d", price).replace(',', '.') + "đ";
+    }
+
+    public String getAppliedVoucherId() {
+        return appliedPersonalVoucherId != null ? appliedPersonalVoucherId : (appliedVoucher != null ? appliedVoucher.getId() : null);
+    }
+
+    public String getFreeItemName() {
+        return freeItemName;
+    }
+
+    public double getAppliedVoucherValue() {
+        return appliedVoucher != null ? appliedVoucher.getValue() : 0;
     }
 
     private int dp(int value) {
