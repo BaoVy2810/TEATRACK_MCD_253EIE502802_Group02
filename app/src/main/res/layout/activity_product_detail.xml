@@ -1809,30 +1809,33 @@
                             tools:text="Thank you for sharing your feedback on Sữa Tươi Khoai Môn!" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/layoutReviewListSingle"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardReviewList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:orientation="vertical"
-                        android:visibility="gone" />
+                        android:clipToOutline="true"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="#E7EDF9"
+                        app:strokeWidth="0.5dp">
 
-                    <ScrollView
-                        android:id="@+id/scrollReviewList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:fillViewport="false"
-                        android:overScrollMode="never"
-                        android:scrollbars="none"
-                        android:visibility="gone">
-
-                        <LinearLayout
-                            android:id="@+id/layoutReviewList"
+                        <androidx.core.widget.NestedScrollView
+                            android:id="@+id/scrollReviewList"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
-                    </ScrollView>
+                            android:layout_height="265dp"
+                            android:scrollbars="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/layoutReviewList"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="8dp" />
+                        </androidx.core.widget.NestedScrollView>
+                    </com.google.android.material.card.MaterialCardView>
 
                     <LinearLayout
                         android:id="@+id/layoutReviewEmpty"

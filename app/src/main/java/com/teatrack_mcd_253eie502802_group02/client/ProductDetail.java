@@ -5,6 +5,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,7 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
+import androidx.core.widget.NestedScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +66,7 @@ import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 public class ProductDetail extends BaseActivity {
 
     private static final int MAX_VISIBLE_REVIEWS = 3;
-    private static final int REVIEW_SCROLL_MIN_COUNT = 3;
+    private static final long REVIEW_SUCCESS_VISIBLE_MS = 5000L;
 
     private int quantity = 1;
     private ImageView imgDetail;
@@ -110,9 +112,11 @@ public class ProductDetail extends BaseActivity {
     private ProgressBar bar1, bar2, bar3, bar4, bar5;
     private LinearLayout layoutReviewSuccess;
     private LinearLayout layoutReviewEmpty;
+    private View cardReviewList;
     private LinearLayout layoutReviewList;
-    private LinearLayout layoutReviewListSingle;
-    private ScrollView scrollReviewList;
+    private NestedScrollView scrollReviewList;
+    private final Handler reviewUiHandler = new Handler(Looper.getMainLooper());
+    private Runnable hideReviewSuccessRunnable;
     private int selectedRating = 0;
     private MaterialButton btnWriteReview;
     private MaterialButton btnSubmitReview;
@@ -214,8 +218,8 @@ public class ProductDetail extends BaseActivity {
         tvReviewSuccessMessage = findViewById(R.id.tvReviewSuccessMessage);
         layoutReviewSuccess = findViewById(R.id.layoutReviewSuccess);
         layoutReviewEmpty = findViewById(R.id.layoutReviewEmpty);
+        cardReviewList = findViewById(R.id.cardReviewList);
         layoutReviewList = findViewById(R.id.layoutReviewList);
-        layoutReviewListSingle = findViewById(R.id.layoutReviewListSingle);
         scrollReviewList = findViewById(R.id.scrollReviewList);
         bar1 = findViewById(R.id.bar1);
         bar2 = findViewById(R.id.bar2);
@@ -432,7 +436,7 @@ public class ProductDetail extends BaseActivity {
                 }
                 productReviews = reviews != null ? reviews : new ArrayList<>();
                 updateReviewStats(productReviews);
-                renderReviewList(productReviews, false);
+                renderReviewList(productReviews);
             }
 
             @Override
@@ -539,21 +543,37 @@ public class ProductDetail extends BaseActivity {
             tvReviewSuccessMessage.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
         }
 
-        renderReviewList(productReviews, true);
+        renderReviewList(productReviews);
+        scheduleHideReviewSuccess();
     }
 
-    private void renderReviewList(List<ProductReview> reviews, boolean showSuccess) {
-        if (layoutReviewList == null || layoutReviewListSingle == null || scrollReviewList == null) {
+    private void scheduleHideReviewSuccess() {
+        if (hideReviewSuccessRunnable != null) {
+            reviewUiHandler.removeCallbacks(hideReviewSuccessRunnable);
+        }
+        hideReviewSuccessRunnable = () -> {
+            if (isFinishing()) {
+                return;
+            }
+            if (layoutReviewSuccess != null) {
+                layoutReviewSuccess.setVisibility(View.GONE);
+            }
+        };
+        reviewUiHandler.postDelayed(hideReviewSuccessRunnable, REVIEW_SUCCESS_VISIBLE_MS);
+    }
+
+    private void renderReviewList(List<ProductReview> reviews) {
+        if (layoutReviewList == null) {
             return;
         }
 
         layoutReviewList.removeAllViews();
-        layoutReviewListSingle.removeAllViews();
         int limit = Math.min(MAX_VISIBLE_REVIEWS, reviews.size());
         if (limit == 0) {
-            scrollReviewList.setVisibility(View.GONE);
-            layoutReviewListSingle.setVisibility(View.GONE);
-            if (layoutReviewEmpty != null && !showSuccess) {
+            if (cardReviewList != null) {
+                cardReviewList.setVisibility(View.GONE);
+            }
+            if (layoutReviewEmpty != null) {
                 layoutReviewEmpty.setVisibility(View.VISIBLE);
             }
             return;
@@ -562,54 +582,28 @@ public class ProductDetail extends BaseActivity {
         if (layoutReviewEmpty != null) {
             layoutReviewEmpty.setVisibility(View.GONE);
         }
-
-        boolean useScroll = limit >= REVIEW_SCROLL_MIN_COUNT;
-        ViewGroup target = useScroll ? layoutReviewList : layoutReviewListSingle;
-        scrollReviewList.setVisibility(useScroll ? View.VISIBLE : View.GONE);
-        layoutReviewListSingle.setVisibility(useScroll ? View.GONE : View.VISIBLE);
+        if (cardReviewList != null) {
+            cardReviewList.setVisibility(View.VISIBLE);
+        }
 
         LayoutInflater inflater = LayoutInflater.from(this);
         for (int i = 0; i < limit; i++) {
-            View card = inflater.inflate(R.layout.item_review_card, target, false);
+            View card = inflater.inflate(R.layout.item_review_card, layoutReviewList, false);
             bindReviewCardView(card, reviews.get(i));
-            target.addView(card);
+            layoutReviewList.addView(card);
         }
 
-        if (useScroll && limit > 2) {
-            scrollReviewList.post(this::applyTwoCardScrollHeight);
-        } else if (useScroll) {
-            ViewGroup.LayoutParams params = scrollReviewList.getLayoutParams();
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            scrollReviewList.setLayoutParams(params);
+        if (scrollReviewList != null) {
+            scrollReviewList.scrollTo(0, 0);
         }
     }
 
-    private void applyTwoCardScrollHeight() {
-        if (layoutReviewList == null || scrollReviewList == null || layoutReviewList.getChildCount() < 2) {
-            return;
+    @Override
+    protected void onDestroy() {
+        if (hideReviewSuccessRunnable != null) {
+            reviewUiHandler.removeCallbacks(hideReviewSuccessRunnable);
         }
-        View first = layoutReviewList.getChildAt(0);
-        Runnable apply = () -> {
-            View second = layoutReviewList.getChildAt(1);
-            int targetHeight = first.getHeight() + second.getHeight() + dpToPx(12);
-            if (targetHeight <= 0) {
-                return;
-            }
-            ViewGroup.LayoutParams params = scrollReviewList.getLayoutParams();
-            params.height = targetHeight;
-            scrollReviewList.setLayoutParams(params);
-        };
-        if (first.getHeight() > 0) {
-            apply.run();
-            return;
-        }
-        first.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                first.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                apply.run();
-            }
-        });
+        super.onDestroy();
     }
 
     private void applyVipPricePresentation() {
