@@ -130,6 +130,9 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         intent.putExtra("vipM", String.valueOf(item.getVipUnitPrice()));
         intent.putExtra("vipL", String.valueOf(item.getVipUnitPrice()));
         intent.putExtra("imageRes", item.getImageRes());
+        if (item.getProductId() != null && !item.getProductId().isEmpty()) {
+            intent.putExtra("productId", item.getProductId());
+        }
         context.startActivity(intent);
     }
 

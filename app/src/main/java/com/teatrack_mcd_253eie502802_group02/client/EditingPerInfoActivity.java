@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.databinding.ActivityEditingPerInfoBinding;
 import com.teatrack_mcd_253eie502802_group02.model.User;
+import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -148,6 +149,7 @@ public class EditingPerInfoActivity extends AppCompatActivity {
 
         if (userId != null && userRef != null) {
             Map<String, Object> updates = new HashMap<>();
+            updates.put("fullName", name);
             updates.put("name", name);
             updates.put("email", email);
             updates.put("phone", phone);
@@ -156,7 +158,16 @@ public class EditingPerInfoActivity extends AppCompatActivity {
             updates.put("address", address);
 
             userRef.updateChildren(updates)
-                    .addOnSuccessListener(aVoid -> showSuccessDialog())
+                    .addOnSuccessListener(aVoid -> {
+                        UserProfileHelper.cacheProfile(
+                                EditingPerInfoActivity.this,
+                                userId,
+                                null,
+                                name,
+                                phone
+                        );
+                        showSuccessDialog();
+                    })
                     .addOnFailureListener(e -> Toast.makeText(EditingPerInfoActivity.this, "Cập nhật thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         } else {
             Toast.makeText(this, "Lỗi: Không tìm thấy ID người dùng. Vui lòng đăng nhập lại!", Toast.LENGTH_LONG).show();

@@ -19,6 +19,7 @@ import com.teatrack_mcd_253eie502802_group02.adapter.NewsCardAdapter;
 import com.teatrack_mcd_253eie502802_group02.adapter.ProductCardAdapter;
 import com.teatrack_mcd_253eie502802_group02.adapter.PromotionAdapter;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
+import com.teatrack_mcd_253eie502802_group02.data.ReviewCatalogSync;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +31,8 @@ import com.teatrack_mcd_253eie502802_group02.model.Promotion;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.CartActions;
+import com.teatrack_mcd_253eie502802_group02.util.UserRoleHelper;
+import com.teatrack_mcd_253eie502802_group02.util.ReviewStatsHelper;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,6 +55,7 @@ public class Homepage extends BaseActivity {
             R.id.nav_profile
     };
     private final FirebaseProductRepository productRepository = new FirebaseProductRepository();
+    private final ReviewCatalogSync reviewCatalogSync = new ReviewCatalogSync();
 
     private ViewPager2 viewPagerBanners;
     private View dot1;
@@ -107,6 +111,11 @@ public class Homepage extends BaseActivity {
         super.onResume();
         startAutoScroll();
         CartBadgeHelper.updateBadge(this);
+        UserRoleHelper.refreshRoleFromFirebase(this, () -> {
+            if (featuredAdapter != null) {
+                featuredAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void startAutoScroll() {
@@ -250,16 +259,35 @@ public class Homepage extends BaseActivity {
                 List<Product> source = products == null || products.isEmpty()
                         ? getFallbackCategoryProducts("Tea Latte")
                         : products;
+                syncFeaturedReviewStats(source);
+            }
+
+            @Override
+            public void onError(String message) {
+                syncFeaturedReviewStats(getFallbackCategoryProducts("Tea Latte"));
+            }
+        });
+    }
+
+    private void syncFeaturedReviewStats(List<Product> source) {
+        reviewCatalogSync.syncProducts(source, new ReviewCatalogSync.Callback() {
+            @Override
+            public void onReady(Map<String, ReviewStatsHelper.Stats> statsByProductId) {
+                ReviewStatsHelper.applyStatsToProducts(source, statsByProductId);
                 featuredProducts.clear();
                 featuredProducts.addAll(source);
-                featuredAdapter.notifyDataSetChanged();
+                if (featuredAdapter != null) {
+                    featuredAdapter.notifyDataSetChanged();
+                }
             }
 
             @Override
             public void onError(String message) {
                 featuredProducts.clear();
-                featuredProducts.addAll(getFallbackCategoryProducts("Tea Latte"));
-                featuredAdapter.notifyDataSetChanged();
+                featuredProducts.addAll(source);
+                if (featuredAdapter != null) {
+                    featuredAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
@@ -328,6 +356,9 @@ public class Homepage extends BaseActivity {
         intent.putExtra("imageRes", product.getImageRes());
         intent.putExtra("rating", product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());
+        if (product.getId() != null && !product.getId().isEmpty()) {
+            intent.putExtra("productId", product.getId());
+        }
         startActivity(intent);
     }
 

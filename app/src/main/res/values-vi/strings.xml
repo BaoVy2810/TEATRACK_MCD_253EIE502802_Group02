@@ -340,6 +340,13 @@
     <string name="product_detail_review_detail_hint">Viết đánh giá chi tiết tại đây</string>
     <string name="product_detail_review_comment_hint">Hãy để lại nhận xét cho món ăn này bạn nhé! Ngô Gia chân thành cảm ơn.</string>
     <string name="product_detail_review_submit">Gửi đánh giá</string>
+    <string name="product_detail_review_success_title">Đã gửi đánh giá</string>
+    <string name="product_detail_review_success_message">Cảm ơn bạn đã chia sẻ nhận xét về %1$s!</string>
+    <string name="product_detail_review_success_icon_desc">Gửi đánh giá thành công</string>
+    <string name="product_detail_review_rating_required">Vui lòng chọn số sao trước khi gửi đánh giá.</string>
+    <string name="product_detail_review_submit_error">Không thể gửi đánh giá. Vui lòng thử lại.</string>
+    <string name="product_detail_review_guest_name">Khách</string>
+    <string name="product_card_reviews_format">%1$s đánh giá</string>
     <string name="product_detail_star_desc">Đánh giá số sao</string>
     <string name="product_detail_no_reviews_icon_desc">Biểu tượng chưa có đánh giá</string>
     <string name="product_detail_quantity">Số lượng</string>
@@ -790,4 +797,7 @@
     <string name="cart_voucher_use_now">Dùng ngay</string>
     <string name="cart_voucher_conditions">Điều kiện</string>
     <string name="cart_voucher_min_order">Đơn hàng tối thiểu %1$s để sử dụng ưu đãi này</string>
+    <string name="cart_voucher_enter_code">Vui lòng nhập mã ưu đãi</string>
+    <string name="cart_voucher_invalid">Mã ưu đãi không hợp lệ</string>
+    <string name="cart_voucher_not_found">Không tìm thấy mã \"%1$s\"</string>
 </resources>

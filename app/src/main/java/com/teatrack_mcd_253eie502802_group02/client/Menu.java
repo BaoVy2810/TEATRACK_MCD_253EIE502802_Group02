@@ -29,10 +29,13 @@ import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.MenuProductAdapter;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
+import com.teatrack_mcd_253eie502802_group02.data.ReviewCatalogSync;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.CartActions;
+import com.teatrack_mcd_253eie502802_group02.util.ReviewStatsHelper;
+import com.teatrack_mcd_253eie502802_group02.util.UserRoleHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -55,6 +58,7 @@ public class Menu extends BaseActivity {
     };
 
     private final FirebaseProductRepository repository = new FirebaseProductRepository();
+    private final ReviewCatalogSync reviewCatalogSync = new ReviewCatalogSync();
     private final List<Product> allProducts = new ArrayList<>();
     private final List<Product> filteredProducts = new ArrayList<>();
     private MenuProductAdapter adapter;
@@ -120,6 +124,11 @@ public class Menu extends BaseActivity {
     protected void onResume() {
         super.onResume();
         CartBadgeHelper.updateBadge(this);
+        UserRoleHelper.refreshRoleFromFirebase(this, () -> {
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void bindViews() {
@@ -292,15 +301,30 @@ public class Menu extends BaseActivity {
                 if (allProducts.isEmpty()) {
                     allProducts.addAll(getFallbackMenuProducts());
                 }
-                applyFilter();
+                syncReviewStatsAndShow();
             }
 
             @Override
             public void onError(String message) {
                 allProducts.clear();
                 allProducts.addAll(getFallbackMenuProducts());
-                applyFilter();
+                syncReviewStatsAndShow();
                 Toast.makeText(Menu.this, R.string.category_products_load_error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void syncReviewStatsAndShow() {
+        reviewCatalogSync.syncProducts(allProducts, new ReviewCatalogSync.Callback() {
+            @Override
+            public void onReady(java.util.Map<String, ReviewStatsHelper.Stats> statsByProductId) {
+                ReviewStatsHelper.applyStatsToProducts(allProducts, statsByProductId);
+                applyFilter();
+            }
+
+            @Override
+            public void onError(String message) {
+                applyFilter();
             }
         });
     }
@@ -491,6 +515,9 @@ public class Menu extends BaseActivity {
         intent.putExtra("imageRes", product.getImageRes());
         intent.putExtra("rating", product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());
+        if (product.getId() != null && !product.getId().isEmpty()) {
+            intent.putExtra("productId", product.getId());
+        }
         startActivity(intent);
     }
 

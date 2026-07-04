@@ -27,6 +27,7 @@ import com.teatrack_mcd_253eie502802_group02.databinding.ActivityPersonalInforma
 import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.ProfileBackHelper;
+import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -139,7 +140,10 @@ public class PersonalInformationActivity extends BaseActivity {
                     if (snapshot.exists()) {
                         User user = snapshot.getValue(User.class);
                         if (user != null) {
-                            binding.tvFullNameValue.setText(user.getName());
+                            UserProfileHelper.cacheFromSnapshot(
+                                    getSharedPreferences(UserProfileHelper.PREF_NAME, MODE_PRIVATE),
+                                    snapshot);
+                            binding.tvFullNameValue.setText(UserProfileHelper.resolveDisplayName(user));
                             binding.tvEmailValue.setText(user.getEmail());
                             binding.tvPhoneValue.setText(user.getPhone());
                             binding.tvDobValue.setText(user.getDob());

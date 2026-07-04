@@ -4,21 +4,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 public class UserProfile extends BaseActivity {
 
     private LinearLayout btnPersonalInfo, btnLanguage, btnPoints, btnReviews, btnPolicies, btnStoreList;
+    private TextView tvUserName;
+    private TextView tvUserPhone;
 
     private static final int[] NAV_IDS = {
             R.id.nav_home,
@@ -50,6 +60,7 @@ public class UserProfile extends BaseActivity {
     protected void onResume() {
         super.onResume();
         CartBadgeHelper.updateBadge(this);
+        loadProfileHeader();
     }
 
     private void initViews() {
@@ -59,6 +70,47 @@ public class UserProfile extends BaseActivity {
         btnReviews      = findViewById(R.id.btnReviews);
         btnPolicies     = findViewById(R.id.btnPolicies);
         btnStoreList    = findViewById(R.id.btnStoreList);
+        tvUserName      = findViewById(R.id.tvUserName);
+        tvUserPhone     = findViewById(R.id.tvUserPhone);
+    }
+
+    private void loadProfileHeader() {
+        String userId = UserProfileHelper.getUserId(this);
+        if (userId.isEmpty()) {
+            return;
+        }
+
+        FirebaseDatabase.getInstance()
+                .getReference("Users")
+                .child(userId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (!snapshot.exists()) {
+                            return;
+                        }
+                        User user = snapshot.getValue(User.class);
+                        if (user == null) {
+                            return;
+                        }
+                        UserProfileHelper.cacheFromSnapshot(
+                                getSharedPreferences(UserProfileHelper.PREF_NAME, MODE_PRIVATE),
+                                snapshot);
+
+                        String displayName = UserProfileHelper.resolveDisplayName(user);
+                        if (tvUserName != null && !displayName.isEmpty()) {
+                            tvUserName.setText(displayName);
+                        }
+                        String phone = user.getPhoneNumber();
+                        if (tvUserPhone != null && phone != null && !phone.trim().isEmpty()) {
+                            tvUserPhone.setText(phone.trim());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
     }
 
     private void setupClickListeners() {

@@ -359,6 +359,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/tvSizeBadgeM"
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_size_tag"
@@ -390,6 +391,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/tvVipBadgeM"
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_vip_tag"
@@ -441,6 +443,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/tvSizeBadgeL"
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_size_tag"
@@ -472,6 +475,7 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/tvVipBadgeL"
                                 android:layout_width="32dp"
                                 android:layout_height="20dp"
                                 android:background="@drawable/bg_vip_tag"
@@ -1059,7 +1063,7 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="@string/product_detail_tab_description"
-                    android:textColor="@color/nav_inactive"
+                    android:textColor="@color/brand_blue"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -1076,7 +1080,7 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="@string/product_detail_tab_review"
-                    android:textColor="@color/brand_blue"
+                    android:textColor="@color/nav_inactive"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -1394,36 +1398,42 @@
                                 android:textSize="36sp" />
 
                             <LinearLayout
+                                android:id="@+id/layoutSummaryStars"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:orientation="horizontal">
 
                                 <ImageView
+                                    android:id="@+id/imgSummaryStar1"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:contentDescription="@string/product_detail_star_desc"
                                     android:src="@drawable/ic_star_rating" />
 
                                 <ImageView
+                                    android:id="@+id/imgSummaryStar2"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:contentDescription="@string/product_detail_star_desc"
                                     android:src="@drawable/ic_star_rating" />
 
                                 <ImageView
+                                    android:id="@+id/imgSummaryStar3"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:contentDescription="@string/product_detail_star_desc"
                                     android:src="@drawable/ic_star_rating" />
 
                                 <ImageView
+                                    android:id="@+id/imgSummaryStar4"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:contentDescription="@string/product_detail_star_desc"
                                     android:src="@drawable/ic_star_rating" />
 
                                 <ImageView
+                                    android:id="@+id/imgSummaryStar5"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:contentDescription="@string/product_detail_star_desc"
@@ -1758,6 +1768,74 @@
                         android:layout_height="1dp"
                         android:layout_marginTop="20dp"
                         android:background="#D8DFEC" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutReviewSuccess"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:contentDescription="@string/product_detail_review_success_icon_desc"
+                            android:src="@drawable/bg_success_circle" />
+
+                        <TextView
+                            android:id="@+id/tvReviewSuccessTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/inter_family"
+                            android:text="@string/product_detail_review_success_title"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvReviewSuccessMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/inter_family"
+                            android:gravity="center"
+                            android:textColor="@color/nav_inactive"
+                            android:textSize="12sp"
+                            tools:text="Thank you for sharing your feedback on Sữa Tươi Khoai Môn!" />
+                    </LinearLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardReviewList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:clipToOutline="true"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="#E7EDF9"
+                        app:strokeWidth="0.5dp">
+
+                        <androidx.core.widget.NestedScrollView
+                            android:id="@+id/scrollReviewList"
+                            android:layout_width="match_parent"
+                            android:layout_height="265dp"
+                            android:scrollbars="vertical">
+
+                            <LinearLayout
+                                android:id="@+id/layoutReviewList"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="8dp" />
+                        </androidx.core.widget.NestedScrollView>
+                    </com.google.android.material.card.MaterialCardView>
 
                     <LinearLayout
                         android:id="@+id/layoutReviewEmpty"

@@ -333,6 +333,13 @@
     <string name="product_detail_review_detail_hint">Write detailed review here</string>
     <string name="product_detail_review_comment_hint">Please leave your feedback for this drink! Ngo Gia sincerely thanks you.</string>
     <string name="product_detail_review_submit">Submit Review</string>
+    <string name="product_detail_review_success_title">Review Submitted</string>
+    <string name="product_detail_review_success_message">Thank you for sharing your feedback on %1$s!</string>
+    <string name="product_detail_review_success_icon_desc">Review submitted successfully</string>
+    <string name="product_detail_review_rating_required">Please select a star rating before submitting.</string>
+    <string name="product_detail_review_submit_error">Could not submit review. Please try again.</string>
+    <string name="product_detail_review_guest_name">Guest</string>
+    <string name="product_card_reviews_format">%1$s reviews</string>
     <string name="product_detail_star_desc">Star rating</string>
     <string name="product_detail_no_reviews_icon_desc">No reviews icon</string>
     <string name="product_detail_quantity">Quantity</string>
@@ -370,6 +377,9 @@
     <string name="cart_voucher_use_now">Dùng ngay</string>
     <string name="cart_voucher_conditions">Điều kiện</string>
     <string name="cart_voucher_min_order">Đơn hàng tối thiểu %1$s để sử dụng ưu đãi này</string>
+    <string name="cart_voucher_enter_code">Please enter a voucher code</string>
+    <string name="cart_voucher_invalid">Invalid voucher code</string>
+    <string name="cart_voucher_not_found">No voucher found for \"%1$s\"</string>
     <string name="cart_total">Total</string>
     <string name="cart_confirm_order">Confirm Order</string>
     <string name="cart_order_pickup">Order for Pickup</string>

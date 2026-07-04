@@ -5,8 +5,10 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -813,10 +815,26 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                 if (etVoucherCode == null) return;
                 String code = etVoucherCode.getText().toString().trim();
                 if (code.isEmpty()) {
-                    Toast.makeText(this, "Vui lòng nhập mã ưu đãi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.cart_voucher_enter_code, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 validateAndApplyCode(code);
+            });
+        }
+        if (etVoucherCode != null) {
+            etVoucherCode.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    buildVoucherRows(s == null ? "" : s.toString().trim());
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
             });
         }
         loadVouchersFromFirebase();
@@ -836,6 +854,9 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                                     child.getValue(com.teatrack_mcd_253eie502802_group02.model.Promotion.class);
                             if (p != null) {
                                 p.setId(child.getKey());
+                                if (p.getCode() == null || p.getCode().trim().isEmpty()) {
+                                    p.setCode(child.getKey());
+                                }
                                 availableVouchers.add(p);
                             }
                         }
@@ -849,11 +870,26 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     }
 
     private void buildVoucherRows() {
+        String filter = etVoucherCode != null ? etVoucherCode.getText().toString().trim() : "";
+        buildVoucherRows(filter);
+    }
+
+    private void buildVoucherRows(String filterQuery) {
         if (layoutVoucherList == null) return;
         layoutVoucherList.removeAllViews();
-        if (availableVouchers.isEmpty()) {
+
+        List<com.teatrack_mcd_253eie502802_group02.model.Promotion> filtered = new ArrayList<>();
+        for (com.teatrack_mcd_253eie502802_group02.model.Promotion voucher : availableVouchers) {
+            if (matchesVoucherFilter(voucher, filterQuery, false)) {
+                filtered.add(voucher);
+            }
+        }
+
+        if (filtered.isEmpty()) {
             TextView empty = new TextView(this);
-            empty.setText(R.string.cart_voucher_empty);
+            empty.setText(filterQuery.isEmpty()
+                    ? getString(R.string.cart_voucher_empty)
+                    : getString(R.string.cart_voucher_not_found, filterQuery));
             empty.setTextColor(ContextCompat.getColor(this, R.color.secondary));
             empty.setGravity(android.view.Gravity.CENTER);
             empty.setPadding(dp(16), dp(24), dp(16), dp(24));
@@ -864,7 +900,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         android.util.TypedValue ripple = new android.util.TypedValue();
         getTheme().resolveAttribute(android.R.attr.selectableItemBackground, ripple, true);
 
-        for (com.teatrack_mcd_253eie502802_group02.model.Promotion v : availableVouchers) {
+        for (com.teatrack_mcd_253eie502802_group02.model.Promotion v : filtered) {
             boolean eligible = subtotal >= v.getMinSubtotal();
 
             android.widget.LinearLayout row = new android.widget.LinearLayout(this);
@@ -1029,25 +1065,54 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
     }
 
     private void validateAndApplyCode(String code) {
-        for (com.teatrack_mcd_253eie502802_group02.model.Promotion v : availableVouchers) {
-            if (code.equalsIgnoreCase(v.getCode())) {
-                int subtotal = com.teatrack_mcd_253eie502802_group02.data.CartManager.getInstance().getSubtotal();
-                if (subtotal < v.getMinSubtotal()) {
-                    Toast.makeText(this,
-                            "Đơn hàng tối thiểu " + formatPrice((int) v.getMinSubtotal()),
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                applyVoucher(v);
-                hideVoucherPicker();
-                return;
+        com.teatrack_mcd_253eie502802_group02.model.Promotion matched = findVoucherByCode(code);
+        if (matched == null) {
+            Toast.makeText(this, R.string.cart_voucher_invalid, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int subtotal = com.teatrack_mcd_253eie502802_group02.data.CartManager.getInstance().getSubtotal();
+        if (subtotal < matched.getMinSubtotal()) {
+            Toast.makeText(this,
+                    getString(R.string.cart_voucher_min_order, formatPrice((int) matched.getMinSubtotal())),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        applyVoucher(matched);
+        hideVoucherPicker();
+    }
+
+    private com.teatrack_mcd_253eie502802_group02.model.Promotion findVoucherByCode(String code) {
+        for (com.teatrack_mcd_253eie502802_group02.model.Promotion voucher : availableVouchers) {
+            if (matchesVoucherFilter(voucher, code, true)) {
+                return voucher;
             }
         }
-        Toast.makeText(this, "Mã ưu đãi không hợp lệ", Toast.LENGTH_SHORT).show();
+        return null;
+    }
+
+    private boolean matchesVoucherFilter(
+            com.teatrack_mcd_253eie502802_group02.model.Promotion voucher,
+            String query,
+            boolean exactMatch) {
+        if (query == null || query.isEmpty()) {
+            return true;
+        }
+        String normalizedQuery = query.trim().toUpperCase(Locale.ROOT);
+        String id = voucher.getId() == null ? "" : voucher.getId().trim().toUpperCase(Locale.ROOT);
+        String voucherCode = voucher.getCode() == null ? "" : voucher.getCode().trim().toUpperCase(Locale.ROOT);
+        String title = voucher.getTitle() == null ? "" : voucher.getTitle().trim().toUpperCase(Locale.ROOT);
+
+        if (exactMatch) {
+            return normalizedQuery.equals(id) || normalizedQuery.equals(voucherCode);
+        }
+        return id.contains(normalizedQuery)
+                || voucherCode.contains(normalizedQuery)
+                || title.contains(normalizedQuery);
     }
 
     private void showVoucherPicker() {
-        buildVoucherRows();
+        String filter = etVoucherCode != null ? etVoucherCode.getText().toString().trim() : "";
+        buildVoucherRows(filter);
         if (cardOrderSummary != null) cardOrderSummary.setVisibility(View.GONE);
         if (cardVoucherPicker != null) cardVoucherPicker.setVisibility(View.VISIBLE);
         if (paymentOverlayScrim != null) paymentOverlayScrim.setVisibility(View.VISIBLE);

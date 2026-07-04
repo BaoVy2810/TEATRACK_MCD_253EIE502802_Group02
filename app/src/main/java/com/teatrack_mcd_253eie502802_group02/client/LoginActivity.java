@@ -40,6 +40,7 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.util.UserIdGenerator;
+import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -249,13 +250,33 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            // Existing Google user — read and save role
                             String existingRole = "Customer";
+                            String existingUserId = null;
+                            String existingFullName = null;
+                            String existingPhone = null;
                             for (DataSnapshot child : snapshot.getChildren()) {
+                                existingUserId = child.getKey();
                                 String r = child.child("role").getValue(String.class);
-                                if (r != null) { existingRole = r; break; }
+                                if (r != null) {
+                                    existingRole = r;
+                                }
+                                existingFullName = child.child("fullName").getValue(String.class);
+                                if (existingFullName == null || existingFullName.trim().isEmpty()) {
+                                    existingFullName = child.child("name").getValue(String.class);
+                                }
+                                existingPhone = child.child("phoneNumber").getValue(String.class);
+                                if (existingPhone == null || existingPhone.trim().isEmpty()) {
+                                    existingPhone = child.child("phone").getValue(String.class);
+                                }
+                                break;
                             }
-                            sharedPreferences.edit().putString("userRole", existingRole).apply();
+                            UserProfileHelper.cacheProfile(
+                                    LoginActivity.this,
+                                    existingUserId,
+                                    existingRole,
+                                    existingFullName,
+                                    existingPhone
+                            );
                             startActivity(new Intent(LoginActivity.this, Homepage.class));
                             finish();
                             return;
@@ -278,6 +299,13 @@ public class LoginActivity extends BaseActivity {
                                         .putString(KEY_USER_ID, csId)
                                         .putString("userRole", "Customer")
                                         .apply();
+                                UserProfileHelper.cacheProfile(
+                                        LoginActivity.this,
+                                        csId,
+                                        "Customer",
+                                        user.getDisplayName(),
+                                        null
+                                );
 
                                 startActivity(new Intent(LoginActivity.this, Homepage.class));
                                 finish();
@@ -361,12 +389,26 @@ public class LoginActivity extends BaseActivity {
                             passwordMatched = true;
                             userId = userSnap.getKey();
                             String role = userSnap.child("role").getValue(String.class);
+                            String fullName = userSnap.child("fullName").getValue(String.class);
+                            if (fullName == null || fullName.trim().isEmpty()) {
+                                fullName = userSnap.child("name").getValue(String.class);
+                            }
+                            String phone = userSnap.child("phoneNumber").getValue(String.class);
+                            if (phone == null || phone.trim().isEmpty()) {
+                                phone = userSnap.child("phone").getValue(String.class);
+                            }
 
-                            // Always persist userId + role so other screens can read them
                             sharedPreferences.edit()
                                     .putString(KEY_USER_ID, userId)
                                     .putString("userRole", role != null ? role : "Customer")
                                     .apply();
+                            UserProfileHelper.cacheProfile(
+                                    LoginActivity.this,
+                                    userId,
+                                    role != null ? role : "Customer",
+                                    fullName,
+                                    phone
+                            );
 
                             if (cbRemember.isChecked()) {
                                 saveLoginData(loginName, password, userId);

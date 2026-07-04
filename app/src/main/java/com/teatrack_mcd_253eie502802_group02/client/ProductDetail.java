@@ -5,15 +5,21 @@ import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.text.Html;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import androidx.core.widget.NestedScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,22 +39,34 @@ import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.ProductCardAdapter;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
+import com.teatrack_mcd_253eie502802_group02.data.FirebaseReviewRepository;
+import com.teatrack_mcd_253eie502802_group02.data.ReviewCatalogSync;
 import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
+import com.teatrack_mcd_253eie502802_group02.model.ProductReview;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.CartActions;
+import com.teatrack_mcd_253eie502802_group02.util.DateTimeHelper;
 import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
+import com.teatrack_mcd_253eie502802_group02.util.ReviewStatsHelper;
 import com.teatrack_mcd_253eie502802_group02.util.ToppingPriceHelper;
+import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
+import com.teatrack_mcd_253eie502802_group02.util.UserRoleHelper;
+import com.teatrack_mcd_253eie502802_group02.util.VipPriceUiHelper;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
 public class ProductDetail extends BaseActivity {
+
+    private static final int MAX_VISIBLE_REVIEWS = 3;
+    private static final long REVIEW_SUCCESS_VISIBLE_MS = 5000L;
 
     private int quantity = 1;
     private ImageView imgDetail;
@@ -56,10 +74,14 @@ public class ProductDetail extends BaseActivity {
     private TextView tvTopTitle;
     private TextView tvCategory;
     private TextView tvRatingValue;
+    private TextView tvSizeBadgeM;
+    private TextView tvSizeBadgeL;
     private TextView tvPriceM;
     private TextView tvPriceL;
     private TextView tvVipPriceM;
     private TextView tvVipPriceL;
+    private TextView tvVipBadgeM;
+    private TextView tvVipBadgeL;
     private TextView tvRatingSummary;
     private TextView tvDescription;
     private TextView breadcrumbTeaLatte;
@@ -83,9 +105,21 @@ public class ProductDetail extends BaseActivity {
     private TextView tvCommitment3;
     private TextView tvCommitment4;
     private TextView tvReviewCount;
+    private TextView tvReviewAverage;
+    private TextView tvReviewSuccessMessage;
     private ImageView imgStar1, imgStar2, imgStar3, imgStar4, imgStar5;
+    private ImageView imgSummaryStar1, imgSummaryStar2, imgSummaryStar3, imgSummaryStar4, imgSummaryStar5;
+    private ProgressBar bar1, bar2, bar3, bar4, bar5;
+    private LinearLayout layoutReviewSuccess;
+    private LinearLayout layoutReviewEmpty;
+    private View cardReviewList;
+    private LinearLayout layoutReviewList;
+    private NestedScrollView scrollReviewList;
+    private final Handler reviewUiHandler = new Handler(Looper.getMainLooper());
+    private Runnable hideReviewSuccessRunnable;
     private int selectedRating = 0;
     private MaterialButton btnWriteReview;
+    private MaterialButton btnSubmitReview;
     private MaterialButton btnSizeOptionM;
     private MaterialButton btnSizeOptionL;
     private MaterialButton btnSweetnessNone;
@@ -98,11 +132,14 @@ public class ProductDetail extends BaseActivity {
     private LinearLayout customizationContent;
     private TextView tvNoteChevron;
     private LinearLayout toppingRowsContainer;
-    private boolean isCustomizationExpanded = true;
+    private boolean isCustomizationExpanded = false;
     private final Map<String, Integer> toppingQuantities = new LinkedHashMap<>();
     private final Map<String, Integer> toppingUnitPrices = new LinkedHashMap<>();
     private final FirebaseProductRepository repository = new FirebaseProductRepository();
+    private final FirebaseReviewRepository reviewRepository = new FirebaseReviewRepository();
+    private final ReviewCatalogSync reviewCatalogSync = new ReviewCatalogSync();
     private Product currentProduct;
+    private List<ProductReview> productReviews = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,10 +163,14 @@ public class ProductDetail extends BaseActivity {
         tvTopTitle = findViewById(R.id.tvTopTitle);
         tvCategory = findViewById(R.id.tvCategory);
         tvRatingValue = findViewById(R.id.tvRatingValue);
+        tvSizeBadgeM = findViewById(R.id.tvSizeBadgeM);
+        tvSizeBadgeL = findViewById(R.id.tvSizeBadgeL);
         tvPriceM = findViewById(R.id.tvPriceM);
         tvPriceL = findViewById(R.id.tvPriceL);
         tvVipPriceM = findViewById(R.id.tvVipPriceM);
         tvVipPriceL = findViewById(R.id.tvVipPriceL);
+        tvVipBadgeM = findViewById(R.id.tvVipBadgeM);
+        tvVipBadgeL = findViewById(R.id.tvVipBadgeL);
         tvRatingSummary = findViewById(R.id.tvRatingSummary);
         tvDescription = findViewById(R.id.tvDescription);
         btnSizeOptionM = findViewById(R.id.btnSizeOptionM);
@@ -173,12 +214,30 @@ public class ProductDetail extends BaseActivity {
         tvCommitment3 = findViewById(R.id.tvCommitment3);
         tvCommitment4 = findViewById(R.id.tvCommitment4);
         tvReviewCount = findViewById(R.id.tvReviewCount);
+        tvReviewAverage = findViewById(R.id.tvReviewAverage);
+        tvReviewSuccessMessage = findViewById(R.id.tvReviewSuccessMessage);
+        layoutReviewSuccess = findViewById(R.id.layoutReviewSuccess);
+        layoutReviewEmpty = findViewById(R.id.layoutReviewEmpty);
+        cardReviewList = findViewById(R.id.cardReviewList);
+        layoutReviewList = findViewById(R.id.layoutReviewList);
+        scrollReviewList = findViewById(R.id.scrollReviewList);
+        bar1 = findViewById(R.id.bar1);
+        bar2 = findViewById(R.id.bar2);
+        bar3 = findViewById(R.id.bar3);
+        bar4 = findViewById(R.id.bar4);
+        bar5 = findViewById(R.id.bar5);
+        imgSummaryStar1 = findViewById(R.id.imgSummaryStar1);
+        imgSummaryStar2 = findViewById(R.id.imgSummaryStar2);
+        imgSummaryStar3 = findViewById(R.id.imgSummaryStar3);
+        imgSummaryStar4 = findViewById(R.id.imgSummaryStar4);
+        imgSummaryStar5 = findViewById(R.id.imgSummaryStar5);
         imgStar1 = findViewById(R.id.imgStar1);
         imgStar2 = findViewById(R.id.imgStar2);
         imgStar3 = findViewById(R.id.imgStar3);
         imgStar4 = findViewById(R.id.imgStar4);
         imgStar5 = findViewById(R.id.imgStar5);
         btnWriteReview = findViewById(R.id.btnWriteReview);
+        btnSubmitReview = findViewById(R.id.btnSubmitReview);
         View logo = findViewById(R.id.img_logo);
         if (logo != null) {
             logo.setOnClickListener(v -> startActivity(new Intent(this, Homepage.class)));
@@ -216,8 +275,6 @@ public class ProductDetail extends BaseActivity {
         CartBadgeHelper.setup(this);
         if (name != null) {
             fetchFromFirebase(name);
-        } else {
-            selectTab(tabDescription);
         }
 
         Product dummy = new Product();
@@ -257,6 +314,10 @@ public class ProductDetail extends BaseActivity {
         setupCommitmentContent();
         setupReviewSection();
         applyCustomizationState(false);
+
+        if (tabDescription != null) {
+            tabDescription.post(() -> selectTab(tabDescription, false));
+        }
     }
 
     private void setupDescriptionInfo(String productName) {
@@ -312,6 +373,11 @@ public class ProductDetail extends BaseActivity {
         if (tvReviewCount != null) {
             tvReviewCount.setText(getString(R.string.product_detail_review_count_format, "0"));
         }
+        if (tvReviewAverage != null) {
+            tvReviewAverage.setText("0.0");
+        }
+        updateSummaryStars(0f);
+        updateProgressBars(new int[]{0, 0, 0, 0, 0}, 0);
 
         View.OnClickListener starClickListener = v -> {
             int rating = 1;
@@ -348,6 +414,379 @@ public class ProductDetail extends BaseActivity {
                 }
             });
         }
+
+        if (btnSubmitReview != null) {
+            btnSubmitReview.setOnClickListener(v -> submitProductReview());
+        }
+
+        loadProductReviews();
+    }
+
+    private void loadProductReviews() {
+        String productId = resolveProductId();
+        if (productId == null || productId.isEmpty()) {
+            return;
+        }
+
+        reviewRepository.getReviewsForProduct(productId, new FirebaseReviewRepository.ReviewsCallback() {
+            @Override
+            public void onSuccess(List<ProductReview> reviews) {
+                if (isFinishing()) {
+                    return;
+                }
+                productReviews = reviews != null ? reviews : new ArrayList<>();
+                updateReviewStats(productReviews);
+                renderReviewList(productReviews);
+            }
+
+            @Override
+            public void onError(String message) {
+                // Keep default empty state.
+            }
+        });
+    }
+
+    private String resolveProductId() {
+        if (currentProduct != null) {
+            String id = currentProduct.getId();
+            if (id != null && !id.isEmpty()) {
+                return id;
+            }
+        }
+        String fromIntent = getIntent().getStringExtra("productId");
+        if (fromIntent != null && !fromIntent.isEmpty()) {
+            return fromIntent;
+        }
+        return null;
+    }
+
+    private void submitProductReview() {
+        if (selectedRating < 1) {
+            Toast.makeText(this, R.string.product_detail_review_rating_required, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String productId = resolveProductId();
+        if (productId == null || productId.isEmpty()) {
+            Toast.makeText(this, R.string.product_detail_review_submit_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        EditText edtTitle = findViewById(R.id.edtReviewTitle);
+        EditText edtComment = findViewById(R.id.edtReviewComment);
+        String title = edtTitle != null && edtTitle.getText() != null
+                ? edtTitle.getText().toString().trim() : "";
+        String comment = edtComment != null && edtComment.getText() != null
+                ? edtComment.getText().toString().trim() : "";
+
+        String userName = getReviewerName();
+        String userId = UserProfileHelper.getUserId(this);
+
+        ProductReview review = new ProductReview();
+        review.setProductId(productId);
+        review.setUserId(userId);
+        review.setUserName(userName);
+        review.setRating((float) selectedRating);
+        review.setTitle(title);
+        review.setComment(comment);
+        review.setCreatedAt(DateTimeHelper.isoNow());
+
+        btnSubmitReview.setEnabled(false);
+        reviewRepository.submitReview(review, new FirebaseReviewRepository.SubmitCallback() {
+            @Override
+            public void onSuccess(ProductReview savedReview) {
+                if (isFinishing()) {
+                    return;
+                }
+                btnSubmitReview.setEnabled(true);
+                productReviews.add(0, savedReview);
+                updateReviewStats(productReviews);
+                showReviewSubmitted(savedReview);
+                if (layoutReviewForm != null) {
+                    layoutReviewForm.setVisibility(View.GONE);
+                }
+                if (edtTitle != null) {
+                    edtTitle.setText("");
+                }
+                if (edtComment != null) {
+                    edtComment.setText("");
+                }
+                updateStarRating(0);
+            }
+
+            @Override
+            public void onError(String message) {
+                if (isFinishing()) {
+                    return;
+                }
+                btnSubmitReview.setEnabled(true);
+                Toast.makeText(ProductDetail.this, R.string.product_detail_review_submit_error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showReviewSubmitted(ProductReview review) {
+        if (layoutReviewSuccess != null) {
+            layoutReviewSuccess.setVisibility(View.VISIBLE);
+        }
+        if (layoutReviewEmpty != null) {
+            layoutReviewEmpty.setVisibility(View.GONE);
+        }
+
+        String productName = currentProduct != null && currentProduct.getName() != null
+                ? currentProduct.getName()
+                : (tvDetailName != null && tvDetailName.getText() != null
+                ? tvDetailName.getText().toString() : getString(R.string.product_detail_title));
+        if (tvReviewSuccessMessage != null) {
+            String escaped = Html.escapeHtml(productName);
+            String html = getString(R.string.product_detail_review_success_message, "<b>" + escaped + "</b>");
+            tvReviewSuccessMessage.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
+        }
+
+        renderReviewList(productReviews);
+        scheduleHideReviewSuccess();
+    }
+
+    private void scheduleHideReviewSuccess() {
+        if (hideReviewSuccessRunnable != null) {
+            reviewUiHandler.removeCallbacks(hideReviewSuccessRunnable);
+        }
+        hideReviewSuccessRunnable = () -> {
+            if (isFinishing()) {
+                return;
+            }
+            if (layoutReviewSuccess != null) {
+                layoutReviewSuccess.setVisibility(View.GONE);
+            }
+        };
+        reviewUiHandler.postDelayed(hideReviewSuccessRunnable, REVIEW_SUCCESS_VISIBLE_MS);
+    }
+
+    private void renderReviewList(List<ProductReview> reviews) {
+        if (layoutReviewList == null) {
+            return;
+        }
+
+        layoutReviewList.removeAllViews();
+        int limit = Math.min(MAX_VISIBLE_REVIEWS, reviews.size());
+        if (limit == 0) {
+            if (cardReviewList != null) {
+                cardReviewList.setVisibility(View.GONE);
+            }
+            if (layoutReviewEmpty != null) {
+                layoutReviewEmpty.setVisibility(View.VISIBLE);
+            }
+            return;
+        }
+
+        if (layoutReviewEmpty != null) {
+            layoutReviewEmpty.setVisibility(View.GONE);
+        }
+        if (cardReviewList != null) {
+            cardReviewList.setVisibility(View.VISIBLE);
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (int i = 0; i < limit; i++) {
+            View card = inflater.inflate(R.layout.item_review_card, layoutReviewList, false);
+            bindReviewCardView(card, reviews.get(i));
+            layoutReviewList.addView(card);
+        }
+
+        if (scrollReviewList != null) {
+            scrollReviewList.scrollTo(0, 0);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (hideReviewSuccessRunnable != null) {
+            reviewUiHandler.removeCallbacks(hideReviewSuccessRunnable);
+        }
+        super.onDestroy();
+    }
+
+    private void applyVipPricePresentation() {
+        VipPriceUiHelper.applyDetailPrices(this,
+                tvSizeBadgeM, tvPriceM, tvVipBadgeM, tvVipPriceM,
+                tvSizeBadgeL, tvPriceL, tvVipBadgeL, tvVipPriceL);
+    }
+
+    private void bindReviewCardView(View card, ProductReview review) {
+        if (card == null || review == null) {
+            return;
+        }
+
+        TextView tvInitial = card.findViewById(R.id.tvReviewInitial);
+        TextView tvUserName = card.findViewById(R.id.tvReviewUserName);
+        TextView tvDate = card.findViewById(R.id.tvReviewDate);
+        TextView tvTitle = card.findViewById(R.id.tvReviewTitle);
+        TextView tvComment = card.findViewById(R.id.tvReviewComment);
+        LinearLayout starRow = card.findViewById(R.id.layoutReviewCardStars);
+
+        String userName = review.getUserName() != null && !review.getUserName().isEmpty()
+                ? review.getUserName()
+                : getString(R.string.product_detail_review_guest_name);
+        if (tvInitial != null) {
+            tvInitial.setText(getInitial(userName));
+        }
+        if (tvUserName != null) {
+            tvUserName.setText(userName);
+        }
+        if (tvDate != null) {
+            tvDate.setText(formatReviewDate(review.getCreatedAt()));
+        }
+
+        if (starRow != null) {
+            starRow.removeAllViews();
+            int activeColor = ContextCompat.getColor(this, R.color.star_rating_active);
+            int inactiveColor = ContextCompat.getColor(this, R.color.outline_variant);
+            for (int i = 1; i <= 5; i++) {
+                ImageView star = new ImageView(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        dpToPx(14), dpToPx(14));
+                if (i > 1) {
+                    params.setMarginStart(dpToPx(2));
+                }
+                star.setLayoutParams(params);
+                star.setImageResource(R.drawable.ic_star_rating);
+                int color = i <= Math.round(review.getRating()) ? activeColor : inactiveColor;
+                ImageViewCompat.setImageTintList(star, ColorStateList.valueOf(color));
+                starRow.addView(star);
+            }
+        }
+
+        String title = review.getTitle() != null ? review.getTitle().trim() : "";
+        String comment = review.getComment() != null ? review.getComment().trim() : "";
+        if (tvTitle != null) {
+            if (!title.isEmpty()) {
+                tvTitle.setText(title);
+                tvTitle.setVisibility(View.VISIBLE);
+            } else {
+                tvTitle.setVisibility(View.GONE);
+            }
+        }
+        if (tvComment != null) {
+            String display = !comment.isEmpty() ? comment : title;
+            if (!display.isEmpty()) {
+                tvComment.setText("\"" + display + "\"");
+                tvComment.setVisibility(View.VISIBLE);
+            } else {
+                tvComment.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void updateReviewStats(List<ProductReview> reviews) {
+        int total = reviews != null ? reviews.size() : 0;
+        if (total == 0) {
+            if (tvReviewAverage != null) {
+                tvReviewAverage.setText("0.0");
+            }
+            updateSummaryStars(0f);
+            if (tvReviewCount != null) {
+                tvReviewCount.setText(getString(R.string.product_detail_review_count_format, "0"));
+            }
+            updateProgressBars(new int[]{0, 0, 0, 0, 0}, 0);
+            return;
+        }
+
+        int[] counts = new int[5];
+        double sum = 0;
+        for (ProductReview review : reviews) {
+            int rating = Math.max(1, Math.min(5, Math.round(review.getRating())));
+            counts[rating - 1]++;
+            sum += rating;
+        }
+
+        float average = (float) (sum / total);
+        if (tvReviewAverage != null) {
+            tvReviewAverage.setText(String.format(Locale.getDefault(), "%.1f", average));
+        }
+        updateSummaryStars(average);
+        if (tvReviewCount != null) {
+            tvReviewCount.setText(getString(R.string.product_detail_review_count_format, formatReviewCount(total)));
+        }
+        updateHeaderRating(average, total);
+        updateProgressBars(counts, total);
+    }
+
+    private void updateHeaderRating(float average, int total) {
+        if (tvRatingValue != null && total > 0) {
+            tvRatingValue.setText(String.format(Locale.getDefault(), "%.1f", average));
+        }
+        if (tvRatingSummary != null && total > 0) {
+            String countText = getString(R.string.product_detail_review_count_format, formatReviewCount(total));
+            tvRatingSummary.setText("(" + countText + ")");
+        }
+    }
+
+    private void updateProgressBars(int[] counts, int total) {
+        ProgressBar[] bars = {bar5, bar4, bar3, bar2, bar1};
+        for (int i = 0; i < bars.length; i++) {
+            if (bars[i] == null) {
+                continue;
+            }
+            int starLevel = 5 - i;
+            int count = counts[starLevel - 1];
+            int progress = total > 0 ? Math.round(count * 100f / total) : 0;
+            bars[i].setProgress(progress);
+        }
+    }
+
+    private void updateSummaryStars(float average) {
+        ImageView[] stars = {
+                imgSummaryStar1, imgSummaryStar2, imgSummaryStar3, imgSummaryStar4, imgSummaryStar5
+        };
+        int activeColor = ContextCompat.getColor(this, R.color.star_rating_active);
+        int inactiveColor = ContextCompat.getColor(this, R.color.outline_variant);
+        int filledCount = Math.round(average);
+
+        for (int i = 0; i < stars.length; i++) {
+            if (stars[i] == null) {
+                continue;
+            }
+            int color = (i + 1) <= filledCount ? activeColor : inactiveColor;
+            ImageViewCompat.setImageTintList(stars[i], ColorStateList.valueOf(color));
+        }
+    }
+
+    private String getReviewerName() {
+        String displayName = UserProfileHelper.getDisplayFullName(this);
+        if (!displayName.isEmpty()) {
+            return displayName;
+        }
+        return getString(R.string.product_detail_review_guest_name);
+    }
+
+    private String getInitial(String name) {
+        if (name == null || name.isEmpty()) {
+            return "?";
+        }
+        return name.substring(0, 1).toUpperCase(Locale.getDefault());
+    }
+
+    private String formatReviewCount(int count) {
+        if (count >= 1000) {
+            if (count % 1000 == 0) {
+                return (count / 1000) + "k";
+            }
+            return String.format(Locale.getDefault(), "%.1fk", count / 1000f);
+        }
+        return String.valueOf(count);
+    }
+
+    private String formatReviewDate(String createdAt) {
+        String formatted = DateTimeHelper.formatDisplayDate(createdAt, "dd/MM/yyyy");
+        if (!formatted.isEmpty()) {
+            return formatted;
+        }
+        return DateTimeHelper.formatDisplayDate(DateTimeHelper.isoNow(), "dd/MM/yyyy");
+    }
+
+    private int dpToPx(int dp) {
+        return Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics()));
     }
 
     private void updateStarRating(int rating) {
@@ -382,6 +821,7 @@ public class ProductDetail extends BaseActivity {
         tvPriceL.setText(safePrice(priceL));
         tvVipPriceM.setText(safePrice(vipM));
         tvVipPriceL.setText(safePrice(vipL));
+        applyVipPricePresentation();
         bindCustomizationPrice(priceM, priceL);
         tvRatingSummary.setText(getString(
                 R.string.product_detail_views_format,
@@ -429,6 +869,7 @@ public class ProductDetail extends BaseActivity {
         tvVipPriceM.setText(safePrice(product.getVipPriceM()));
         tvVipPriceL.setText(safePrice(product.getVipPriceL()));
         bindCustomizationPrice(String.valueOf(product.getPriceM()), String.valueOf(product.getPriceL()));
+        applyVipPricePresentation();
         if (tvRatingValue != null) {
             tvRatingValue.setText(String.format(java.util.Locale.getDefault(), "%.1f", product.getRating()));
         }
@@ -438,7 +879,10 @@ public class ProductDetail extends BaseActivity {
         ProductImageHelper.load(imgDetail, product);
         setupDescriptionInfo(product.getName());
         setupThumbs(product);
-        selectTab(tabDescription);
+        loadProductReviews();
+        if (tabDescription != null) {
+            tabDescription.post(() -> selectTab(tabDescription, false));
+        }
     }
 
     private void setupThumbs(Product product) {
@@ -599,6 +1043,7 @@ public class ProductDetail extends BaseActivity {
     protected void onResume() {
         super.onResume();
         CartBadgeHelper.updateBadge(this);
+        UserRoleHelper.refreshRoleFromFirebase(this, this::applyVipPricePresentation);
     }
 
     private void fetchRecommendedProducts(String category) {
@@ -617,31 +1062,46 @@ public class ProductDetail extends BaseActivity {
                     }
                     if (limited.size() >= 6) break;
                 }
-                RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
-                if (rvRecommended != null) {
-                    ProductCardAdapter adapter = new ProductCardAdapter(
-                            limited,
-                            R.layout.item_product_card,
-                            ProductDetail.this::openRelatedDetail,
-                            product -> CartActions.addDefaultProduct(ProductDetail.this, product)
-                    );
-                    rvRecommended.setAdapter(adapter);
+                if (limited.isEmpty()) {
+                    bindRecommendedAdapter(limited);
+                    return;
                 }
+                reviewCatalogSync.syncProducts(limited, new ReviewCatalogSync.Callback() {
+                    @Override
+                    public void onReady(Map<String, ReviewStatsHelper.Stats> statsByProductId) {
+                        if (isFinishing()) {
+                            return;
+                        }
+                        ReviewStatsHelper.applyStatsToProducts(limited, statsByProductId);
+                        bindRecommendedAdapter(limited);
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        if (!isFinishing()) {
+                            bindRecommendedAdapter(limited);
+                        }
+                    }
+                });
             }
 
             @Override
             public void onError(String message) {
-                RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
-                if (rvRecommended != null) {
-                    rvRecommended.setAdapter(new ProductCardAdapter(
-                            getRecommendedProducts(),
-                            R.layout.item_product_card,
-                            ProductDetail.this::openRelatedDetail,
-                            product -> CartActions.addDefaultProduct(ProductDetail.this, product)
-                    ));
-                }
+                bindRecommendedAdapter(getRecommendedProducts());
             }
         });
+    }
+
+    private void bindRecommendedAdapter(List<Product> products) {
+        RecyclerView rvRecommended = findViewById(R.id.rvRecommended);
+        if (rvRecommended != null) {
+            rvRecommended.setAdapter(new ProductCardAdapter(
+                    products,
+                    R.layout.item_product_card,
+                    ProductDetail.this::openRelatedDetail,
+                    product -> CartActions.addDefaultProduct(ProductDetail.this, product)
+            ));
+        }
     }
 
     private List<Product> getRecommendedProducts() {
@@ -663,6 +1123,9 @@ public class ProductDetail extends BaseActivity {
         intent.putExtra("imageRes", product.getImageRes(this));
         intent.putExtra("rating", product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());
+        if (product.getId() != null && !product.getId().isEmpty()) {
+            intent.putExtra("productId", product.getId());
+        }
         startActivity(intent);
     }
 
@@ -735,6 +1198,10 @@ public class ProductDetail extends BaseActivity {
     }
 
     private void selectTab(TextView selectedTab) {
+        selectTab(selectedTab, true);
+    }
+
+    private void selectTab(TextView selectedTab, boolean animateIndicator) {
         if (tabDescription == null || tabReview == null || tabCommitment == null) {
             return;
         }
@@ -760,23 +1227,50 @@ public class ProductDetail extends BaseActivity {
         if (layoutReviewForm != null) {
             layoutReviewForm.setVisibility(View.GONE);
         }
-        alignIndicatorToTab(selectedTab);
+        alignIndicatorToTab(selectedTab, animateIndicator);
     }
 
-    private void alignIndicatorToTab(TextView target) {
+    private void alignIndicatorToTab(TextView target, boolean animate) {
         if (tabIndicator == null || tabIndicatorContainer == null || target == null) {
             return;
         }
-        int[] targetPos = new int[2];
-        int[] containerPos = new int[2];
-        target.getLocationOnScreen(targetPos);
-        tabIndicatorContainer.getLocationOnScreen(containerPos);
 
-        float x = targetPos[0] - containerPos[0];
-        ViewGroup.LayoutParams layoutParams = tabIndicator.getLayoutParams();
-        layoutParams.width = target.getWidth();
-        tabIndicator.setLayoutParams(layoutParams);
-        tabIndicator.animate().x(x).setDuration(180).start();
+        Runnable positionIndicator = () -> {
+            if (target.getWidth() <= 0) {
+                return;
+            }
+            int[] targetPos = new int[2];
+            int[] containerPos = new int[2];
+            target.getLocationOnScreen(targetPos);
+            tabIndicatorContainer.getLocationOnScreen(containerPos);
+
+            float x = targetPos[0] - containerPos[0];
+            ViewGroup.LayoutParams layoutParams = tabIndicator.getLayoutParams();
+            layoutParams.width = target.getWidth();
+            tabIndicator.setLayoutParams(layoutParams);
+            if (animate) {
+                tabIndicator.animate().x(x).setDuration(180).start();
+            } else {
+                tabIndicator.animate().cancel();
+                tabIndicator.setX(x);
+            }
+        };
+
+        if (target.getWidth() > 0) {
+            target.post(positionIndicator);
+            return;
+        }
+
+        target.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (target.getWidth() <= 0) {
+                    return;
+                }
+                target.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                positionIndicator.run();
+            }
+        });
     }
 
     private void toggleCustomization() {
@@ -928,6 +1422,10 @@ public class ProductDetail extends BaseActivity {
         product.setPriceL(parsePriceInt(priceL));
         product.setVipPriceM(parsePriceInt(vipM));
         product.setVipPriceL(parsePriceInt(vipL));
+        String productId = getIntent().getStringExtra("productId");
+        if (productId != null && !productId.isEmpty()) {
+            product.setId(productId);
+        }
         return product;
     }
 
