@@ -30,9 +30,12 @@ app.get("/health", (req, res) => {
 });
 
 app.post("/api/auth/send-otp-email", async (req, res) => {
+  const { to, subject, html } = req.body || {};
+  console.log(`[${new Date().toISOString()}] Nhận yêu cầu gửi OTP đến: ${to}`);
+
   try {
-    const { to, subject, html } = req.body || {};
     if (!to || !subject || !html) {
+      console.error("Thiếu dữ liệu email trong request body");
       return res.status(400).json({ message: "Missing email data" });
     }
 

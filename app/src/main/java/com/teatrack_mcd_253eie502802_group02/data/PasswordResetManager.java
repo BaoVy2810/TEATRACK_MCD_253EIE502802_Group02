@@ -89,7 +89,12 @@ public class PasswordResetManager {
                 otpData.put("verified", false);
 
                 otpRef.child(emailKey(cleanEmail)).setValue(otpData)
-                        .addOnSuccessListener(unused -> sendOtpEmail(cleanEmail, callback))
+                        .addOnSuccessListener(unused -> {
+                            // Chuyển màn hình ngay khi lưu DB xong để tránh bị timeout chặn UI
+                            callback.onSuccess();
+                            // Gửi email ngầm ở background
+                            sendOtpEmail(cleanEmail, null);
+                        })
                         .addOnFailureListener(e -> callback.onError(context.getString(R.string.forgot_password_server_error)));
             }
 
@@ -191,7 +196,7 @@ public class PasswordResetManager {
                 String subject = valueAsString(snapshot.child("subject"));
                 String html = valueAsString(snapshot.child("html"));
                 if (!snapshot.exists() || subject.isEmpty() || html.isEmpty()) {
-                    callback.onError(context.getString(R.string.forgot_password_server_error));
+                    if (callback != null) callback.onError(context.getString(R.string.forgot_password_server_error));
                     return;
                 }
 
@@ -206,10 +211,10 @@ public class PasswordResetManager {
                                 updates.put("sentAt", System.currentTimeMillis());
                                 updates.put("updatedAt", System.currentTimeMillis());
                                 otpRef.child(emailKey(email)).updateChildren(updates);
-                                mainHandler.post(callback::onSuccess);
+                                if (callback != null) mainHandler.post(callback::onSuccess);
                             } catch (Exception e) {
                                 markEmailFailed(email, e.getMessage());
-                                mainHandler.post(() -> callback.onError(context.getString(R.string.forgot_password_server_error)));
+                                if (callback != null) mainHandler.post(() -> callback.onError(context.getString(R.string.forgot_password_server_error)));
                             }
                         });
                     }
@@ -217,7 +222,7 @@ public class PasswordResetManager {
                     @Override
                     public void onError(String message) {
                         markEmailFailed(email, message);
-                        callback.onError(context.getString(R.string.forgot_password_server_error));
+                        if (callback != null) callback.onError(context.getString(R.string.forgot_password_server_error));
                     }
                 });
             }

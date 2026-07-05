@@ -30,55 +30,7 @@ function createTransporter() {
 exports.sendPasswordResetOtpEmail = functions.database
   .ref("/otp/{otpId}")
   .onWrite(async (change) => {
-    if (!change.after.exists()) {
-      return null;
-    }
-
-    const before = change.before.exists() ? change.before.val() || {} : {};
-    const request = change.after.val() || {};
-    if (request.status !== "pending" || before.status === "pending") {
-      return null;
-    }
-
-    const to = request.to || request.email;
-    if (!to || !request.subject || !request.html) {
-      await change.after.ref.update({
-        status: "failed",
-        error: "Missing email request data",
-        updatedAt: Date.now(),
-      });
-      return null;
-    }
-
-    if (request.expiresAt && Number(request.expiresAt) <= Date.now()) {
-      await change.after.ref.update({
-        status: "expired",
-        updatedAt: Date.now(),
-      });
-      return null;
-    }
-
-    try {
-      const smtp = getSmtpConfig();
-      const transporter = createTransporter();
-      await transporter.sendMail({
-        from: `"TeaTrack Support" <${smtp.user}>`,
-        to,
-        subject: request.subject,
-        html: request.html,
-      });
-
-      await change.after.ref.update({
-        status: "sent",
-        sentAt: Date.now(),
-        updatedAt: Date.now(),
-      });
-    } catch (error) {
-      await change.after.ref.update({
-        status: "failed",
-        error: error.message,
-        updatedAt: Date.now(),
-      });
-    }
+    // Disable this function because we use a separate mail-server on Render
+    // and Spark plan doesn't allow outbound networking for SMTP.
     return null;
   });
