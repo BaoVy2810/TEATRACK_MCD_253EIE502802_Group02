@@ -801,16 +801,23 @@
 
     <!-- Hệ thống Thành viên & Phần thưởng -->
     <string name="loyalty_member_card">Thẻ Thành Viên</string>
+    <string name="loyalty_vip_label">Thành viên VIP</string>
+    <string name="loyalty_view_all">Xem tất cả</string>
+    <string name="loyalty_special_promotions">Khuyến mãi đặc biệt</string>
+    <string name="loyalty_redeem_progress">Đổi ngay (%1$d/%2$d)</string>
+    <string name="loyalty_badge_hot_deal">HOT DEAL</string>
+    <string name="loyalty_badge_exclusive">EXCLUSIVE</string>
+    <string name="loyalty_promo_expiry_format">HSD: %1$s</string>
     <string name="loyalty_user_name_default">Khách</string>
     <string name="loyalty_points_format">%1$d điểm</string>
     <string name="loyalty_uid_format">UID: %1$s</string>
     <string name="loyalty_qr_code">Mã QR</string>
     <string name="loyalty_barcode">Mã vạch</string>
     <string name="loyalty_points_history">Lịch sử điểm</string>
-    <string name="loyalty_my_rewards">Ưu đãi của bạn</string>
-    <string name="loyalty_redeem_title">Đổi điểm nhận quà</string>
-    <string name="loyalty_buy_8_get_1">Mua 8 Tặng 1</string>
-    <string name="loyalty_redeem_description">Tích đủ 8 điểm để đổi 1 ly trà sữa miễn phí</string>
+    <string name="loyalty_my_rewards">Ưu đãi của tôi</string>
+    <string name="loyalty_redeem_title">Đổi quà tặng</string>
+    <string name="loyalty_buy_8_get_1">Mua 8 tặng 1</string>
+    <string name="loyalty_redeem_description">Tích đủ 8 ly để nhận 1 thức uống miễn phí bất kỳ.</string>
     <string name="loyalty_btn_redeem_now">Đổi 1 ly miễn phí ngay!</string>
     <string name="loyalty_points_needed_format">Cần thêm %1$d điểm để đổi quà</string>
     <string name="loyalty_promotions_title">Chương trình khuyến mãi</string>

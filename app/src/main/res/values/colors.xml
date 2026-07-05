@@ -12,6 +12,7 @@
     <color name="outline_variant">#B8C5D8</color>
     <color name="secondary">#6B7A90</color>
     <color name="on_surface">#1B2430</color>
+    <color name="on_surface_variant">#404754</color>
     <color name="promo_card_bg">#EEF3FF</color>
     <color name="promo_card_stroke">#D3DEEF</color>
     <color name="promo_card_corner">#DFE7F8</color>

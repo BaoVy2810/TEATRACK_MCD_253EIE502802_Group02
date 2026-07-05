@@ -603,7 +603,7 @@
     <string name="str_contact_info">Contact Information</string>
     <string name="str_contact_desc">We always listen to your feedback to improve our service every day.</string>
     <string name="str_phone">Phone: 02-723-979-518</string>
-    <string name="str_email">Email: contact@teatrack.com</string>
+    <string name="str_email">Email: teatrack0410@gmail.com</string>
     <string name="str_fullname">Full Name</string>
     <string name="str_fullname_hint">Enter your full name</string>
     <string name="str_email_hint">Email Address</string>
@@ -1056,6 +1056,13 @@
 
     <!-- Loyalty & Rewards System -->
     <string name="loyalty_member_card">Member Card</string>
+    <string name="loyalty_vip_label">VIP Member</string>
+    <string name="loyalty_view_all">View all</string>
+    <string name="loyalty_special_promotions">Special promotions</string>
+    <string name="loyalty_redeem_progress">Redeem now (%1$d/%2$d)</string>
+    <string name="loyalty_badge_hot_deal">HOT DEAL</string>
+    <string name="loyalty_badge_exclusive">EXCLUSIVE</string>
+    <string name="loyalty_promo_expiry_format">Valid until %1$s</string>
     <string name="loyalty_user_name_default">Guest</string>
     <string name="loyalty_points_format">%1$d pts</string>
     <string name="loyalty_uid_format">UID: %1$s</string>
@@ -1063,7 +1070,7 @@
     <string name="loyalty_barcode">Barcode</string>
     <string name="loyalty_points_history">Points History</string>
     <string name="loyalty_my_rewards">My Rewards</string>
-    <string name="loyalty_redeem_title">Redeem Points</string>
+    <string name="loyalty_redeem_title">Redeem gifts</string>
     <string name="loyalty_buy_8_get_1">Buy 8 Get 1</string>
     <string name="loyalty_redeem_description">Collect 8 points to get 1 free milk tea</string>
     <string name="loyalty_btn_redeem_now">Redeem 1 free cup now!</string>

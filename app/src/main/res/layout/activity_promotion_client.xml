@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_baby_blue"
+    android:background="#F8F9FA"
     tools:context=".client.PromotionClient">
 
     <include
@@ -33,6 +33,7 @@
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingBottom="12dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@id/layout_nav_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,223 +45,311 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Member card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/primary"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="0dp"
+                app:cardBackgroundColor="@android:color/transparent"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="8dp"
                 app:strokeWidth="0dp">
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                    android:background="@drawable/bg_loyalty_member_gradient"
+                    android:padding="24dp">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tvUserName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_family"
-                            android:text="@string/loyalty_user_name_default"
-                            android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                        <LinearLayout
-                            android:id="@+id/layoutPointsBadge"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:background="@drawable/bg_vip_tag"
-                            android:gravity="center"
-                            android:paddingHorizontal="12dp"
-                            android:paddingVertical="6dp">
-
-                            <ImageView
-                                android:layout_width="14dp"
-                                android:layout_height="14dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_star"
-                                app:tint="@color/white" />
-
-                            <TextView
-                                android:id="@+id/tvCurrentPoints"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:fontFamily="@font/inter_family"
-                                android:text="0 pts"
-                                android:textColor="@color/white"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </RelativeLayout>
+                                android:layout_alignParentStart="true"
+                                android:orientation="vertical">
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tabLayoutCode"
-                        android:layout_width="180dp"
-                        android:layout_height="36dp"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="24dp"
-                        android:background="@drawable/bg_toggle_group"
-                        app:tabBackground="@drawable/bg_toggle_group"
-                        app:tabIndicator="@drawable/bg_toggle_active"
-                        app:tabIndicatorColor="@color/white"
-                        app:tabIndicatorGravity="stretch"
-                        app:tabMode="fixed"
-                        app:tabRippleColor="@null"
-                        app:tabSelectedTextColor="@color/primary"
-                        app:tabTextAppearance="@style/TextAppearance.AppCompat.Caption"
-                        app:tabTextColor="@color/nav_inactive">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/inter_family"
+                                    android:letterSpacing="0.08"
+                                    android:text="@string/loyalty_vip_label"
+                                    android:textAllCaps="true"
+                                    android:textColor="#CCFFFFFF"
+                                    android:textSize="10sp"
+                                    android:textStyle="bold" />
 
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/loyalty_qr_code" />
+                                <TextView
+                                    android:id="@+id/tvUserName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:fontFamily="@font/inter_semibold"
+                                    android:text="@string/loyalty_user_name_default"
+                                    android:textColor="@color/white"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
 
-                        <com.google.android.material.tabs.TabItem
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/loyalty_barcode" />
-                    </com.google.android.material.tabs.TabLayout>
+                            <LinearLayout
+                                android:id="@+id/layoutPointsBadge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:background="@drawable/bg_loyalty_points_pill"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:paddingStart="12dp"
+                                android:paddingTop="6dp"
+                                android:paddingEnd="12dp"
+                                android:paddingBottom="6dp">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:layout_marginTop="20dp"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="0dp">
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:contentDescription="@null"
+                                    android:src="@drawable/ic_star"
+                                    app:tint="@color/white" />
 
-                        <ImageView
-                            android:id="@+id/ivCodeDisplay"
+                                <TextView
+                                    android:id="@+id/tvCurrentPoints"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:fontFamily="@font/inter_semibold"
+                                    android:text="0 pts"
+                                    android:textColor="@color/white"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </RelativeLayout>
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tabLayoutCode"
+                            android:layout_width="200dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="24dp"
+                            android:background="@drawable/bg_loyalty_toggle_track"
+                            app:tabBackground="@android:color/transparent"
+                            app:tabGravity="fill"
+                            app:tabIndicator="@drawable/bg_loyalty_toggle_active"
+                            app:tabIndicatorColor="@color/white"
+                            app:tabIndicatorFullWidth="true"
+                            app:tabIndicatorGravity="stretch"
+                            app:tabIndicatorHeight="32dp"
+                            app:tabMode="fixed"
+                            app:tabRippleColor="@null"
+                            app:tabSelectedTextColor="@color/primary"
+                            app:tabTextAppearance="@style/LoyaltyTabText"
+                            app:tabTextColor="#B3FFFFFF">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/loyalty_qr_code" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/loyalty_barcode" />
+                        </com.google.android.material.tabs.TabLayout>
+
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/white"
-                            android:contentDescription="@string/loyalty_qr_code"
-                            android:padding="16dp"
-                            android:scaleType="fitCenter" />
-                    </androidx.cardview.widget.CardView>
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            app:cardBackgroundColor="@color/white"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp">
 
-                    <TextView
-                        android:id="@+id/tvUserIdDisplay"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="12dp"
-                        android:alpha="0.85"
-                        android:fontFamily="@font/inter_family"
-                        android:text="UID: 12345678"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical"
+                                android:padding="20dp">
+
+                                <ImageView
+                                    android:id="@+id/ivCodeDisplay"
+                                    android:layout_width="160dp"
+                                    android:layout_height="160dp"
+                                    android:contentDescription="@string/loyalty_qr_code"
+                                    android:scaleType="fitCenter"
+                                    tools:src="@mipmap/qrcode" />
+
+                                <TextView
+                                    android:id="@+id/tvUserIdDisplay"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:fontFamily="@font/inter_family"
+                                    android:letterSpacing="0.15"
+                                    android:text="UID: 12345678"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/outline_variant"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </FrameLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Action buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:gravity="center"
                 android:orientation="horizontal">
 
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnPointsHistory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
                     android:clickable="true"
                     android:focusable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="#4DC0C6D6"
+                    app:strokeWidth="1dp">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        app:cardCornerRadius="24dp"
-                        app:cardElevation="2dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@null"
-                            android:padding="5dp"
-                            android:src="@drawable/points"
-                            app:tint="@color/primary" />
-                    </androidx.cardview.widget.CardView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/inter_family"
-                        android:text="@string/loyalty_points_history"
-                        android:textColor="@color/text_primary"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp">
 
-                <LinearLayout
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_loyalty_icon_circle">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/coupon2"
+                                app:tint="@color/primary" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="@string/loyalty_points_history"
+                            android:textColor="@color/on_surface"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnMyRewards"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"
                     android:clickable="true"
                     android:focusable="true"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="8dp">
+                    android:foreground="?attr/selectableItemBackground"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp"
+                    app:strokeColor="#4DC0C6D6"
+                    app:strokeWidth="1dp">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        app:cardCornerRadius="24dp"
-                        app:cardElevation="2dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@null"
-                            android:padding="12dp"
-                            android:src="@drawable/gift"
-                            app:tint="@color/primary" />
-                    </androidx.cardview.widget.CardView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="@font/inter_family"
-                        android:text="@string/loyalty_my_rewards"
-                        android:textColor="@color/text_primary"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp">
+
+                        <FrameLayout
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/bg_loyalty_icon_circle">
+
+                            <ImageView
+                                android:layout_width="22dp"
+                                android:layout_height="22dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/gift"
+                                app:tint="@color/primary" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="@string/loyalty_my_rewards"
+                            android:textColor="@color/on_surface"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Redeem section -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:fontFamily="@font/inter_family"
-                android:text="@string/loyalty_redeem_title"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="@string/loyalty_redeem_title"
+                    android:textColor="@color/on_surface"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvViewAllRewards"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/inter_semibold"
+                    android:padding="4dp"
+                    android:text="@string/loyalty_view_all"
+                    android:textColor="@color/primary"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:cardBackgroundColor="@color/white"
-                app:cardCornerRadius="18dp"
-                app:cardElevation="0dp"
-                app:strokeColor="#E7EDF9"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#33C0C6D6"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -269,23 +358,52 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_family"
-                        android:text="@string/loyalty_buy_8_get_1"
-                        android:textColor="@color/primary"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:fontFamily="@font/inter_family"
-                        android:text="@string/loyalty_redeem_description"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
+                        <FrameLayout
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:background="@drawable/bg_loyalty_redeem_icon">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@null"
+                                android:src="@drawable/coupon2"
+                                app:tint="@color/primary" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter_semibold"
+                                android:text="@string/loyalty_buy_8_get_1"
+                                android:textColor="@color/on_surface"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/inter_family"
+                                android:text="@string/loyalty_redeem_description"
+                                android:textColor="@color/on_surface_variant"
+                                android:textSize="12sp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <GridLayout
                         android:id="@+id/gridPointIcons"
@@ -294,32 +412,39 @@
                         android:layout_marginTop="20dp"
                         android:alignmentMode="alignMargins"
                         android:columnCount="4"
-                        android:columnOrderPreserved="false" />
+                        android:columnOrderPreserved="false"
+                        android:useDefaultMargins="false" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnRedeem"
                         android:layout_width="match_parent"
-                        android:layout_height="54dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="24dp"
                         android:enabled="false"
-                        android:fontFamily="@font/inter_family"
+                        android:fontFamily="@font/inter_semibold"
                         android:text="@string/loyalty_btn_redeem_placeholder"
                         android:textAllCaps="false"
-                        android:textColor="@color/white"
+                        android:textColor="#636262"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        app:backgroundTint="@color/primary"
-                        app:cornerRadius="12dp" />
+                        app:backgroundTint="#E2DFDE"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/ic_lock"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconSize="20dp"
+                        app:iconTint="#636262" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Promotions -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:fontFamily="@font/inter_family"
-                android:text="@string/loyalty_promotions_title"
-                android:textColor="@color/text_primary"
+                android:fontFamily="@font/inter_semibold"
+                android:text="@string/loyalty_special_promotions"
+                android:textColor="@color/on_surface"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -327,7 +452,7 @@
                 android:id="@+id/rvPromotions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
                 android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_promotion_client" />
 

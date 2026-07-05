@@ -4,18 +4,26 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Promotion;
-import com.teatrack_mcd_253eie502802_group02.util.PriceFormatHelper;
 
 import java.util.List;
 
 public class PromotionClientAdapter extends RecyclerView.Adapter<PromotionClientAdapter.PromotionViewHolder> {
+
+    private static final int[] BANNER_IMAGES = {
+            R.mipmap.banner1,
+            R.mipmap.banner2,
+            R.mipmap.thuc_uong_moi,
+            R.mipmap.cac_mon_hot
+    };
 
     private final List<Promotion> promotionList;
 
@@ -35,34 +43,29 @@ public class PromotionClientAdapter extends RecyclerView.Adapter<PromotionClient
     public void onBindViewHolder(@NonNull PromotionViewHolder holder, int position) {
         Promotion promotion = promotionList.get(position);
 
-        String code = promotion.getCode();
-        if (TextUtils.isEmpty(code)) {
-            code = promotion.getId();
-        }
-        holder.tvTitle.setText(!TextUtils.isEmpty(promotion.getTitle()) ? promotion.getTitle() : code);
+        String title = !TextUtils.isEmpty(promotion.getTitle())
+                ? promotion.getTitle()
+                : promotion.getCode();
+        holder.tvTitle.setText(title);
 
         String description = promotion.getDescription();
-        holder.tvContent.setText(TextUtils.isEmpty(description) ? code : description);
+        if (TextUtils.isEmpty(description) && !TextUtils.isEmpty(promotion.getExpiry())) {
+            description = holder.itemView.getContext().getString(
+                    R.string.loyalty_promo_expiry_format, promotion.getExpiry());
+        }
+        holder.tvContent.setText(TextUtils.isEmpty(description) ? title : description);
 
-        String valueLabel;
-        if ("percent".equals(promotion.getType())) {
-            valueLabel = "-" + (int) promotion.getValue() + "%";
-        } else {
-            valueLabel = "-" + PriceFormatHelper.formatVnd((int) promotion.getValue());
-        }
+        boolean exclusive = position % 2 == 1;
+        holder.tvBadge.setText(holder.itemView.getContext().getString(
+                exclusive ? R.string.loyalty_badge_exclusive : R.string.loyalty_badge_hot_deal));
+        holder.tvBadge.setBackgroundResource(
+                exclusive ? R.drawable.bg_promo_badge_tertiary : R.drawable.bg_promo_badge_primary);
 
-        StringBuilder meta = new StringBuilder(valueLabel);
-        if (promotion.getMinSubtotal() > 0) {
-            meta.append(" • ")
-                    .append(holder.itemView.getContext().getString(
-                            R.string.str_min_order,
-                            PriceFormatHelper.formatVnd((int) promotion.getMinSubtotal())
-                                    .replace("đ", "").trim()));
-        }
-        if (!TextUtils.isEmpty(promotion.getExpiry())) {
-            meta.append(" • HSD: ").append(promotion.getExpiry());
-        }
-        holder.tvMeta.setText(meta.toString());
+        int imageRes = BANNER_IMAGES[position % BANNER_IMAGES.length];
+        Glide.with(holder.itemView.getContext())
+                .load(imageRes)
+                .centerCrop()
+                .into(holder.imgBanner);
     }
 
     @Override
@@ -71,15 +74,17 @@ public class PromotionClientAdapter extends RecyclerView.Adapter<PromotionClient
     }
 
     static class PromotionViewHolder extends RecyclerView.ViewHolder {
+        final ImageView imgBanner;
+        final TextView tvBadge;
         final TextView tvTitle;
         final TextView tvContent;
-        final TextView tvMeta;
 
         PromotionViewHolder(@NonNull View itemView) {
             super(itemView);
+            imgBanner = itemView.findViewById(R.id.imgPromoBanner);
+            tvBadge = itemView.findViewById(R.id.tvPromoBadge);
             tvTitle = itemView.findViewById(R.id.tvPromotionTitle);
             tvContent = itemView.findViewById(R.id.tvPromotionContent);
-            tvMeta = itemView.findViewById(R.id.tvPromotionMeta);
         }
     }
 }
