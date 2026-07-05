@@ -62,6 +62,8 @@ import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
 public class AdminDashboard extends BaseActivity {
 
+    private static final String UNASSIGNED_BRANCH_ID = "__unassigned_branch__";
+
     private ActivityAdminDashboardBinding binding;
     private DatabaseReference mDatabase;
     private final List<FirebaseOrder> allOrders = new ArrayList<>();
@@ -352,6 +354,36 @@ public class AdminDashboard extends BaseActivity {
                 || "delivered".equalsIgnoreCase(order.getStatus());
     }
 
+    private String resolveOrderAgencyId(FirebaseOrder order) {
+        if (order == null) return "";
+
+        String agencyId = order.getAgencyId();
+        if (agencyId != null && !agencyId.isEmpty()) {
+            for (Agency agency : allBranches) {
+                if (agencyId.equals(agency.getId())) {
+                    return agencyId;
+                }
+            }
+        }
+
+        String branchAddr = order.getBranchAddress();
+        if (branchAddr == null || branchAddr.isEmpty()) {
+            branchAddr = order.getCustomerAddress();
+        }
+        if (branchAddr == null || branchAddr.isEmpty()) return "";
+
+        for (Agency agency : allBranches) {
+            String address = agency.getAddress();
+            String name = agency.getName();
+            if ((address != null && branchAddr.equalsIgnoreCase(address))
+                    || (name != null && branchAddr.equalsIgnoreCase(name))) {
+                return agency.getId();
+            }
+        }
+
+        return "";
+    }
+
     /** Count revenue from the amount paid on the order. */
     private double getOrderRevenue(FirebaseOrder order) {
         double total = Math.max(0, order.getTotal());
@@ -480,28 +512,23 @@ public class AdminDashboard extends BaseActivity {
                     currentOrders++;
                 }
 
-                // Map order to branch
-                String agencyId = order.getAgencyId();
-                if (agencyId == null || agencyId.isEmpty()) {
-                    String branchAddr = order.getBranchAddress();
-                    if (branchAddr != null) {
-                        for (Agency a : allBranches) {
-                            if (branchAddr.equalsIgnoreCase(a.getAddress()) || branchAddr.equalsIgnoreCase(a.getName())) {
-                                agencyId = a.getId();
-                                break;
-                            }
-                        }
+                if (isCompleted) {
+                    String agencyId = resolveOrderAgencyId(order);
+                    if (agencyId == null || agencyId.isEmpty()) {
+                        agencyId = UNASSIGNED_BRANCH_ID;
                     }
-                }
-
-                if (agencyId != null && !agencyId.isEmpty()) {
-                    if (isCompleted) {
-                        branchOrderCountMap.put(agencyId, branchOrderCountMap.getOrDefault(agencyId, 0) + 1);
-                        branchRevenueMap.put(agencyId, branchRevenueMap.getOrDefault(agencyId, 0.0) + val);
-                    }
+                    branchOrderCountMap.put(agencyId, branchOrderCountMap.getOrDefault(agencyId, 0) + 1);
+                    branchRevenueMap.put(agencyId, branchRevenueMap.getOrDefault(agencyId, 0.0) + val);
                 }
                 
                 if (order.getItems() != null) {
+                    double orderItemsSubtotal = 0;
+                    if (isCompleted) {
+                        for (com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem item : order.getItems()) {
+                            orderItemsSubtotal += Math.max(0, item.getLineTotal());
+                        }
+                    }
+
                     for (com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem item : order.getItems()) {
                         if (isCompleted) {
                             currentSold += item.getQuantity();
@@ -510,7 +537,10 @@ public class AdminDashboard extends BaseActivity {
                         if (isCompleted) {
                             String category = productCategoryMap.get(item.getProductId());
                             if (category != null) {
-                                categorySales.put(category, categorySales.getOrDefault(category, 0f) + (float) item.getLineTotal());
+                                double itemRevenue = orderItemsSubtotal > 0
+                                        ? val * Math.max(0, item.getLineTotal()) / orderItemsSubtotal
+                                        : 0;
+                                categorySales.put(category, categorySales.getOrDefault(category, 0f) + (float) itemRevenue);
                             }
                         }
                     }
@@ -567,17 +597,28 @@ public class AdminDashboard extends BaseActivity {
 
         // Update Branch Analysis Table
         List<Branch> branchDisplayList = new ArrayList<>();
+        java.util.Set<String> displayedAgencyIds = new java.util.HashSet<>();
         for (Agency agency : allBranches) {
             String id = agency.getId();
             int count = branchOrderCountMap.getOrDefault(id, 0);
             double rev = branchRevenueMap.getOrDefault(id, 0.0);
             branchDisplayList.add(new Branch(agency.getName(), count, df.format(rev) + "đ"));
         }
+        for (Agency agency : allBranches) {
+            displayedAgencyIds.add(agency.getId());
+        }
+        for (String id : branchRevenueMap.keySet()) {
+            if (displayedAgencyIds.contains(id)) continue;
+            int count = branchOrderCountMap.getOrDefault(id, 0);
+            double rev = branchRevenueMap.getOrDefault(id, 0.0);
+            String label = UNASSIGNED_BRANCH_ID.equals(id) ? "Unassigned Branch" : id;
+            branchDisplayList.add(new Branch(label, count, df.format(rev) + "Ä‘"));
+        }
         binding.rvBranchAnalysis.setAdapter(new BranchAnalysisAdapter(branchDisplayList));
         
         updateLineChart();
         updateBarChart();
-        updateDonutChartWithData(categorySales);
+        updateDonutChartWithData(categorySales, currentRevenue);
     }
 
     private void updateStatComparison(View cardView, double current, double prev, int labelRes) {
@@ -977,7 +1018,7 @@ public class AdminDashboard extends BaseActivity {
         chart.invalidate();
     }
 
-    private void updateDonutChartWithData(java.util.Map<String, Float> categorySales) {
+    private void updateDonutChartWithData(java.util.Map<String, Float> categorySales, double totalRevenue) {
         PieChart chart = binding.pieChart;
         List<PieEntry> entries = new ArrayList<>();
         
@@ -1002,7 +1043,7 @@ public class AdminDashboard extends BaseActivity {
         PieDataSet dataSet = (PieDataSet) chart.getData().getDataSetByIndex(0);
         dataSet.setValues(entries);
         
-        chart.setCenterText(getCenterText(total));
+        chart.setCenterText(getCenterText((float) totalRevenue));
         chart.getData().notifyDataChanged();
         chart.notifyDataSetChanged();
         chart.invalidate();
