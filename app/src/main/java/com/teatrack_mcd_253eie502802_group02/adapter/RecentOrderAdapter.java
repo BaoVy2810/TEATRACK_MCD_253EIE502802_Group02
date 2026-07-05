@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.teatrack_mcd_253eie502802_group02.R;
-import com.teatrack_mcd_253eie502802_group02.model.Order;
+import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 
 import java.util.List;
 
 public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.ViewHolder> {
 
-    private final List<Order> orders;
+    private final List<FirebaseOrder> orders;
 
-    public RecentOrderAdapter(List<Order> orders) {
+    public RecentOrderAdapter(List<FirebaseOrder> orders) {
         this.orders = orders;
     }
 
@@ -30,7 +30,7 @@ public class RecentOrderAdapter extends RecyclerView.Adapter<RecentOrderAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Order order = orders.get(position);
+        FirebaseOrder order = orders.get(position);
         holder.tvOrderTitle.setText(order.getTitle());
         holder.tvOrderMeta.setText(order.getMeta());
     }
