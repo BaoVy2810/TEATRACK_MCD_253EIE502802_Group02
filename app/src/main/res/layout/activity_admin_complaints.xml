@@ -49,13 +49,44 @@
                     android:textStyle="bold" />
             </FrameLayout>
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabFilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                app:tabIndicatorColor="@color/brand_blue"
+                app:tabSelectedTextColor="@color/brand_blue"
+                app:tabTextColor="@color/text_secondary"
+                app:tabMode="fixed">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_tab_all" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_tab_pending" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_tab_resolved" />
+            </com.google.android.material.tabs.TabLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp">
 
-                <!-- Complaints content goes here -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvComplaints"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_admin_complaint" />
 
             </LinearLayout>
         </LinearLayout>

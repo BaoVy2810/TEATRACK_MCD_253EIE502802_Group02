@@ -170,7 +170,7 @@ public class OrderHistory extends BaseActivity {
             else if (id == R.id.nav_profile)
                 intent = new Intent(this, UserProfile.class);
             else if (id == R.id.nav_promotion)
-                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, PromotionClient.class);
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);

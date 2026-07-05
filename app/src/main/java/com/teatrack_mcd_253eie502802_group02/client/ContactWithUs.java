@@ -192,65 +192,37 @@ public class ContactWithUs extends AppCompatActivity {
         int selectedTopicId = radioTopic.getCheckedRadioButtonId();
         android.widget.RadioButton rbSelected = findViewById(selectedTopicId);
         String topic = rbSelected.getText().toString();
-        mDatabase.child("contacts").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                long maxId = 0;
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    // Lấy mã ở 2 nơi: Key của bản ghi và trường 'id' bên trong
-                    String idInside = ds.child("id").getValue(String.class);
-                    String keyOutside = ds.getKey();
 
-                    // Kiểm tra trường 'id'
-                    if (idInside != null && idInside.startsWith("CT")) {
-                        try {
-                            long val = Long.parseLong(idInside.substring(2));
-                            if (val > maxId) maxId = val;
-                        } catch (NumberFormatException ignored) {}
-                    }
+        // Tạo key tự sinh bằng push()
+        String pushKey = mDatabase.child("contacts").push().getKey();
+        if (pushKey == null) {
+            Toast.makeText(this, "Lỗi: Không thể tạo ID", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                    // Kiểm tra Key bên ngoài
-                    if (keyOutside != null && keyOutside.startsWith("CT")) {
-                        try {
-                            long val = Long.parseLong(keyOutside.substring(2));
-                            if (val > maxId) maxId = val;
-                        } catch (NumberFormatException ignored) {}
-                    }
-                }
-                
-                // Nếu xóa hết sạch folder contacts, maxId sẽ là 0 -> customId = CT01
-                String customId = String.format(Locale.US, "CT%02d", maxId + 1);
-                
-                // Định dạng thời gian theo MongoDB mẫu: 16/03/2026 10:23
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-                String currentTime = sdf.format(new Date());
+        // Định dạng thời gian: 16/03/2026 10:23
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        String currentTime = sdf.format(new Date());
 
-                // Tạo đối tượng yêu cầu với ID tùy chỉnh và các thuộc tính chuẩn MongoDB
-                ContactRequest request = new ContactRequest(
-                        customId, 
-                        fullname, 
-                        email, 
-                        phone, 
-                        branch, 
-                        topic.toLowerCase(), // Lưu topic viết thường (complain, praise...)
-                        content, 
-                        currentTime,
-                        1, // status: 1 (Chờ xử lý)
-                        false, // read: false
-                        "" // note: rỗng
-                );
+        // Tạo đối tượng yêu cầu với pushKey
+        ContactRequest request = new ContactRequest(
+                pushKey,
+                fullname,
+                email,
+                phone,
+                branch,
+                topic.toLowerCase(), // Lưu topic viết thường
+                content,
+                currentTime,
+                1, // status: 1 (Chờ xử lý)
+                false, // read: false
+                "" // note: rỗng
+        );
 
-                // Sử dụng customId (CT01, CT02...) làm Key
-                mDatabase.child("contacts").child(customId).setValue(request)
-                        .addOnSuccessListener(aVoid -> showSuccessDialog())
-                        .addOnFailureListener(e -> Toast.makeText(ContactWithUs.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ContactWithUs.this, "Lỗi đọc dữ liệu: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Lưu vào Firebase
+        mDatabase.child("contacts").child(pushKey).setValue(request)
+                .addOnSuccessListener(aVoid -> showSuccessDialog())
+                .addOnFailureListener(e -> Toast.makeText(ContactWithUs.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     private boolean validateForm() {

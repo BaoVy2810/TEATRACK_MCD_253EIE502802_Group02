@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.client.ContactWithUs;
 import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
@@ -26,7 +27,7 @@ import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 public class UserProfile extends BaseActivity {
 
-    private LinearLayout btnPersonalInfo, btnLanguage, btnPoints, btnReviews, btnPolicies, btnStoreList;
+    private LinearLayout btnPersonalInfo, btnLanguage, btnPoints, btnReviews, btnPolicies, btnStoreList, btnComplaint;
     private TextView tvUserName;
     private TextView tvUserPhone;
 
@@ -70,6 +71,7 @@ public class UserProfile extends BaseActivity {
         btnReviews      = findViewById(R.id.btnReviews);
         btnPolicies     = findViewById(R.id.btnPolicies);
         btnStoreList    = findViewById(R.id.btnStoreList);
+        btnComplaint    = findViewById(R.id.btnComplaint);
         tvUserName      = findViewById(R.id.tvUserName);
         tvUserPhone     = findViewById(R.id.tvUserPhone);
     }
@@ -124,6 +126,10 @@ public class UserProfile extends BaseActivity {
                 startActivity(new Intent(this, MyReviewsActivity.class)));
         btnPolicies.setOnClickListener(v ->
                 startActivity(new Intent(this, PolicyandTermActivity.class)));
+        if (btnComplaint != null) {
+            btnComplaint.setOnClickListener(v ->
+                    startActivity(new Intent(this, ContactWithUs.class)));
+        }
         if (btnStoreList != null) {
             btnStoreList.setOnClickListener(v ->
                     startActivity(new Intent(this, Agency.class)));
@@ -139,9 +145,7 @@ public class UserProfile extends BaseActivity {
             if (id == R.id.nav_home)      intent = new Intent(this, Homepage.class);
             else if (id == R.id.nav_menu) intent = new Intent(this, Menu.class);
             else if (id == R.id.nav_orders)    intent = new Intent(this, OrderHistory.class);
-            else if (id == R.id.nav_promotion) {
-                Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show();
-            }
+            else if (id == R.id.nav_promotion) intent = new Intent(this, PromotionClient.class);
 
             if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

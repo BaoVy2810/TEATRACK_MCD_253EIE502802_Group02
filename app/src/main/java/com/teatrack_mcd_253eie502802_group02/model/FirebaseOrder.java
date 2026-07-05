@@ -29,9 +29,15 @@ public class FirebaseOrder implements Serializable {
     private String createdAt;
     private String updatedAt;
     private String agencyId;
+    private String appliedVoucherId;
+    private String freeItemName;
+    private boolean pointsAwarded;
 
     public FirebaseOrder() {
     }
+
+    public boolean isPointsAwarded() { return pointsAwarded; }
+    public void setPointsAwarded(boolean pointsAwarded) { this.pointsAwarded = pointsAwarded; }
 
     public String getAgencyId() { return agencyId; }
     public void setAgencyId(String agencyId) { this.agencyId = agencyId; }
@@ -104,4 +110,8 @@ public class FirebaseOrder implements Serializable {
 
     public String getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(String updatedAt) { this.updatedAt = updatedAt; }
+    public String getAppliedVoucherId() { return appliedVoucherId; }
+    public void setAppliedVoucherId(String appliedVoucherId) { this.appliedVoucherId = appliedVoucherId; }
+    public String getFreeItemName() { return freeItemName; }
+    public void setFreeItemName(String freeItemName) { this.freeItemName = freeItemName; }
 }

@@ -92,4 +92,8 @@ dependencies {
 // CircleImageView (tùy chọn, đẹp hơn)
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // ZXing for QR and Barcode
+    implementation("com.google.zxing:core:3.5.3")
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
 }

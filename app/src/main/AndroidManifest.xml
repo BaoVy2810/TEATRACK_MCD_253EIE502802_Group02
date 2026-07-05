@@ -26,7 +26,13 @@
             android:name=".client.MyReviewsActivity"
             android:exported="false" />
         <activity
+            android:name=".client.MyRewardsActivity"
+            android:exported="false" />
+        <activity
             android:name=".client.EarnedPointHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".client.PromotionClient"
             android:exported="false" />
         <activity
             android:name=".client.RefundPolicyActivity"

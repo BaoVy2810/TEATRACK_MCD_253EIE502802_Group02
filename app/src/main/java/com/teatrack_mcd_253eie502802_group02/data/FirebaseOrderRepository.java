@@ -66,6 +66,23 @@ public class FirebaseOrderRepository {
 
         rootRef.updateChildren(updates).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                // Mark personal voucher as used if applicable
+                if (order.getAppliedVoucherId() != null && order.getUserId() != null && !order.getUserId().isEmpty()) {
+                    // We only mark as used if it's a personal voucher (doesn't have a code)
+                    // Check if the voucher belongs to user's vouchers node
+                    rootRef.child("Users").child(order.getUserId()).child("vouchers")
+                            .child(order.getAppliedVoucherId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        snapshot.getRef().child("isUsed").setValue(true);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {}
+                            });
+                }
+
                 if (callback != null) callback.onSuccess(orderId);
             } else if (callback != null) {
                 String message = task.getException() != null

@@ -797,6 +797,31 @@
     <string name="cart_voucher_use_now">Dùng ngay</string>
     <string name="cart_voucher_conditions">Điều kiện</string>
     <string name="cart_voucher_min_order">Đơn hàng tối thiểu %1$s để sử dụng ưu đãi này</string>
+
+    <!-- Hệ thống Thành viên & Phần thưởng -->
+    <string name="loyalty_member_card">Thẻ Thành Viên</string>
+    <string name="loyalty_user_name_default">Khách</string>
+    <string name="loyalty_points_format">%1$d điểm</string>
+    <string name="loyalty_uid_format">UID: %1$s</string>
+    <string name="loyalty_qr_code">Mã QR</string>
+    <string name="loyalty_barcode">Mã vạch</string>
+    <string name="loyalty_points_history">Lịch sử điểm</string>
+    <string name="loyalty_my_rewards">Ưu đãi của bạn</string>
+    <string name="loyalty_redeem_title">Đổi điểm nhận quà</string>
+    <string name="loyalty_buy_8_get_1">Mua 8 Tặng 1</string>
+    <string name="loyalty_redeem_description">Tích đủ 8 điểm để đổi 1 ly trà sữa miễn phí</string>
+    <string name="loyalty_btn_redeem_now">Đổi 1 ly miễn phí ngay!</string>
+    <string name="loyalty_points_needed_format">Cần thêm %1$d điểm để đổi quà</string>
+    <string name="loyalty_promotions_title">Chương trình khuyến mãi</string>
+    <string name="loyalty_redeem_success">Đổi quà thành công! Hãy kiểm tra \'Ưu đãi của bạn\'</string>
+    <string name="loyalty_redeem_failed">Đổi quà thất bại. Vui lòng thử lại.</string>
+    <string name="loyalty_redeem_history_desc">Đổi 8 điểm lấy 1 ly miễn phí</string>
+    <string name="loyalty_reward_title">1 Ly Miễn Phí (8 Điểm)</string>
+    <string name="loyalty_reward_description">Dùng để đổi 1 ly nước bất kỳ tại quầy.</string>
+    <string name="loyalty_reward_unlimited">Không giới hạn</string>
+    <string name="loyalty_btn_redeem_placeholder">Đổi điểm ngay</string>
+    <string name="history_empty">Bạn chưa có giao dịch điểm nào.</string>
+    <string name="rewards_empty">Bạn chưa có ưu đãi nào.</string>
     <string name="cart_voucher_enter_code">Vui lòng nhập mã ưu đãi</string>
     <string name="cart_voucher_invalid">Mã ưu đãi không hợp lệ</string>
     <string name="cart_voucher_not_found">Không tìm thấy mã \"%1$s\"</string>
