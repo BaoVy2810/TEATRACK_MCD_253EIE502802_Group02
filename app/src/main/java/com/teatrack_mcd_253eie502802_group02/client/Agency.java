@@ -103,11 +103,13 @@ public class Agency extends AppCompatActivity {
                 agencyList.clear();
                 fullAgencyList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    com.teatrack_mcd_253eie502802_group02.model.Agency agency = dataSnapshot.getValue(com.teatrack_mcd_253eie502802_group02.model.Agency.class);
-                    if (agency != null && agency.isVisible()) {
-                        agencyList.add(agency);
-                        fullAgencyList.add(agency);
-                    }
+                    try {
+                        com.teatrack_mcd_253eie502802_group02.model.Agency agency = dataSnapshot.getValue(com.teatrack_mcd_253eie502802_group02.model.Agency.class);
+                        if (agency != null && agency.isVisible()) {
+                            agencyList.add(agency);
+                            fullAgencyList.add(agency);
+                        }
+                    } catch (Exception ignored) {}
                 }
                 agencyAdapter.notifyDataSetChanged();
             }

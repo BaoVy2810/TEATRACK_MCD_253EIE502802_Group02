@@ -558,13 +558,17 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         availableBranches.clear();
                         for (DataSnapshot child : snapshot.getChildren()) {
-                            com.teatrack_mcd_253eie502802_group02.model.Agency agency =
-                                    child.getValue(com.teatrack_mcd_253eie502802_group02.model.Agency.class);
-                            if (agency != null) {
-                                agency.setId(child.getKey());
-                                if (agency.isVisible()) {
-                                    availableBranches.add(agency);
+                            try {
+                                com.teatrack_mcd_253eie502802_group02.model.Agency agency =
+                                        child.getValue(com.teatrack_mcd_253eie502802_group02.model.Agency.class);
+                                if (agency != null) {
+                                    agency.setId(child.getKey());
+                                    if (agency.isVisible()) {
+                                        availableBranches.add(agency);
+                                    }
                                 }
+                            } catch (Exception ignored) {
+                                // child không phải Agency object (string/số lẻ trong node) — bỏ qua
                             }
                         }
                         buildBranchRows();
@@ -752,6 +756,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                     this,
                     selectedPaymentMethod,
                     branchAddress,
+                    selectedBranchId,
                     recipientDetails,
                     note,
                     false,
@@ -761,6 +766,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
             Intent intent = new Intent(this, Payment.class);
             intent.putExtra("method", selectedPaymentMethod);
             intent.putExtra("pickupAddress", branchAddress);
+            intent.putExtra("agencyId", selectedBranchId);
             intent.putExtra("recipientDetails", recipientDetails);
             intent.putExtra("note", note);
             startActivity(intent);
