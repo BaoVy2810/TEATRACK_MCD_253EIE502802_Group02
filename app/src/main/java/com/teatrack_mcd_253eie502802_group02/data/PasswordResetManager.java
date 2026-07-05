@@ -35,6 +35,7 @@ public class PasswordResetManager {
     private static final String LOCAL_MAIL_SERVER_BASE_URL = "http://10.0.2.2:3000";
     private static final String SEND_OTP_EMAIL_PATH = "/api/auth/send-otp-email";
     private static final long OTP_TTL_MS = 10 * 60 * 1000L;
+    private static final int MAIL_SERVER_TIMEOUT_MS = 90_000;
 
     private final Context context;
     private final DatabaseReference usersRef;
@@ -249,8 +250,8 @@ public class PasswordResetManager {
     private void postOtpEmail(String baseUrl, String to, String subject, String html) throws Exception {
         HttpURLConnection connection = (HttpURLConnection) new URL(baseUrl + SEND_OTP_EMAIL_PATH).openConnection();
         connection.setRequestMethod("POST");
-        connection.setConnectTimeout(10_000);
-        connection.setReadTimeout(20_000);
+        connection.setConnectTimeout(MAIL_SERVER_TIMEOUT_MS);
+        connection.setReadTimeout(MAIL_SERVER_TIMEOUT_MS);
         connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
