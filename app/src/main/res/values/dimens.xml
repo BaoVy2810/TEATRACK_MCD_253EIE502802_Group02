@@ -74,10 +74,10 @@
     <dimen name="view_detail_text_size">13sp</dimen>
 
     <!-- Branch table -->
-    <dimen name="table_header_padding_v">10dp</dimen>
-    <dimen name="table_header_padding_h">10dp</dimen>
-    <dimen name="table_row_padding_v">10dp</dimen>
-    <dimen name="table_row_padding_h">10dp</dimen>
+    <dimen name="table_header_padding_v">14dp</dimen>
+    <dimen name="table_header_padding_h">16dp</dimen>
+    <dimen name="table_row_padding_v">14dp</dimen>
+    <dimen name="table_row_padding_h">16dp</dimen>
     <dimen name="table_text_size">13sp</dimen>
     <dimen name="table_header_text_size">12sp</dimen>
     <dimen name="table_corner">12dp</dimen>

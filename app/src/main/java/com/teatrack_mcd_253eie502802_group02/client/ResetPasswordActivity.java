@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
+import com.teatrack_mcd_253eie502802_group02.data.PasswordResetManager;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -36,6 +38,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private TextView tvErrorMessage, tvBackToSignIn;
     private MaterialButton btnUpdate;
     private String userEmail;
+    private PasswordResetManager passwordResetManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         });
 
         userEmail = getIntent().getStringExtra("email");
+        passwordResetManager = new PasswordResetManager(this);
 
         initViews();
 
@@ -95,15 +99,28 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
         if (hasError) return;
 
-        if (userEmail != null) {
-            updatePasswordInFirebase(userEmail, password);
-        } else {
-            Toast.makeText(this, "Email error. Please try again from Forgot Password.", Toast.LENGTH_SHORT).show();
+        if (userEmail == null || userEmail.trim().isEmpty()) {
+            showError(getString(R.string.reset_password_error_request_otp_first));
+            return;
         }
+
+        btnUpdate.setEnabled(false);
+        passwordResetManager.requireVerifiedOtp(userEmail, new PasswordResetManager.Callback() {
+            @Override
+            public void onSuccess() {
+                updatePasswordInFirebase(userEmail, password);
+            }
+
+            @Override
+            public void onError(String message) {
+                btnUpdate.setEnabled(true);
+                showError(message);
+            }
+        });
     }
 
     private void updatePasswordInFirebase(String email, String newPassword) {
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference usersRef = FirebaseDatabase.getInstance(FirebaseProductRepository.DB_URL).getReference("Users");
         Query query = usersRef.orderByChild("email").equalTo(email);
 
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -114,20 +131,26 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         String hashedPassword = hashPassword(newPassword);
                         userSnapshot.getRef().child("password").setValue(hashedPassword)
                                 .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(ResetPasswordActivity.this, "Password updated successfully!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
+                                    passwordResetManager.clearOtp(email);
+                                    Toast.makeText(ResetPasswordActivity.this, R.string.reset_password_update_success, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(ResetPasswordActivity.this, SucessfullyChangePasswordActivity.class);
                                     startActivity(intent);
                                     finish();
                                 })
-                                .addOnFailureListener(e -> showError("Update failed: " + e.getMessage()));
+                                .addOnFailureListener(e -> {
+                                    btnUpdate.setEnabled(true);
+                                    showError("Update failed: " + e.getMessage());
+                                });
                     }
                 } else {
+                    btnUpdate.setEnabled(true);
                     showError("User not found.");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                btnUpdate.setEnabled(true);
                 showError("Database Error: " + error.getMessage());
             }
         });

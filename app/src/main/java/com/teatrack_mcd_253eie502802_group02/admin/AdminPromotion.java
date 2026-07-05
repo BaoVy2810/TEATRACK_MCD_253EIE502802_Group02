@@ -1,6 +1,7 @@
 package com.teatrack_mcd_253eie502802_group02.admin;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.AdminPromotionAdapter;
 import com.teatrack_mcd_253eie502802_group02.model.Promotion;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,7 @@ public class AdminPromotion extends AppCompatActivity {
         initViews();
         setupFirebase();
         setupSearch();
+        setupBottomNavigation();
 
         btnAddPromotion.setOnClickListener(v -> showPromotionDialog(null));
     }
@@ -120,6 +123,38 @@ public class AdminPromotion extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {}
+        });
+    }
+
+    private void setupBottomNavigation() {
+        int[] navItemIds = {
+                R.id.nav_dashboard,
+                R.id.nav_products,
+                R.id.nav_orders,
+                R.id.nav_account,
+                R.id.nav_forum,
+                R.id.nav_branch,
+                R.id.nav_feedbacks,
+                R.id.nav_promotion
+        };
+
+        NavBarHelper.setupNavBar(this, navItemIds, R.id.nav_promotion, v -> {
+            int id = v.getId();
+            if (id == R.id.nav_promotion) return;
+
+            Class<?> destination = null;
+            if (id == R.id.nav_dashboard) destination = AdminDashboard.class;
+            else if (id == R.id.nav_products) destination = AdminProduct.class;
+            else if (id == R.id.nav_orders) destination = AdminOrders.class;
+            else if (id == R.id.nav_account) destination = AdminAccount.class;
+            else if (id == R.id.nav_forum) destination = AdminBlog.class;
+            else if (id == R.id.nav_branch) destination = AdminAgency.class;
+            else if (id == R.id.nav_feedbacks) destination = AdminComplaints.class;
+
+            if (destination != null) {
+                startActivity(new Intent(this, destination));
+                finish();
+            }
         });
     }
 
