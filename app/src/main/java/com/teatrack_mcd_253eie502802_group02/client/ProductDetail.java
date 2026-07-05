@@ -266,20 +266,25 @@ public class ProductDetail extends BaseActivity {
         String priceL = getIntent().getStringExtra("priceL");
         String vipM = getIntent().getStringExtra("vipM");
         String vipL = getIntent().getStringExtra("vipL");
-        int imageRes = getIntent().getIntExtra("imageRes", R.mipmap.traolongmochuong);
+        int imageRes = getIntent().getIntExtra("imageRes", 0);
+        if (imageRes == 0) {
+            imageRes = R.mipmap.logo_ngo_gia;
+        }
         float rating = getIntent().getFloatExtra("rating", 4.9f);
         String reviewCount = getIntent().getStringExtra("reviewCount");
         String category = getIntent().getStringExtra("category");
 
         bindFromIntent(name, category, priceM, priceL, vipM, vipL, imageRes, rating, reviewCount);
         CartBadgeHelper.setup(this);
-        if (name != null) {
+        if (currentProduct != null) {
+            setupThumbs(currentProduct);
+        }
+        String productId = getIntent().getStringExtra("productId");
+        if (productId != null && !productId.isEmpty()) {
+            fetchFromFirebaseById(productId);
+        } else if (name != null) {
             fetchFromFirebase(name);
         }
-
-        Product dummy = new Product();
-        dummy.setImageRes(imageRes);
-        setupThumbs(dummy);
 
         btnQtyMinus.setOnClickListener(v -> {
             quantity = Math.max(1, quantity - 1);
@@ -851,7 +856,28 @@ public class ProductDetail extends BaseActivity {
         });
     }
 
+    private void fetchFromFirebaseById(String productId) {
+        repository.getProductById(productId, new FirebaseProductRepository.ProductCallback() {
+            @Override
+            public void onSuccess(Product product) {
+                if (isFinishing()) {
+                    return;
+                }
+                bindFromProduct(product);
+            }
+
+            @Override
+            public void onError(String message) {
+                String name = getIntent().getStringExtra("name");
+                if (name != null && !name.isEmpty()) {
+                    fetchFromFirebase(name);
+                }
+            }
+        });
+    }
+
     private void bindFromProduct(Product product) {
+        applyResolvedImageRes(product);
         currentProduct = product;
         tvDetailName.setText(product.getName());
         if (tvTopTitle != null) {
@@ -885,7 +911,13 @@ public class ProductDetail extends BaseActivity {
         }
     }
 
+    private void applyResolvedImageRes(Product product) {
+        ProductImageHelper.applyTrustedImageRes(this, product);
+    }
+
     private void setupThumbs(Product product) {
+        ProductImageHelper.applyTrustedImageRes(this, product);
+
         ShapeableImageView[] thumbs = {
                 findViewById(R.id.thumb1),
                 findViewById(R.id.thumb2),
@@ -893,10 +925,16 @@ public class ProductDetail extends BaseActivity {
                 findViewById(R.id.thumb4)
         };
 
-        List<String> sources = collectImageSources(product);
-        boolean useImageRes = sources.isEmpty() && product.getImageRes(this) != 0;
+        int resolvedRes = product.getImageRes() != 0
+                ? product.getImageRes()
+                : ProductImageHelper.resolveLocalRes(this, product);
+
+        List<String> sources = resolvedRes != 0
+                ? new ArrayList<>()
+                : collectImageSources(product);
+        boolean useImageRes = resolvedRes != 0;
         int visibleCount = useImageRes ? 1 : sources.size();
-        int fallbackRes = product.getImageRes(this) != 0 ? product.getImageRes(this) : R.mipmap.traolongmochuong;
+        int fallbackRes = resolvedRes != 0 ? resolvedRes : R.mipmap.logo_ngo_gia;
 
         for (int i = 0; i < thumbs.length; i++) {
             ShapeableImageView thumb = thumbs[i];

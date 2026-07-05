@@ -28,7 +28,7 @@ public class CategoryProductData {
     private static List<Product> pureTeaProducts() {
         List<Product> list = new ArrayList<>();
         list.add(new Product("Hồng Trà Ngô Gia", R.mipmap.hongtradailoan, 4.9f, "1k", 13000, 16000, 13000, 16000));
-        list.add(new Product("Trà Ô Long Mộc Hương", R.mipmap.traolongdao, 4.9f, "1k", 19000, 22000, 16000, 19000));
+        list.add(new Product("Trà Ô Long Mộc Hương", R.mipmap.traolongmochuong, 4.9f, "1k", 19000, 22000, 16000, 19000));
         list.add(new Product("Trà Xanh Bí Đao", R.mipmap.traxanhbidao, 4.9f, "1k", 16000, 19000, 16000, 19000));
         return list;
     }
@@ -36,8 +36,9 @@ public class CategoryProductData {
     private static List<Product> teaLatteProducts() {
         List<Product> list = new ArrayList<>();
         list.add(new Product("Sữa Tươi Khoai Môn Nghiền", R.mipmap.suatuoikhoaimonnghien, 4.9f, "1k", 25000, 29000, 22000, 26000));
+        list.add(new Product("Sữa Tươi Khoai Môn", R.mipmap.suatuoikhoaimonnghien, 4.9f, "1k", 25000, 29000, 22000, 26000));
         list.add(new Product("Ô Long Latte", R.mipmap.olonglatte, 4.9f, "1k", 24000, 28000, 21000, 25000));
-        list.add(new Product("Sữa Tươi Trân Châu Đường Đen", R.mipmap.trasuatranchauduongden, 4.9f, "1k", 26000, 30000, 23000, 27000));
+        list.add(new Product("Sữa Tươi Trân Châu Đường Đen", R.mipmap.suatuoitranchauduongden, 4.9f, "1k", 26000, 30000, 23000, 27000));
         return list;
     }
 
@@ -45,7 +46,7 @@ public class CategoryProductData {
         List<Product> list = new ArrayList<>();
         list.add(new Product("Trà Sữa Trân Châu", R.mipmap.trasuatranchauduongden, 4.9f, "1k", 20000, 24000, 20000, 24000));
         list.add(new Product("Trà Sữa Khoai Môn", R.mipmap.logo_ngo_gia, 4.9f, "1k", 22000, 26000, 22000, 26000));
-        list.add(new Product("Trà Sữa Ô Long", R.mipmap.olonglatte, 4.9f, "1k", 21000, 25000, 21000, 25000));
+        list.add(new Product("Trà Sữa Ô Long", R.mipmap.trasuaolong, 4.9f, "1k", 21000, 25000, 21000, 25000));
         return list;
     }
 

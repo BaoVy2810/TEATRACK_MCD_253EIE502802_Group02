@@ -464,10 +464,11 @@
     <string name="profile_label_support">Hỗ trợ</string>
     <string name="profile_reviews">Đánh giá</string>
     <string name="profile_policies_terms">Chính sách &amp; Điều khoản</string>
+    <string name="profile_policies_terms_screen_title">Chính sách\n&amp; Điều khoản</string>
     <string name="profile_dummy_name">Nguyễn Ba Đủ</string>
     <string name="profile_dummy_phone">0971651652</string>
 
-    <string name="personal_info_title">Thông tin cá nhân</string>
+    <string name="personal_info_title">Thông tin\ncá nhân</string>
     <string name="personal_info_label_fullname">Họ và tên</string>
     <string name="personal_info_label_phone">Số điện thoại</string>
     <string name="personal_info_label_dob">Ngày sinh</string>
@@ -484,6 +485,15 @@
     <string name="personal_info_success_title">Thành công!</string>
     <string name="personal_info_success_msg">Thông tin hồ sơ của bạn đã được cập nhật thành công.</string>
     <string name="personal_info_btn_back_to_profile">Quay lại hồ sơ</string>
+    <string name="personal_info_gender_male">Nam</string>
+    <string name="personal_info_gender_female">Nữ</string>
+    <string name="personal_info_gender_other">Khác</string>
+    <string name="personal_info_name_required">Vui lòng nhập họ và tên</string>
+    <string name="personal_info_phone_required">Vui lòng nhập số điện thoại</string>
+    <string name="personal_info_session_missing">Phiên đăng nhập đã hết. Vui lòng đăng nhập lại.</string>
+    <string name="personal_info_load_error">Không thể tải thông tin cá nhân</string>
+    <string name="personal_info_format_error">Dữ liệu hồ sơ không hợp lệ</string>
+    <string name="personal_info_update_failed">Cập nhật thất bại: %1$s</string>
     <string name="language_settings_title">Cài đặt\nngôn ngữ</string>
     <string name="language_english">Tiếng Anh</string>
     <string name="language_vietnamese">Tiếng Việt</string>
@@ -570,7 +580,9 @@
     <string name="refund_membership_title">Mua gói thành viên</string>
     <string name="refund_membership_content">Các gói thành viên trả phí (Vàng/Bạch kim) áp dụng chính sách hoàn tiền \"Chưa sử dụng\" trong vòng 7 ngày. Nếu chưa có quyền lợi hoặc ưu đãi nào được sử dụng, khách hàng có thể yêu cầu hoàn tiền đầy đủ.</string>
 
-    <string name="history_title">Lịch sử tích điểm</string>
+    <string name="history_title">Lịch sử\ntích điểm</string>
+    <string name="history_current_points_label">Điểm tích lũy hiện tại</string>
+    <string name="history_points_pill">Lịch sử tích điểm</string>
     <string name="history_store_list_label">Danh sách cửa hàng tích điểm</string>
     <string name="history_points_unit">điểm</string>
     <string name="history_dummy_points">4</string>
@@ -802,6 +814,7 @@
     <!-- Hệ thống Thành viên & Phần thưởng -->
     <string name="loyalty_member_card">Thẻ Thành Viên</string>
     <string name="loyalty_vip_label">Thành viên VIP</string>
+    <string name="loyalty_member_label">Thành viên</string>
     <string name="loyalty_view_all">Xem tất cả</string>
     <string name="loyalty_special_promotions">Khuyến mãi đặc biệt</string>
     <string name="loyalty_redeem_progress">Đổi ngay (%1$d/%2$d)</string>
@@ -815,6 +828,7 @@
     <string name="loyalty_barcode">Mã vạch</string>
     <string name="loyalty_points_history">Lịch sử điểm</string>
     <string name="loyalty_my_rewards">Ưu đãi của tôi</string>
+    <string name="loyalty_my_rewards_screen_title">Ưu đãi\ncủa tôi</string>
     <string name="loyalty_redeem_title">Đổi quà tặng</string>
     <string name="loyalty_buy_8_get_1">Mua 8 tặng 1</string>
     <string name="loyalty_redeem_description">Tích đủ 8 ly để nhận 1 thức uống miễn phí bất kỳ.</string>
@@ -829,7 +843,12 @@
     <string name="loyalty_reward_unlimited">Không giới hạn</string>
     <string name="loyalty_btn_redeem_placeholder">Đổi điểm ngay</string>
     <string name="history_empty">Bạn chưa có giao dịch điểm nào.</string>
+    <string name="history_empty_title">Bạn chưa có giao dịch nào</string>
+    <string name="history_empty_subtitle">Hãy bắt đầu tích lũy điểm thưởng từ mỗi đơn hàng tại <font color="#0088FF"><b>Hồng Trà Ngô Gia</b></font> nhé!</string>
     <string name="rewards_empty">Bạn chưa có ưu đãi nào.</string>
+    <string name="rewards_empty_title">Bạn chưa có ưu đãi nào</string>
+    <string name="rewards_empty_subtitle">Tích điểm từ các đơn hàng để đổi lấy những phần quà hấp dẫn nhé!</string>
+    <string name="rewards_empty_cta">Đặt hàng ngay</string>
     <string name="cart_voucher_enter_code">Vui lòng nhập mã ưu đãi</string>
     <string name="cart_voucher_invalid">Mã ưu đãi không hợp lệ</string>
     <string name="cart_voucher_not_found">Không tìm thấy mã \"%1$s\"</string>

@@ -3,17 +3,17 @@ package com.teatrack_mcd_253eie502802_group02.client;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
 import com.teatrack_mcd_253eie502802_group02.databinding.ActivityEditingPerInfoBinding;
 import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
@@ -42,8 +43,7 @@ public class EditingPerInfoActivity extends AppCompatActivity {
     private ActivityEditingPerInfoBinding binding;
     private DatabaseReference userRef;
     private String userId;
-    private static final String PREF_NAME = "LoginPrefs";
-    private static final String KEY_USER_ID = "userId";
+    private String loginUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +52,22 @@ public class EditingPerInfoActivity extends AppCompatActivity {
         binding = ActivityEditingPerInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // SỬA LỖI: Thay findViewById(R.id.main) bằng binding.getRoot() để tránh NullPointerException
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        binding.btnCancel.setOnClickListener(v -> finish());
+        SharedPreferences prefs = getSharedPreferences(UserProfileHelper.PREF_NAME, MODE_PRIVATE);
+        userId = prefs.getString(UserProfileHelper.KEY_USER_ID, null);
+        loginUsername = prefs.getString(UserProfileHelper.KEY_USERNAME, "");
+        if (userId != null && !userId.isEmpty()) {
+            userRef = FirebaseDatabase.getInstance(FirebaseProductRepository.DB_URL)
+                    .getReference("Users")
+                    .child(userId);
+        }
 
+        binding.btnCancel.setOnClickListener(v -> finish());
         binding.btnSaveChanges.setOnClickListener(v -> saveUserInfo());
 
         setupInputControls();
@@ -68,13 +75,15 @@ public class EditingPerInfoActivity extends AppCompatActivity {
     }
 
     private void setupInputControls() {
-        // Setup Gender Spinner
-        String[] genderOptions = {"Male", "Female", "Others"};
+        String[] genderOptions = {
+                getString(R.string.personal_info_gender_male),
+                getString(R.string.personal_info_gender_female),
+                getString(R.string.personal_info_gender_other)
+        };
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genderOptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spGender.setAdapter(adapter);
 
-        // Setup Date Picker for etDob
         binding.etDob.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             int year = calendar.get(Calendar.YEAR);
@@ -90,53 +99,59 @@ public class EditingPerInfoActivity extends AppCompatActivity {
     }
 
     private void loadCurrentUserInfo() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        userId = sharedPreferences.getString(KEY_USER_ID, null);
-
-        if (userId != null) {
-            userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId);
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        try {
-                            User user = snapshot.getValue(User.class);
-                            if (user != null) {
-                                binding.etFullName.setText(user.getName());
-                                binding.etEmail.setText(user.getEmail());
-                                binding.etPhone.setText(user.getPhone());
-                                binding.etDob.setText(user.getDob());
-                                binding.etAddress.setText(user.getAddress());
-
-                                // Set Spinner Selection for Gender
-                                String gender = user.getGender();
-                                if (gender != null) {
-                                    int position = 0;
-                                    if (gender.equalsIgnoreCase("Female")) position = 1;
-                                    else if (gender.equalsIgnoreCase("Others")) position = 2;
-                                    binding.spGender.setSelection(position);
-                                }
-                                if (user.getAvatarBase64() != null && !user.getAvatarBase64().isEmpty()) {
-                                    byte[] decodedBytes = Base64.decode(user.getAvatarBase64(), Base64.DEFAULT);
-                                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                                    binding.imgAvatar.setImageBitmap(bitmap);
-                                }
-                            }
-                        } catch (Exception e) {
-                            // Đề phòng trường hợp Class User thiếu Constructor không tham số
-                            Toast.makeText(EditingPerInfoActivity.this, "Lỗi định dạng dữ liệu!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(EditingPerInfoActivity.this, "Error loading data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            Toast.makeText(this, "Không tìm thấy phiên đăng nhập!", Toast.LENGTH_SHORT).show();
+        if (userRef == null) {
+            Toast.makeText(this, R.string.personal_info_session_missing, Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    Toast.makeText(EditingPerInfoActivity.this, R.string.personal_info_load_error, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                try {
+                    User user = snapshot.getValue(User.class);
+                    if (user == null) {
+                        return;
+                    }
+                    binding.etFullName.setText(UserProfileHelper.resolveDisplayName(user));
+                    binding.etEmail.setText(user.getEmail());
+                    binding.etPhone.setText(user.getPhoneNumber());
+                    binding.etDob.setText(user.getDob());
+                    binding.etAddress.setText(user.getAddress());
+                    selectGender(user.getGender());
+
+                    if (user.getAvatarBase64() != null && !user.getAvatarBase64().isEmpty()) {
+                        byte[] decodedBytes = Base64.decode(user.getAvatarBase64(), Base64.DEFAULT);
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                        binding.imgAvatar.setImageBitmap(bitmap);
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(EditingPerInfoActivity.this, R.string.personal_info_format_error, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(EditingPerInfoActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void selectGender(String gender) {
+        if (gender == null || gender.isEmpty()) {
+            return;
+        }
+        String normalized = gender.trim().toLowerCase();
+        int position = 0;
+        if (normalized.contains("female") || normalized.contains("nữ")) {
+            position = 1;
+        } else if (normalized.contains("other") || normalized.contains("khác")) {
+            position = 2;
+        }
+        binding.spGender.setSelection(position);
     }
 
     private void saveUserInfo() {
@@ -147,31 +162,50 @@ public class EditingPerInfoActivity extends AppCompatActivity {
         String gender = binding.spGender.getSelectedItem().toString();
         String address = binding.etAddress.getText().toString().trim();
 
-        if (userId != null && userRef != null) {
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("fullName", name);
-            updates.put("name", name);
-            updates.put("email", email);
-            updates.put("phone", phone);
-            updates.put("dob", dob);
-            updates.put("gender", gender);
-            updates.put("address", address);
-
-            userRef.updateChildren(updates)
-                    .addOnSuccessListener(aVoid -> {
-                        UserProfileHelper.cacheProfile(
-                                EditingPerInfoActivity.this,
-                                userId,
-                                null,
-                                name,
-                                phone
-                        );
-                        showSuccessDialog();
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(EditingPerInfoActivity.this, "Cập nhật thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-        } else {
-            Toast.makeText(this, "Lỗi: Không tìm thấy ID người dùng. Vui lòng đăng nhập lại!", Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(name)) {
+            binding.etFullName.setError(getString(R.string.personal_info_name_required));
+            binding.etFullName.requestFocus();
+            return;
         }
+        if (TextUtils.isEmpty(phone)) {
+            binding.etPhone.setError(getString(R.string.personal_info_phone_required));
+            binding.etPhone.requestFocus();
+            return;
+        }
+
+        if (userRef == null) {
+            Toast.makeText(this, R.string.personal_info_session_missing, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("fullName", name);
+        if (loginUsername != null && !loginUsername.trim().isEmpty()) {
+            updates.put("username", loginUsername.trim());
+        }
+        updates.put("email", email);
+        updates.put("phone", phone);
+        updates.put("phoneNumber", phone);
+        updates.put("dob", dob);
+        updates.put("gender", gender);
+        updates.put("address", address);
+
+        userRef.updateChildren(updates)
+                .addOnSuccessListener(aVoid -> {
+                    UserProfileHelper.cacheProfile(
+                            EditingPerInfoActivity.this,
+                            userId,
+                            null,
+                            name,
+                            phone
+                    );
+                    setResult(RESULT_OK);
+                    showSuccessDialog();
+                })
+                .addOnFailureListener(e -> Toast.makeText(
+                        EditingPerInfoActivity.this,
+                        getString(R.string.personal_info_update_failed, e.getMessage()),
+                        Toast.LENGTH_SHORT).show());
     }
 
     private void showSuccessDialog() {

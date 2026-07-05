@@ -83,7 +83,7 @@
                 app:cardBackgroundColor="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvProfileTitle">
+                app:layout_constraintTop_toBottomOf="@id/viewUnderline">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -355,49 +355,12 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <!-- Reviews -->
-                    <LinearLayout
-                        android:id="@+id/btnReviews"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/star"
-                            app:tint="#0088ff" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
-                            android:layout_weight="1"
-                            android:text="@string/profile_reviews"
-                            android:textColor="#000000"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/right"
-                            app:tint="#94A3B8" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="12dp"
-                        android:background="#F1F5F9" />
-
                     <!-- Policies & Terms -->
                     <LinearLayout
                         android:id="@+id/btnPolicies"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="15dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 

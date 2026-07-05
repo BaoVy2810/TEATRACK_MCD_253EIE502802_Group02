@@ -793,10 +793,11 @@
     <string name="profile_label_support">Support</string>
     <string name="profile_reviews">Reviews</string>
     <string name="profile_policies_terms">Policies &amp; Terms</string>
+    <string name="profile_policies_terms_screen_title">Policies &amp;\nTerms</string>
     <string name="profile_dummy_name">Nguyễn Ba Đủ</string>
     <string name="profile_dummy_phone">0971651652</string>
 
-    <string name="personal_info_title">Personal Information</string>
+    <string name="personal_info_title">Personal\nInformation</string>
     <string name="personal_info_label_fullname">Full Name</string>
     <string name="personal_info_label_phone">Phone Number</string>
     <string name="personal_info_label_dob">Date of Birth</string>
@@ -813,6 +814,15 @@
     <string name="personal_info_success_title">Success!</string>
     <string name="personal_info_success_msg">Your profile information has been updated successfully.</string>
     <string name="personal_info_btn_back_to_profile">Back to Profile</string>
+    <string name="personal_info_gender_male">Male</string>
+    <string name="personal_info_gender_female">Female</string>
+    <string name="personal_info_gender_other">Others</string>
+    <string name="personal_info_name_required">Please enter your full name</string>
+    <string name="personal_info_phone_required">Please enter your phone number</string>
+    <string name="personal_info_session_missing">Session expired. Please sign in again.</string>
+    <string name="personal_info_load_error">Unable to load profile data</string>
+    <string name="personal_info_format_error">Invalid profile data format</string>
+    <string name="personal_info_update_failed">Update failed: %1$s</string>
     <string name="language_settings_title">Language\nSettings</string>
     <string name="language_english">English</string>
     <string name="language_vietnamese">Vietnamese</string>
@@ -901,6 +911,8 @@
     <string name="refund_membership_content">Paid membership tiers (Gold/Platinum) are subject to a 7-day \"No-Use\" refund policy. If no benefits or discounts have been redeemed, a full refund can be requested.</string>
 
     <string name="history_title">Earned Point\nHistory</string>
+    <string name="history_current_points_label">Current accumulated points</string>
+    <string name="history_points_pill">Points history</string>
     <string name="history_store_list_label">Store list for earning points</string>
     <string name="history_points_unit">points</string>
     <string name="history_dummy_points">4</string>
@@ -1057,8 +1069,9 @@
     <!-- Loyalty & Rewards System -->
     <string name="loyalty_member_card">Member Card</string>
     <string name="loyalty_vip_label">VIP Member</string>
+    <string name="loyalty_member_label">Member</string>
     <string name="loyalty_view_all">View all</string>
-    <string name="loyalty_special_promotions">Special promotions</string>
+    <string name="loyalty_special_promotions">Special Promotions</string>
     <string name="loyalty_redeem_progress">Redeem now (%1$d/%2$d)</string>
     <string name="loyalty_badge_hot_deal">HOT DEAL</string>
     <string name="loyalty_badge_exclusive">EXCLUSIVE</string>
@@ -1070,7 +1083,8 @@
     <string name="loyalty_barcode">Barcode</string>
     <string name="loyalty_points_history">Points History</string>
     <string name="loyalty_my_rewards">My Rewards</string>
-    <string name="loyalty_redeem_title">Redeem gifts</string>
+    <string name="loyalty_my_rewards_screen_title">My\nRewards</string>
+    <string name="loyalty_redeem_title">Redeem Points</string>
     <string name="loyalty_buy_8_get_1">Buy 8 Get 1</string>
     <string name="loyalty_redeem_description">Collect 8 points to get 1 free milk tea</string>
     <string name="loyalty_btn_redeem_now">Redeem 1 free cup now!</string>
@@ -1084,5 +1098,10 @@
     <string name="loyalty_reward_unlimited">No expiry</string>
     <string name="loyalty_btn_redeem_placeholder">Redeem now</string>
     <string name="history_empty">You have no point transactions yet.</string>
+    <string name="history_empty_title">You have no transactions yet</string>
+    <string name="history_empty_subtitle">Start earning reward points from every order at <font color="#0088FF"><b>Hong Tra Ngo Gia</b></font>!</string>
     <string name="rewards_empty">You have no rewards yet.</string>
+    <string name="rewards_empty_title">You have no rewards yet</string>
+    <string name="rewards_empty_subtitle">Earn points from your orders and redeem them for exciting gifts!</string>
+    <string name="rewards_empty_cta">Order now</string>
 </resources>

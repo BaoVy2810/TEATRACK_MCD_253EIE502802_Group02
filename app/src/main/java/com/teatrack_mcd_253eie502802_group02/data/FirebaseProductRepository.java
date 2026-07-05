@@ -103,4 +103,28 @@ public class FirebaseProductRepository {
             }
         });
     }
+
+    public void getProductById(String id, ProductCallback callback) {
+        if (id == null || id.isEmpty()) {
+            callback.onError("Product id is empty");
+            return;
+        }
+        productsRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Product product = snapshot.getValue(Product.class);
+                if (product == null) {
+                    callback.onError("Product not found: " + id);
+                    return;
+                }
+                product.setId(snapshot.getKey());
+                callback.onSuccess(product);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onError(error.getMessage());
+            }
+        });
+    }
 }

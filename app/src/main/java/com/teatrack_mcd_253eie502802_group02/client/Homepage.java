@@ -380,7 +380,7 @@ public class Homepage extends BaseActivity {
         intent.putExtra("priceL", String.valueOf(product.getPriceL()));
         intent.putExtra("vipM", String.valueOf(product.getVipPriceM()));
         intent.putExtra("vipL", String.valueOf(product.getVipPriceL()));
-        intent.putExtra("imageRes", product.getImageRes());
+        intent.putExtra("imageRes", product.getImageRes(this));
         intent.putExtra("rating", product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());
         if (product.getId() != null && !product.getId().isEmpty()) {

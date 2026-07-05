@@ -71,6 +71,8 @@
                 android:layout_marginTop="180dp"
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/inter_family"
+                android:lineSpacingExtra="2dp"
+                android:maxLines="2"
                 android:shadowColor="#000000"
                 android:shadowDx="0"
                 android:shadowDy="2"
@@ -84,65 +86,101 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/viewUnderline"
+                android:layout_width="48dp"
+                android:layout_height="3dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="4dp"
+                app:cardBackgroundColor="#005299"
+                app:cardCornerRadius="1.5dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cvUserPoints"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="24dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTitle">
+                app:layout_constraintTop_toBottomOf="@id/viewUnderline">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                    android:background="@drawable/bg_points_summary_card"
+                    android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/tvProfileName"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvPointsLabel"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start"
                         android:fontFamily="@font/inter_family"
-                        android:text="@string/profile_dummy_name"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:text="@string/history_current_points_label"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@id/ivPointsTag"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <LinearLayout
+                    <ImageView
+                        android:id="@+id/ivPointsTag"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_local_offer"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:id="@+id/tvTotalPoints"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="bottom"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/inter_family"
+                        android:text="@string/history_dummy_points"
+                        android:textColor="@color/white"
+                        android:textSize="44sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvPointsLabel" />
 
-                        <TextView
-                            android:id="@+id/tvTotalPoints"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:fontFamily="@font/inter_family"
-                            android:text="@string/history_dummy_points"
-                            android:textColor="@color/brand_blue"
-                            android:textSize="48sp"
-                            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tvPointsUnit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="@font/inter_family"
+                        android:text="@string/history_points_unit"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBaseline_toBaselineOf="@id/tvTotalPoints"
+                        app:layout_constraintStart_toEndOf="@id/tvTotalPoints" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginStart="5dp"
-                            android:fontFamily="@font/inter_family"
-                            android:text="@string/history_points_unit"
-                            android:textColor="@color/brand_blue"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvPointsHistoryPill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/bg_points_history_pill"
+                        android:fontFamily="@font/inter_family"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="8dp"
+                        android:text="@string/history_points_pill"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvTotalPoints" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -159,28 +197,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cvUserPoints" />
 
+            <include
+                layout="@layout/layout_empty_point_history"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStoreListLabel" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPointsHistory"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:nestedScrollingEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvStoreListLabel" />
-
-            <TextView
-                android:id="@+id/tvEmptyHistory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:fontFamily="@font/inter_family"
-                android:text="@string/history_empty"
-                android:textColor="@color/Gray"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvPointsHistory" />
+                app:layout_constraintTop_toBottomOf="@id/tvStoreListLabel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

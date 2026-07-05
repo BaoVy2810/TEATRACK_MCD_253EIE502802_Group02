@@ -1,20 +1,19 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.PromotionClientAdapter;
 import com.teatrack_mcd_253eie502802_group02.model.Promotion;
+import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +30,9 @@ import java.util.List;
 public class MyRewardsActivity extends AppCompatActivity {
 
     private static final String DB_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
-    
+
     private RecyclerView rvMyRewards;
-    private TextView tvEmptyRewards;
+    private View layoutEmptyRewards;
     private PromotionClientAdapter adapter;
     private List<Promotion> rewardList = new ArrayList<>();
     private String userId;
@@ -48,12 +48,7 @@ public class MyRewardsActivity extends AppCompatActivity {
             return insets;
         });
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-        toolbar.setNavigationOnClickListener(v -> finish());
+        findViewById(R.id.btnProfileBack).setOnClickListener(v -> finish());
 
         initViews();
         loadUserData();
@@ -63,12 +58,22 @@ public class MyRewardsActivity extends AppCompatActivity {
 
     private void initViews() {
         rvMyRewards = findViewById(R.id.rvMyRewards);
-        tvEmptyRewards = findViewById(R.id.tvEmptyRewards);
+        layoutEmptyRewards = findViewById(R.id.layoutEmptyRewards);
+        rvMyRewards.setVisibility(View.GONE);
+
+        MaterialButton btnOrderNow = findViewById(R.id.btnOrderNow);
+        btnOrderNow.setOnClickListener(v -> openMenu());
+    }
+
+    private void openMenu() {
+        Intent intent = new Intent(this, Menu.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
     }
 
     private void loadUserData() {
-        SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
-        userId = prefs.getString("userId", "");
+        userId = UserProfileHelper.getUserId(this);
     }
 
     private void setupRecyclerView() {
@@ -77,17 +82,24 @@ public class MyRewardsActivity extends AppCompatActivity {
         rvMyRewards.setAdapter(adapter);
     }
 
-    private void fetchMyRewards() {
-        if (userId == null || userId.isEmpty()) return;
+    private void updateEmptyState(boolean isEmpty) {
+        if (layoutEmptyRewards != null) {
+            layoutEmptyRewards.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        }
+        if (rvMyRewards != null) {
+            rvMyRewards.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        }
+    }
 
-        // In this system, redeemed rewards might be stored under Users/{uid}/vouchers
-        // or we just show all active vouchers for now if the requirement is simple.
-        // Based on PromotionClient.java, it loads from "vouchers" global node.
-        // If we want "My Rewards" to be specific, we'd check a user-specific node.
-        
+    private void fetchMyRewards() {
+        if (userId == null || userId.isEmpty()) {
+            updateEmptyState(true);
+            return;
+        }
+
         DatabaseReference userVouchersRef = FirebaseDatabase.getInstance(DB_URL)
                 .getReference("Users").child(userId).child("vouchers");
-        
+
         userVouchersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -99,17 +111,14 @@ public class MyRewardsActivity extends AppCompatActivity {
                         rewardList.add(p);
                     }
                 }
-                
-                if (rewardList.isEmpty()) {
-                    tvEmptyRewards.setVisibility(View.VISIBLE);
-                } else {
-                    tvEmptyRewards.setVisibility(View.GONE);
-                }
+                updateEmptyState(rewardList.isEmpty());
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+                updateEmptyState(true);
+            }
         });
     }
 }

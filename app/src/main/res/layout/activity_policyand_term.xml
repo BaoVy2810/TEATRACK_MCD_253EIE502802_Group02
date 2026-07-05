@@ -65,10 +65,12 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="200dp"
+                android:layout_marginTop="180dp"
                 android:layout_marginEnd="12dp"
                 android:fontFamily="@font/inter_family"
-                android:text="@string/profile_policies_terms"
+                android:maxLines="2"
+                android:lineSpacingExtra="2dp"
+                android:text="@string/profile_policies_terms_screen_title"
                 android:textColor="#1A1A2E"
                 android:textSize="32sp"
                 android:shadowColor="#40000000"
@@ -80,16 +82,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/viewUnderline"
+                android:layout_width="48dp"
+                android:layout_height="3dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="4dp"
+                app:cardBackgroundColor="#005299"
+                app:cardCornerRadius="1.5dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvScreenTitle" />
+
             <LinearLayout
                 android:id="@+id/lnrMenuContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvScreenTitle">
+                app:layout_constraintTop_toBottomOf="@id/viewUnderline">
 
                 <!-- Terms & Conditions -->
                 <androidx.cardview.widget.CardView
