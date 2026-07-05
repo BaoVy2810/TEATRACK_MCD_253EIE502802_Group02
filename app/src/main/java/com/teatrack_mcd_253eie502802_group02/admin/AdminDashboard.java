@@ -346,6 +346,42 @@ public class AdminDashboard extends BaseActivity {
         return cal.getTimeInMillis();
     }
 
+    private boolean isCompletedOrder(FirebaseOrder order) {
+        if (order == null || order.getStatus() == null) return false;
+        return "completed".equalsIgnoreCase(order.getStatus())
+                || "delivered".equalsIgnoreCase(order.getStatus());
+    }
+
+    /** Count revenue from the amount paid on the order. */
+    private double getOrderRevenue(FirebaseOrder order) {
+        double total = Math.max(0, order.getTotal());
+        if (total > 0) return total;
+
+        double subtotal = Math.max(0, order.getSubtotal());
+        if (subtotal > 0 || order.getShipping() > 0 || order.getDiscount() > 0) {
+            return Math.max(0, subtotal + order.getShipping() - order.getDiscount());
+        }
+
+        if (order.getItems() != null && !order.getItems().isEmpty()) {
+            double sum = 0;
+            for (com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem item : order.getItems()) {
+                sum += item.getLineTotal();
+            }
+            return Math.max(0, sum + order.getShipping() - order.getDiscount());
+        }
+
+        double val = 0;
+        if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
+            try {
+                String meta = order.getMeta();
+                String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
+                        .replace("đ", "").replace(".", "");
+                val = Double.parseDouble(priceStr);
+            } catch (Exception ignored) {}
+        }
+        return val;
+    }
+
     private void filterAndDisplayData() {
         double currentRevenue = 0, prevRevenue = 0;
         int currentOrders = 0, prevOrders = 0;
@@ -433,25 +469,14 @@ public class AdminDashboard extends BaseActivity {
             if (createdAt == null) continue;
 
             long orderTime = DateTimeHelper.toEpochMillis(createdAt);
-            double val = Math.max(0, order.getTotal());
-            
-            if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                try {
-                    String meta = order.getMeta();
-                    String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                            .replace("đ", "").replace(".", "");
-                    val = Double.parseDouble(priceStr);
-                } catch (Exception ignored) {}
-            }
 
-            boolean isCompleted = "completed".equalsIgnoreCase(order.getStatus());
-            boolean isCancelled = "cancelled".equalsIgnoreCase(order.getStatus());
+            boolean isCompleted = isCompletedOrder(order);
+
+            double val = getOrderRevenue(order);
 
             if (orderTime >= currentStart && orderTime <= currentEnd) {
                 if (isCompleted) {
                     currentRevenue += val;
-                }
-                if (!isCancelled) {
                     currentOrders++;
                 }
 
@@ -470,48 +495,46 @@ public class AdminDashboard extends BaseActivity {
                 }
 
                 if (agencyId != null && !agencyId.isEmpty()) {
-                    if (!isCancelled) {
-                        branchOrderCountMap.put(agencyId, branchOrderCountMap.getOrDefault(agencyId, 0) + 1);
-                    }
                     if (isCompleted) {
+                        branchOrderCountMap.put(agencyId, branchOrderCountMap.getOrDefault(agencyId, 0) + 1);
                         branchRevenueMap.put(agencyId, branchRevenueMap.getOrDefault(agencyId, 0.0) + val);
                     }
                 }
                 
                 if (order.getItems() != null) {
                     for (com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem item : order.getItems()) {
-                        if (!isCancelled) {
+                        if (isCompleted) {
                             currentSold += item.getQuantity();
                         }
                         
                         if (isCompleted) {
                             String category = productCategoryMap.get(item.getProductId());
                             if (category != null) {
-                                categorySales.put(category, categorySales.getOrDefault(category, 0f) + item.getLineTotal());
+                                categorySales.put(category, categorySales.getOrDefault(category, 0f) + (float) item.getLineTotal());
                             }
                         }
                     }
                 } else {
-                    if (!isCancelled) {
+                    if (isCompleted) {
                         currentSold++;
                     }
                 }
-                filteredOrders.add(order);
+                if (isCompleted) {
+                    filteredOrders.add(order);
+                }
             } else if (orderTime >= prevStart && orderTime < prevEnd) {
                 if (isCompleted) {
                     prevRevenue += val;
-                }
-                if (!isCancelled) {
                     prevOrders++;
                 }
                 if (order.getItems() != null) {
                     for (com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem item : order.getItems()) {
-                        if (!isCancelled) {
+                        if (isCompleted) {
                             prevSold += item.getQuantity();
                         }
                     }
                 } else {
-                    if (!isCancelled) {
+                    if (isCompleted) {
                         prevSold++;
                     }
                 }
@@ -600,7 +623,7 @@ public class AdminDashboard extends BaseActivity {
             revenueData = new float[24];
             
             for (FirebaseOrder order : allOrders) {
-                if (!"completed".equalsIgnoreCase(order.getStatus())) continue;
+                if (!isCompletedOrder(order)) continue;
                 String createdAt = order.getCreatedAt() != null ? order.getCreatedAt() : order.getDate();
                 if (createdAt == null) continue;
                 long oTime = DateTimeHelper.toEpochMillis(createdAt);
@@ -609,15 +632,7 @@ public class AdminDashboard extends BaseActivity {
                     oCal.setTimeInMillis(oTime);
                     int hour = oCal.get(Calendar.HOUR_OF_DAY);
                     
-                    double val = Math.max(0, order.getTotal());
-                    if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                        try {
-                            String meta = order.getMeta();
-                            String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                    .replace("đ", "").replace(".", "");
-                            val = Double.parseDouble(priceStr);
-                        } catch (Exception ignored) {}
-                    }
+                    double val = getOrderRevenue(order);
                     revenueData[hour] += (float) val;
                 }
             }
@@ -635,7 +650,7 @@ public class AdminDashboard extends BaseActivity {
             
             long startRange = todayStart - 6 * 24 * 3600 * 1000L;
             for (FirebaseOrder order : allOrders) {
-                if (!"completed".equalsIgnoreCase(order.getStatus())) continue;
+                if (!isCompletedOrder(order)) continue;
                 String createdAt = order.getCreatedAt() != null ? order.getCreatedAt() : order.getDate();
                 if (createdAt == null) continue;
                 long oTime = DateTimeHelper.toEpochMillis(createdAt);
@@ -643,15 +658,7 @@ public class AdminDashboard extends BaseActivity {
                     long oDayStart = getStartOfDay(oTime);
                     for (int i = 0; i < 7; i++) {
                         if (dayStarts[i] == oDayStart) {
-                            double val = Math.max(0, order.getTotal());
-                            if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                                try {
-                                    String meta = order.getMeta();
-                                    String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                            .replace("đ", "").replace(".", "");
-                                    val = Double.parseDouble(priceStr);
-                                } catch (Exception ignored) {}
-                            }
+                            double val = getOrderRevenue(order);
                             revenueData[i] += (float) val;
                             break;
                         }
@@ -675,7 +682,7 @@ public class AdminDashboard extends BaseActivity {
             int currentYear = currentCal.get(Calendar.YEAR);
             
             for (FirebaseOrder order : allOrders) {
-                if (!"completed".equalsIgnoreCase(order.getStatus())) continue;
+                if (!isCompletedOrder(order)) continue;
                 String createdAt = order.getCreatedAt() != null ? order.getCreatedAt() : order.getDate();
                 if (createdAt == null) continue;
                 long oTime = DateTimeHelper.toEpochMillis(createdAt);
@@ -683,15 +690,7 @@ public class AdminDashboard extends BaseActivity {
                 oCal.setTimeInMillis(oTime);
                 if (oCal.get(Calendar.YEAR) == currentYear) {
                     int month = oCal.get(Calendar.MONTH);
-                    double val = Math.max(0, order.getTotal());
-                    if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                        try {
-                            String meta = order.getMeta();
-                            String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                    .replace("đ", "").replace(".", "");
-                            val = Double.parseDouble(priceStr);
-                        } catch (Exception ignored) {}
-                    }
+                    double val = getOrderRevenue(order);
                     revenueData[month] += (float) val;
                 }
             }
@@ -749,7 +748,7 @@ public class AdminDashboard extends BaseActivity {
             salesData = new float[24];
 
             for (FirebaseOrder order : allOrders) {
-                if (!"completed".equalsIgnoreCase(order.getStatus())) continue;
+                if (!isCompletedOrder(order)) continue;
                 String createdAt = order.getCreatedAt() != null ? order.getCreatedAt() : order.getDate();
                 if (createdAt == null) continue;
                 long oTime = DateTimeHelper.toEpochMillis(createdAt);
@@ -758,15 +757,7 @@ public class AdminDashboard extends BaseActivity {
                     oCal.setTimeInMillis(oTime);
                     int hour = oCal.get(Calendar.HOUR_OF_DAY);
 
-                    double val = Math.max(0, order.getTotal());
-                    if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                        try {
-                            String meta = order.getMeta();
-                            String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                    .replace("đ", "").replace(".", "");
-                            val = Double.parseDouble(priceStr);
-                        } catch (Exception ignored) {}
-                    }
+                    double val = getOrderRevenue(order);
                     salesData[hour] += (float) val;
                 }
             }
@@ -784,7 +775,7 @@ public class AdminDashboard extends BaseActivity {
 
             long startRange = todayStart - 6 * 24 * 3600 * 1000L;
             for (FirebaseOrder order : allOrders) {
-                if (!"completed".equalsIgnoreCase(order.getStatus())) continue;
+                if (!isCompletedOrder(order)) continue;
                 String createdAt = order.getCreatedAt() != null ? order.getCreatedAt() : order.getDate();
                 if (createdAt == null) continue;
                 long oTime = DateTimeHelper.toEpochMillis(createdAt);
@@ -792,15 +783,7 @@ public class AdminDashboard extends BaseActivity {
                     long oDayStart = getStartOfDay(oTime);
                     for (int i = 0; i < 7; i++) {
                         if (dayStarts[i] == oDayStart) {
-                            double val = Math.max(0, order.getTotal());
-                            if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                                try {
-                                    String meta = order.getMeta();
-                                    String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                            .replace("đ", "").replace(".", "");
-                                    val = Double.parseDouble(priceStr);
-                                } catch (Exception ignored) {}
-                            }
+                            double val = getOrderRevenue(order);
                             salesData[i] += (float) val;
                             break;
                         }
@@ -821,7 +804,7 @@ public class AdminDashboard extends BaseActivity {
 
             long startRange = todayStart - 29 * 24 * 3600 * 1000L;
             for (FirebaseOrder order : allOrders) {
-                if (!"completed".equalsIgnoreCase(order.getStatus())) continue;
+                if (!isCompletedOrder(order)) continue;
                 String createdAt = order.getCreatedAt() != null ? order.getCreatedAt() : order.getDate();
                 if (createdAt == null) continue;
                 long oTime = DateTimeHelper.toEpochMillis(createdAt);
@@ -829,15 +812,7 @@ public class AdminDashboard extends BaseActivity {
                     long oDayStart = getStartOfDay(oTime);
                     for (int i = 0; i < 30; i++) {
                         if (dayStarts[i] == oDayStart) {
-                            double val = Math.max(0, order.getTotal());
-                            if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                                try {
-                                    String meta = order.getMeta();
-                                    String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                            .replace("đ", "").replace(".", "");
-                                    val = Double.parseDouble(priceStr);
-                                } catch (Exception ignored) {}
-                            }
+                            double val = getOrderRevenue(order);
                             salesData[i] += (float) val;
                             break;
                         }
@@ -858,7 +833,7 @@ public class AdminDashboard extends BaseActivity {
 
             long startRange = todayStart - 89 * 24 * 3600 * 1000L;
             for (FirebaseOrder order : allOrders) {
-                if (!"completed".equalsIgnoreCase(order.getStatus())) continue;
+                if (!isCompletedOrder(order)) continue;
                 String createdAt = order.getCreatedAt() != null ? order.getCreatedAt() : order.getDate();
                 if (createdAt == null) continue;
                 long oTime = DateTimeHelper.toEpochMillis(createdAt);
@@ -867,15 +842,7 @@ public class AdminDashboard extends BaseActivity {
                         long wStart = weekStarts[i];
                         long wEnd = (i == 11) ? (now + 1000) : weekStarts[i + 1];
                         if (oTime >= wStart && oTime < wEnd) {
-                            double val = Math.max(0, order.getTotal());
-                            if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                                try {
-                                    String meta = order.getMeta();
-                                    String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                            .replace("đ", "").replace(".", "");
-                                    val = Double.parseDouble(priceStr);
-                                } catch (Exception ignored) {}
-                            }
+                            double val = getOrderRevenue(order);
                             salesData[i] += (float) val;
                             break;
                         }
@@ -899,7 +866,7 @@ public class AdminDashboard extends BaseActivity {
             int currentYear = currentCal.get(Calendar.YEAR);
 
             for (FirebaseOrder order : allOrders) {
-                if (!"completed".equalsIgnoreCase(order.getStatus())) continue;
+                if (!isCompletedOrder(order)) continue;
                 String createdAt = order.getCreatedAt() != null ? order.getCreatedAt() : order.getDate();
                 if (createdAt == null) continue;
                 long oTime = DateTimeHelper.toEpochMillis(createdAt);
@@ -907,15 +874,7 @@ public class AdminDashboard extends BaseActivity {
                 oCal.setTimeInMillis(oTime);
                 if (oCal.get(Calendar.YEAR) == currentYear) {
                     int month = oCal.get(Calendar.MONTH);
-                    double val = Math.max(0, order.getTotal());
-                    if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                        try {
-                            String meta = order.getMeta();
-                            String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                    .replace("đ", "").replace(".", "");
-                            val = Double.parseDouble(priceStr);
-                        } catch (Exception ignored) {}
-                    }
+                    double val = getOrderRevenue(order);
                     salesData[month] += (float) val;
                 }
             }
@@ -943,7 +902,7 @@ public class AdminDashboard extends BaseActivity {
                 salesData = new float[numPoints];
 
                 for (FirebaseOrder order : allOrders) {
-                    if (!"completed".equalsIgnoreCase(order.getStatus())) continue;
+                    if (!isCompletedOrder(order)) continue;
                     String createdAt = order.getCreatedAt() != null ? order.getCreatedAt() : order.getDate();
                     if (createdAt == null) continue;
                     long oTime = DateTimeHelper.toEpochMillis(createdAt);
@@ -951,15 +910,7 @@ public class AdminDashboard extends BaseActivity {
                         long oDayStart = getStartOfDay(oTime);
                         for (int i = 0; i < numPoints; i++) {
                             if (customBucketStarts[i] == oDayStart) {
-                                double val = Math.max(0, order.getTotal());
-                                if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                                    try {
-                                        String meta = order.getMeta();
-                                        String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                                .replace("đ", "").replace(".", "");
-                                        val = Double.parseDouble(priceStr);
-                                    } catch (Exception ignored) {}
-                                }
+                                double val = getOrderRevenue(order);
                                 salesData[i] += (float) val;
                                 break;
                             }
@@ -980,7 +931,7 @@ public class AdminDashboard extends BaseActivity {
                 salesData = new float[12];
 
                 for (FirebaseOrder order : allOrders) {
-                    if (!"completed".equalsIgnoreCase(order.getStatus())) continue;
+                    if (!isCompletedOrder(order)) continue;
                     String createdAt = order.getCreatedAt() != null ? order.getCreatedAt() : order.getDate();
                     if (createdAt == null) continue;
                     long oTime = DateTimeHelper.toEpochMillis(createdAt);
@@ -989,15 +940,7 @@ public class AdminDashboard extends BaseActivity {
                             long bStart = customBucketStarts[i];
                             long bEnd = (i == 11) ? (currentEnd + 1000) : customBucketStarts[i + 1];
                             if (oTime >= bStart && oTime < bEnd) {
-                                double val = Math.max(0, order.getTotal());
-                                if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-                                    try {
-                                        String meta = order.getMeta();
-                                        String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                                                .replace("đ", "").replace(".", "");
-                                        val = Double.parseDouble(priceStr);
-                                    } catch (Exception ignored) {}
-                                }
+                                double val = getOrderRevenue(order);
                                 salesData[i] += (float) val;
                                 break;
                             }
