@@ -49,9 +49,10 @@ app.post("/api/auth/send-otp-email", async (req, res) => {
       html,
     });
 
+    console.log(`[${new Date().toISOString()}] Gửi mail THÀNH CÔNG tới: ${to}`);
     return res.json({ message: "OTP email sent" });
   } catch (error) {
-    console.error("Failed to send OTP email:", error);
+    console.error(`[${new Date().toISOString()}] Gửi mail THẤT BẠI:`, error);
     return res.status(500).json({
       message: "Failed to send OTP email",
       error: error.message,

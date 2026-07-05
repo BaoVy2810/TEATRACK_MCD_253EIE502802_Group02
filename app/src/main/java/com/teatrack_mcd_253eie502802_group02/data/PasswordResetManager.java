@@ -253,7 +253,10 @@ public class PasswordResetManager {
     }
 
     private void postOtpEmail(String baseUrl, String to, String subject, String html) throws Exception {
-        HttpURLConnection connection = (HttpURLConnection) new URL(baseUrl + SEND_OTP_EMAIL_PATH).openConnection();
+        String fullUrl = baseUrl + SEND_OTP_EMAIL_PATH;
+        android.util.Log.d("PasswordResetManager", "Calling mail server: " + fullUrl);
+        
+        HttpURLConnection connection = (HttpURLConnection) new URL(fullUrl).openConnection();
         connection.setRequestMethod("POST");
         connection.setConnectTimeout(MAIL_SERVER_TIMEOUT_MS);
         connection.setReadTimeout(MAIL_SERVER_TIMEOUT_MS);
