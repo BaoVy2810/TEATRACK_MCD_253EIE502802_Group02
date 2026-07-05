@@ -826,4 +826,9 @@
     <string name="cart_voucher_invalid">Mã ưu đãi không hợp lệ</string>
     <string name="cart_voucher_not_found">Không tìm thấy mã \"%1$s\"</string>
     <string name="str_order_history_subtitle">Theo dõi và quản lý đơn hàng của bạn</string>
+    <!-- Trang không tìm thấy (404) -->
+    <string name="error_404_title">404</string>
+    <string name="error_404_subtitle">Không tìm thấy trang</string>
+    <string name="error_404_message">Rất tiếc, trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.</string>
+    <string name="error_404_btn_home">Về trang chủ</string>
 </resources>
