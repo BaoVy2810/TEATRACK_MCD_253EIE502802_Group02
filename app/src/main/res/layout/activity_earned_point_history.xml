@@ -50,6 +50,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:contentDescription="@null" />
+
             <ImageView
                 android:id="@+id/imgLogo"
                 android:layout_width="140dp"
@@ -122,6 +123,7 @@
                             android:id="@+id/tvTotalPoints"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:fontFamily="@font/inter_family"
                             android:text="@string/history_dummy_points"
                             android:textColor="@color/brand_blue"
@@ -131,8 +133,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginBottom="12dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="5dp"
                             android:fontFamily="@font/inter_family"
                             android:text="@string/history_points_unit"
                             android:textColor="@color/brand_blue"

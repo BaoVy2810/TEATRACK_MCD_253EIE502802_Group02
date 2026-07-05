@@ -793,6 +793,7 @@
     <string name="cart_picker_voucher_title">Chọn Mã Giảm Giá</string>
     <string name="cart_picker_branch_title">Chọn Chi Nhánh</string>
     <string name="cart_recipient_edit_title">Chỉnh sửa thông tin người nhận</string>
+    <string name="cart_recipient_confirm">Xác nhận thay đổi</string>
     <string name="cart_voucher_empty">Không có ưu đãi nào</string>
     <string name="cart_voucher_use_now">Dùng ngay</string>
     <string name="cart_voucher_conditions">Điều kiện</string>
@@ -825,5 +826,11 @@
     <string name="cart_voucher_enter_code">Vui lòng nhập mã ưu đãi</string>
     <string name="cart_voucher_invalid">Mã ưu đãi không hợp lệ</string>
     <string name="cart_voucher_not_found">Không tìm thấy mã \"%1$s\"</string>
+    <string name="cart_voucher_code_hint">Nhập mã ưu đãi</string>
+    <string name="cart_voucher_apply">Áp dụng</string>
+    <string name="cart_voucher_section_personal">Ưu đãi của bạn</string>
+    <string name="cart_voucher_section_global">Ưu đãi từ TeaTrack</string>
     <string name="str_order_history_subtitle">Theo dõi và quản lý đơn hàng của bạn</string>
+    <string name="order_history_banner_title">LỊCH SỬ ĐƠN HÀNG</string>
+    <string name="order_history_hero_image_desc">Hình minh họa lịch sử đơn hàng</string>
 </resources>

@@ -11,8 +11,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -31,7 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.PromotionClientAdapter;
 import com.teatrack_mcd_253eie502802_group02.model.Promotion;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.QRCodeGenerator;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class PromotionClient extends AppCompatActivity {
+public class PromotionClient extends BaseActivity {
 
     private static final String DB_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
     private static final int POINTS_TO_REDEEM = 8;
@@ -65,7 +65,7 @@ public class PromotionClient extends AppCompatActivity {
         setContentView(R.layout.activity_promotion_client);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
@@ -75,13 +75,13 @@ public class PromotionClient extends AppCompatActivity {
         setupTabs();
         setupRecyclerView();
         loadFirebaseData();
+        CartBadgeHelper.setup(this);
+    }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-        toolbar.setNavigationOnClickListener(v -> finish());
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CartBadgeHelper.updateBadge(this);
     }
 
     private void setupNavigation() {
@@ -204,7 +204,15 @@ public class PromotionClient extends AppCompatActivity {
                 promotionList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Promotion p = data.getValue(Promotion.class);
-                    if (p != null) promotionList.add(p);
+                    Boolean isActive = data.child("isActive").getValue(Boolean.class);
+                    if (p == null || Boolean.FALSE.equals(isActive)) {
+                        continue;
+                    }
+                    p.setId(data.getKey());
+                    if (p.getCode() == null || p.getCode().trim().isEmpty()) {
+                        p.setCode(data.getKey());
+                    }
+                    promotionList.add(p);
                 }
                 promotionAdapter.notifyDataSetChanged();
             }

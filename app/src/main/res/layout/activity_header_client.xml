@@ -55,6 +55,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:background="@drawable/bg_avatar_circle"
+                    android:clipToOutline="true"
                     android:contentDescription="@string/nav_account"
                     android:scaleType="centerCrop"
                     android:src="@drawable/user"

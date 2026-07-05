@@ -23,6 +23,7 @@ import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderClientHelper;
 import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 public class UserProfile extends BaseActivity {
@@ -107,6 +108,10 @@ public class UserProfile extends BaseActivity {
                         if (tvUserPhone != null && phone != null && !phone.trim().isEmpty()) {
                             tvUserPhone.setText(phone.trim());
                         }
+                        if (user.getAvatarBase64() != null && !user.getAvatarBase64().trim().isEmpty()) {
+                            HeaderClientHelper.cacheAvatar(UserProfile.this, user.getAvatarBase64());
+                        }
+                        HeaderClientHelper.bindProfileAvatar(UserProfile.this);
                     }
 
                     @Override

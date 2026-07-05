@@ -1117,7 +1117,7 @@
                                 android:background="@drawable/bg_edittext_rounded"
                                 android:fontFamily="@font/inter_family"
                                 android:gravity="center_vertical"
-                                android:hint="Nhập mã ưu đãi"
+                                android:hint="@string/cart_voucher_code_hint"
                                 android:inputType="textCapCharacters"
                                 android:maxLines="1"
                                 android:padding="10dp"
@@ -1130,7 +1130,7 @@
                                 android:layout_height="48dp"
                                 android:layout_marginStart="8dp"
                                 android:backgroundTint="@color/brand_blue"
-                                android:text="Xác nhận"
+                                android:text="@string/cart_voucher_apply"
                                 android:textSize="14sp" />
 
                         </LinearLayout>
@@ -1141,19 +1141,6 @@
                             android:layout_marginStart="12dp"
                             android:layout_marginEnd="12dp"
                             android:background="@color/outline_variant" />
-
-                        <!-- Section label -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginBottom="4dp"
-                            android:fontFamily="@font/inter_family"
-                            android:text="Ưu đãi từ voucher"
-                            android:textColor="@color/on_surface"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
 
                         <!-- Voucher list -->
                         <ScrollView
@@ -1507,7 +1494,7 @@
                                 android:layout_height="52dp"
                                 android:layout_weight="1"
                                 android:layout_marginEnd="8dp"
-                                android:text="Cancel"
+                                android:text="@string/str_cancel"
                                 android:textAllCaps="false"
                                 android:textStyle="bold"
                                 android:textSize="16sp"
@@ -1519,8 +1506,8 @@
                                 android:id="@+id/btnConfirmRecipientEdit"
                                 android:layout_width="0dp"
                                 android:layout_height="52dp"
-                                android:layout_weight="2"
-                                android:text="Confirm Changes"
+                                android:layout_weight="1"
+                                android:text="@string/cart_recipient_confirm"
                                 android:textAllCaps="false"
                                 android:textStyle="bold"
                                 android:textSize="16sp"
