@@ -14,8 +14,12 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.credentials.Credential;
 import androidx.credentials.CredentialManager;
 import androidx.credentials.GetCredentialRequest;
@@ -73,7 +77,17 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+
+        View root = findViewById(R.id.main);
+        if (root != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
+        }
 
         mAuth = FirebaseAuth.getInstance();
         credentialManager = CredentialManager.create(this);
@@ -143,7 +157,7 @@ public class LoginActivity extends BaseActivity {
 
         if (tvForgotPassword != null) {
             tvForgotPassword.setOnClickListener(v -> {
-                startActivity(new Intent(this, ForgotPasswordActivity.class));
+                startActivity(new Intent(this, ForgotPassword.class));
             });
         }
 

@@ -20,35 +20,35 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-            <ImageView
-                android:id="@+id/imgLogo"
-                android:layout_width="179dp"
-                android:layout_height="183dp"
-                android:layout_marginTop="12dp"
-                android:contentDescription="@string/login_logo_description"
-                android:scaleType="fitCenter"
-                android:src="@mipmap/logo_ngo_gia"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="179dp"
+        android:layout_height="183dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/login_logo_description"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/logo_ngo_gia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvSignIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:fontFamily="@font/inter_semibold"
-                android:shadowColor="#000000"
-                android:shadowDx="0"
-                android:shadowDy="2"
-                android:shadowRadius="1"
-                android:text="@string/login_sign_in"
-                android:textColor="#1A1A2E"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgLogo"
-                android:layout_marginTop="25dp" />
+    <TextView
+        android:id="@+id/tvSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/inter_semibold"
+        android:shadowColor="#000000"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="1"
+        android:text="@string/login_sign_in"
+        android:textColor="#1A1A2E"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgLogo" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/viewUnderline"
@@ -257,19 +257,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnLogIn" />
 
-    <!-- Dòng Sign Up - luôn cố định ở đáy màn hình -->
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGoogle"
         android:layout_width="300dp"
         android:layout_height="44dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="16dp"
         android:fontFamily="@font/inter_semibold"
+        android:maxLines="1"
         android:text="@string/login_btn_google"
         android:textColor="#000000"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:autoSizeMaxTextSize="16sp"
+        app:autoSizeMinTextSize="12sp"
+        app:autoSizeTextType="uniform"
         app:backgroundTint="#FFFFFF"
         app:cornerRadius="22dp"
         app:icon="@drawable/ic_google"
@@ -277,12 +278,9 @@
         app:iconPadding="6dp"
         app:iconSize="20dp"
         app:iconTint="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvOr"
-        app:layout_constraintVertical_bias="0.0"
         app:strokeColor="#E0E0E0"
         app:strokeWidth="1dp" />
 
@@ -290,11 +288,12 @@
         android:id="@+id/layoutSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnGoogle">
 
         <TextView
             android:layout_width="wrap_content"

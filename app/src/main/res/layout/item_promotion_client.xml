@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="192dp"
+    android:layout_marginBottom="16dp"
+    app:cardBackgroundColor="#EDEEEF"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="2dp"
+    app:strokeColor="#33C0C6D6"
+    app:strokeWidth="1dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imgPromoBanner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            tools:src="@mipmap/banner1" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_promo_banner_scrim" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/tvPromoBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_promo_badge_primary"
+                android:fontFamily="@font/inter_semibold"
+                android:letterSpacing="0.12"
+                android:paddingStart="12dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="4dp"
+                android:text="HOT DEAL"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPromotionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="Giảm 50% cho trà trái cây" />
+
+            <TextView
+                android:id="@+id/tvPromotionContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter_family"
+                android:textColor="#CCFFFFFF"
+                android:textSize="12sp"
+                tools:text="Áp dụng từ 14:00 - 17:00 mỗi ngày" />
+        </LinearLayout>
+    </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>

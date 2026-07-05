@@ -163,7 +163,7 @@
         <activity
             android:name=".client.LoginActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".client.Homepage"
             android:exported="false"

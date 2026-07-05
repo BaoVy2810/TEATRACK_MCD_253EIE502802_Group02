@@ -47,6 +47,7 @@ public class Payment extends AppCompatActivity {
 
     private int method;
     private String pickupAddress;
+    private String agencyId;
     private String recipientDetails;
     private String note;
     private TextView tvTimer, tvTopTitle;
@@ -91,6 +92,7 @@ public class Payment extends AppCompatActivity {
 
         method = getIntent().getIntExtra("method", PAYMENT_MOMO);
         pickupAddress = getIntent().getStringExtra("pickupAddress");
+        agencyId = getIntent().getStringExtra("agencyId");
         recipientDetails = getIntent().getStringExtra("recipientDetails");
         note = getIntent().getStringExtra("note");
         findViewById(R.id.btnPaymentBack).setOnClickListener(v -> finish());
@@ -193,6 +195,7 @@ public class Payment extends AppCompatActivity {
                 this,
                 method,
                 pickupAddress,
+                agencyId,
                 recipientDetails,
                 note,
                 true,

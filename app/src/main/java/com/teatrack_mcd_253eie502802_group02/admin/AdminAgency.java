@@ -528,11 +528,13 @@ public class AdminAgency extends AppCompatActivity {
                 agencyList.clear();
                 fullAgencyList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Agency agency = dataSnapshot.getValue(Agency.class);
-                    if (agency != null) {
-                        agencyList.add(agency);
-                        fullAgencyList.add(agency);
-                    }
+                    try {
+                        Agency agency = dataSnapshot.getValue(Agency.class);
+                        if (agency != null) {
+                            agencyList.add(agency);
+                            fullAgencyList.add(agency);
+                        }
+                    } catch (Exception ignored) {}
                 }
                 agencyAdapter.notifyDataSetChanged();
             }

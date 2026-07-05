@@ -275,6 +275,12 @@
     <style name="Widget.TeaTrack.ToggleButton" parent="Widget.Material3.Button.TextButton">
     </style>
 
+    <style name="LoyaltyTabText" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- ── Table body cell ── -->
     <style name="TextAppearance.TeaTrack.TableCell">
         <item name="android:textSize">@dimen/table_text_size</item>

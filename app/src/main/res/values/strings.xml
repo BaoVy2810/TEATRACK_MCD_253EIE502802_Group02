@@ -380,6 +380,10 @@
     <string name="cart_voucher_enter_code">Please enter a voucher code</string>
     <string name="cart_voucher_invalid">Invalid voucher code</string>
     <string name="cart_voucher_not_found">No voucher found for \"%1$s\"</string>
+    <string name="cart_voucher_code_hint">Enter voucher code</string>
+    <string name="cart_voucher_apply">Apply</string>
+    <string name="cart_voucher_section_personal">Your vouchers</string>
+    <string name="cart_voucher_section_global">TeaTrack promotions</string>
     <string name="cart_total">Total</string>
     <string name="cart_confirm_order">Confirm Order</string>
     <string name="cart_order_pickup">Order for Pickup</string>
@@ -599,7 +603,7 @@
     <string name="str_contact_info">Contact Information</string>
     <string name="str_contact_desc">We always listen to your feedback to improve our service every day.</string>
     <string name="str_phone">Phone: 02-723-979-518</string>
-    <string name="str_email">Email: contact@teatrack.com</string>
+    <string name="str_email">Email: teatrack0410@gmail.com</string>
     <string name="str_fullname">Full Name</string>
     <string name="str_fullname_hint">Enter your full name</string>
     <string name="str_email_hint">Email Address</string>
@@ -987,6 +991,8 @@
 
     <!-- Order History Screen -->
     <string name="str_my_orders">My Orders</string>
+    <string name="order_history_banner_title">ORDER HISTORY</string>
+    <string name="order_history_hero_image_desc">Order history illustration</string>
     <string name="str_order_history_subtitle">Track and manage your orders</string>
     <string name="str_search_order_hint">Search by Order ID…</string>
     <string name="str_filter">Filter</string>
@@ -1046,9 +1052,17 @@
     <string name="cart_picker_voucher_title">Chọn mã giảm giá</string>
     <string name="cart_picker_branch_title">Chọn chi nhánh</string>
     <string name="cart_recipient_edit_title">Chỉnh sửa thông tin người nhận</string>
+    <string name="cart_recipient_confirm">Confirm Changes</string>
 
     <!-- Loyalty & Rewards System -->
     <string name="loyalty_member_card">Member Card</string>
+    <string name="loyalty_vip_label">VIP Member</string>
+    <string name="loyalty_view_all">View all</string>
+    <string name="loyalty_special_promotions">Special promotions</string>
+    <string name="loyalty_redeem_progress">Redeem now (%1$d/%2$d)</string>
+    <string name="loyalty_badge_hot_deal">HOT DEAL</string>
+    <string name="loyalty_badge_exclusive">EXCLUSIVE</string>
+    <string name="loyalty_promo_expiry_format">Valid until %1$s</string>
     <string name="loyalty_user_name_default">Guest</string>
     <string name="loyalty_points_format">%1$d pts</string>
     <string name="loyalty_uid_format">UID: %1$s</string>
@@ -1056,7 +1070,7 @@
     <string name="loyalty_barcode">Barcode</string>
     <string name="loyalty_points_history">Points History</string>
     <string name="loyalty_my_rewards">My Rewards</string>
-    <string name="loyalty_redeem_title">Redeem Points</string>
+    <string name="loyalty_redeem_title">Redeem gifts</string>
     <string name="loyalty_buy_8_get_1">Buy 8 Get 1</string>
     <string name="loyalty_redeem_description">Collect 8 points to get 1 free milk tea</string>
     <string name="loyalty_btn_redeem_now">Redeem 1 free cup now!</string>

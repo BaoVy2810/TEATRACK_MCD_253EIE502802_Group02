@@ -1,9 +1,12 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,8 +14,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -31,7 +33,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.PromotionClientAdapter;
 import com.teatrack_mcd_253eie502802_group02.model.Promotion;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.QRCodeGenerator;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +45,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class PromotionClient extends AppCompatActivity {
+public class PromotionClient extends BaseActivity {
 
     private static final String DB_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
     private static final int POINTS_TO_REDEEM = 8;
@@ -65,7 +69,7 @@ public class PromotionClient extends AppCompatActivity {
         setContentView(R.layout.activity_promotion_client);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
@@ -75,13 +79,13 @@ public class PromotionClient extends AppCompatActivity {
         setupTabs();
         setupRecyclerView();
         loadFirebaseData();
+        CartBadgeHelper.setup(this);
+    }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-        toolbar.setNavigationOnClickListener(v -> finish());
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CartBadgeHelper.updateBadge(this);
     }
 
     private void setupNavigation() {
@@ -121,6 +125,13 @@ public class PromotionClient extends AppCompatActivity {
         rvPromotions = findViewById(R.id.rvPromotions);
 
         btnRedeem.setOnClickListener(v -> handleRedeem());
+        View btnViewAll = findViewById(R.id.tvViewAllRewards);
+        if (btnViewAll != null) {
+            btnViewAll.setOnClickListener(v -> {
+                android.content.Intent intent = new android.content.Intent(this, MyRewardsActivity.class);
+                startActivity(intent);
+            });
+        }
         findViewById(R.id.btnPointsHistory).setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(this, EarnedPointHistoryActivity.class);
             startActivity(intent);
@@ -204,7 +215,15 @@ public class PromotionClient extends AppCompatActivity {
                 promotionList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Promotion p = data.getValue(Promotion.class);
-                    if (p != null) promotionList.add(p);
+                    Boolean isActive = data.child("isActive").getValue(Boolean.class);
+                    if (p == null || Boolean.FALSE.equals(isActive)) {
+                        continue;
+                    }
+                    p.setId(data.getKey());
+                    if (p.getCode() == null || p.getCode().trim().isEmpty()) {
+                        p.setCode(data.getKey());
+                    }
+                    promotionList.add(p);
                 }
                 promotionAdapter.notifyDataSetChanged();
             }
@@ -216,32 +235,75 @@ public class PromotionClient extends AppCompatActivity {
 
     private void updatePointsUI() {
         tvCurrentPoints.setText(getString(R.string.loyalty_points_format, (int) currentPoints));
-        
-        // Render 8 point icons
+
         gridPointIcons.removeAllViews();
+        int progress = (int) Math.min(currentPoints, POINTS_TO_REDEEM);
         for (int i = 0; i < POINTS_TO_REDEEM; i++) {
-            ImageView icon = new ImageView(this);
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.width = dpToPx(40);
-            params.height = dpToPx(40);
-            params.setMargins(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
-            icon.setLayoutParams(params);
-
-            if (i < currentPoints) {
-                icon.setImageResource(R.drawable.points); // Earned
-            } else {
-                icon.setImageResource(R.drawable.ic_star); // Empty/Star placeholder
-                icon.setAlpha(0.3f);
-            }
-            gridPointIcons.addView(icon);
+            addStampCell(i < progress);
         }
 
-        btnRedeem.setEnabled(currentPoints >= POINTS_TO_REDEEM);
-        if (currentPoints >= POINTS_TO_REDEEM) {
+        updateRedeemButton(progress);
+    }
+
+    private void addStampCell(boolean filled) {
+        FrameLayout cell = new FrameLayout(this);
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.width = dpToPx(72);
+        params.height = dpToPx(72);
+        params.setMargins(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
+        cell.setLayoutParams(params);
+        cell.setBackgroundResource(filled
+                ? R.drawable.bg_loyalty_stamp_filled
+                : R.drawable.bg_loyalty_stamp_empty);
+
+        ImageView icon = new ImageView(this);
+        FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(dpToPx(24), dpToPx(24));
+        iconParams.gravity = Gravity.CENTER;
+        icon.setLayoutParams(iconParams);
+        icon.setImageResource(R.drawable.points);
+        icon.setColorFilter(ContextCompat.getColor(this,
+                filled ? R.color.primary : R.color.outline_variant));
+        if (!filled) {
+            icon.setAlpha(0.5f);
+        }
+        cell.addView(icon);
+
+        if (filled) {
+            FrameLayout badge = new FrameLayout(this);
+            FrameLayout.LayoutParams badgeParams = new FrameLayout.LayoutParams(dpToPx(18), dpToPx(18));
+            badgeParams.gravity = Gravity.BOTTOM | Gravity.END;
+            badge.setLayoutParams(badgeParams);
+            badge.setBackgroundResource(R.drawable.bg_promo_badge_primary);
+
+            ImageView check = new ImageView(this);
+            FrameLayout.LayoutParams checkParams = new FrameLayout.LayoutParams(dpToPx(10), dpToPx(10));
+            checkParams.gravity = Gravity.CENTER;
+            check.setLayoutParams(checkParams);
+            check.setImageResource(R.drawable.ic_check_white);
+            badge.addView(check);
+            cell.addView(badge);
+        }
+
+        gridPointIcons.addView(cell);
+    }
+
+    private void updateRedeemButton(int progress) {
+        boolean canRedeem = currentPoints >= POINTS_TO_REDEEM;
+        btnRedeem.setEnabled(canRedeem);
+        if (canRedeem) {
             btnRedeem.setText(R.string.loyalty_btn_redeem_now);
-        } else {
-            btnRedeem.setText(getString(R.string.loyalty_points_needed_format, (int) (POINTS_TO_REDEEM - currentPoints)));
+            btnRedeem.setTextColor(ContextCompat.getColor(this, R.color.white));
+            btnRedeem.setBackgroundTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(this, R.color.primary)));
+            btnRedeem.setIcon(null);
+            return;
         }
+
+        btnRedeem.setText(getString(R.string.loyalty_redeem_progress, progress, POINTS_TO_REDEEM));
+        btnRedeem.setTextColor(0xFF636262);
+        btnRedeem.setBackgroundTintList(ColorStateList.valueOf(0xFFE2DFDE));
+        btnRedeem.setIconResource(R.drawable.ic_lock);
+        btnRedeem.setIconTint(ColorStateList.valueOf(0xFF636262));
     }
 
     private void handleRedeem() {

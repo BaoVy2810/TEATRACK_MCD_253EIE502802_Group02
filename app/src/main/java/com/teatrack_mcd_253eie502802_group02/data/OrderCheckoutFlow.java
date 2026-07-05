@@ -62,8 +62,9 @@ public final class OrderCheckoutFlow {
             Toast.makeText(context, "Lỗi kết nối: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }    public static void placeOrderAndOpenCheckout(Activity activity, int paymentMethod,
-                                                 String pickupAddress, String recipientDetails,
-                                                 String note, boolean clearTask, View confirmButton) {
+                                                 String pickupAddress, String agencyId,
+                                                 String recipientDetails, String note,
+                                                 boolean clearTask, View confirmButton) {
         List<CartItem> items = CartManager.getInstance().getItems();
         if (activity == null || activity.isFinishing() || activity.isDestroyed()) {
             return;
@@ -74,6 +75,7 @@ public final class OrderCheckoutFlow {
                 items,
                 paymentMethod,
                 pickupAddress,
+                agencyId,
                 recipientDetails,
                 note
         );

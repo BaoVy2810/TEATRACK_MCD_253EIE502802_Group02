@@ -26,26 +26,25 @@
             <ImageView
                 android:id="@+id/imgBackground"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:scaleType="fitXY"
                 android:src="@drawable/account_bg"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@null" />
 
             <ImageView
                 android:id="@+id/imgLogo"
-                android:layout_width="147dp"
-                android:layout_height="92dp"
-                android:layout_marginTop="12dp"
-                android:contentDescription="@string/login_logo_description"
+                android:layout_width="140dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="55dp"
+                android:layout_marginEnd="20dp"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/logo_ngo_gia"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.886"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@null" />
 
             <TextView
                 android:id="@+id/tvProfileTitle"
@@ -97,7 +96,12 @@
                         android:id="@+id/imgUserAvatar"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:src="@drawable/bg_profile_circle" />
+                        android:background="@drawable/bg_avatar_circle"
+                        android:clipToOutline="true"
+                        android:contentDescription="@string/nav_account"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/user"
+                        app:tint="@color/brand_blue" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -400,7 +404,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/document3"
+                            android:src="@drawable/document2"
                             app:tint="#0088ff" />
 
                         <TextView
