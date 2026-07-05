@@ -151,7 +151,7 @@ public class AdminDashboard extends BaseActivity {
                 String rangeLabel = startDate + " - " + endDate;
                 binding.btnBarChartRange.setText(rangeLabel);
 
-                // Cập nhật dữ liệu dựa trên khoảng ngày đã chọn
+                // Refresh data after custom date range changes.
                 filterAndDisplayData();
             }
         });
@@ -402,22 +402,37 @@ public class AdminDashboard extends BaseActivity {
             return Math.max(0, sum + order.getShipping() - order.getDiscount());
         }
 
-        double val = 0;
-        if (val == 0 && order.getMeta() != null && order.getMeta().contains("•")) {
-            try {
-                String meta = order.getMeta();
-                String priceStr = meta.substring(meta.lastIndexOf("•") + 1).trim()
-                        .replace("đ", "").replace(".", "");
-                val = Double.parseDouble(priceStr);
-            } catch (Exception ignored) {}
+        if (order.getMeta() == null) return 0;
+        try {
+            String meta = order.getMeta();
+            int sep = Math.max(meta.lastIndexOf("•"), meta.lastIndexOf("â€¢"));
+            String amountPart = sep >= 0 ? meta.substring(sep + 1) : meta;
+            String priceStr = amountPart.replaceAll("[^0-9]", "");
+            return priceStr.isEmpty() ? 0 : Double.parseDouble(priceStr);
+        } catch (Exception ignored) {
+            return 0;
         }
-        return val;
+    }
+
+    private long getOrderTime(FirebaseOrder order) {
+        if (order == null) return 0L;
+        String createdAt = order.getCreatedAt();
+        if (createdAt == null || createdAt.isEmpty()) {
+            createdAt = order.getDate();
+        }
+        return DateTimeHelper.toEpochMillis(createdAt);
+    }
+
+    private String formatVnd(DecimalFormat df, double value) {
+        return df.format(value) + "\u0111";
     }
 
     private void filterAndDisplayData() {
         double currentRevenue = 0, prevRevenue = 0;
+        double rangeRevenue = 0;
         int currentOrders = 0, prevOrders = 0;
         int currentSold = 0, prevSold = 0;
+        int rangeOrders = 0, rangeSold = 0;
         List<FirebaseOrder> filteredOrders = new ArrayList<>();
         java.util.Map<String, Float> categorySales = new java.util.HashMap<>();
         
@@ -494,85 +509,59 @@ public class AdminDashboard extends BaseActivity {
         }
 
         for (FirebaseOrder order : allOrders) {
-            String createdAt = order.getCreatedAt();
-            if (createdAt == null || createdAt.isEmpty()) {
-                createdAt = order.getDate();
-            }
-            if (createdAt == null) continue;
+            if (!isCompletedOrder(order)) continue;
 
-            long orderTime = DateTimeHelper.toEpochMillis(createdAt);
-
-            boolean isCompleted = isCompletedOrder(order);
-
+            long orderTime = getOrderTime(order);
             double val = getOrderRevenue(order);
 
+            currentRevenue += val;
+            currentOrders++;
+
+            String agencyId = resolveOrderAgencyId(order);
+            if (agencyId == null || agencyId.isEmpty()) {
+                agencyId = UNASSIGNED_BRANCH_ID;
+            }
+            branchOrderCountMap.put(agencyId, branchOrderCountMap.getOrDefault(agencyId, 0) + 1);
+            branchRevenueMap.put(agencyId, branchRevenueMap.getOrDefault(agencyId, 0.0) + val);
+
+            int soldInOrder = 0;
+            if (order.getItems() != null) {
+                double orderItemsSubtotal = 0;
+                for (com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem item : order.getItems()) {
+                    orderItemsSubtotal += Math.max(0, item.getLineTotal());
+                }
+
+                for (com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem item : order.getItems()) {
+                    soldInOrder += item.getQuantity();
+
+                    String category = productCategoryMap.get(item.getProductId());
+                    if (category != null) {
+                        double itemRevenue = orderItemsSubtotal > 0
+                                ? val * Math.max(0, item.getLineTotal()) / orderItemsSubtotal
+                                : 0;
+                        categorySales.put(category, categorySales.getOrDefault(category, 0f) + (float) itemRevenue);
+                    }
+                }
+            } else {
+                soldInOrder = 1;
+            }
+
+            currentSold += soldInOrder;
+            filteredOrders.add(order);
+
             if (orderTime >= currentStart && orderTime <= currentEnd) {
-                if (isCompleted) {
-                    currentRevenue += val;
-                    currentOrders++;
-                }
-
-                if (isCompleted) {
-                    String agencyId = resolveOrderAgencyId(order);
-                    if (agencyId == null || agencyId.isEmpty()) {
-                        agencyId = UNASSIGNED_BRANCH_ID;
-                    }
-                    branchOrderCountMap.put(agencyId, branchOrderCountMap.getOrDefault(agencyId, 0) + 1);
-                    branchRevenueMap.put(agencyId, branchRevenueMap.getOrDefault(agencyId, 0.0) + val);
-                }
-                
-                if (order.getItems() != null) {
-                    double orderItemsSubtotal = 0;
-                    if (isCompleted) {
-                        for (com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem item : order.getItems()) {
-                            orderItemsSubtotal += Math.max(0, item.getLineTotal());
-                        }
-                    }
-
-                    for (com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem item : order.getItems()) {
-                        if (isCompleted) {
-                            currentSold += item.getQuantity();
-                        }
-                        
-                        if (isCompleted) {
-                            String category = productCategoryMap.get(item.getProductId());
-                            if (category != null) {
-                                double itemRevenue = orderItemsSubtotal > 0
-                                        ? val * Math.max(0, item.getLineTotal()) / orderItemsSubtotal
-                                        : 0;
-                                categorySales.put(category, categorySales.getOrDefault(category, 0f) + (float) itemRevenue);
-                            }
-                        }
-                    }
-                } else {
-                    if (isCompleted) {
-                        currentSold++;
-                    }
-                }
-                if (isCompleted) {
-                    filteredOrders.add(order);
-                }
+                rangeRevenue += val;
+                rangeOrders++;
+                rangeSold += soldInOrder;
             } else if (orderTime >= prevStart && orderTime < prevEnd) {
-                if (isCompleted) {
-                    prevRevenue += val;
-                    prevOrders++;
-                }
-                if (order.getItems() != null) {
-                    for (com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem item : order.getItems()) {
-                        if (isCompleted) {
-                            prevSold += item.getQuantity();
-                        }
-                    }
-                } else {
-                    if (isCompleted) {
-                        prevSold++;
-                    }
-                }
+                prevRevenue += val;
+                prevOrders++;
+                prevSold += soldInOrder;
             }
         }
 
         DecimalFormat df = new DecimalFormat("#,###");
-        binding.cardRevenue.tvStatValue.setText(df.format(currentRevenue) + "đ");
+        binding.cardRevenue.tvStatValue.setText(formatVnd(df, currentRevenue));
         binding.cardOrders.tvStatValue.setText(String.valueOf(currentOrders));
         binding.cardSold.tvStatValue.setText(String.valueOf(currentSold));
 
@@ -584,9 +573,9 @@ public class AdminDashboard extends BaseActivity {
             labelRes = R.string.stat_wow;
         }
         
-        updateStatComparison(binding.cardRevenue.getRoot(), currentRevenue, prevRevenue, labelRes);
-        updateStatComparison(binding.cardOrders.getRoot(), currentOrders, prevOrders, labelRes);
-        updateStatComparison(binding.cardSold.getRoot(), currentSold, prevSold, labelRes);
+        updateStatComparison(binding.cardRevenue.getRoot(), rangeRevenue, prevRevenue, labelRes);
+        updateStatComparison(binding.cardOrders.getRoot(), rangeOrders, prevOrders, labelRes);
+        updateStatComparison(binding.cardSold.getRoot(), rangeSold, prevSold, labelRes);
 
         if (!filteredOrders.isEmpty()) {
             List<FirebaseOrder> displayList = filteredOrders.subList(0, Math.min(filteredOrders.size(), 5));
@@ -602,7 +591,7 @@ public class AdminDashboard extends BaseActivity {
             String id = agency.getId();
             int count = branchOrderCountMap.getOrDefault(id, 0);
             double rev = branchRevenueMap.getOrDefault(id, 0.0);
-            branchDisplayList.add(new Branch(agency.getName(), count, df.format(rev) + "đ"));
+            branchDisplayList.add(new Branch(agency.getName(), count, formatVnd(df, rev)));
         }
         for (Agency agency : allBranches) {
             displayedAgencyIds.add(agency.getId());
@@ -612,7 +601,7 @@ public class AdminDashboard extends BaseActivity {
             int count = branchOrderCountMap.getOrDefault(id, 0);
             double rev = branchRevenueMap.getOrDefault(id, 0.0);
             String label = UNASSIGNED_BRANCH_ID.equals(id) ? "Unassigned Branch" : id;
-            branchDisplayList.add(new Branch(label, count, df.format(rev) + "Ä‘"));
+            branchDisplayList.add(new Branch(label, count, formatVnd(df, rev)));
         }
         binding.rvBranchAnalysis.setAdapter(new BranchAnalysisAdapter(branchDisplayList));
         
@@ -1061,11 +1050,11 @@ public class AdminDashboard extends BaseActivity {
     }
 
     private void setupStatCards() {
-        setupStatCard(binding.cardRevenue.getRoot(), getString(R.string.stat_revenue_title), "0đ", "0%", getString(R.string.stat_mom), R.drawable.chart, R.color.stat_revenue_start, R.color.stat_revenue_end);
+        setupStatCard(binding.cardRevenue.getRoot(), getString(R.string.stat_revenue_title), "0\u0111", "0%", getString(R.string.stat_mom), R.drawable.chart, R.color.stat_revenue_start, R.color.stat_revenue_end);
         setupStatCard(binding.cardOrders.getRoot(), getString(R.string.stat_orders_title), "0", "0%", getString(R.string.stat_mom), R.drawable.cart, R.color.stat_orders_start, R.color.stat_orders_end);
         setupStatCard(binding.cardSold.getRoot(), getString(R.string.stat_sold_title), "0", "0%", getString(R.string.stat_mom), R.drawable.coins, R.color.stat_sold_start, R.color.stat_sold_end);
 
-        // Cập nhật icon cho Products tại đây (Ví dụ dùng box1 hoặc bag1)
+        // Product stat card uses the coffee icon.
         setupStatCard(binding.cardProducts.getRoot(), getString(R.string.stat_products_title), "0", "", getString(R.string.stat_active_trading), R.drawable.coffee, R.color.stat_products_start, R.color.stat_products_end);
 
         binding.cardProducts.ivTrendIcon.setVisibility(View.GONE);
