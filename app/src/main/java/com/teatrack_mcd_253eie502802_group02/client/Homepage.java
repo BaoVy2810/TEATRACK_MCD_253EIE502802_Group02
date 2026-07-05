@@ -47,6 +47,9 @@ import java.util.Map;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
 public class Homepage extends BaseActivity {
+    public static final String EXTRA_AUTO_DIAL_HOTLINE = "extra_auto_dial_hotline";
+    private static final String HOTLINE_URI = "tel:02-723-979-518";
+
     private static final int[] NAV_IDS = {
             R.id.nav_home,
             R.id.nav_menu,
@@ -98,6 +101,34 @@ public class Homepage extends BaseActivity {
         setupViewAllActions();
         setupContactSection();
         CartBadgeHelper.setup(this);
+        maybeDialHotline(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        maybeDialHotline(intent);
+    }
+
+    private void maybeDialHotline(Intent intent) {
+        if (intent != null && intent.getBooleanExtra(EXTRA_AUTO_DIAL_HOTLINE, false)) {
+            intent.removeExtra(EXTRA_AUTO_DIAL_HOTLINE);
+            dialHotline();
+        }
+    }
+
+    private void dialHotline() {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(android.net.Uri.parse(HOTLINE_URI));
+        startActivity(intent);
+    }
+
+    public static void openContactSupport(android.content.Context context) {
+        Intent intent = new Intent(context, Homepage.class);
+        intent.putExtra(EXTRA_AUTO_DIAL_HOTLINE, true);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        context.startActivity(intent);
     }
 
     @Override
@@ -326,11 +357,7 @@ public class Homepage extends BaseActivity {
 
         View cardHotline = findViewById(R.id.cardHotline);
         if (cardHotline != null) {
-            cardHotline.setOnClickListener(v -> {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(android.net.Uri.parse("tel:02-723-979-518"));
-                startActivity(intent);
-            });
+            cardHotline.setOnClickListener(v -> dialHotline());
         }
 
         View cardEmail = findViewById(R.id.cardEmail);

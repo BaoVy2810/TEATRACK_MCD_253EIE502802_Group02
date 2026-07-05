@@ -726,7 +726,7 @@
     <string name="order_pickup_time">Thời gian nhận hàng</string>
     <string name="cart_pickup_time_label">Thời gian nhận hàng</string>
     <string name="cart_pickup_time_display">Nhận hàng: %1$s</string>
-    <string name="cart_config_line">Size %1$s - %2$s: %3$s - %4$s: %5$s,</string>
+    <string name="cart_config_line">Size %1$s - %2$s: %3$s - %4$s: %5$s.</string>
     <string name="cart_label_sugar">Ngọt</string>
     <string name="cart_label_ice">Đá</string>
     <string name="cart_quantity_line">Số lượng: %1$d</string>
@@ -800,4 +800,5 @@
     <string name="cart_voucher_enter_code">Vui lòng nhập mã ưu đãi</string>
     <string name="cart_voucher_invalid">Mã ưu đãi không hợp lệ</string>
     <string name="cart_voucher_not_found">Không tìm thấy mã \"%1$s\"</string>
+    <string name="str_order_history_subtitle">Theo dõi và quản lý đơn hàng của bạn</string>
 </resources>

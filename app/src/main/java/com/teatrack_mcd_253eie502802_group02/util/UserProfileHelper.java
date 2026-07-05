@@ -77,6 +77,11 @@ public final class UserProfileHelper {
             if (phone != null && !phone.trim().isEmpty()) {
                 editor.putString(KEY_PHONE, phone.trim());
             }
+            String avatar = user.getAvatarBase64();
+            if (avatar != null && !avatar.trim().isEmpty()) {
+                editor.putString("avatarBase64", avatar.trim());
+                editor.putString("avatarUserId", snapshot.getKey());
+            }
         }
         editor.apply();
     }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="0dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#E7EDF9"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgOrderItem"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:contentDescription="@string/product_detail_related_image_desc"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/RoundedImage12dp"
+            tools:src="@mipmap/traxanhbidao" />
+
+        <TextView
+            android:id="@+id/tvOrderItemName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/inter_family"
+            android:maxLines="2"
+            android:textColor="#001A3F"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgOrderItem"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Sữa Tươi Khoai Môn Nghiền" />
+
+        <TextView
+            android:id="@+id/tvOrderItemConfig"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/inter_family"
+            android:textColor="#5A6D8C"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgOrderItem"
+            app:layout_constraintTop_toBottomOf="@id/tvOrderItemName"
+            tools:text="Size M - Ngọt: Bình thường - Đá: Bình thường," />
+
+        <TextView
+            android:id="@+id/tvOrderItemToppings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/inter_family"
+            android:lineSpacingExtra="2dp"
+            android:textColor="#5A6D8C"
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imgOrderItem"
+            app:layout_constraintTop_toBottomOf="@id/tvOrderItemConfig"
+            tools:text="Topping:\nTrân châu đường đen x1"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvOrderItemLineTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/inter_family"
+            android:textColor="@color/brand_blue"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/imgOrderItem"
+            app:layout_constraintTop_toBottomOf="@id/tvOrderItemToppings"
+            tools:text="41.000đ" />
+
+        <TextView
+            android:id="@+id/tvOrderItemQtyUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_family"
+            android:textColor="#5A6D8C"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvOrderItemLineTotal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvOrderItemLineTotal"
+            tools:text="x1 • 41.000đ/sp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

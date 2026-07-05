@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -23,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.TextViewCompat;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -70,6 +72,11 @@ public class OrderTracking extends AppCompatActivity {
 
         initViews();
 
+        TextView tvTopTitle = findViewById(R.id.tvTopTitle);
+        if (tvTopTitle != null) {
+            tvTopTitle.setText(R.string.order_tracking_title);
+        }
+
         orderId = getIntent().getStringExtra("ORDER_ID");
         if (orderId == null) {
             orderId = getIntent().getStringExtra("orderId");
@@ -89,6 +96,9 @@ public class OrderTracking extends AppCompatActivity {
             }
             finish();
         });
+
+        findViewById(R.id.btnContactSupport).setOnClickListener(
+                v -> Homepage.openContactSupport(this));
     }
 
     private void initViews() {
@@ -137,6 +147,25 @@ public class OrderTracking extends AppCompatActivity {
         stepLabel5 = findViewById(R.id.stepLabel5);
         labels.add(stepLabel1); labels.add(stepLabel2); labels.add(stepLabel3);
         labels.add(stepLabel4); labels.add(stepLabel5);
+        configureStepLabelsForLocale();
+    }
+
+    private void configureStepLabelsForLocale() {
+        boolean vietnamese = "vi".equals(
+                getResources().getConfiguration().getLocales().get(0).getLanguage());
+        for (TextView label : labels) {
+            if (label == null) continue;
+            if (vietnamese) {
+                label.setMaxLines(2);
+                TextViewCompat.setAutoSizeTextTypeWithDefaults(
+                        label, TextViewCompat.AUTO_SIZE_TEXT_TYPE_NONE);
+            } else {
+                label.setMaxLines(1);
+                label.setSingleLine(true);
+                TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+                        label, 9, 12, 1, TypedValue.COMPLEX_UNIT_SP);
+            }
+        }
     }
 
     @Override

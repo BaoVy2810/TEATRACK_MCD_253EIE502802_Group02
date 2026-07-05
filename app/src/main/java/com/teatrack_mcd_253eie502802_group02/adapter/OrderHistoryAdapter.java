@@ -8,11 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.graphics.drawable.Drawable;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +17,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
+import com.teatrack_mcd_253eie502802_group02.util.OrderStatusBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.util.PriceFormatHelper;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem;
 
 import java.text.NumberFormat;
@@ -83,17 +81,14 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         h.tvItemCount.setText(context.getResources().getQuantityString(
                 R.plurals.str_item_count, count, count));
 
-        // Branch / address — prefer branchAddress, fall back to customerAddress for legacy orders
-        String address = order.getBranchAddress();
-        if (address == null || address.isEmpty()) address = order.getCustomerAddress();
-        h.tvBranch.setText((address != null && !address.isEmpty()) ? address
-                : context.getString(R.string.str_branch_unknown));
+        // Branch — agency name from Firebase agencies node
+        loadBranchName(h.tvBranch, order);
 
         // Total
         h.tvTotal.setText(formatPrice(order.getTotal()));
 
         // Status badge
-        applyStatusBadge(h.tvStatus, order.getStatus());
+        OrderStatusBadgeHelper.apply(h.tvStatus, order.getStatus() != null ? order.getStatus() : "");
 
         // Thumbnail — use first item's product image if available, else placeholder
         loadThumbnail(h.ivThumbnail, order);
@@ -114,78 +109,114 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
     // ── Helpers ──────────────────────────────────────────────────────────────
 
-    private void applyStatusBadge(TextView tv, String status) {
-        if (status == null) status = "";
-        String label;
-        int bgRes;
-        int textColor;
-        int iconRes = 0;
-
-        switch (status) {
-            case "pending":
-                label = context.getString(R.string.str_status_pending);
-                bgRes = R.drawable.bg_status_pending;
-                textColor = 0xFF854D0E;
-                iconRes = R.drawable.pending_tab;
-                break;
-            case "processing":
-                label = context.getString(R.string.str_status_processing);
-                bgRes = R.drawable.bg_status_processing;
-                textColor = 0xFF1E40AF;
-                iconRes = R.drawable.processing_tab;
-                break;
-            case "ready":
-                label = context.getString(R.string.str_status_ready);
-                bgRes = R.drawable.bg_status_ready;
-                textColor = 0xFF5B21B6;
-                iconRes = R.drawable.ready_tab;
-                break;
-            case "shipping":
-                label = context.getString(R.string.str_status_shipping);
-                bgRes = R.drawable.bg_status_shipping;
-                textColor = 0xFFC2410C;
-                iconRes = R.drawable.shipping_tab;
-                break;
-            case "delivered":
-            case "completed":
-                label = context.getString(R.string.str_status_delivered);
-                bgRes = R.drawable.bg_status_delivered;
-                textColor = 0xFF065F46;
-                iconRes = R.drawable.finished_tab;
-                break;
-            case "cancelled":
-                label = context.getString(R.string.str_status_cancelled);
-                bgRes = R.drawable.bg_status_cancelled;
-                textColor = 0xFF6B7280;
-                break;
-            default:
-                label = status;
-                bgRes = R.drawable.bg_status_cancelled;
-                textColor = 0xFF6B7280;
-                break;
-        }
-
-        tv.setText(label);
-        tv.setBackgroundResource(bgRes);
-        tv.setTextColor(textColor);
-
-        if (iconRes != 0) {
-            Drawable icon = AppCompatResources.getDrawable(context, iconRes);
-            if (icon != null) {
-                icon = DrawableCompat.wrap(icon.mutate());
-                DrawableCompat.setTint(icon, textColor);
-                int size = (int) (14 * context.getResources().getDisplayMetrics().density);
-                icon.setBounds(0, 0, size, size);
-                tv.setCompoundDrawables(icon, null, null, null);
-                tv.setCompoundDrawablePadding((int) (4 * context.getResources().getDisplayMetrics().density));
-            }
-        } else {
-            tv.setCompoundDrawables(null, null, null, null);
-        }
-    }
-
     // Cache: cacheKey (productId or productName) → image string from Firebase
     private static final Map<String, String> productImageCache = new HashMap<>();
+    private static final Map<String, String> agencyNameCache = new HashMap<>();
+    private static boolean agencyIndexLoaded = false;
+    private static final Map<String, String> agencyNameByAddress = new HashMap<>();
+
+    private void loadBranchName(TextView tv, FirebaseOrder order) {
+        String agencyId = order.getAgencyId();
+        String branch = order.getBranchAddress();
+        if (branch == null || branch.isEmpty()) {
+            branch = order.getCustomerAddress();
+        }
+        final String fallbackAddress = branch;
+
+        if (agencyId != null && !agencyId.isEmpty()) {
+            tv.setTag("agency:" + agencyId);
+            String cached = agencyNameCache.get(agencyId);
+            if (cached != null) {
+                tv.setText(cached.isEmpty() ? fallbackBranchLabel(fallbackAddress) : cached);
+                return;
+            }
+            FirebaseDatabase.getInstance(DB_URL)
+                    .getReference("agencies")
+                    .child(agencyId)
+                    .child("name")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String name = snapshot.getValue(String.class);
+                            String resolved = name != null ? name.trim() : "";
+                            agencyNameCache.put(agencyId, resolved);
+                            if (!("agency:" + agencyId).equals(tv.getTag())) return;
+                            tv.setText(resolved.isEmpty()
+                                    ? fallbackBranchLabel(fallbackAddress)
+                                    : resolved);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            if (!("agency:" + agencyId).equals(tv.getTag())) return;
+                            tv.setText(fallbackBranchLabel(fallbackAddress));
+                        }
+                    });
+            return;
+        }
+
+        resolveBranchNameByAddress(tv, fallbackAddress);
+    }
+
+    private void resolveBranchNameByAddress(TextView tv, String branchAddress) {
+        if (branchAddress == null || branchAddress.isEmpty()) {
+            tv.setTag(null);
+            tv.setText(context.getString(R.string.str_branch_unknown));
+            return;
+        }
+
+        String addressKey = normalizeAddressKey(branchAddress);
+        tv.setTag("address:" + addressKey);
+
+        if (agencyIndexLoaded) {
+            String name = agencyNameByAddress.get(addressKey);
+            tv.setText(name != null && !name.isEmpty() ? name : branchAddress);
+            return;
+        }
+
+        tv.setText(branchAddress);
+        FirebaseDatabase.getInstance(DB_URL)
+                .getReference("agencies")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        agencyNameByAddress.clear();
+                        agencyNameCache.clear();
+                        for (DataSnapshot child : snapshot.getChildren()) {
+                            String id = child.getKey();
+                            String name = child.child("name").getValue(String.class);
+                            String address = child.child("address").getValue(String.class);
+                            if (id != null && name != null) {
+                                agencyNameCache.put(id, name.trim());
+                            }
+                            if (address != null && name != null) {
+                                agencyNameByAddress.put(normalizeAddressKey(address), name.trim());
+                            }
+                        }
+                        agencyIndexLoaded = true;
+                        if (!("address:" + addressKey).equals(tv.getTag())) return;
+                        String name = agencyNameByAddress.get(addressKey);
+                        tv.setText(name != null && !name.isEmpty() ? name : branchAddress);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        if (!("address:" + addressKey).equals(tv.getTag())) return;
+                        tv.setText(branchAddress);
+                    }
+                });
+    }
+
+    private String fallbackBranchLabel(String branchAddress) {
+        if (branchAddress != null && !branchAddress.isEmpty()) return branchAddress;
+        return context.getString(R.string.str_branch_unknown);
+    }
+
+    private static String normalizeAddressKey(String address) {
+        return address.toLowerCase(Locale.US)
+                .replaceAll("\\s+", " ")
+                .trim();
+    }
 
     private void loadThumbnail(ImageView iv, FirebaseOrder order) {
         if (order.getItems() == null || order.getItems().isEmpty()) {
@@ -322,8 +353,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     }
 
     private String formatPrice(int amount) {
-        NumberFormat nf = NumberFormat.getInstance(new Locale("vi", "VN"));
-        return nf.format(amount) + "₫";
+        return PriceFormatHelper.formatVnd(amount);
     }
 
     // ── ViewHolder ────────────────────────────────────────────────────────────

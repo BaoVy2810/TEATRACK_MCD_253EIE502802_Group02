@@ -12,13 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.firebase.database.DatabaseException;
 import androidx.activity.EdgeToEdge;
 import androidx.core.content.ContextCompat;
-
-import android.graphics.drawable.Drawable;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -58,8 +54,8 @@ public class OrderHistory extends BaseActivity {
     private EditText etSearch;
 
     // Tabs
-    private TextView tabAll, tabPending, tabProcessing, tabReady, tabShipping, tabDelivered, tabCancelled;
-    private TextView activeTab;
+    private View tabAll, tabPending, tabProcessing, tabReady, tabShipping, tabDelivered, tabCancelled;
+    private View activeTab;
 
     // Data
     private final List<FirebaseOrder> allOrders = new ArrayList<>();
@@ -93,6 +89,12 @@ public class OrderHistory extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        CartBadgeHelper.updateBadge(this);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (ordersRef != null && ordersListener != null) {
@@ -118,6 +120,25 @@ public class OrderHistory extends BaseActivity {
         tabCancelled  = findViewById(R.id.tabCancelled);
 
         activeTab = tabAll;
+        initTabLabels();
+        setTabActive(tabAll);
+    }
+
+    private void initTabLabels() {
+        setTabLabel(tabAll, R.string.str_tab_all);
+        setTabLabel(tabPending, R.string.str_tab_pending);
+        setTabLabel(tabProcessing, R.string.str_tab_processing);
+        setTabLabel(tabReady, R.string.str_tab_ready);
+        setTabLabel(tabShipping, R.string.str_tab_shipping);
+        setTabLabel(tabDelivered, R.string.str_tab_delivered);
+        setTabLabel(tabCancelled, R.string.str_tab_cancelled);
+    }
+
+    private void setTabLabel(View tab, int labelRes) {
+        TextView label = tab.findViewById(R.id.tvTabLabel);
+        if (label != null) {
+            label.setText(labelRes);
+        }
     }
 
     private void setupAdapter() {
@@ -176,15 +197,9 @@ public class OrderHistory extends BaseActivity {
         tabShipping.setOnClickListener(tabClick);
         tabDelivered.setOnClickListener(tabClick);
         tabCancelled.setOnClickListener(tabClick);
-
-        // Apply initial icons
-        int inactiveColor = ContextCompat.getColor(this, R.color.text_secondary);
-        for (TextView t : new TextView[]{tabPending, tabProcessing, tabReady, tabShipping, tabDelivered}) {
-            applyTabIcon(t, inactiveColor);
-        }
     }
 
-    private void selectTab(TextView tab, String status) {
+    private void selectTab(View tab, String status) {
         setTabInactive(activeTab);
         setTabActive(tab);
         activeTab = tab;
@@ -192,47 +207,95 @@ public class OrderHistory extends BaseActivity {
         applyFilter();
     }
 
-    private void setTabActive(TextView tab) {
+    private void setTabActive(View tab) {
+        if (tab == null) {
+            return;
+        }
         tab.setBackgroundResource(R.drawable.bg_order_tab_active);
-        tab.setTextColor(ContextCompat.getColor(this, R.color.white));
-        tab.setTypeface(null, android.graphics.Typeface.BOLD);
-        applyTabIcon(tab, 0xFFFFFFFF);
+        TextView label = tab.findViewById(R.id.tvTabLabel);
+        TextView count = tab.findViewById(R.id.tvTabCount);
+        if (label != null) {
+            label.setTextColor(ContextCompat.getColor(this, R.color.white));
+            label.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
+        if (count != null) {
+            count.setBackgroundResource(R.drawable.bg_order_tab_count_active);
+            count.setTextColor(ContextCompat.getColor(this, R.color.white));
+            count.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
     }
 
-    private void setTabInactive(TextView tab) {
+    private void setTabInactive(View tab) {
+        if (tab == null) {
+            return;
+        }
         tab.setBackgroundResource(R.drawable.bg_order_tab_inactive);
-        tab.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
-        tab.setTypeface(null, android.graphics.Typeface.NORMAL);
-        applyTabIcon(tab, ContextCompat.getColor(this, R.color.text_secondary));
+        TextView label = tab.findViewById(R.id.tvTabLabel);
+        TextView count = tab.findViewById(R.id.tvTabCount);
+        if (label != null) {
+            label.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
+            label.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
+        if (count != null) {
+            count.setBackgroundResource(R.drawable.bg_order_tab_count_inactive);
+            count.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+            count.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
     }
 
-    private void applyTabIcon(TextView tab, int color) {
-        int iconRes = tabIconRes(tab);
-        if (iconRes == 0) {
-            tab.setCompoundDrawables(null, null, null, null);
-            return;
+    private void updateTabCounts() {
+        int cntAll = allOrders.size();
+        int cntPending = 0;
+        int cntProcessing = 0;
+        int cntReady = 0;
+        int cntShipping = 0;
+        int cntDelivered = 0;
+        int cntCancelled = 0;
+
+        for (FirebaseOrder order : allOrders) {
+            String status = order.getStatus() != null ? order.getStatus() : "";
+            switch (status) {
+                case "pending":
+                    cntPending++;
+                    break;
+                case "processing":
+                    cntProcessing++;
+                    break;
+                case "ready":
+                    cntReady++;
+                    break;
+                case "shipping":
+                    cntShipping++;
+                    break;
+                case "completed":
+                case "delivered":
+                    cntDelivered++;
+                    break;
+                case "cancelled":
+                    cntCancelled++;
+                    break;
+                default:
+                    break;
+            }
         }
-        Drawable icon = AppCompatResources.getDrawable(this, iconRes);
-        if (icon == null) {
-            tab.setCompoundDrawables(null, null, null, null);
-            return;
-        }
-        icon = DrawableCompat.wrap(icon.mutate());
-        DrawableCompat.setTint(icon, color);
-        int size = (int) (13 * getResources().getDisplayMetrics().density);
-        icon.setBounds(0, 0, size, size);
-        tab.setCompoundDrawables(icon, null, null, null);
-        tab.setCompoundDrawablePadding((int) (4 * getResources().getDisplayMetrics().density));
+
+        setTabCount(tabAll, cntAll);
+        setTabCount(tabPending, cntPending);
+        setTabCount(tabProcessing, cntProcessing);
+        setTabCount(tabReady, cntReady);
+        setTabCount(tabShipping, cntShipping);
+        setTabCount(tabDelivered, cntDelivered);
+        setTabCount(tabCancelled, cntCancelled);
     }
 
-    private int tabIconRes(TextView tab) {
-        int id = tab.getId();
-        if (id == R.id.tabPending)    return R.drawable.pending_tab;
-        if (id == R.id.tabProcessing) return R.drawable.processing_tab;
-        if (id == R.id.tabReady)      return R.drawable.ready_tab;
-        if (id == R.id.tabShipping)   return R.drawable.shipping_tab;
-        if (id == R.id.tabDelivered)  return R.drawable.finished_tab;
-        return 0;
+    private void setTabCount(View tab, int count) {
+        if (tab == null) {
+            return;
+        }
+        TextView countView = tab.findViewById(R.id.tvTabCount);
+        if (countView != null) {
+            countView.setText(String.valueOf(count));
+        }
     }
 
     private void setupSearch() {
@@ -288,8 +351,10 @@ public class OrderHistory extends BaseActivity {
                         continue;
                     }
                     if (order == null) continue;
-                    if (order.getId() == null) order.setId(child.getKey());
-                    if (order.getOrderId() == null) order.setOrderId(child.getKey());
+                    order.setId(child.getKey());
+                    if (order.getOrderId() == null || order.getOrderId().isEmpty()) {
+                        order.setOrderId(child.getKey());
+                    }
 
                     if (userId.equals(order.getUserId())) {
                         allOrders.add(order);
@@ -305,6 +370,7 @@ public class OrderHistory extends BaseActivity {
 
                 showSkeleton(false);
                 swipeRefresh.setRefreshing(false);
+                updateTabCounts();
                 applyFilter();
             }
 
@@ -353,5 +419,10 @@ public class OrderHistory extends BaseActivity {
 
     private void showEmpty(boolean show) {
         layoutEmpty.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (show) {
+            rvOrders.setVisibility(View.GONE);
+        } else if (layoutSkeleton.getVisibility() != View.VISIBLE) {
+            rvOrders.setVisibility(View.VISIBLE);
+        }
     }
 }

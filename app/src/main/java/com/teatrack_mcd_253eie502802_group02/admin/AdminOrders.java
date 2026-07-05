@@ -231,8 +231,9 @@ public class AdminOrders extends AppCompatActivity {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     FirebaseOrder order = child.getValue(FirebaseOrder.class);
                     if (order != null) {
-                        if (order.getId() == null || order.getId().isEmpty()) {
-                            order.setId(child.getKey());
+                        order.setId(child.getKey());
+                        if (order.getOrderId() == null || order.getOrderId().isEmpty()) {
+                            order.setOrderId(child.getKey());
                         }
                         allOrders.add(order);
                     }
@@ -341,8 +342,7 @@ public class AdminOrders extends AppCompatActivity {
     }
 
     private String getOrderKey(FirebaseOrder order) {
-        String key = order.getId();
-        return (key != null && !key.isEmpty()) ? key : null;
+        return com.teatrack_mcd_253eie502802_group02.util.FirebaseOrderHelper.resolveFirebaseKey(order);
     }
 
     // ── Bottom navigation ─────────────────────────────────────────────────────

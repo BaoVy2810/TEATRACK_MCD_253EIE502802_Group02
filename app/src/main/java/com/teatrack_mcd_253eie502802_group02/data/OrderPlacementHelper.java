@@ -6,6 +6,7 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem;
+import com.teatrack_mcd_253eie502802_group02.util.OrderItemDisplayHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,16 +87,6 @@ public final class OrderPlacementHelper {
     }
 
     private static FirebaseOrderItem toOrderItem(CartItem item) {
-        StringBuilder toppings = new StringBuilder();
-        for (CartItem.ToppingLine topping : item.getToppings()) {
-            if (toppings.length() > 0) {
-                toppings.append(", ");
-            }
-            toppings.append(topping.name);
-            if (topping.quantity > 1) {
-                toppings.append(" x").append(topping.quantity);
-            }
-        }
         return new FirebaseOrderItem(
                 item.getProductId(),
                 item.getProductName(),
@@ -106,7 +97,7 @@ public final class OrderPlacementHelper {
                 item.getSize(),
                 item.getSugar(),
                 item.getIce(),
-                toppings.toString()
+                OrderItemDisplayHelper.encodeToppingsForStorage(item.getToppings())
         );
     }
 

@@ -2,11 +2,11 @@ package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,10 +14,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -26,6 +23,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
@@ -34,6 +32,10 @@ import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+import com.teatrack_mcd_253eie502802_group02.util.FirebaseOrderHelper;
+import com.teatrack_mcd_253eie502802_group02.util.OrderItemDisplayHelper;
+import com.teatrack_mcd_253eie502802_group02.util.OrderStatusBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.util.PriceFormatHelper;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -85,11 +87,9 @@ public class OrderDetails extends BaseActivity {
 
     // Payment card
     private TextView tvPaySubtotal;
-    private LinearLayout llDiscountRow;
     private TextView tvPayDiscount;
     private TextView tvPayShipping;
     private TextView tvPayTotal;
-    private TextView tvTotalSavings;
 
     // Actions
     private LinearLayout llTwoActions;
@@ -100,6 +100,8 @@ public class OrderDetails extends BaseActivity {
     private TextView tvActionHint;
 
     private FirebaseOrder currentOrder;
+    private DatabaseReference orderRef;
+    private ValueEventListener orderListener;
 
     // ── Status constants ──────────────────────────────────────────────────────
 
@@ -136,6 +138,54 @@ public class OrderDetails extends BaseActivity {
         populateOrder(order);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        attachOrderListener();
+    }
+
+    @Override
+    protected void onStop() {
+        detachOrderListener();
+        super.onStop();
+    }
+
+    private void attachOrderListener() {
+        String key = FirebaseOrderHelper.resolveFirebaseKey(currentOrder);
+        if (key == null || key.isEmpty()) return;
+
+        detachOrderListener();
+        orderRef = FirebaseDatabase.getInstance(DB_URL).getReference("orders").child(key);
+        orderListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) return;
+                FirebaseOrder fresh = snapshot.getValue(FirebaseOrder.class);
+                if (fresh == null) return;
+                fresh.setId(snapshot.getKey());
+                if (fresh.getOrderId() == null || fresh.getOrderId().isEmpty()) {
+                    fresh.setOrderId(snapshot.getKey());
+                }
+                currentOrder = fresh;
+                populateOrder(fresh);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(OrderDetails.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        orderRef.addValueEventListener(orderListener);
+    }
+
+    private void detachOrderListener() {
+        if (orderRef != null && orderListener != null) {
+            orderRef.removeEventListener(orderListener);
+        }
+        orderRef = null;
+        orderListener = null;
+    }
+
     // ── Bind ──────────────────────────────────────────────────────────────────
 
     private void bindViews() {
@@ -159,11 +209,9 @@ public class OrderDetails extends BaseActivity {
         tvDeliveryStatus  = findViewById(R.id.tvDeliveryStatus);
 
         tvPaySubtotal  = findViewById(R.id.tvPaySubtotal);
-        llDiscountRow  = findViewById(R.id.llDiscountRow);
         tvPayDiscount  = findViewById(R.id.tvPayDiscount);
         tvPayShipping  = findViewById(R.id.tvPayShipping);
         tvPayTotal     = findViewById(R.id.tvPayTotal);
-        tvTotalSavings = findViewById(R.id.tvTotalSavings);
 
         llTwoActions    = findViewById(R.id.llTwoActions);
         llSingleAction  = findViewById(R.id.llSingleAction);
@@ -174,6 +222,14 @@ public class OrderDetails extends BaseActivity {
     }
 
     private void setupButtons() {
+        TextView tvTopTitle = findViewById(R.id.tvTopTitle);
+        if (tvTopTitle != null) {
+            tvTopTitle.setText(R.string.str_order_details_title);
+        }
+        View btnBack = findViewById(R.id.btnBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> finish());
+        }
     }
 
     // ── Populate ─────────────────────────────────────────────────────────────
@@ -209,7 +265,7 @@ public class OrderDetails extends BaseActivity {
         tvPaymentChip.setText(payment.isEmpty() ? "—" : payment);
 
         // Status badge
-        applyStatusBadge(tvDetailStatusBadge, status);
+        OrderStatusBadgeHelper.apply(tvDetailStatusBadge, status);
 
         // Item count
         int count = (items != null) ? items.size() : 0;
@@ -233,62 +289,56 @@ public class OrderDetails extends BaseActivity {
         if (items == null || items.isEmpty()) return;
 
         LayoutInflater inflater = LayoutInflater.from(this);
+        float density = getResources().getDisplayMetrics().density;
+        int gapBetweenItems = (int) (8 * density);
+        int gapBeforePayment = (int) (12 * density);
+
         for (int i = 0; i < items.size(); i++) {
             FirebaseOrderItem item = items.get(i);
+            View row = inflater.inflate(R.layout.item_order_detail_line, llOrderItems, false);
 
-            View row = inflater.inflate(R.layout.item_order_detail_product, llOrderItems, false);
+            ImageView ivImage = row.findViewById(R.id.imgOrderItem);
+            TextView tvName = row.findViewById(R.id.tvOrderItemName);
+            TextView tvCustom = row.findViewById(R.id.tvOrderItemConfig);
+            TextView tvToppin = row.findViewById(R.id.tvOrderItemToppings);
+            TextView tvTotal = row.findViewById(R.id.tvOrderItemLineTotal);
+            TextView tvQty = row.findViewById(R.id.tvOrderItemQtyUnit);
 
-            ImageView ivImage = row.findViewById(R.id.ivItemImage);
-            TextView tvName   = row.findViewById(R.id.tvItemName);
-            TextView tvCustom = row.findViewById(R.id.tvItemCustomizations);
-            TextView tvToppin = row.findViewById(R.id.tvItemToppings);
-            TextView tvTotal  = row.findViewById(R.id.tvItemLineTotal);
-            TextView tvQty    = row.findViewById(R.id.tvItemQtyUnit);
-
-            // Image — same logic as adapter
             loadProductImage(ivImage, item);
 
-            // Name
             tvName.setText(safe(item.getProductName()));
 
-            // Size / sugar / ice
-            String size  = safe(item.getSize());
-            String sugar = safe(item.getSugar());
-            String ice   = safe(item.getIce());
-            StringBuilder custom = new StringBuilder();
-            if (!size.isEmpty())  { custom.append("Size ").append(size); }
-            if (!sugar.isEmpty()) {
-                if (custom.length() > 0) custom.append("  •  ");
-                custom.append(sugar).append(" sugar");
-            }
-            if (!ice.isEmpty()) {
-                if (custom.length() > 0) custom.append("  •  ");
-                custom.append(ice).append(" ice");
-            }
-            tvCustom.setText(custom.toString());
+            tvCustom.setText(OrderItemDisplayHelper.formatConfigLine(
+                    this,
+                    item.getSize(),
+                    item.getSugar(),
+                    item.getIce()
+            ));
 
-            // Toppings
-            String toppings = safe(item.getToppings());
-            if (!toppings.isEmpty()) {
+            String toppingsBlock = OrderItemDisplayHelper.formatToppingsBlock(
+                    this,
+                    safe(item.getToppings())
+            );
+            if (!toppingsBlock.isEmpty()) {
                 tvToppin.setVisibility(View.VISIBLE);
-                tvToppin.setText("+ " + toppings);
+                tvToppin.setText(toppingsBlock);
+            } else {
+                tvToppin.setVisibility(View.GONE);
             }
 
-            // Price
             tvTotal.setText(formatVnd(item.getLineTotal()));
-            tvQty.setText("x" + item.getQuantity() + "  •  " + formatVnd(item.getUnitPrice()) + "/sp");
+            tvQty.setText("x" + item.getQuantity() + " • " + formatVnd(item.getUnitPrice()) + "/sp");
+
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) row.getLayoutParams();
+            if (lp == null) {
+                lp = new ViewGroup.MarginLayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+            lp.bottomMargin = (i == items.size() - 1) ? gapBeforePayment : gapBetweenItems;
+            row.setLayoutParams(lp);
 
             llOrderItems.addView(row);
-
-            // Divider between items (not after last)
-            if (i < items.size() - 1) {
-                View divider = new View(this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, 1);
-                divider.setLayoutParams(lp);
-                divider.setBackgroundColor(0xFFF3F4F6);
-                llOrderItems.addView(divider);
-            }
         }
     }
 
@@ -297,24 +347,19 @@ public class OrderDetails extends BaseActivity {
         tvDeliveryPhone.setText(safe(order.getCustomerPhone(), "—"));
         tvDeliveryAddress.setText(safe(order.getCustomerAddress(), "—"));
         tvDeliveryPayment.setText(safe(order.getPaymentMethod(), "—"));
-        applyStatusBadge(tvDeliveryStatus, safe(order.getStatus()));
+        OrderStatusBadgeHelper.apply(tvDeliveryStatus, safe(order.getStatus()));
     }
 
     private void populatePayment(FirebaseOrder order) {
         tvPaySubtotal.setText(formatVnd(order.getSubtotal()));
+        tvPayShipping.setText(formatVnd(order.getShipping()));
 
         int discount = order.getDiscount();
         if (discount > 0) {
-            llDiscountRow.setVisibility(View.VISIBLE);
-            tvPayDiscount.setText("−" + formatVnd(discount));
-            tvTotalSavings.setVisibility(View.VISIBLE);
-            tvTotalSavings.setText(formatVnd(discount) + " saved");
+            tvPayDiscount.setText("-" + formatVnd(discount));
+        } else {
+            tvPayDiscount.setText("0đ");
         }
-
-        int shipping = order.getShipping();
-        tvPayShipping.setText(shipping == 0
-                ? getString(R.string.str_free_shipping)
-                : formatVnd(shipping));
 
         tvPayTotal.setText(formatVnd(order.getTotal()));
     }
@@ -333,8 +378,7 @@ public class OrderDetails extends BaseActivity {
                 btnRightAction.setText(R.string.str_btn_contact_support);
                 btnRightAction.setIconResource(R.drawable.ic_contact_support_order_detail);
                 btnLeftAction.setOnClickListener(v -> launchTrackOrder());
-                btnRightAction.setOnClickListener(v ->
-                        Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show());
+                btnRightAction.setOnClickListener(v -> Homepage.openContactSupport(this));
                 tvActionHint.setText(R.string.str_hint_active_order);
                 break;
             }
@@ -345,8 +389,7 @@ public class OrderDetails extends BaseActivity {
                 btnRightAction.setText(R.string.str_btn_contact_support);
                 btnRightAction.setIconResource(R.drawable.ic_contact_support_order_detail);
                 btnLeftAction.setOnClickListener(v -> launchReorder());
-                btnRightAction.setOnClickListener(v ->
-                        Toast.makeText(this, R.string.str_coming_soon, Toast.LENGTH_SHORT).show());
+                btnRightAction.setOnClickListener(v -> Homepage.openContactSupport(this));
                 tvActionHint.setText(R.string.str_hint_completed_order);
                 break;
             }
@@ -519,84 +562,6 @@ public class OrderDetails extends BaseActivity {
         Glide.with(this).load(R.mipmap.logo_ngo_gia).centerCrop().into(iv);
     }
 
-    // ── Status badge ──────────────────────────────────────────────────────────
-
-    private void applyStatusBadge(TextView badge, String status) {
-        int bgRes;
-        String label;
-        int textColor;
-
-        switch (status) {
-            case STATUS_PENDING:
-                bgRes = R.drawable.bg_status_pending;
-                label = getString(R.string.str_status_pending);
-                textColor = 0xFF854D0E;
-                break;
-            case STATUS_PROCESSING:
-                bgRes = R.drawable.bg_status_processing;
-                label = getString(R.string.str_status_processing);
-                textColor = 0xFF1E40AF;
-                break;
-            case STATUS_READY:
-                bgRes = R.drawable.bg_status_ready;
-                label = getString(R.string.str_status_ready);
-                textColor = 0xFF5B21B6;
-                break;
-            case STATUS_SHIPPING:
-                bgRes = R.drawable.bg_status_shipping;
-                label = getString(R.string.str_status_shipping);
-                textColor = 0xFFC2410C;
-                break;
-            case STATUS_COMPLETED:
-            case "delivered":
-                bgRes = R.drawable.bg_status_delivered;
-                label = getString(R.string.str_status_completed);
-                textColor = 0xFF065F46;
-                break;
-            case STATUS_CANCELLED:
-                bgRes = R.drawable.bg_status_cancelled;
-                label = getString(R.string.str_status_cancelled);
-                textColor = 0xFF6B7280;
-                break;
-            default:
-                bgRes = R.drawable.bg_status_pending;
-                label = status.isEmpty() ? "—" : status;
-                textColor = 0xFF6B7280;
-                break;
-        }
-
-        badge.setText(label);
-        badge.setTextColor(textColor);
-        badge.setBackgroundResource(bgRes);
-
-        int iconRes = statusIconRes(status);
-        if (iconRes != 0) {
-            Drawable icon = AppCompatResources.getDrawable(this, iconRes);
-            if (icon != null) {
-                icon = DrawableCompat.wrap(icon.mutate());
-                DrawableCompat.setTint(icon, textColor);
-                int size = dpToPx(12);
-                icon.setBounds(0, 0, size, size);
-                badge.setCompoundDrawables(icon, null, null, null);
-                badge.setCompoundDrawablePadding(dpToPx(4));
-            }
-        } else {
-            badge.setCompoundDrawables(null, null, null, null);
-        }
-    }
-
-    private int statusIconRes(String status) {
-        switch (status) {
-            case STATUS_PENDING:    return R.drawable.pending_tab;
-            case STATUS_PROCESSING: return R.drawable.processing_tab;
-            case STATUS_READY:      return R.drawable.ready_tab;
-            case STATUS_SHIPPING:   return R.drawable.shipping_tab;
-            case STATUS_COMPLETED:
-            case "delivered":       return R.drawable.finished_tab;
-            default:                return 0;
-        }
-    }
-
     // ── Date formatting (same as OrderHistoryAdapter) ─────────────────────────
 
     private String formatDate(String rawDate) {
@@ -632,8 +597,7 @@ public class OrderDetails extends BaseActivity {
     }
 
     private static String formatVnd(int amount) {
-        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
-        return nf.format(amount) + "₫";
+        return PriceFormatHelper.formatVnd(amount);
     }
 
     private int dpToPx(int dp) {

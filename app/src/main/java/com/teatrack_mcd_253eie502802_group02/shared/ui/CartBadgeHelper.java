@@ -20,6 +20,7 @@ public final class CartBadgeHelper {
                     activity.startActivity(new Intent(activity, Cart.class)));
         }
         HeaderMenuHelper.setupProfileMenu(activity);
+        HeaderClientHelper.bindProfileAvatar(activity);
         updateBadge(activity);
     }
 
@@ -35,5 +36,6 @@ public final class CartBadgeHelper {
         } else {
             badge.setVisibility(View.GONE);
         }
+        HeaderClientHelper.bindProfileAvatar(activity);
     }
 }

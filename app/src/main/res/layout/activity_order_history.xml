@@ -6,7 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/screen_background"
+    android:background="@color/bg_baby_blue"
     tools:context="com.teatrack_mcd_253eie502802_group02.client.OrderHistory">
 
     <!-- Top App Bar -->
@@ -26,21 +26,29 @@
         <!-- Title bar -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="4dp">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingStart="20dp"
-                android:text="@string/str_my_orders"
-                android:textColor="@color/brand_blue"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/inter_semibold" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="4dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_family"
+                android:text="@string/str_my_orders"
+                android:textColor="@color/on_surface"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/inter_family"
+                android:text="@string/str_order_history_subtitle"
+                android:textColor="@color/secondary"
+                android:textSize="11sp" />
         </LinearLayout>
 
         <!-- Search bar row -->
@@ -113,110 +121,39 @@
                 android:gravity="center_vertical">
 
                 <!-- Tab: All -->
-                <TextView
+                <include
                     android:id="@+id/tabAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_order_tab_active"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:text="@string/str_tab_all"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    layout="@layout/layout_order_history_tab" />
 
                 <!-- Tab: Pending -->
-                <TextView
+                <include
                     android:id="@+id/tabPending"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_order_tab_inactive"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:text="@string/str_tab_pending"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:drawablePadding="6dp"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    layout="@layout/layout_order_history_tab" />
 
-                <!-- Tab: Preparing Order -->
-                <TextView
+                <!-- Tab: Processing -->
+                <include
                     android:id="@+id/tabProcessing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_order_tab_inactive"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:text="@string/str_tab_processing"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    layout="@layout/layout_order_history_tab" />
 
                 <!-- Tab: Ready -->
-                <TextView
+                <include
                     android:id="@+id/tabReady"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_order_tab_inactive"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:text="@string/str_tab_ready"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    layout="@layout/layout_order_history_tab" />
 
-                <!-- Tab: Out for Delivery -->
-                <TextView
+                <!-- Tab: Shipping -->
+                <include
                     android:id="@+id/tabShipping"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_order_tab_inactive"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:text="@string/str_tab_shipping"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    layout="@layout/layout_order_history_tab" />
 
                 <!-- Tab: Delivered -->
-                <TextView
+                <include
                     android:id="@+id/tabDelivered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_order_tab_inactive"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:text="@string/str_tab_delivered"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    layout="@layout/layout_order_history_tab" />
 
                 <!-- Tab: Cancelled -->
-                <TextView
+                <include
                     android:id="@+id/tabCancelled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:background="@drawable/bg_order_tab_inactive"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:text="@string/str_tab_cancelled"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:clickable="true"
-                    android:focusable="true" />
+                    layout="@layout/layout_order_history_tab" />
 
             </LinearLayout>
 
@@ -233,7 +170,8 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/nav_bar_height">
 
             <!-- Order list -->
             <androidx.recyclerview.widget.RecyclerView
@@ -301,25 +239,24 @@
                 android:id="@+id/layoutEmpty"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:gravity="center"
+                android:orientation="vertical"
                 android:visibility="gone"
-                android:padding="32dp">
+                android:paddingHorizontal="32dp">
 
                 <ImageView
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:src="@drawable/bag1"
                     android:contentDescription="@null"
-                    android:alpha="0.25"
                     app:tint="@color/brand_blue" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:text="@string/str_no_orders"
-                    android:textColor="@color/text_primary"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/brand_blue"
                     android:textSize="17sp"
                     android:textStyle="bold"
                     android:gravity="center" />
@@ -329,7 +266,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/str_no_orders_desc"
-                    android:textColor="@color/text_secondary"
+                    android:textColor="@color/brand_blue"
                     android:textSize="14sp"
                     android:gravity="center" />
 

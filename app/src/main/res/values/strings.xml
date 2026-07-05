@@ -354,7 +354,7 @@
     <string name="cart_option_size">Size %1$s</string>
     <string name="cart_option_sugar">%1$s sugar</string>
     <string name="cart_option_ice">%1$s ice</string>
-    <string name="cart_config_line">Size %1$s - %2$s: %3$s - %4$s: %5$s,</string>
+    <string name="cart_config_line">Size %1$s - %2$s: %3$s - %4$s: %5$s.</string>
     <string name="cart_label_sugar">Sugar</string>
     <string name="cart_label_ice">Ice</string>
     <string name="cart_quantity_line">Quantity: %1$d</string>
@@ -981,6 +981,7 @@
 
     <!-- Order History Screen -->
     <string name="str_my_orders">My Orders</string>
+    <string name="str_order_history_subtitle">Track and manage your orders</string>
     <string name="str_search_order_hint">Search by Order ID…</string>
     <string name="str_filter">Filter</string>
     <string name="str_back">Back</string>

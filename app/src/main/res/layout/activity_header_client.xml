@@ -51,10 +51,12 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:id="@+id/imgProfileAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:contentDescription="@string/nav_account"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/user"
                     app:tint="@color/brand_blue" />
             </FrameLayout>

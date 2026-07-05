@@ -265,6 +265,7 @@
                 android:layout_height="52dp"
                 android:backgroundTint="@color/white"
                 android:fontFamily="@font/inter_family"
+                android:letterSpacing="0"
                 android:text="@string/order_back_to_menu"
                 android:textAllCaps="false"
                 android:textColor="@color/brand_blue"

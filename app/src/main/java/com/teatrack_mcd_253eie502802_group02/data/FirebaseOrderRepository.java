@@ -35,7 +35,7 @@ public class FirebaseOrderRepository {
     private final DatabaseReference rootRef;
 
     public FirebaseOrderRepository() {
-        rootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef = FirebaseDatabase.getInstance(FirebaseProductRepository.DB_URL).getReference();
     }
 
     public void saveOrder(FirebaseOrder order, SaveCallback callback) {

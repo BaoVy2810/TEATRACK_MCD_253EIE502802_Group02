@@ -37,6 +37,8 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper;
+import com.teatrack_mcd_253eie502802_group02.util.FirebaseOrderHelper;
+import com.teatrack_mcd_253eie502802_group02.util.OrderStatusBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 import java.text.NumberFormat;
@@ -267,7 +269,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
             if (newStatus == null) { dialog.dismiss(); return; }
 
             String finalStatus = newStatus;
-            String key = safe(currentOrder.getId());
+            String key = safe(FirebaseOrderHelper.resolveFirebaseKey(currentOrder));
             if (key.isEmpty()) { dialog.dismiss(); return; }
 
             FirebaseDatabase.getInstance(DB_URL)
@@ -310,7 +312,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
 
         dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
         dialogView.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
-            String key = safe(currentOrder.getId());
+            String key = safe(FirebaseOrderHelper.resolveFirebaseKey(currentOrder));
             if (key.isEmpty()) { dialog.dismiss(); return; }
             FirebaseDatabase.getInstance(DB_URL)
                     .getReference("orders")
@@ -360,7 +362,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         tvAdminPaymentChip.setText(safe(order.getPaymentMethod(), "—"));
 
         // Status badge
-        applyStatusBadge(tvAdminStatusBadge, safe(order.getStatus()));
+        OrderStatusBadgeHelper.apply(tvAdminStatusBadge, safe(order.getStatus()));
 
         // Item count + total
         int count = (items != null) ? items.size() : 0;
@@ -448,84 +450,6 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
                 : formatVnd(shipping));
 
         tvPayTotal.setText(formatVnd(order.getTotal()));
-    }
-
-    // ── Status badge ──────────────────────────────────────────────────────────
-
-    private void applyStatusBadge(TextView badge, String status) {
-        int bgRes;
-        String label;
-        int textColor;
-
-        switch (status) {
-            case STATUS_PENDING:
-                bgRes     = R.drawable.bg_status_pending;
-                label     = getString(R.string.str_status_pending);
-                textColor = 0xFF854D0E;
-                break;
-            case STATUS_PROCESSING:
-                bgRes     = R.drawable.bg_status_processing;
-                label     = getString(R.string.str_status_processing);
-                textColor = 0xFF1E40AF;
-                break;
-            case STATUS_READY:
-                bgRes     = R.drawable.bg_status_ready;
-                label     = getString(R.string.str_status_ready);
-                textColor = 0xFF5B21B6;
-                break;
-            case STATUS_SHIPPING:
-                bgRes     = R.drawable.bg_status_shipping;
-                label     = getString(R.string.str_status_shipping);
-                textColor = 0xFFC2410C;
-                break;
-            case STATUS_COMPLETED:
-            case "delivered":
-                bgRes     = R.drawable.bg_status_delivered;
-                label     = getString(R.string.str_status_completed);
-                textColor = 0xFF065F46;
-                break;
-            case STATUS_CANCELLED:
-                bgRes     = R.drawable.bg_status_cancelled;
-                label     = getString(R.string.str_status_cancelled);
-                textColor = 0xFF6B7280;
-                break;
-            default:
-                bgRes     = R.drawable.bg_status_pending;
-                label     = status.isEmpty() ? "—" : status;
-                textColor = 0xFF6B7280;
-                break;
-        }
-
-        badge.setText(label);
-        badge.setTextColor(textColor);
-        badge.setBackgroundResource(bgRes);
-
-        int iconRes = statusIconRes(status);
-        if (iconRes != 0) {
-            Drawable icon = AppCompatResources.getDrawable(this, iconRes);
-            if (icon != null) {
-                icon = DrawableCompat.wrap(icon.mutate());
-                DrawableCompat.setTint(icon, textColor);
-                int size = dpToPx(12);
-                icon.setBounds(0, 0, size, size);
-                badge.setCompoundDrawables(icon, null, null, null);
-                badge.setCompoundDrawablePadding(dpToPx(4));
-            }
-        } else {
-            badge.setCompoundDrawables(null, null, null, null);
-        }
-    }
-
-    private int statusIconRes(String status) {
-        switch (status) {
-            case STATUS_PENDING:    return R.drawable.pending_tab;
-            case STATUS_PROCESSING: return R.drawable.processing_tab;
-            case STATUS_READY:      return R.drawable.ready_tab;
-            case STATUS_SHIPPING:   return R.drawable.shipping_tab;
-            case STATUS_COMPLETED:
-            case "delivered":       return R.drawable.finished_tab;
-            default:                return 0;
-        }
     }
 
     // ── Stepper ───────────────────────────────────────────────────────────────

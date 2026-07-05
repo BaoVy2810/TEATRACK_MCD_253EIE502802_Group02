@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem;
+import com.teatrack_mcd_253eie502802_group02.util.OrderStatusBadgeHelper;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -117,7 +118,7 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Vi
         h.tvOrderBranch.setText(branch.isEmpty() ? "—" : branch);
 
         // Status badge
-        applyStatusBadge(h.tvStatusBadge, status);
+        OrderStatusBadgeHelper.apply(h.tvStatusBadge, status);
 
         // Stepper
         applyStepperProgress(h, status);
@@ -128,84 +129,6 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Vi
         // Thumbnail — first item image
         if (items != null && !items.isEmpty()) {
             loadProductImage(h.ivOrderThumbnail, items.get(0));
-        }
-    }
-
-    // ── Status badge ─────────────────────────────────────────────────────────
-
-    private void applyStatusBadge(TextView badge, String status) {
-        int bgRes;
-        String label;
-        int textColor;
-
-        switch (status) {
-            case STATUS_PENDING:
-                bgRes     = R.drawable.bg_status_pending;
-                label     = context.getString(R.string.str_status_pending);
-                textColor = 0xFF854D0E;
-                break;
-            case STATUS_PROCESSING:
-                bgRes     = R.drawable.bg_status_processing;
-                label     = context.getString(R.string.str_status_processing);
-                textColor = 0xFF1E40AF;
-                break;
-            case STATUS_READY:
-                bgRes     = R.drawable.bg_status_ready;
-                label     = context.getString(R.string.str_status_ready);
-                textColor = 0xFF5B21B6;
-                break;
-            case STATUS_SHIPPING:
-                bgRes     = R.drawable.bg_status_shipping;
-                label     = context.getString(R.string.str_status_shipping);
-                textColor = 0xFFC2410C;
-                break;
-            case STATUS_COMPLETED:
-            case "delivered":
-                bgRes     = R.drawable.bg_status_delivered;
-                label     = context.getString(R.string.str_status_completed);
-                textColor = 0xFF065F46;
-                break;
-            case STATUS_CANCELLED:
-                bgRes     = R.drawable.bg_status_cancelled;
-                label     = context.getString(R.string.str_status_cancelled);
-                textColor = 0xFF6B7280;
-                break;
-            default:
-                bgRes     = R.drawable.bg_status_pending;
-                label     = status.isEmpty() ? "—" : status;
-                textColor = 0xFF6B7280;
-                break;
-        }
-
-        badge.setText(label);
-        badge.setTextColor(textColor);
-        badge.setBackgroundResource(bgRes);
-
-        int iconRes = statusIconRes(status);
-        if (iconRes != 0) {
-            Drawable icon = AppCompatResources.getDrawable(context, iconRes);
-            if (icon != null) {
-                icon = DrawableCompat.wrap(icon.mutate());
-                DrawableCompat.setTint(icon, textColor);
-                int size = dpToPx(12);
-                icon.setBounds(0, 0, size, size);
-                badge.setCompoundDrawables(icon, null, null, null);
-                badge.setCompoundDrawablePadding(dpToPx(4));
-            }
-        } else {
-            badge.setCompoundDrawables(null, null, null, null);
-        }
-    }
-
-    private int statusIconRes(String status) {
-        switch (status) {
-            case STATUS_PENDING:    return R.drawable.pending_tab;
-            case STATUS_PROCESSING: return R.drawable.processing_tab;
-            case STATUS_READY:      return R.drawable.ready_tab;
-            case STATUS_SHIPPING:   return R.drawable.shipping_tab;
-            case STATUS_COMPLETED:
-            case "delivered":       return R.drawable.finished_tab;
-            default:                return 0;
         }
     }
 

@@ -26,6 +26,7 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.databinding.ActivityPersonalInformationBinding;
 import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderClientHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.ProfileBackHelper;
 import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
@@ -99,6 +100,7 @@ public class PersonalInformationActivity extends BaseActivity {
 
             binding.imgAvatar.setImageBitmap(resized);
 
+            HeaderClientHelper.cacheAvatar(this, base64Image);
             saveBase64ToDatabase(base64Image);
 
         } catch (IOException e) {
@@ -129,6 +131,7 @@ public class PersonalInformationActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         loadUserInfo();
+        HeaderClientHelper.bindProfileAvatar(this);
     }
 
     private void loadUserInfo() {
@@ -154,6 +157,7 @@ public class PersonalInformationActivity extends BaseActivity {
                                 byte[] decodedBytes = Base64.decode(user.getAvatarBase64(), Base64.DEFAULT);
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
                                 binding.imgAvatar.setImageBitmap(bitmap);
+                                HeaderClientHelper.cacheAvatar(PersonalInformationActivity.this, user.getAvatarBase64());
                             }
                         }
                     }
