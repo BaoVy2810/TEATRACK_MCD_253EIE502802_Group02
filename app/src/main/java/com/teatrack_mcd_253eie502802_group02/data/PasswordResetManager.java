@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -11,7 +12,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 
@@ -28,6 +28,7 @@ import java.util.concurrent.Executors;
 
 public class PasswordResetManager {
 
+    private static final String TAG = "PasswordResetManager";
     private static final String USERS_NODE = "Users";
     private static final String OTP_NODE = "otp";
     private static final String APP_CONFIG_NODE = "appConfig";
@@ -48,9 +49,11 @@ public class PasswordResetManager {
     public PasswordResetManager(Context context) {
         this.context = context.getApplicationContext();
         FirebaseDatabase database = FirebaseDatabase.getInstance(FirebaseProductRepository.DB_URL);
+        database.goOnline();
         usersRef = database.getReference(USERS_NODE);
         otpRef = database.getReference(OTP_NODE);
         appConfigRef = database.getReference(APP_CONFIG_NODE);
+        usersRef.keepSynced(true);
     }
 
     public interface Callback {
@@ -66,43 +69,59 @@ public class PasswordResetManager {
             return;
         }
 
-        Query query = usersRef.orderByChild("email").equalTo(cleanEmail);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!snapshot.exists()) {
-                    callback.onError(context.getString(R.string.forgot_password_error_not_found));
-                    return;
-                }
+        usersRef.get()
+                .addOnSuccessListener(snapshot -> handleUsersSnapshotForOtp(snapshot, cleanEmail, callback))
+                .addOnFailureListener(error -> {
+                    Log.w(TAG, "Server read Users failed, falling back to cached listener", error);
+                    usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            handleUsersSnapshotForOtp(snapshot, cleanEmail, callback);
+                        }
 
-                String otp = generateOtp();
-                long now = System.currentTimeMillis();
-                Map<String, Object> otpData = new HashMap<>();
-                otpData.put("email", cleanEmail);
-                otpData.put("to", cleanEmail);
-                otpData.put("otp", otp);
-                otpData.put("subject", context.getString(R.string.password_reset_email_subject));
-                otpData.put("html", buildEmailHtml(otp));
-                otpData.put("status", "pending");
-                otpData.put("createdAt", now);
-                otpData.put("expiresAt", now + OTP_TTL_MS);
-                otpData.put("verified", false);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            if (callback != null) {
+                                callback.onError(context.getString(R.string.forgot_password_server_error));
+                            }
+                        }
+                    });
+                });
+    }
 
-                otpRef.child(emailKey(cleanEmail)).setValue(otpData)
-                        .addOnSuccessListener(unused -> {
-                            // Chuyển màn hình ngay khi lưu DB xong để tránh bị timeout chặn UI
-                            callback.onSuccess();
-                            // Gửi email ngầm ở background
-                            sendOtpEmail(cleanEmail, null);
-                        })
-                        .addOnFailureListener(e -> callback.onError(context.getString(R.string.forgot_password_server_error)));
-            }
+    private void handleUsersSnapshotForOtp(@NonNull DataSnapshot snapshot, String cleanEmail, Callback callback) {
+        Log.d(TAG, "Scanning Users for email=" + cleanEmail
+                + ", exists=" + snapshot.exists()
+                + ", children=" + snapshot.getChildrenCount());
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                callback.onError(context.getString(R.string.forgot_password_server_error));
-            }
-        });
+        String matchedEmail = findExistingUserEmail(snapshot, cleanEmail);
+        if (matchedEmail.isEmpty()) {
+            Log.w(TAG, "No matching user email found for " + cleanEmail);
+            callback.onError(context.getString(R.string.forgot_password_error_not_found));
+            return;
+        }
+
+        Log.d(TAG, "Matched user email=" + matchedEmail);
+        String otpEmail = cleanEmail(matchedEmail);
+        String otp = generateOtp();
+        long now = System.currentTimeMillis();
+        Map<String, Object> otpData = new HashMap<>();
+        otpData.put("email", otpEmail);
+        otpData.put("to", otpEmail);
+        otpData.put("otp", otp);
+        otpData.put("subject", context.getString(R.string.password_reset_email_subject));
+        otpData.put("html", buildEmailHtml(otp));
+        otpData.put("status", "pending");
+        otpData.put("createdAt", now);
+        otpData.put("expiresAt", now + OTP_TTL_MS);
+        otpData.put("verified", false);
+
+        otpRef.child(emailKey(otpEmail)).setValue(otpData)
+                .addOnSuccessListener(unused -> {
+                    callback.onSuccess();
+                    sendOtpEmail(otpEmail, null);
+                })
+                .addOnFailureListener(e -> callback.onError(context.getString(R.string.forgot_password_server_error)));
     }
 
     public void verifyOtp(String email, String otp, Callback callback) {
@@ -144,7 +163,7 @@ public class PasswordResetManager {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                callback.onError(context.getString(R.string.forgot_password_server_error));
+                if (callback != null) callback.onError(context.getString(R.string.forgot_password_server_error));
             }
         });
     }
@@ -360,6 +379,44 @@ public class PasswordResetManager {
 
     private String cleanEmail(String email) {
         return email == null ? "" : email.trim();
+    }
+
+    private String normalizeEmail(String email) {
+        return cleanEmail(email).toLowerCase(Locale.US);
+    }
+
+    private String findExistingUserEmail(DataSnapshot usersSnapshot, String inputEmail) {
+        String target = normalizeEmail(inputEmail);
+        if (target.isEmpty() || !usersSnapshot.exists()) {
+            return "";
+        }
+
+        for (DataSnapshot userSnapshot : usersSnapshot.getChildren()) {
+            String matchedEmail = matchingEmailFromUser(userSnapshot, target);
+            if (!matchedEmail.isEmpty()) {
+                return matchedEmail;
+            }
+        }
+        return "";
+    }
+
+    private String matchingEmailFromUser(DataSnapshot userSnapshot, String normalizedTarget) {
+        String[] emailFields = {"email", "Email", "userEmail", "emailAddress"};
+        for (String field : emailFields) {
+            String candidate = valueAsString(userSnapshot.child(field));
+            if (!candidate.isEmpty()) {
+                Log.d(TAG, "User " + userSnapshot.getKey() + " " + field + "=" + cleanEmail(candidate));
+            }
+            if (normalizeEmail(candidate).equals(normalizedTarget)) {
+                return cleanEmail(candidate);
+            }
+        }
+
+        String keyCandidate = userSnapshot.getKey();
+        if (normalizeEmail(keyCandidate).equals(normalizedTarget)) {
+            return cleanEmail(keyCandidate);
+        }
+        return "";
     }
 
     private String valueAsString(DataSnapshot snapshot) {
