@@ -17,6 +17,7 @@
     <color name="promo_card_stroke">#D3DEEF</color>
     <color name="promo_card_corner">#DFE7F8</color>
     <color name="card_shadow">#1A000000</color>
+    <color name="bg_light_gray">#F5F7FA</color>
     <color name="darkgreen">#006F65</color>
     <color name="Red">#D11515</color>
     <color name="bg_baby_blue">#F2F9FE</color>

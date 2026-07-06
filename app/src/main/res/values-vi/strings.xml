@@ -614,6 +614,7 @@
     <string name="str_promotion_type">Loại giảm giá</string>
     <string name="str_type_amount">Số tiền cố định</string>
     <string name="str_type_percent">Phần trăm (%)</string>
+    <string name="str_type_per_item">Theo sản phẩm</string>
     <string name="str_promotion_value">Giá trị giảm</string>
     <string name="hint_enter_value">Nhập giá trị</string>
     <string name="str_min_subtotal">Đơn tối thiểu</string>
@@ -840,4 +841,8 @@
     <string name="str_order_history_subtitle">Theo dõi và quản lý đơn hàng của bạn</string>
     <string name="order_history_banner_title">LỊCH SỬ ĐƠN HÀNG</string>
     <string name="order_history_hero_image_desc">Hình minh họa lịch sử đơn hàng</string>
+    <string name="str_desc_percent">Giảm %1$d%%</string>
+    <string name="str_desc_max"> (Tối đa %1$s)</string>
+    <string name="str_desc_per_item">Giảm %1$s mỗi sản phẩm</string>
+    <string name="str_desc_amount">Giảm trực tiếp %1$s</string>
 </resources>

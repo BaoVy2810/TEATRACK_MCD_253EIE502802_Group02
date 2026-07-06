@@ -216,7 +216,18 @@ public class PromotionClient extends BaseActivity {
                 for (DataSnapshot data : snapshot.getChildren()) {
                     Promotion p = data.getValue(Promotion.class);
                     Boolean isActive = data.child("isActive").getValue(Boolean.class);
-                    if (p == null || Boolean.FALSE.equals(isActive)) {
+
+                    String code = (p != null) ? p.getCode() : "NULL_OBJECT";
+                    String type = (p != null) ? p.getType() : "N/A";
+                    boolean isSkip = (p == null || !p.getIsActive());
+
+                    android.util.Log.d("VOUCHER_DEBUG", "PromotionClient - Code: " + code +
+                            " | ID: " + data.getKey() +
+                            " | Type: " + type +
+                            " | isActive: " + (p != null && p.getIsActive()) +
+                            " | Status: " + (isSkip ? "SKIPPED" : "ADDED"));
+
+                    if (isSkip) {
                         continue;
                     }
                     p.setId(data.getKey());
