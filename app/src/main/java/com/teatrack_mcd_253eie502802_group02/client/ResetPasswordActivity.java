@@ -1,8 +1,7 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+import androidx.core.content.ContextCompat;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -174,14 +173,23 @@ public class ResetPasswordActivity extends BaseActivity {
     }
 
     private void setFieldError(TextInputLayout til, boolean isError) {
+        if (til == null) return;
+        til.setErrorEnabled(false);
         if (isError) {
-            til.setBoxStrokeColor(Color.RED);
-            til.setBoxStrokeErrorColor(ColorStateList.valueOf(Color.RED));
-            til.setErrorEnabled(true);
-            til.setError(" "); 
+            int red = android.graphics.Color.RED;
+            android.content.res.ColorStateList redList = new android.content.res.ColorStateList(
+                    new int[][] {
+                            new int[] { android.R.attr.state_focused },
+                            new int[] { -android.R.attr.state_focused },
+                            new int[] {}
+                    },
+                    new int[] { red, red, red }
+            );
+            til.setBoxStrokeColorStateList(redList);
         } else {
-            til.setError(null);
-            til.setErrorEnabled(false);
+            til.setBoxStrokeColorStateList(
+                    ContextCompat.getColorStateList(this, R.color.til_stroke_color)
+            );
         }
     }
 

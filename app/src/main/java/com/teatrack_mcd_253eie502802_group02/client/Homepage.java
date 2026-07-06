@@ -50,6 +50,9 @@ import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 public class Homepage extends BaseActivity {
     public static final String EXTRA_AUTO_DIAL_HOTLINE = "extra_auto_dial_hotline";
     private static final String HOTLINE_URI = "tel:02-723-979-518";
+    private static final String DB_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
+    private static final int HOME_PROMOTION_LIMIT = 6;
+    private static final int HOME_PROMOTION_VISIBLE_COUNT = 3;
 
     private static final int[] NAV_IDS = {
             R.id.nav_home,
@@ -68,6 +71,8 @@ public class Homepage extends BaseActivity {
     private ImageView imgBannerPreview;
     private RecyclerView rvFeaturedProducts;
     private RecyclerView rvPromotions;
+    private PromotionAdapter promotionAdapter;
+    private final List<Promotion> homePromotions = new ArrayList<>();
     private RecyclerView rvNews;
     private ProductCardAdapter featuredAdapter;
     private final List<Product> featuredProducts = new ArrayList<>();
@@ -395,18 +400,91 @@ public class Homepage extends BaseActivity {
             return;
         }
         rvPromotions.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        List<Promotion> promotions = new ArrayList<>();
-        promotions.add(new Promotion("promo1", R.mipmap.banner_monmoi));
-        promotions.add(new Promotion("promo2", R.mipmap.banner_aboutus));
-        promotions.add(new Promotion("promo3", R.mipmap.banner_aboutus2));
+        rvPromotions.setNestedScrollingEnabled(true);
+        promotionAdapter = new PromotionAdapter(homePromotions);
+        promotionAdapter.setOnItemClickListener(item ->
+                startActivity(new Intent(this, PromotionClient.class)));
+        rvPromotions.setAdapter(promotionAdapter);
+        rvPromotions.post(this::applyHomePromotionCardWidth);
+        loadHomePromotions();
+    }
 
-        PromotionAdapter adapter = new PromotionAdapter(promotions);
-        adapter.setOnItemClickListener(item -> {
-            Intent intent = new Intent(this, BlogDetail.class);
-            intent.putExtra("blog_id", item.getId());
-            startActivity(intent);
-        });
-        rvPromotions.setAdapter(adapter);
+    private void applyHomePromotionCardWidth() {
+        if (rvPromotions == null || promotionAdapter == null) {
+            return;
+        }
+        int rvWidth = rvPromotions.getWidth();
+        if (rvWidth <= 0) {
+            return;
+        }
+        int padding = rvPromotions.getPaddingStart() + rvPromotions.getPaddingEnd();
+        int gap = getResources().getDimensionPixelSize(R.dimen.home_promotion_mini_gap);
+        int totalGaps = gap * (HOME_PROMOTION_VISIBLE_COUNT - 1);
+        int cardWidth = (rvWidth - padding - totalGaps) / HOME_PROMOTION_VISIBLE_COUNT;
+        promotionAdapter.setItemWidthPx(cardWidth);
+    }
+
+    private void loadHomePromotions() {
+        FirebaseDatabase.getInstance(DB_URL).getReference("vouchers")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<Promotion> loaded = new ArrayList<>();
+                        for (DataSnapshot child : snapshot.getChildren()) {
+                            Promotion promotion = child.getValue(Promotion.class);
+                            if (promotion == null || !promotion.getIsActive()) {
+                                continue;
+                            }
+                            promotion.setId(child.getKey());
+                            if (promotion.getCode() == null || promotion.getCode().trim().isEmpty()) {
+                                promotion.setCode(child.getKey());
+                            }
+                            loaded.add(promotion);
+                            if (loaded.size() >= HOME_PROMOTION_LIMIT) {
+                                break;
+                            }
+                        }
+                        if (loaded.isEmpty()) {
+                            loaded = getFallbackHomePromotions();
+                        }
+                        homePromotions.clear();
+                        homePromotions.addAll(loaded);
+                        if (promotionAdapter != null) {
+                            promotionAdapter.notifyDataSetChanged();
+                            rvPromotions.post(Homepage.this::applyHomePromotionCardWidth);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        if (homePromotions.isEmpty()) {
+                            homePromotions.clear();
+                            homePromotions.addAll(getFallbackHomePromotions());
+                            if (promotionAdapter != null) {
+                                promotionAdapter.notifyDataSetChanged();
+                                rvPromotions.post(Homepage.this::applyHomePromotionCardWidth);
+                            }
+                        }
+                    }
+                });
+    }
+
+    private List<Promotion> getFallbackHomePromotions() {
+        List<Promotion> fallback = new ArrayList<>();
+        fallback.add(createFallbackPromotion("home_promo_1", R.mipmap.banner_monmoi, "Giảm 20% đồ uống mới"));
+        fallback.add(createFallbackPromotion("home_promo_2", R.mipmap.thuc_uong_moi, "Ưu đãi thức uống mới"));
+        fallback.add(createFallbackPromotion("home_promo_3", R.mipmap.cac_mon_hot, "Món hot giảm giá"));
+        fallback.add(createFallbackPromotion("home_promo_4", R.mipmap.banner1, "Happy Hour 14h-17h"));
+        fallback.add(createFallbackPromotion("home_promo_5", R.mipmap.banner2, "Tặng topping miễn phí"));
+        fallback.add(createFallbackPromotion("home_promo_6", R.mipmap.banner_aboutus, "Ưu đãi cuối tuần"));
+        return fallback;
+    }
+
+    private Promotion createFallbackPromotion(String id, int imageRes, String title) {
+        Promotion promotion = new Promotion(id, imageRes);
+        promotion.setTitle(title);
+        promotion.setIsActive(true);
+        return promotion;
     }
 
     private void setupNews() {

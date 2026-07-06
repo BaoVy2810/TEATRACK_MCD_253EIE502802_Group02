@@ -1,8 +1,7 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
+import androidx.core.content.ContextCompat;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -116,14 +115,23 @@ public class ForgotPassword extends BaseActivity {
     }
 
     private void setFieldError(boolean isError) {
+        if (tilEmail == null) return;
+        tilEmail.setErrorEnabled(false);
         if (isError) {
-            tilEmail.setBoxStrokeColor(Color.RED);
-            tilEmail.setBoxStrokeErrorColor(ColorStateList.valueOf(Color.RED));
-            tilEmail.setErrorEnabled(true);
-            tilEmail.setError(" "); // Space to trigger red stroke without text below
+            int red = android.graphics.Color.RED;
+            android.content.res.ColorStateList redList = new android.content.res.ColorStateList(
+                    new int[][] {
+                            new int[] { android.R.attr.state_focused },
+                            new int[] { -android.R.attr.state_focused },
+                            new int[] {}
+                    },
+                    new int[] { red, red, red }
+            );
+            tilEmail.setBoxStrokeColorStateList(redList);
         } else {
-            tilEmail.setError(null);
-            tilEmail.setErrorEnabled(false);
+            tilEmail.setBoxStrokeColorStateList(
+                    ContextCompat.getColorStateList(this, R.color.til_stroke_color)
+            );
         }
     }
 

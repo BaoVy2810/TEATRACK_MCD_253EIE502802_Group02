@@ -26,6 +26,8 @@
     <dimen name="promotion_item_height">192dp</dimen>
     <dimen name="promotion_item_spacing">16dp</dimen>
     <dimen name="promotion_list_visible_height">608dp</dimen>
+    <dimen name="home_promotion_mini_height">120dp</dimen>
+    <dimen name="home_promotion_mini_gap">10dp</dimen>
 
 <!--    TEST FOR ADMIN DASHBOARD-->
     <!-- Screen -->

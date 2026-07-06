@@ -484,16 +484,16 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/layoutPromotions"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/home_promotion_mini_height"
                     android:clipToPadding="false"
-                    android:nestedScrollingEnabled="false"
+                    android:nestedScrollingEnabled="true"
                     android:orientation="horizontal"
                     android:overScrollMode="never"
                     android:paddingStart="14dp"
                     android:paddingEnd="14dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/item_promotion_banner" />
+                    tools:itemCount="6"
+                    tools:listitem="@layout/item_home_promotion_mini" />
             </LinearLayout>
 
             <LinearLayout

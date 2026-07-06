@@ -10,9 +10,14 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
@@ -43,7 +48,13 @@ public class FilledOtpActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_filled_otp);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         tvEmailMasked = findViewById(R.id.tvEmailMasked);
         tvCountdown = findViewById(R.id.tvCountdown);
@@ -52,7 +63,7 @@ public class FilledOtpActivity extends BaseActivity {
         passwordResetManager = new PasswordResetManager(this);
         email = getIntent().getStringExtra(EXTRA_EMAIL);
 
-        ImageButton btnBack = findViewById(R.id.btnBack);
+        ImageView btnBack = findViewById(R.id.btnBack);
 
         tvResendOtp.setPaintFlags(tvResendOtp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -83,7 +94,7 @@ public class FilledOtpActivity extends BaseActivity {
         tvEmailMasked.setText(maskEmail(email));
     }
 
-    private void setupActions(ImageButton btnBack) {
+    private void setupActions(ImageView btnBack) {
         View.OnClickListener backListener = v -> finish();
         btnBack.setOnClickListener(backListener);
         tvResendOtp.setOnClickListener(v -> resendOtp());

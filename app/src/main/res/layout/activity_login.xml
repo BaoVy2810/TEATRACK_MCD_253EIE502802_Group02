@@ -172,7 +172,7 @@
                 app:boxStrokeWidth="1dp"
                 app:boxStrokeWidthFocused="1dp"
                 app:endIconMode="password_toggle"
-                app:endIconTint="#D9D9D9"
+                app:endIconTint="@color/password_toggle_icon"
                 app:errorEnabled="true"
                 app:errorIconTint="@color/Red"
                 app:errorTextAppearance="@style/ErrorTextZeroSize"

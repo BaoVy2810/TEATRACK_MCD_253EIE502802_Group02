@@ -5,7 +5,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
+import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -206,6 +207,27 @@ public class PromotionClient extends BaseActivity {
         rvPromotions.setNestedScrollingEnabled(true);
         rvPromotions.setHasFixedSize(true);
         rvPromotions.setAdapter(promotionAdapter);
+        applyPromotionListVisibleHeight();
+        rvPromotions.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                if (rv.getChildCount() > 0 && promotionList.size() > 3) {
+                    rv.getParent().requestDisallowInterceptTouchEvent(true);
+                }
+                return false;
+            }
+        });
+    }
+
+    private void applyPromotionListVisibleHeight() {
+        if (rvPromotions == null) {
+            return;
+        }
+        int cardHeight = getResources().getDimensionPixelSize(R.dimen.promotion_item_height);
+        int spacing = getResources().getDimensionPixelSize(R.dimen.promotion_item_spacing);
+        ViewGroup.LayoutParams params = rvPromotions.getLayoutParams();
+        params.height = cardHeight * 3 + spacing * 2;
+        rvPromotions.setLayoutParams(params);
     }
 
     private void loadFirebaseData() {
