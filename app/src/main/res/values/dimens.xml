@@ -11,6 +11,9 @@
     <dimen name="nav_bar_height">75dp</dimen>
     <dimen name="nav_bar_corner_radius">20dp</dimen>
     <dimen name="nav_bar_elevation">6dp</dimen>
+    <dimen name="nav_admin_notch_height">34dp</dimen>
+    <dimen name="nav_admin_drag_pill_width">44dp</dimen>
+    <dimen name="nav_admin_drag_pill_height">5dp</dimen>
     <dimen name="nav_item_icon_size">22dp</dimen>
     <dimen name="nav_item_text_size">10sp</dimen>
     <dimen name="nav_item_padding_vertical">10dp</dimen>

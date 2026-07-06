@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="360dp"
+    android:height="34dp"
+    android:viewportWidth="360"
+    android:viewportHeight="34">
+
+    <!-- Navbar top silhouette: rounded corners + smooth concave center notch -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M0,18 Q0,4 20,4 L124,4 C146,4 156,20 180,20 C204,20 214,4 236,4 L340,4 Q360,4 360,18 L360,34 L0,34 Z" />
+</vector>

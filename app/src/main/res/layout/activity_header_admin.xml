@@ -55,7 +55,7 @@
                     android:layout_gravity="center"
                     android:contentDescription="@string/nav_account"
                     android:src="@drawable/user"
-                    app:tint="@color/darkgreen" />
+                    app:tint="@color/brand_blue" />
             </FrameLayout>
 
             <ImageButton

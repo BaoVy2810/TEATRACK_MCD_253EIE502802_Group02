@@ -7,6 +7,7 @@ import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem;
 import com.teatrack_mcd_253eie502802_group02.util.OrderItemDisplayHelper;
+import com.teatrack_mcd_253eie502802_group02.util.UserRoleHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,9 +46,7 @@ public final class OrderPlacementHelper {
             subtotal += item.getLineTotal();
         }
 
-        String userRole = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                .getString("userRole", "Customer");
-        boolean isVip = "Customer Vip".equalsIgnoreCase(userRole);
+        boolean isVip = UserRoleHelper.isVipCustomer(context);
         int discount = isVip ? CartManager.getInstance().getVipDiscountTotal() : 0;
         
         String appliedVoucherId = null;

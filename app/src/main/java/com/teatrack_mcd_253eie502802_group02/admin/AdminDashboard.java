@@ -80,6 +80,7 @@ public class AdminDashboard extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAdminDashboardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        com.teatrack_mcd_253eie502802_group02.shared.ui.AdminInsetsHelper.apply(this);
 
         String dbUrl = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
         mDatabase = FirebaseDatabase.getInstance(dbUrl).getReference();
@@ -227,7 +228,7 @@ public class AdminDashboard extends BaseActivity {
     }
 
     private void setupHeader() {
-        View header = findViewById(R.id.headerAdmin);
+        View header = findViewById(R.id.layout_header);
         if (header != null) {
             com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper.setupProfileMenu(this);
             header.findViewById(R.id.btn_notification).setOnClickListener(v -> Toast.makeText(this, "Opening Notifications...", Toast.LENGTH_SHORT).show());
@@ -260,8 +261,7 @@ public class AdminDashboard extends BaseActivity {
             else if (id == R.id.nav_promotion) destination = AdminPromotion.class;
 
             if (destination != null) {
-                startActivity(new Intent(this, destination));
-                finish();
+                NavBarHelper.navigateWithoutTransition(this, destination);
             }
         });
     }

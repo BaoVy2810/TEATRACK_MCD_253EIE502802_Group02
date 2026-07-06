@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -8,37 +8,47 @@
     android:background="@color/bg_screen"
     tools:context="com.teatrack_mcd_253eie502802_group02.admin.AdminComplaints">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
+    <include
+        android:id="@+id/layout_header"
+        layout="@layout/activity_header_admin"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        app:elevation="4dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <include layout="@layout/activity_header_admin" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+    <include
+        android:id="@+id/layout_nav_bar"
+        layout="@layout/activity_nav_bar_admin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:paddingBottom="70dp"
-        android:clipToPadding="false">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toTopOf="@id/layout_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_header">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Screen Title with White Strip -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingVertical="10dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="14dp"
-                android:elevation="1dp">
+                android:background="@color/white"
+                android:elevation="1dp"
+                android:paddingVertical="10dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,9 +65,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 app:tabIndicatorColor="@color/brand_blue"
+                app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/brand_blue"
-                app:tabTextColor="@color/text_secondary"
-                app:tabMode="fixed">
+                app:tabTextColor="@color/text_secondary">
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
@@ -92,11 +102,4 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <include
-        android:id="@+id/bottomNav"
-        layout="@layout/activity_nav_bar_admin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,6 +64,7 @@ public class AdminProduct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_product);
+        com.teatrack_mcd_253eie502802_group02.shared.ui.AdminInsetsHelper.apply(this);
 
         CloudinaryHelper.init(this);
         selectedCategory = getString(R.string.filter_all);
@@ -323,8 +324,7 @@ public class AdminProduct extends AppCompatActivity {
             else if (id == R.id.nav_promotion) destination = AdminPromotion.class;
 
             if (destination != null) {
-                startActivity(new Intent(this, destination));
-                finish();
+                NavBarHelper.navigateWithoutTransition(this, destination);
             }
         });
     }

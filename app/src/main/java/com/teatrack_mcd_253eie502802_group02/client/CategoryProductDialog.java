@@ -127,10 +127,10 @@ public class CategoryProductDialog extends DialogFragment {
     private void openProductDetail(Product product) {
         Intent intent = new Intent(requireContext(), ProductDetail.class);
         intent.putExtra("name", product.getName());
-        intent.putExtra("priceM", product.getPrice());
-        intent.putExtra("priceL", product.getPriceL());
-        intent.putExtra("vipM", product.getVipPriceM());
-        intent.putExtra("vipL", product.getVipPriceL());
+        intent.putExtra("priceM", String.valueOf(product.getPrice()));
+        intent.putExtra("priceL", String.valueOf(product.getPriceL()));
+        intent.putExtra("vipM", String.valueOf(product.getVipPriceM()));
+        intent.putExtra("vipL", String.valueOf(product.getVipPriceL()));
         ProductImageHelper.putDetailExtras(intent, requireContext(), product);
         if (product.getId() != null && !product.getId().isEmpty()) {
             intent.putExtra("productId", product.getId());

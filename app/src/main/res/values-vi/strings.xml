@@ -4,6 +4,7 @@
 
     <!-- Điều hướng & Hệ thống Menu chính -->
     <string name="nav_dashboard">Bảng điều khiển</string>
+    <string name="nav_expand_handle">Mở rộng thanh điều hướng</string>
     <string name="nav_products">Sản phẩm</string>
     <string name="nav_orders">Đơn hàng</string>
     <string name="nav_account">Tài khoản</string>

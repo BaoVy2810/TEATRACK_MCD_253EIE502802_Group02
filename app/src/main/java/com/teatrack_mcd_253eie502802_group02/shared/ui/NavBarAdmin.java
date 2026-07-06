@@ -1,6 +1,5 @@
 package com.teatrack_mcd_253eie502802_group02.shared.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -38,11 +37,19 @@ public class NavBarAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_nav_bar_admin);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        View navBar = findViewById(R.id.nav_bar_admin);
+        if (navBar != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(navBar, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(
+                        v.getPaddingLeft(),
+                        v.getPaddingTop(),
+                        v.getPaddingRight(),
+                        systemBars.bottom
+                );
+                return insets;
+            });
+        }
 
         NavBarHelper.setupNavBar(this, NAV_ITEM_IDS, R.id.nav_dashboard, this::onNavItemClicked);
     }
@@ -73,7 +80,7 @@ public class NavBarAdmin extends AppCompatActivity {
         }
 
         if (destination != null) {
-            startActivity(new Intent(this, destination));
+            NavBarHelper.navigateWithoutTransition(this, destination);
         }
     }
 }

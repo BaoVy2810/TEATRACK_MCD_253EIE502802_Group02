@@ -262,10 +262,10 @@ public class ProductDetail extends BaseActivity {
         noteToggle.setOnClickListener(v -> toggleCustomization());
 
         String name = getIntent().getStringExtra("name");
-        String priceM = getIntent().getStringExtra("priceM");
-        String priceL = getIntent().getStringExtra("priceL");
-        String vipM = getIntent().getStringExtra("vipM");
-        String vipL = getIntent().getStringExtra("vipL");
+        String priceM = readPriceExtra("priceM");
+        String priceL = readPriceExtra("priceL");
+        String vipM = readPriceExtra("vipM");
+        String vipL = readPriceExtra("vipL");
         int imageRes = getIntent().getIntExtra("imageRes", 0);
         if (imageRes == 0) {
             imageRes = R.mipmap.logo_ngo_gia;
@@ -1478,6 +1478,18 @@ public class ProductDetail extends BaseActivity {
             product.setImage(productImage);
         }
         return product;
+    }
+
+    private String readPriceExtra(String key) {
+        if (getIntent() == null || !getIntent().hasExtra(key)) {
+            return null;
+        }
+        String value = getIntent().getStringExtra(key);
+        if (value != null && !value.isEmpty()) {
+            return value;
+        }
+        int intValue = getIntent().getIntExtra(key, 0);
+        return intValue > 0 ? String.valueOf(intValue) : null;
     }
 
     private int parsePriceInt(String value) {

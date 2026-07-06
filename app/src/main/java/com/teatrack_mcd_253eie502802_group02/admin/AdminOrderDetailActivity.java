@@ -16,15 +16,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.Insets;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -110,13 +106,8 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin_order_detail);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets sb = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(sb.left, sb.top, sb.right, sb.bottom);
-            return insets;
-        });
+        com.teatrack_mcd_253eie502802_group02.shared.ui.AdminInsetsHelper.apply(this);
 
         currentOrder = (FirebaseOrder) getIntent().getSerializableExtra("order");
         if (currentOrder == null) { finish(); return; }
@@ -671,8 +662,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
             else if (id == R.id.nav_promotion)  destination = AdminPromotion.class;
 
             if (destination != null) {
-                startActivity(new Intent(this, destination));
-                finish();
+                NavBarHelper.navigateWithoutTransition(this, destination);
             }
         });
     }

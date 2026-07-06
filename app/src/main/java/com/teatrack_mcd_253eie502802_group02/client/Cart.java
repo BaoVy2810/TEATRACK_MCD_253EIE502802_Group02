@@ -47,6 +47,7 @@ import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+import com.teatrack_mcd_253eie502802_group02.util.UserRoleHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -799,22 +800,26 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         }
 
         int subtotal = CartManager.getInstance().getSubtotal();
-        int discount = 0;
+        int vipDiscount = UserRoleHelper.isVipCustomer(this)
+                ? CartManager.getInstance().getVipDiscountTotal()
+                : 0;
+        int voucherDiscount = 0;
         if (appliedVoucher != null) {
-            discount = calculateVoucherDiscount(appliedVoucher);
+            voucherDiscount = calculateVoucherDiscount(appliedVoucher);
         }
         if (tvSubtotal != null) {
-            tvSubtotal.setText(formatPrice(subtotal));
+            int displaySubtotal = vipDiscount > 0 ? subtotal - vipDiscount : subtotal;
+            tvSubtotal.setText(formatPrice(displaySubtotal));
         }
         if (tvTotal != null) {
-            tvTotal.setText(formatPrice(Math.max(0, subtotal - discount)));
+            tvTotal.setText(formatPrice(Math.max(0, subtotal - vipDiscount - voucherDiscount)));
         }
 
         if (tvVoucherSummary != null) {
             if (freeItemName != null) {
                 tvVoucherSummary.setText("Miễn phí 1 " + freeItemName);
             } else {
-                tvVoucherSummary.setText("-" + formatPrice(discount));
+                tvVoucherSummary.setText(voucherDiscount > 0 ? "-" + formatPrice(voucherDiscount) : "0đ");
             }
         }
     }

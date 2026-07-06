@@ -9,6 +9,7 @@
     tools:context="com.teatrack_mcd_253eie502802_group02.admin.AdminProfile">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -22,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:paddingBottom="70dp"
+        android:paddingBottom="0dp"
         android:clipToPadding="false">
 
         <LinearLayout

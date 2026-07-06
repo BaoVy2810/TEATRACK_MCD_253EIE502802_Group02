@@ -86,6 +86,10 @@ public class CartItem {
         return (unitPrice - vipUnitPrice) * quantity;
     }
 
+    public int getPayableLineTotal() {
+        return getLineTotal() - getVipDiscountTotal();
+    }
+
     public String getOptionsSummary(Context context) {
         StringBuilder builder = new StringBuilder();
         builder.append(getConfigLine(context));

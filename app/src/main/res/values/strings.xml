@@ -4,6 +4,7 @@
 
     <!-- Navigation & Main Menu System -->
     <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_expand_handle">Expand navigation bar</string>
     <string name="nav_products">Products</string>
     <string name="nav_orders">Orders</string>
     <string name="nav_account">Account</string>

@@ -55,6 +55,7 @@ public class AdminPromotion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_promotion);
+        com.teatrack_mcd_253eie502802_group02.shared.ui.AdminInsetsHelper.apply(this);
 
         initViews();
         setupFirebase();
@@ -152,8 +153,7 @@ public class AdminPromotion extends AppCompatActivity {
             else if (id == R.id.nav_feedbacks) destination = AdminComplaints.class;
 
             if (destination != null) {
-                startActivity(new Intent(this, destination));
-                finish();
+                NavBarHelper.navigateWithoutTransition(this, destination);
             }
         });
     }

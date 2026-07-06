@@ -18,6 +18,7 @@ import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.client.ProductDetail;
 import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
+import com.teatrack_mcd_253eie502802_group02.util.UserRoleHelper;
 
 import java.util.List;
 import java.util.Locale;
@@ -64,7 +65,10 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
             }
         }
 
-        holder.tvPrice.setText(formatPrice(item.getLineTotal()));
+        int linePrice = UserRoleHelper.isVipCustomer(context)
+                ? item.getPayableLineTotal()
+                : item.getLineTotal();
+        holder.tvPrice.setText(formatPrice(linePrice));
         holder.tvQty.setText(String.valueOf(item.getQuantity()));
 
         Product product = new Product();

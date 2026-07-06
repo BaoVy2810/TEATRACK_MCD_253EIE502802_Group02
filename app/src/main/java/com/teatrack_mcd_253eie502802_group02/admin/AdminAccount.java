@@ -64,6 +64,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         super.onCreate(savedInstanceState);
         binding = ActivityAdminAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        com.teatrack_mcd_253eie502802_group02.shared.ui.AdminInsetsHelper.apply(this);
 
         ROLE_FILTERS = new String[]{
                 getString(R.string.filter_account_all),
@@ -206,8 +207,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
             }
 
             if (destination != null) {
-                startActivity(new Intent(this, destination));
-                finish();
+                NavBarHelper.navigateWithoutTransition(this, destination);
             }
         });
     }
