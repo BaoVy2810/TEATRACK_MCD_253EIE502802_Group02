@@ -1121,4 +1121,9 @@
     <string name="rewards_empty_title">You have no rewards yet</string>
     <string name="rewards_empty_subtitle">Earn points from your orders and redeem them for exciting gifts!</string>
     <string name="rewards_empty_cta">Order now</string>
+    <!-- Page Not Found (404) Context -->
+    <string name="error_404_title">404</string>
+    <string name="error_404_subtitle">Page Not Found</string>
+    <string name="error_404_message">Sorry, the page you are looking for does not exist or has been moved.</string>
+    <string name="error_404_btn_home">Back to Home</string>
 </resources>
