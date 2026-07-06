@@ -22,7 +22,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
@@ -30,6 +29,7 @@ import com.teatrack_mcd_253eie502802_group02.data.PasswordResetManager;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
@@ -121,31 +121,30 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     private void updatePasswordInFirebase(String email, String newPassword) {
         DatabaseReference usersRef = FirebaseDatabase.getInstance(FirebaseProductRepository.DB_URL).getReference("Users");
-        Query query = usersRef.orderByChild("email").equalTo(email);
 
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                        String hashedPassword = hashPassword(newPassword);
-                        userSnapshot.getRef().child("password").setValue(hashedPassword)
-                                .addOnSuccessListener(aVoid -> {
-                                    passwordResetManager.clearOtp(email);
-                                    Toast.makeText(ResetPasswordActivity.this, R.string.reset_password_update_success, Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(ResetPasswordActivity.this, SucessfullyChangePasswordActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                })
-                                .addOnFailureListener(e -> {
-                                    btnUpdate.setEnabled(true);
-                                    showError("Update failed: " + e.getMessage());
-                                });
-                    }
-                } else {
+                DataSnapshot matchedUser = findUserByEmail(snapshot, email);
+                if (matchedUser == null) {
                     btnUpdate.setEnabled(true);
                     showError("User not found.");
+                    return;
                 }
+
+                String hashedPassword = hashPassword(newPassword);
+                matchedUser.getRef().child("password").setValue(hashedPassword)
+                        .addOnSuccessListener(aVoid -> {
+                            passwordResetManager.clearOtp(email);
+                            Toast.makeText(ResetPasswordActivity.this, R.string.reset_password_update_success, Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(ResetPasswordActivity.this, SucessfullyChangePasswordActivity.class);
+                            startActivity(intent);
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            btnUpdate.setEnabled(true);
+                            showError("Update failed: " + e.getMessage());
+                        });
             }
 
             @Override
@@ -154,6 +153,39 @@ public class ResetPasswordActivity extends AppCompatActivity {
                 showError("Database Error: " + error.getMessage());
             }
         });
+    }
+
+    private DataSnapshot findUserByEmail(DataSnapshot usersSnapshot, String email) {
+        String target = normalizeEmail(email);
+        if (target.isEmpty() || !usersSnapshot.exists()) {
+            return null;
+        }
+
+        for (DataSnapshot userSnapshot : usersSnapshot.getChildren()) {
+            if (isUserEmailMatch(userSnapshot, target)) {
+                return userSnapshot;
+            }
+        }
+        return null;
+    }
+
+    private boolean isUserEmailMatch(DataSnapshot userSnapshot, String normalizedTarget) {
+        String[] emailFields = {"email", "Email", "userEmail", "emailAddress"};
+        for (String field : emailFields) {
+            if (normalizeEmail(valueAsString(userSnapshot.child(field))).equals(normalizedTarget)) {
+                return true;
+            }
+        }
+        return normalizeEmail(userSnapshot.getKey()).equals(normalizedTarget);
+    }
+
+    private String normalizeEmail(String email) {
+        return email == null ? "" : email.trim().toLowerCase(Locale.US);
+    }
+
+    private String valueAsString(DataSnapshot snapshot) {
+        Object value = snapshot.getValue();
+        return value == null ? "" : String.valueOf(value);
     }
 
     private String hashPassword(String password) {
