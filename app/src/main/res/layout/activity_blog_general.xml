@@ -80,7 +80,8 @@
             android:layout_height="match_parent"
             android:contentDescription="@null"
             android:scaleType="centerCrop"
-            android:src="@mipmap/nen" />
+            android:src="@mipmap/nen"
+            android:alpha="0.5"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

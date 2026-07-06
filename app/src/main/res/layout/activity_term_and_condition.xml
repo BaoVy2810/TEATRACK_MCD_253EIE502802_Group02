@@ -278,9 +278,9 @@
                         android:layout_marginTop="8dp"
                         android:fontFamily="@font/inter"
                         android:lineSpacingExtra="4dp"
+                        android:justificationMode="inter_word"
                         android:text="@string/terms_security_content"
                         android:textColor="@color/black"
-                        android:justificationMode="inter_word"
                         android:textSize="13sp" />
 
                     <!-- Section 5 -->

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 @IgnoreExtraProperties
 public class Product {
@@ -134,13 +135,8 @@ public class Product {
 
     @Exclude
     public int getImageRes(Context context) {
-        if (imageRes != 0) return imageRes;
-        if (image != null && !image.isEmpty()) {
-            String imageName = image.toLowerCase().split("\\.")[0];
-            int resId = context.getResources().getIdentifier(imageName, "mipmap", context.getPackageName());
-            if (resId != 0) return resId;
-        }
-        return R.mipmap.logo_ngo_gia;
+        int resolved = ProductImageHelper.resolveTrustedLocalRes(context, this);
+        return resolved != 0 ? resolved : R.mipmap.logo_ngo_gia;
     }
 
     @Exclude

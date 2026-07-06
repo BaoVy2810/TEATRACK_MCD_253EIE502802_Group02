@@ -11,6 +11,7 @@ import com.teatrack_mcd_253eie502802_group02.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 public class FirebaseProductRepository {
 
@@ -54,6 +55,7 @@ public class FirebaseProductRepository {
                     if (product.getId() == null || product.getId().isEmpty()) {
                         product.setId(child.getKey());
                     }
+                    ProductImageHelper.enrichFromFirebase(product);
                     products.add(product);
                 }
                 callback.onSuccess(products);
@@ -100,6 +102,31 @@ public class FirebaseProductRepository {
             @Override
             public void onError(String message) {
                 callback.onError(message);
+            }
+        });
+    }
+
+    public void getProductById(String id, ProductCallback callback) {
+        if (id == null || id.isEmpty()) {
+            callback.onError("Product id is empty");
+            return;
+        }
+        productsRef.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Product product = snapshot.getValue(Product.class);
+                if (product == null) {
+                    callback.onError("Product not found: " + id);
+                    return;
+                }
+                product.setId(snapshot.getKey());
+                ProductImageHelper.enrichFromFirebase(product);
+                callback.onSuccess(product);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                callback.onError(error.getMessage());
             }
         });
     }

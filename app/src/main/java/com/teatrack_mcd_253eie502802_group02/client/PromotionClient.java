@@ -36,6 +36,8 @@ import com.teatrack_mcd_253eie502802_group02.model.Promotion;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.QRCodeGenerator;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
+import com.teatrack_mcd_253eie502802_group02.util.UserRoleHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ public class PromotionClient extends BaseActivity {
     private static final String DB_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
     private static final int POINTS_TO_REDEEM = 8;
 
-    private TextView tvUserName, tvCurrentPoints, tvUserIdDisplay;
+    private TextView tvUserName, tvCurrentPoints, tvUserIdDisplay, tvRoleLabel;
     private ImageView ivCodeDisplay;
     private TabLayout tabLayoutCode;
     private GridLayout gridPointIcons;
@@ -86,6 +88,7 @@ public class PromotionClient extends BaseActivity {
     protected void onResume() {
         super.onResume();
         CartBadgeHelper.updateBadge(this);
+        refreshUserProfile();
     }
 
     private void setupNavigation() {
@@ -116,6 +119,7 @@ public class PromotionClient extends BaseActivity {
 
     private void initViews() {
         tvUserName = findViewById(R.id.tvUserName);
+        tvRoleLabel = findViewById(R.id.tvRoleLabel);
         tvCurrentPoints = findViewById(R.id.tvCurrentPoints);
         tvUserIdDisplay = findViewById(R.id.tvUserIdDisplay);
         ivCodeDisplay = findViewById(R.id.ivCodeDisplay);
@@ -125,13 +129,6 @@ public class PromotionClient extends BaseActivity {
         rvPromotions = findViewById(R.id.rvPromotions);
 
         btnRedeem.setOnClickListener(v -> handleRedeem());
-        View btnViewAll = findViewById(R.id.tvViewAllRewards);
-        if (btnViewAll != null) {
-            btnViewAll.setOnClickListener(v -> {
-                android.content.Intent intent = new android.content.Intent(this, MyRewardsActivity.class);
-                startActivity(intent);
-            });
-        }
         findViewById(R.id.btnPointsHistory).setOnClickListener(v -> {
             android.content.Intent intent = new android.content.Intent(this, EarnedPointHistoryActivity.class);
             startActivity(intent);
@@ -145,12 +142,26 @@ public class PromotionClient extends BaseActivity {
     private void loadUserData() {
         SharedPreferences prefs = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
         userId = prefs.getString("userId", "");
-        String userName = prefs.getString("username", getString(R.string.loyalty_user_name_default));
-
-        tvUserName.setText(userName);
+        bindUserProfile();
         tvUserIdDisplay.setText(getString(R.string.loyalty_uid_format, userId));
+        generateCode(0);
+    }
 
-        generateCode(0); // Default QR
+    private void refreshUserProfile() {
+        UserRoleHelper.refreshRoleFromFirebase(this, this::bindUserProfile);
+    }
+
+    private void bindUserProfile() {
+        String displayName = UserProfileHelper.getDisplayFullName(this);
+        if (displayName.isEmpty()) {
+            displayName = getString(R.string.loyalty_user_name_default);
+        }
+        tvUserName.setText(displayName);
+
+        if (tvRoleLabel != null) {
+            tvRoleLabel.setText(UserRoleHelper.getRoleDisplayLabel(
+                    this, UserRoleHelper.getUserRole(this)));
+        }
     }
 
     private void setupTabs() {
@@ -169,23 +180,31 @@ public class PromotionClient extends BaseActivity {
     }
 
     private void generateCode(int position) {
-        if (userId == null || userId.isEmpty()) return;
+        if (userId == null || userId.isEmpty() || ivCodeDisplay == null) {
+            return;
+        }
+
+        android.view.ViewGroup.LayoutParams params = ivCodeDisplay.getLayoutParams();
+        params.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+        params.height = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+        ivCodeDisplay.setLayoutParams(params);
+        ivCodeDisplay.setAdjustViewBounds(true);
+        ivCodeDisplay.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
 
         Bitmap bitmap;
         if (position == 0) {
-            bitmap = QRCodeGenerator.generateQRCode(userId, 512);
+            bitmap = QRCodeGenerator.generateQRCode(userId, 1024);
         } else {
-            bitmap = QRCodeGenerator.generateBarcode(userId, 800, 300);
+            bitmap = QRCodeGenerator.generateBarcode(userId, 1200, 300);
         }
-
-        if (bitmap != null) {
-            ivCodeDisplay.setImageBitmap(bitmap);
-        }
+        ivCodeDisplay.setImageBitmap(bitmap);
     }
 
     private void setupRecyclerView() {
         promotionAdapter = new PromotionClientAdapter(promotionList);
         rvPromotions.setLayoutManager(new LinearLayoutManager(this));
+        rvPromotions.setNestedScrollingEnabled(true);
+        rvPromotions.setHasFixedSize(true);
         rvPromotions.setAdapter(promotionAdapter);
     }
 
@@ -256,34 +275,17 @@ public class PromotionClient extends BaseActivity {
                 ? R.drawable.bg_loyalty_stamp_filled
                 : R.drawable.bg_loyalty_stamp_empty);
 
-        ImageView icon = new ImageView(this);
-        FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(dpToPx(24), dpToPx(24));
-        iconParams.gravity = Gravity.CENTER;
-        icon.setLayoutParams(iconParams);
-        icon.setImageResource(R.drawable.points);
-        icon.setColorFilter(ContextCompat.getColor(this,
-                filled ? R.color.primary : R.color.outline_variant));
+        ImageView star = new ImageView(this);
+        FrameLayout.LayoutParams starParams = new FrameLayout.LayoutParams(dpToPx(28), dpToPx(28));
+        starParams.gravity = Gravity.CENTER;
+        star.setLayoutParams(starParams);
+        star.setImageResource(R.drawable.ic_star);
+        star.setColorFilter(ContextCompat.getColor(this,
+                filled ? R.color.star_rating_active : R.color.outline_variant));
         if (!filled) {
-            icon.setAlpha(0.5f);
+            star.setAlpha(0.55f);
         }
-        cell.addView(icon);
-
-        if (filled) {
-            FrameLayout badge = new FrameLayout(this);
-            FrameLayout.LayoutParams badgeParams = new FrameLayout.LayoutParams(dpToPx(18), dpToPx(18));
-            badgeParams.gravity = Gravity.BOTTOM | Gravity.END;
-            badge.setLayoutParams(badgeParams);
-            badge.setBackgroundResource(R.drawable.bg_promo_badge_primary);
-
-            ImageView check = new ImageView(this);
-            FrameLayout.LayoutParams checkParams = new FrameLayout.LayoutParams(dpToPx(10), dpToPx(10));
-            checkParams.gravity = Gravity.CENTER;
-            check.setLayoutParams(checkParams);
-            check.setImageResource(R.drawable.ic_check_white);
-            badge.addView(check);
-            cell.addView(badge);
-        }
-
+        cell.addView(star);
         gridPointIcons.addView(cell);
     }
 

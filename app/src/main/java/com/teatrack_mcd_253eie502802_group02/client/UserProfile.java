@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.client.ContactWithUs;
+import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
 import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
@@ -28,7 +29,7 @@ import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 public class UserProfile extends BaseActivity {
 
-    private LinearLayout btnPersonalInfo, btnLanguage, btnPoints, btnReviews, btnPolicies, btnStoreList, btnComplaint;
+    private LinearLayout btnPersonalInfo, btnLanguage, btnPoints, btnPolicies, btnStoreList, btnComplaint;
     private TextView tvUserName;
     private TextView tvUserPhone;
 
@@ -69,7 +70,6 @@ public class UserProfile extends BaseActivity {
         btnPersonalInfo = findViewById(R.id.btnPersonalInfo);
         btnLanguage     = findViewById(R.id.btnLanguage);
         btnPoints       = findViewById(R.id.btnPoints);
-        btnReviews      = findViewById(R.id.btnReviews);
         btnPolicies     = findViewById(R.id.btnPolicies);
         btnStoreList    = findViewById(R.id.btnStoreList);
         btnComplaint    = findViewById(R.id.btnComplaint);
@@ -78,12 +78,14 @@ public class UserProfile extends BaseActivity {
     }
 
     private void loadProfileHeader() {
+        bindHeaderFromCache();
+
         String userId = UserProfileHelper.getUserId(this);
         if (userId.isEmpty()) {
             return;
         }
 
-        FirebaseDatabase.getInstance()
+        FirebaseDatabase.getInstance(FirebaseProductRepository.DB_URL)
                 .getReference("Users")
                 .child(userId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -120,6 +122,17 @@ public class UserProfile extends BaseActivity {
                 });
     }
 
+    private void bindHeaderFromCache() {
+        String displayName = UserProfileHelper.getDisplayFullName(this);
+        if (tvUserName != null && !displayName.isEmpty()) {
+            tvUserName.setText(displayName);
+        }
+        String phone = UserProfileHelper.getDisplayPhone(this);
+        if (tvUserPhone != null && !phone.isEmpty()) {
+            tvUserPhone.setText(phone);
+        }
+    }
+
     private void setupClickListeners() {
         btnPersonalInfo.setOnClickListener(v ->
                 startActivity(new Intent(this, PersonalInformationActivity.class)));
@@ -127,8 +140,6 @@ public class UserProfile extends BaseActivity {
                 startActivity(new Intent(this, ChangeLanguageActivity.class)));
         btnPoints.setOnClickListener(v ->
                 startActivity(new Intent(this, EarnedPointHistoryActivity.class)));
-        btnReviews.setOnClickListener(v ->
-                startActivity(new Intent(this, MyReviewsActivity.class)));
         btnPolicies.setOnClickListener(v ->
                 startActivity(new Intent(this, PolicyandTermActivity.class)));
         if (btnComplaint != null) {

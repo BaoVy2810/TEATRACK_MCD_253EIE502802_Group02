@@ -48,15 +48,18 @@
 
     <TextView
         android:id="@+id/tvLanguageTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="140dp"
-        android:lineSpacingExtra="4dp"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="12dp"
+        android:lineSpacingExtra="2dp"
+        android:maxLines="2"
         android:text="@string/language_settings_title"
         android:textColor="#2C2C2C"
         android:textSize="36sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/imgLogo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -78,13 +81,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="20dp"
         app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLanguageTitle">
+        app:layout_constraintTop_toBottomOf="@id/viewUnderline">
 
         <RadioGroup
             android:id="@+id/rgLanguage"

@@ -43,6 +43,26 @@ public final class UserRoleHelper {
         return normalized.contains("vip");
     }
 
+    public static String getRoleDisplayLabel(Context context, String role) {
+        if (context == null) {
+            return "";
+        }
+        if (role == null || role.trim().isEmpty()) {
+            return context.getString(R.string.role_customer);
+        }
+        String normalized = role.trim();
+        if (normalized.equalsIgnoreCase(context.getString(R.string.role_customer_vip))) {
+            return context.getString(R.string.loyalty_vip_label);
+        }
+        if (normalized.equalsIgnoreCase(context.getString(R.string.role_customer))) {
+            return context.getString(R.string.loyalty_member_label);
+        }
+        if (normalized.equalsIgnoreCase(context.getString(R.string.role_admin))) {
+            return context.getString(R.string.role_admin);
+        }
+        return normalized;
+    }
+
     public static void refreshRoleFromFirebase(Context context, RefreshCallback callback) {
         if (context == null) {
             if (callback != null) {

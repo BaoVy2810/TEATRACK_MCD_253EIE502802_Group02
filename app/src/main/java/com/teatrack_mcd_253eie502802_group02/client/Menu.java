@@ -34,6 +34,7 @@ import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.CartActions;
+import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 import com.teatrack_mcd_253eie502802_group02.util.ReviewStatsHelper;
 import com.teatrack_mcd_253eie502802_group02.util.UserRoleHelper;
 
@@ -499,7 +500,7 @@ public class Menu extends BaseActivity {
         products.add(new Product("Hồng Trà Bí Đao", R.mipmap.hongtrabidao, 4.8f, "500", 19000, 22000, 16000, 19000));
         products.add(new Product("Trà Xanh Bí Đao", R.mipmap.traxanhbidao, 4.8f, "500", 19000, 22000, 16000, 19000));
         products.add(new Product("Trà Xanh Hoa Nhài", R.mipmap.traxanhhoanhai, 4.8f, "500", 19000, 22000, 16000, 19000));
-        products.add(new Product("Sữa Tươi Khoai Môn", R.mipmap.suatuoikhoaimonnghien, 4.8f, "500", 25000, 29000, 22000, 26000));
+        products.add(new Product("Sữa Tươi Khoai Môn Nghiền", R.mipmap.suatuoikhoaimonnghien, 4.8f, "500", 25000, 29000, 22000, 26000));
         products.add(new Product("Ô Long Latte", R.mipmap.olonglatte, 4.8f, "500", 24000, 28000, 21000, 25000));
         return products;
     }
@@ -512,7 +513,7 @@ public class Menu extends BaseActivity {
         intent.putExtra("priceL", String.valueOf(product.getPriceL()));
         intent.putExtra("vipM", String.valueOf(product.getVipPriceM()));
         intent.putExtra("vipL", String.valueOf(product.getVipPriceL()));
-        intent.putExtra("imageRes", product.getImageRes());
+        ProductImageHelper.putDetailExtras(intent, this, product);
         intent.putExtra("rating", product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());
         if (product.getId() != null && !product.getId().isEmpty()) {

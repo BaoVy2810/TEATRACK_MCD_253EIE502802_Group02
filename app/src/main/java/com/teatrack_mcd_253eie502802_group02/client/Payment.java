@@ -143,8 +143,10 @@ public class Payment extends AppCompatActivity {
         tvInstructions.setText(instructions);
 
         findViewById(R.id.btnDownloadQr).setOnClickListener(v -> saveQrToGallery(cardQr));
-        findViewById(R.id.btnCustomizeQr).setOnClickListener(v ->
-            Toast.makeText(this, "QR Customization coming soon!", Toast.LENGTH_SHORT).show());
+        findViewById(R.id.btnCustomizeQr).setOnClickListener(v -> {
+            Intent intent = new Intent(Payment.this, PageNotFound.class);
+            startActivity(intent);
+        });
         findViewById(R.id.btnShareQr).setOnClickListener(v -> shareQrImage(cardQr));
 
         if (showBankGrid) {

@@ -1825,7 +1825,7 @@
                         <androidx.core.widget.NestedScrollView
                             android:id="@+id/scrollReviewList"
                             android:layout_width="match_parent"
-                            android:layout_height="265dp"
+                            android:layout_height="270dp"
                             android:scrollbars="vertical">
 
                             <LinearLayout

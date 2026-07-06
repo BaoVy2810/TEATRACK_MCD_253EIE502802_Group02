@@ -149,6 +149,7 @@
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/inter"
                         android:lineSpacingExtra="4dp"
+                        android:justificationMode="inter_word"
                         android:text="@string/refund_reversals_content"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
@@ -175,6 +176,8 @@
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/inter"
+                            android:justificationMode="inter_word"
+                            android:lineSpacingExtra="4dp"
                             android:text="@string/refund_reversals_note"
                             android:textColor="@color/Gray"
                             android:textSize="12sp" />
@@ -228,6 +231,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
+                        android:lineSpacingExtra="4dp"
                         android:text="@string/refund_cancellations_standard_content"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
@@ -251,6 +256,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
+                        android:lineSpacingExtra="4dp"
                         android:text="@string/refund_cancellations_inprogress_content"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
@@ -295,6 +302,7 @@
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/inter"
                         android:lineSpacingExtra="4dp"
+                        android:justificationMode="inter_word"
                         android:text="@string/refund_membership_content"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
