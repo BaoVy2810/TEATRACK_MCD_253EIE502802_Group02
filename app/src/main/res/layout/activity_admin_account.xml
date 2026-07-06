@@ -122,17 +122,12 @@
                     tools:itemCount="4"
                     tools:listitem="@layout/item_account" />
 
-                <TextView
-                    android:id="@+id/tvEmptyState"
+                <include
+                    android:id="@+id/layoutEmptyState"
+                    layout="@layout/layout_admin_empty_state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="24dp"
-                    android:text="@string/empty_accounts_message"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    tools:visibility="visible" />
+                    android:minHeight="240dp" />
 
             </LinearLayout>
         </LinearLayout>

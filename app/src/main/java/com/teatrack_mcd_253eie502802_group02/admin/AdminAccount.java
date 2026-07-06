@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,6 +96,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         setupRecyclerView();
         setupFilters();
         setupActions();
+        setupEmptyState();
         setupBottomNav();
         listenUsers();
         com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper.setupProfileMenu(this);
@@ -307,7 +309,15 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
             }
         });
         adapter.submitList(filteredUsers);
-        binding.tvEmptyState.setVisibility(filteredUsers.isEmpty() ? android.view.View.VISIBLE : android.view.View.GONE);
+        boolean empty = filteredUsers.isEmpty();
+        binding.layoutEmptyState.getRoot().setVisibility(empty ? View.VISIBLE : View.GONE);
+        binding.rvAccounts.setVisibility(empty ? View.GONE : View.VISIBLE);
+    }
+
+    private void setupEmptyState() {
+        binding.layoutEmptyState.ivEmptyIcon.setImageResource(R.drawable.users);
+        binding.layoutEmptyState.tvEmptyTitle.setText(R.string.empty_accounts_title);
+        binding.layoutEmptyState.tvEmptyDesc.setText(R.string.empty_accounts_desc);
     }
 
     @Override
@@ -343,7 +353,6 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         bindDetailStatus(tvStatus, user.getStatus());
 
         detailView.findViewById(R.id.btnClose).setOnClickListener(v -> dialog.dismiss());
-        detailView.findViewById(R.id.btnCloseDetail).setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
     }

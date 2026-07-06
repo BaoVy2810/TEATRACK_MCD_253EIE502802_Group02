@@ -19,12 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/admin_modal_padding">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="@dimen/admin_modal_header_gap">
 
                 <TextView
                     android:id="@+id/tvDialogTitle"
@@ -53,7 +53,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/admin_modal_divider_gap"
                 android:background="@color/divider" />
 
             <TextView
@@ -68,8 +68,8 @@
                 android:id="@+id/etFullName"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints="name"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_full_name"
@@ -91,8 +91,8 @@
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints="username"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_username"
@@ -114,8 +114,8 @@
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints="emailAddress"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_email"
@@ -137,8 +137,8 @@
                 android:id="@+id/etPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints="phone"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_phone"
@@ -161,8 +161,8 @@
                 android:id="@+id/etAddress"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints=""
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_address_account"
@@ -197,8 +197,8 @@
                         android:id="@+id/roleSelectRow"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                        android:layout_marginBottom="@dimen/admin_modal_field_gap"
                         android:background="@drawable/bg_input_rounded"
                         android:clickable="true"
                         android:focusable="true"
@@ -249,8 +249,8 @@
                         android:id="@+id/statusSelectRow"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                        android:layout_marginBottom="@dimen/admin_modal_field_gap"
                         android:background="@drawable/bg_input_rounded"
                         android:clickable="true"
                         android:focusable="true"
@@ -287,7 +287,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/admin_modal_actions_gap"
                 android:gravity="center"
                 android:orientation="horizontal">
 

@@ -16,19 +16,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +36,6 @@ import com.bumptech.glide.Glide;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,6 +49,7 @@ import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.CloudinaryHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Locale;
@@ -62,7 +62,7 @@ public class AdminPromotion extends BaseActivity {
     private List<Promotion> filteredList;
     private DatabaseReference databaseReference;
     private EditText etSearch;
-    private TextView tvEmptyState;
+    private View layoutEmptyState;
     private View fabAddPromotion;
     private Uri selectedImageUri;
     private ImageView ivDialogPreview;
@@ -179,8 +179,9 @@ public class AdminPromotion extends BaseActivity {
         rvPromotionList = findViewById(R.id.rvPromotionList);
         etSearch = findViewById(R.id.etSearch);
         etSearch.setHint(R.string.str_promotion_search);
-        tvEmptyState = findViewById(R.id.tvEmptyState);
+        layoutEmptyState = findViewById(R.id.layoutEmptyState);
         fabAddPromotion = findViewById(R.id.fabAddPromotion);
+        setupEmptyStateContent();
 
         promotionList = new ArrayList<>();
         filteredList = new ArrayList<>();
@@ -292,7 +293,26 @@ public class AdminPromotion extends BaseActivity {
             }
         }
         adapter.notifyDataSetChanged();
-        tvEmptyState.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
+        updateEmptyState(filteredList.isEmpty());
+    }
+
+    private void updateEmptyState(boolean empty) {
+        if (layoutEmptyState != null) {
+            layoutEmptyState.setVisibility(empty ? View.VISIBLE : View.GONE);
+        }
+        if (rvPromotionList != null) {
+            rvPromotionList.setVisibility(empty ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    private void setupEmptyStateContent() {
+        if (layoutEmptyState == null) return;
+        ImageView icon = layoutEmptyState.findViewById(R.id.ivEmptyIcon);
+        TextView title = layoutEmptyState.findViewById(R.id.tvEmptyTitle);
+        TextView desc = layoutEmptyState.findViewById(R.id.tvEmptyDesc);
+        icon.setImageResource(R.drawable.coupon3);
+        title.setText(R.string.empty_promotions_title);
+        desc.setText(R.string.empty_promotions_desc);
     }
 
     private void showPromotionDialog(Promotion promotion) {
@@ -307,13 +327,15 @@ public class AdminPromotion extends BaseActivity {
 
         EditText etCode = view.findViewById(R.id.etPromotionCode);
         EditText etDesc = view.findViewById(R.id.etPromotionDesc);
-        Spinner spnType = view.findViewById(R.id.spnPromotionType);
+        View typeSelectRow = view.findViewById(R.id.typeSelectRow);
+        TextView tvTypeSelect = view.findViewById(R.id.tvTypeSelect);
         EditText etValue = view.findViewById(R.id.etPromotionValue);
         EditText etMinSubtotal = view.findViewById(R.id.etMinSubtotal);
         EditText etMaxDiscount = view.findViewById(R.id.etMaxDiscount);
         TextView tvMaxDiscountLabel = view.findViewById(R.id.tvMaxDiscountLabel);
         
-        MaterialButtonToggleGroup toggleImage = view.findViewById(R.id.toggleImageSource);
+        TextView btnSourceLocal = view.findViewById(R.id.btnSourceLocal);
+        TextView btnSourceRemote = view.findViewById(R.id.btnSourceRemote);
         LinearLayout layoutLocal = view.findViewById(R.id.layoutLocalImage);
         LinearLayout layoutRemote = view.findViewById(R.id.layoutRemoteImage);
         EditText etImageUrl = view.findViewById(R.id.etImageUrl);
@@ -334,45 +356,55 @@ public class AdminPromotion extends BaseActivity {
             btnCloseDialog.setOnClickListener(v -> dialog.dismiss());
         }
 
-        // Setup Spinner
-        String[] types = {
+        // Promotion type dropdown
+        final String[] typeLabels = {
                 getString(R.string.str_type_amount),
                 getString(R.string.str_type_percent),
                 getString(R.string.str_type_per_item)
         };
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, types);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spnType.setAdapter(spinnerAdapter);
+        final int[] selectedTypeIndex = {0};
 
-        spnType.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                if (position == 1) { // Percent
-                    tvMaxDiscountLabel.setVisibility(View.VISIBLE);
-                    etMaxDiscount.setVisibility(View.VISIBLE);
-                } else {
-                    tvMaxDiscountLabel.setVisibility(View.GONE);
-                    etMaxDiscount.setVisibility(View.GONE);
-                }
-                updatePreview(etCode, spnType, etValue, etMinSubtotal, etMaxDiscount, tvPreviewTitle, tvPreviewDiscount, tvPreviewMinOrder);
+        Runnable applyTypeSelection = () -> {
+            tvTypeSelect.setText(typeLabels[selectedTypeIndex[0]]);
+            if (selectedTypeIndex[0] == 1) {
+                tvMaxDiscountLabel.setVisibility(View.VISIBLE);
+                etMaxDiscount.setVisibility(View.VISIBLE);
+            } else {
+                tvMaxDiscountLabel.setVisibility(View.GONE);
+                etMaxDiscount.setVisibility(View.GONE);
             }
+            updatePreview(etCode, selectedTypeIndex[0], etValue, etMinSubtotal, etMaxDiscount,
+                    tvPreviewTitle, tvPreviewDiscount, tvPreviewMinOrder);
+        };
 
-            @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
-        });
+        typeSelectRow.setOnClickListener(v -> showTypeOptionPopup(v, Arrays.asList(typeLabels),
+                typeLabels[selectedTypeIndex[0]], choice -> {
+                    for (int i = 0; i < typeLabels.length; i++) {
+                        if (typeLabels[i].equals(choice)) {
+                            selectedTypeIndex[0] = i;
+                            break;
+                        }
+                    }
+                    applyTypeSelection.run();
+                }));
 
-        // Image Toggle Logic
-        toggleImage.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (isChecked) {
-                if (checkedId == R.id.btnSourceLocal) {
-                    layoutLocal.setVisibility(View.VISIBLE);
-                    layoutRemote.setVisibility(View.GONE);
-                } else {
-                    layoutLocal.setVisibility(View.GONE);
-                    layoutRemote.setVisibility(View.VISIBLE);
-                }
-            }
+        // Image source toggle (dashboard pill style)
+        final int[] selectedImageSource = {R.id.btnSourceLocal};
+        Runnable applyImageSourceToggle = () -> {
+            boolean isLocal = selectedImageSource[0] == R.id.btnSourceLocal;
+            updateImageSourceToggleState(btnSourceLocal, btnSourceRemote, isLocal ? btnSourceLocal : btnSourceRemote);
+            layoutLocal.setVisibility(isLocal ? View.VISIBLE : View.GONE);
+            layoutRemote.setVisibility(isLocal ? View.GONE : View.VISIBLE);
+        };
+        btnSourceLocal.setOnClickListener(v -> {
+            selectedImageSource[0] = R.id.btnSourceLocal;
+            applyImageSourceToggle.run();
         });
+        btnSourceRemote.setOnClickListener(v -> {
+            selectedImageSource[0] = R.id.btnSourceRemote;
+            applyImageSourceToggle.run();
+        });
+        applyImageSourceToggle.run();
 
         btnSelectLocal.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -385,7 +417,8 @@ public class AdminPromotion extends BaseActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                updatePreview(etCode, spnType, etValue, etMinSubtotal, etMaxDiscount, tvPreviewTitle, tvPreviewDiscount, tvPreviewMinOrder);
+                updatePreview(etCode, selectedTypeIndex[0], etValue, etMinSubtotal, etMaxDiscount,
+                        tvPreviewTitle, tvPreviewDiscount, tvPreviewMinOrder);
             }
             @Override
             public void afterTextChanged(Editable s) {}
@@ -401,7 +434,7 @@ public class AdminPromotion extends BaseActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (toggleImage.getCheckedButtonId() == R.id.btnSourceRemote && !s.toString().isEmpty()) {
+                if (selectedImageSource[0] == R.id.btnSourceRemote && !s.toString().isEmpty()) {
                     Glide.with(AdminPromotion.this).load(s.toString()).into(ivDialogPreview);
                 }
             }
@@ -411,34 +444,41 @@ public class AdminPromotion extends BaseActivity {
 
         if (promotion != null) {
             tvTitle.setText(R.string.str_edit_promotion);
+            btnSave.setText(R.string.btn_edit);
+            btnSave.setIcon(ContextCompat.getDrawable(this, R.drawable.edit2));
             etCode.setText(promotion.getCode());
             etDesc.setText(promotion.getDescription());
             if ("percent".equals(promotion.getType())) {
-                spnType.setSelection(1);
-                tvMaxDiscountLabel.setVisibility(View.VISIBLE);
-                etMaxDiscount.setVisibility(View.VISIBLE);
+                selectedTypeIndex[0] = 1;
                 etMaxDiscount.setText(String.valueOf(promotion.getMax()));
             } else if ("per_item".equals(promotion.getType())) {
-                spnType.setSelection(2);
+                selectedTypeIndex[0] = 2;
             } else {
-                spnType.setSelection(0);
+                selectedTypeIndex[0] = 0;
             }
             etValue.setText(String.valueOf(promotion.getValue()));
             etMinSubtotal.setText(String.valueOf(promotion.getMinSubtotal()));
             swActive.setChecked(promotion.getIsActive());
 
             if ("remote".equals(promotion.getImageSourceType())) {
-                toggleImage.check(R.id.btnSourceRemote);
+                selectedImageSource[0] = R.id.btnSourceRemote;
                 etImageUrl.setText(promotion.getImage());
                 Glide.with(this).load(promotion.getImage()).into(ivDialogPreview);
             } else {
-                toggleImage.check(R.id.btnSourceLocal);
+                selectedImageSource[0] = R.id.btnSourceLocal;
                 // For local, we might just show the existing image URL if it's already on Cloudinary
                 if (promotion.getImage() != null && !promotion.getImage().isEmpty()) {
                     Glide.with(this).load(promotion.getImage()).into(ivDialogPreview);
                 }
             }
+        } else {
+            tvTitle.setText(R.string.str_add_promotion);
+            btnSave.setText(R.string.btn_add);
+            btnSave.setIcon(ContextCompat.getDrawable(this, R.drawable.plus));
         }
+
+        applyTypeSelection.run();
+        applyImageSourceToggle.run();
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
 
@@ -448,7 +488,7 @@ public class AdminPromotion extends BaseActivity {
             String valueStr = etValue.getText().toString().trim();
             String minStr = etMinSubtotal.getText().toString().trim();
             String type = "amount";
-            int selection = spnType.getSelectedItemPosition();
+            int selection = selectedTypeIndex[0];
             if (selection == 1) type = "percent";
             else if (selection == 2) type = "per_item";
 
@@ -466,7 +506,7 @@ public class AdminPromotion extends BaseActivity {
             double min = minStr.isEmpty() ? 0 : Double.parseDouble(minStr);
             double max = etMaxDiscount.getText().toString().isEmpty() ? 0 : Double.parseDouble(etMaxDiscount.getText().toString());
 
-            String imageSourceType = (toggleImage.getCheckedButtonId() == R.id.btnSourceLocal) ? "local" : "remote";
+            String imageSourceType = (selectedImageSource[0] == R.id.btnSourceLocal) ? "local" : "remote";
             String currentImageUrl = (imageSourceType.equals("remote")) ? etImageUrl.getText().toString() : (promotion != null ? promotion.getImage() : "");
 
             if (imageSourceType.equals("local") && selectedImageUri != null) {
@@ -483,7 +523,37 @@ public class AdminPromotion extends BaseActivity {
         return String.format(Locale.US, "%,.0f", price).replace(',', '.') + "đ";
     }
 
-    private void updatePreview(EditText etCode, Spinner spnType, EditText etValue, EditText etMinSubtotal, EditText etMaxDiscount,
+    private void showTypeOptionPopup(View anchor, List<String> options, String selected,
+                                     java.util.function.Consumer<String> listener) {
+        View popupView = LayoutInflater.from(this).inflate(R.layout.dialog_category_selector, null);
+        popupView.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        );
+        int minWidth = (int) (getResources().getDisplayMetrics().widthPixels * 0.45);
+        int anchorWidth = anchor.getWidth() > 0 ? anchor.getWidth() : 0;
+        int popupWidth = Math.max(Math.max(anchorWidth, popupView.getMeasuredWidth()), minWidth);
+
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                popupWidth,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setElevation(20);
+
+        RecyclerView rvCategories = popupView.findViewById(R.id.rvCategoryList);
+        if (rvCategories != null) {
+            rvCategories.setLayoutManager(new LinearLayoutManager(this));
+            rvCategories.setAdapter(new CategoryDialogAdapter(options, selected, choice -> {
+                listener.accept(choice);
+                popupWindow.dismiss();
+            }));
+        }
+        popupWindow.showAsDropDown(anchor, 0, 10);
+    }
+
+    private void updatePreview(EditText etCode, int typeIndex, EditText etValue, EditText etMinSubtotal, EditText etMaxDiscount,
                               TextView tvTitle, TextView tvDiscount, TextView tvMinOrder) {
         String code = etCode.getText().toString().trim();
         String valStr = etValue.getText().toString().trim();
@@ -494,7 +564,7 @@ public class AdminPromotion extends BaseActivity {
         if (!valStr.isEmpty()) {
             try {
                 double value = Double.parseDouble(valStr);
-                int selection = spnType.getSelectedItemPosition();
+                int selection = typeIndex;
                 
                 if (selection == 1) { // Percent
                     String desc = getString(R.string.str_desc_percent, (int)value);
@@ -612,5 +682,19 @@ public class AdminPromotion extends BaseActivity {
         });
 
         dialog.show();
+    }
+
+    private void updateImageSourceToggleState(TextView btnLocal, TextView btnRemote, TextView activeBtn) {
+        TextView[] buttons = {btnLocal, btnRemote};
+        int activeBlue = ContextCompat.getColor(this, R.color.brand_blue);
+        for (TextView btn : buttons) {
+            if (btn == activeBtn) {
+                btn.setBackgroundResource(R.drawable.bg_toggle_item_active_white);
+                btn.setTextColor(activeBlue);
+            } else {
+                btn.setBackgroundResource(R.drawable.bg_toggle_item_inactive_transparent);
+                btn.setTextColor(Color.WHITE);
+            }
+        }
     }
 }

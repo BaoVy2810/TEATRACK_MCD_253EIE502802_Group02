@@ -114,6 +114,13 @@
     <dimen name="modal_body_padding">20dp</dimen>
     <dimen name="modal_footer_padding">16dp</dimen>
     <dimen name="modal_title_size">16sp</dimen>
+    <!-- Admin form modal spacing -->
+    <dimen name="admin_modal_padding">16dp</dimen>
+    <dimen name="admin_modal_header_gap">8dp</dimen>
+    <dimen name="admin_modal_divider_gap">12dp</dimen>
+    <dimen name="admin_modal_label_input_gap">4dp</dimen>
+    <dimen name="admin_modal_field_gap">8dp</dimen>
+    <dimen name="admin_modal_actions_gap">16dp</dimen>
     <dimen name="delete_icon_size">64dp</dimen>
     <dimen name="success_icon_size">52dp</dimen>
 

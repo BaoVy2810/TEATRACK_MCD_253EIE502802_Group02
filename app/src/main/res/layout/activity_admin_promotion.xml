@@ -72,18 +72,15 @@
         app:layout_constraintTop_toBottomOf="@id/searchContainer"
         tools:listitem="@layout/item_promotion_admin" />
 
-    <TextView
-        android:id="@+id/tvEmptyState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/str_no_promotions"
-        android:visibility="gone"
-        android:textSize="16sp"
-        android:textColor="#666666"
-        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+    <include
+        android:id="@+id/layoutEmptyState"
+        layout="@layout/layout_admin_empty_state"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/layout_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/searchContainer" />
 
     <include
         android:id="@+id/layout_nav_bar"

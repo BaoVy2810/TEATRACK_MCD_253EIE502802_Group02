@@ -52,8 +52,8 @@ public class AdminBlog extends AppCompatActivity {
 
     private EditText etSearch;
     private RecyclerView rvBlogList;
-    private View btnAddBlog;
-    private TextView tvEmptyState;
+    private View fabAddBlog;
+    private View layoutEmptyState;
 
     private static final int[] NAV_ITEM_IDS = {
             R.id.nav_dashboard,
@@ -105,8 +105,43 @@ public class AdminBlog extends AppCompatActivity {
         setupNavBar();
         setupHeader();
 
-        btnAddBlog.setOnClickListener(v -> showAddBlogDialog());
+        setupFabAddBlog();
         setupSearch();
+    }
+
+    private void setupFabAddBlog() {
+        fabAddBlog = findViewById(R.id.fabAddBlog);
+        if (fabAddBlog != null) {
+            fabAddBlog.bringToFront();
+            fabAddBlog.setOnTouchListener(new View.OnTouchListener() {
+                private float initialX, initialY, initialTouchX, initialTouchY;
+                private static final int CLICK_THRESHOLD = 10;
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            initialX = v.getX();
+                            initialY = v.getY();
+                            initialTouchX = event.getRawX();
+                            initialTouchY = event.getRawY();
+                            return true;
+                        case MotionEvent.ACTION_MOVE:
+                            v.setX(initialX + (event.getRawX() - initialTouchX));
+                            v.setY(initialY + (event.getRawY() - initialTouchY));
+                            return true;
+                        case MotionEvent.ACTION_UP:
+                            float diffX = Math.abs(event.getRawX() - initialTouchX);
+                            float diffY = Math.abs(event.getRawY() - initialTouchY);
+                            if (diffX < CLICK_THRESHOLD && diffY < CLICK_THRESHOLD) {
+                                showAddBlogDialog();
+                            }
+                            return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     private void setupHeader() {
@@ -183,10 +218,12 @@ public class AdminBlog extends AppCompatActivity {
 
         if (blog == null) {
             tvDialogTitle.setText(R.string.str_add_blog);
-            btnSubmit.setText(R.string.str_btn_create);
+            btnSubmit.setText(R.string.btn_add);
+            btnSubmit.setIcon(androidx.core.content.ContextCompat.getDrawable(this, R.drawable.plus));
         } else {
             tvDialogTitle.setText(R.string.str_edit_blog);
-            btnSubmit.setText(R.string.str_btn_save);
+            btnSubmit.setText(R.string.btn_edit);
+            btnSubmit.setIcon(androidx.core.content.ContextCompat.getDrawable(this, R.drawable.edit2));
             etBlogTitle.setText(blog.getTitle() != null ? blog.getTitle() : blog.getHeading());
             etBlogContent.setText(blog.getContent());
             etBlogImage.setText(blog.getThumbnailImage() != null ? blog.getThumbnailImage() : blog.getImage());
@@ -272,23 +309,24 @@ public class AdminBlog extends AppCompatActivity {
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
             dialog.getWindow().setAttributes(params);
         }
 
         TextView tvTitle = dialog.findViewById(R.id.tvDeleteTitle);
-        if (tvTitle != null) tvTitle.setText(R.string.str_delete_blog);
+        if (tvTitle != null) tvTitle.setText(R.string.modal_delete_title);
 
         TextView tvMessage = dialog.findViewById(R.id.tvDeleteMessage);
         String title = blog.getTitle();
         if (title == null || title.isEmpty()) title = blog.getHeading();
-        
-        String html = getString(R.string.str_delete_confirm) + " <b>" + title + "</b>?";
-        
+        String fullMessage = "The blog post <font color='#0088ff'><b>"
+                + android.text.TextUtils.htmlEncode(title != null ? title : "")
+                + "</b></font> will be permanently deleted.";
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            tvMessage.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
+            tvMessage.setText(Html.fromHtml(fullMessage, Html.FROM_HTML_MODE_LEGACY));
         } else {
-            tvMessage.setText(Html.fromHtml(html));
+            tvMessage.setText(Html.fromHtml(fullMessage));
         }
 
         dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
@@ -356,8 +394,19 @@ public class AdminBlog extends AppCompatActivity {
         etSearch = findViewById(R.id.etSearch);
         etSearch.setHint(R.string.str_blog_search);
         rvBlogList = findViewById(R.id.rvBlogList);
-        btnAddBlog = findViewById(R.id.btnAddBlog);
-        tvEmptyState = findViewById(R.id.tvEmptyState);
+        fabAddBlog = findViewById(R.id.fabAddBlog);
+        layoutEmptyState = findViewById(R.id.layoutEmptyState);
+        setupEmptyStateContent();
+    }
+
+    private void setupEmptyStateContent() {
+        if (layoutEmptyState == null) return;
+        android.widget.ImageView icon = layoutEmptyState.findViewById(R.id.ivEmptyIcon);
+        TextView title = layoutEmptyState.findViewById(R.id.tvEmptyTitle);
+        TextView desc = layoutEmptyState.findViewById(R.id.tvEmptyDesc);
+        icon.setImageResource(R.drawable.documentadd);
+        title.setText(R.string.empty_blogs_title);
+        desc.setText(R.string.empty_blogs_desc);
     }
 
     private void setupRecyclerView() {
@@ -396,12 +445,10 @@ public class AdminBlog extends AppCompatActivity {
     }
 
     private void updateEmptyState() {
-        if (blogList.isEmpty()) {
-            rvBlogList.setVisibility(View.GONE);
-            tvEmptyState.setVisibility(View.VISIBLE);
-        } else {
-            rvBlogList.setVisibility(View.VISIBLE);
-            tvEmptyState.setVisibility(View.GONE);
+        boolean empty = blogList.isEmpty();
+        if (layoutEmptyState != null) {
+            layoutEmptyState.setVisibility(empty ? View.VISIBLE : View.GONE);
         }
+        rvBlogList.setVisibility(empty ? View.GONE : View.VISIBLE);
     }
 }

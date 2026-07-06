@@ -57,9 +57,13 @@ public class AdminBlogDetail extends AppCompatActivity {
         tvStatus = findViewById(R.id.tvAdminBlogStatus);
         ivBlogImage = findViewById(R.id.ivAdminBlogImage);
 
-        View btnBack = findViewById(R.id.btnAdminBlogBack);
+        View btnBack = findViewById(R.id.btnBack);
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> returnToAdminBlogList());
+        }
+        TextView tvTopTitle = findViewById(R.id.tvTopTitle);
+        if (tvTopTitle != null) {
+            tvTopTitle.setText(R.string.blog_detail_title);
         }
     }
 

@@ -18,13 +18,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/admin_modal_padding">
 
             <!-- Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="@dimen/admin_modal_header_gap">
 
                 <TextView
                     android:id="@+id/tvDialogTitle"
@@ -53,7 +53,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/admin_modal_divider_gap"
                 android:background="@color/divider" />
 
             <!-- Agency ID -->
@@ -69,8 +69,8 @@
                 android:id="@+id/etId"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints=""
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_agency_id_example"
@@ -93,8 +93,8 @@
                 android:id="@+id/etName"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints="name"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_agency_name"
@@ -117,8 +117,8 @@
                 android:id="@+id/etAddress"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints="postalAddress"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_full_address"
@@ -141,8 +141,8 @@
                 android:id="@+id/etPhone"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints="phone"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_phone_example"
@@ -164,8 +164,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -203,7 +203,7 @@
                 android:id="@+id/ivPreview"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_launcher_background"
                 android:visibility="gone"
@@ -224,8 +224,7 @@
                 android:id="@+id/etMapEmbed"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
                 android:autofillHints=""
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_maps_url_example"
@@ -239,6 +238,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/admin_modal_actions_gap"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -258,7 +258,7 @@
                     android:textAllCaps="false"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    app:cornerRadius="24dp"
+                    app:cornerRadius="12dp"
                     app:icon="@drawable/ic_close"
                     app:iconGravity="textStart"
                     app:iconPadding="4dp"
@@ -281,7 +281,7 @@
                     android:textAllCaps="false"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    app:cornerRadius="24dp"
+                    app:cornerRadius="12dp"
                     app:icon="@drawable/edit2"
                     app:iconGravity="textStart"
                     app:iconPadding="4dp"

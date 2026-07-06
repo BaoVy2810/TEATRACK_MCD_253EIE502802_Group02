@@ -409,40 +409,7 @@
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             android:paddingHorizontal="16dp"
-            android:paddingBottom="16dp">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCloseDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-
-                android:layout_gravity="center_horizontal"
-
-                android:minWidth="120dp"
-                android:paddingStart="24dp"
-                android:paddingEnd="24dp"
-
-                android:backgroundTint="@android:color/transparent"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-
-                android:text="@string/btn_close"
-                android:textAllCaps="false"
-                android:textColor="@color/brand_blue"
-                android:textSize="14sp"
-                android:textStyle="bold"
-
-                app:cornerRadius="24dp"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1.2dp"
-
-                app:icon="@drawable/ic_close_circle_custom"
-                app:iconGravity="textStart"
-                app:iconSize="18dp"
-                app:iconPadding="6dp"
-                app:iconTint="@null"/>
-
-        </LinearLayout>
+            android:paddingBottom="16dp"/>
 
     </LinearLayout>
 

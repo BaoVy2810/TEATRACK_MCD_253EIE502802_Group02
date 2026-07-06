@@ -1066,6 +1066,14 @@
     <string name="str_view_details">View Details</string>
     <string name="str_no_orders">No orders yet</string>
     <string name="str_no_orders_desc">Your order history will appear here once you place an order.</string>
+    <string name="empty_accounts_title">No accounts yet</string>
+    <string name="empty_accounts_desc">Registered accounts will appear here.</string>
+    <string name="empty_blogs_title">No blogs yet</string>
+    <string name="empty_blogs_desc">Blog posts will appear here once you create them.</string>
+    <string name="empty_agencies_title">No branches yet</string>
+    <string name="empty_agencies_desc">Branch locations will appear here once you add them.</string>
+    <string name="empty_promotions_title">No promotions yet</string>
+    <string name="empty_promotions_desc">Promotions will appear here once you create them.</string>
     <string name="str_branch_unknown">Unknown branch</string>
     <string name="str_load_orders_error">Failed to load orders. Please try again.</string>
     <string name="str_order_thumbnail_desc">Order thumbnail</string>

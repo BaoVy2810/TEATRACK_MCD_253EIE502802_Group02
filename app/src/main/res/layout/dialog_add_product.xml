@@ -18,13 +18,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/admin_modal_padding">
 
             <!-- Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="@dimen/admin_modal_header_gap">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/admin_modal_divider_gap"
                 android:background="@color/divider" />
 
             <!-- Product ID -->
@@ -68,8 +68,8 @@
                 android:id="@+id/etProductId"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints=""
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_product_id"
@@ -92,8 +92,8 @@
                 android:id="@+id/etProductName"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints="name"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_product_name"
@@ -116,8 +116,8 @@
                 android:id="@+id/categorySelectRow"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:background="@drawable/bg_input_rounded"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -156,8 +156,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:orientation="vertical">
 
                 <com.google.android.material.checkbox.MaterialCheckBox
@@ -189,7 +189,7 @@
                 android:background="@drawable/bg_light_blue_rounded_12"
                 android:orientation="horizontal"
                 android:padding="10dp"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="@dimen/admin_modal_header_gap">
 
                 <!-- Current Price Column -->
                 <LinearLayout
@@ -365,8 +365,8 @@
                 android:id="@+id/etProductInfo"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints=""
                 android:background="@drawable/bg_input_rounded"
                 android:fadeScrollbars="false"
@@ -393,8 +393,8 @@
                 android:id="@+id/etProductDesc"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:autofillHints=""
                 android:background="@drawable/bg_input_rounded"
                 android:gravity="top"
@@ -420,7 +420,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/admin_modal_field_gap"
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -436,7 +436,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/admin_modal_actions_gap"
                 android:gravity="center"
                 android:orientation="horizontal">
 

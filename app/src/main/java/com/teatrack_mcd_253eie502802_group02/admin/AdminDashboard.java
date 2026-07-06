@@ -88,6 +88,7 @@ public class AdminDashboard extends BaseActivity {
         setupStatCards();
         setupLineChart();
         setupBarChart();
+        setupChartLegends();
         setupDonutChart();
         setupRecentOrders();
         setupBottomNavigation();
@@ -1134,6 +1135,12 @@ public class AdminDashboard extends BaseActivity {
         chart.getAxisRight().setEnabled(false);
         chart.getDescription().setEnabled(false);
         chart.invalidate();
+    }
+
+    private void setupChartLegends() {
+        setupLegendItem(binding.legendLineRevenue.getRoot(), R.string.legend_revenue, R.color.chart_revenue_line);
+        setupLegendItem(binding.legendLineExpenses.getRoot(), R.string.legend_expenses, R.color.chart_expense_line);
+        setupLegendItem(binding.legendBarSales.getRoot(), R.string.legend_revenue, R.color.chart_bar_color);
     }
 
     private void setupDonutChart() {

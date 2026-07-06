@@ -17,6 +17,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +52,7 @@ public class AdminAgency extends AppCompatActivity {
     private EditText etSearch;
     private RecyclerView rvStores;
     private View fabAddAgency;
+    private View layoutEmptyState;
 
     private static final int[] NAV_ITEM_IDS = {
             R.id.nav_dashboard,
@@ -212,7 +214,8 @@ public class AdminAgency extends AppCompatActivity {
 
         tvDialogTitle.setText("ADD NEW AGENCY");
         if (btnSubmit != null) {
-            btnSubmit.setText("Create");
+            btnSubmit.setText(R.string.btn_add);
+            btnSubmit.setIcon(androidx.core.content.ContextCompat.getDrawable(this, R.drawable.plus));
         }
 
         String nextId = generateNextAgencyId(agencyList);
@@ -322,7 +325,8 @@ public class AdminAgency extends AppCompatActivity {
             tvDialogTitle.setText("EDIT AGENCY");
         }
         if (btnSubmit != null) {
-            btnSubmit.setText("Save");
+            btnSubmit.setText(R.string.btn_edit);
+            btnSubmit.setIcon(androidx.core.content.ContextCompat.getDrawable(this, R.drawable.edit2));
         }
 
         if (etId != null) {
@@ -503,6 +507,26 @@ public class AdminAgency extends AppCompatActivity {
             }
         }
         agencyAdapter.updateList(filteredList);
+        updateEmptyState(filteredList.isEmpty());
+    }
+
+    private void updateEmptyState(boolean empty) {
+        if (layoutEmptyState != null) {
+            layoutEmptyState.setVisibility(empty ? View.VISIBLE : View.GONE);
+        }
+        if (rvStores != null) {
+            rvStores.setVisibility(empty ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    private void setupEmptyStateContent() {
+        if (layoutEmptyState == null) return;
+        ImageView icon = layoutEmptyState.findViewById(R.id.ivEmptyIcon);
+        TextView title = layoutEmptyState.findViewById(R.id.tvEmptyTitle);
+        TextView desc = layoutEmptyState.findViewById(R.id.tvEmptyDesc);
+        icon.setImageResource(R.drawable.location);
+        title.setText(R.string.empty_agencies_title);
+        desc.setText(R.string.empty_agencies_desc);
     }
 
     public void pickImage(EditText targetEditText, ShapeableImageView previewImageView) {
@@ -536,6 +560,8 @@ public class AdminAgency extends AppCompatActivity {
         etSearch.setHint(R.string.str_agency_search);
         rvStores = findViewById(R.id.rvStores);
         fabAddAgency = findViewById(R.id.fabAddAgency);
+        layoutEmptyState = findViewById(R.id.layoutEmptyState);
+        setupEmptyStateContent();
     }
 
     private void setupRecyclerView() {
@@ -567,6 +593,8 @@ public class AdminAgency extends AppCompatActivity {
                     } catch (Exception ignored) {}
                 }
                 agencyAdapter.notifyDataSetChanged();
+                String query = etSearch != null ? etSearch.getText().toString() : "";
+                filter(query.isEmpty() ? "" : query);
             }
 
             @Override

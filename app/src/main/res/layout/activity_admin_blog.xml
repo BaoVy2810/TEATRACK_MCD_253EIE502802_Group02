@@ -67,18 +67,15 @@
         app:layout_constraintTop_toBottomOf="@id/searchContainer"
         tools:listitem="@layout/item_blog_admin" />
 
-    <TextView
-        android:id="@+id/tvEmptyState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/str_no_blogs"
-        android:visibility="gone"
-        android:textSize="16sp"
-        android:textColor="#666666"
-        app:layout_constraintTop_toBottomOf="@id/searchContainer"
+    <include
+        android:id="@+id/layoutEmptyState"
+        layout="@layout/layout_admin_empty_state"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/layout_nav_bar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/searchContainer" />
 
     <include
         android:id="@+id/layout_nav_bar"
@@ -90,12 +87,15 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnAddBlog"
+        android:id="@+id/fabAddBlog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/brand_blue"
+        android:clickable="true"
+        android:elevation="12dp"
+        android:focusable="true"
         app:fabSize="normal"
         app:layout_constraintBottom_toTopOf="@id/layout_nav_bar"
         app:layout_constraintEnd_toEndOf="parent"

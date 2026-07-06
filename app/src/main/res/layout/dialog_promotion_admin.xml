@@ -19,13 +19,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/admin_modal_padding">
 
             <!-- Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp">
+                android:layout_marginBottom="@dimen/admin_modal_header_gap">
 
                 <TextView
                     android:id="@+id/tvDialogTitle"
@@ -54,7 +54,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="@dimen/admin_modal_divider_gap"
                 android:background="@color/divider" />
 
             <!-- Promotion Code -->
@@ -70,8 +70,8 @@
                 android:id="@+id/etPromotionCode"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_promotion_code"
                 android:inputType="textCapCharacters"
@@ -93,8 +93,8 @@
                 android:id="@+id/etPromotionDesc"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_promotion_desc"
                 android:inputType="text"
@@ -112,13 +112,41 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spnPromotionType"
+            <LinearLayout
+                android:id="@+id/typeSelectRow"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_input_rounded" />
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
+                android:background="@drawable/bg_input_rounded"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="4dp">
+
+                <TextView
+                    android:id="@+id/tvTypeSelect"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical|start"
+                    android:maxLines="1"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="12sp"
+                    tools:text="Amount" />
+
+                <TextView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="⌃"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
             <!-- Promotion Value -->
             <TextView
@@ -133,8 +161,8 @@
                 android:id="@+id/etPromotionValue"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_value"
                 android:inputType="numberDecimal"
@@ -156,8 +184,8 @@
                 android:id="@+id/etMinSubtotal"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_min_subtotal"
                 android:inputType="numberDecimal"
@@ -181,8 +209,8 @@
                 android:id="@+id/etMaxDiscount"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_max_discount"
                 android:inputType="numberDecimal"
@@ -201,33 +229,42 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButtonToggleGroup
+            <LinearLayout
                 android:id="@+id/toggleImageSource"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
-                app:singleSelection="true"
-                app:checkedButton="@+id/btnSourceLocal">
+                android:layout_height="36dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
+                android:background="@drawable/bg_toggle_group_blue"
+                android:orientation="horizontal"
+                android:padding="2dp">
 
-                <Button
+                <TextView
                     android:id="@+id/btnSourceLocal"
-                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@drawable/bg_toggle_item_active_white"
+                    android:gravity="center"
+                    android:paddingHorizontal="16dp"
                     android:text="@string/str_image_local"
-                    android:textSize="11sp" />
+                    android:textColor="@color/brand_blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                <Button
+                <TextView
                     android:id="@+id/btnSourceRemote"
-                    style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@drawable/bg_toggle_item_inactive_transparent"
+                    android:gravity="center"
+                    android:paddingHorizontal="16dp"
                     android:text="@string/str_image_remote"
-                    android:textSize="11sp" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <!-- Local Image Picker -->
             <LinearLayout
@@ -241,9 +278,16 @@
                     android:id="@+id/btnSelectLocalImage"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/str_select_image"
-                    app:icon="@drawable/cloud_upload" />
+                    android:layout_height="40dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="@string/btn_choose"
+                    android:textAllCaps="true"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="12sp"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/brand_blue"
+                    app:strokeWidth="1dp" />
             </LinearLayout>
 
             <!-- Remote Image URL -->
@@ -267,16 +311,18 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/ivPromotionPreview"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_input_rounded"
+                android:layout_marginTop="@dimen/admin_modal_field_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
+                android:contentDescription="@string/str_promotion_preview"
                 android:scaleType="centerCrop"
                 android:src="@drawable/image"
-                android:contentDescription="@string/str_promotion_preview" />
+                app:shapeAppearanceOverlay="@style/RoundedImageView"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp" />
 
             <!-- Live Preview Card -->
             <TextView
@@ -290,8 +336,8 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="@dimen/admin_modal_label_input_gap"
+                android:layout_marginBottom="@dimen/admin_modal_field_gap"
                 app:cardBackgroundColor="@color/bg_light_gray"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
@@ -335,17 +381,19 @@
                 android:id="@+id/swPromotionActive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:checked="true"
                 android:text="Active"
                 android:textColor="@color/brand_blue"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:thumbTint="@color/switch_thumb_brand"
+                app:trackTint="@color/switch_track_brand" />
 
             <!-- Buttons Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/admin_modal_actions_gap"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -356,6 +404,7 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:backgroundTint="@color/danger"
+                    android:gravity="center"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:maxLines="1"
@@ -364,8 +413,7 @@
                     android:textAllCaps="false"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    android:gravity="center"
-                    app:cornerRadius="24dp"
+                    app:cornerRadius="12dp"
                     app:icon="@drawable/ic_close"
                     app:iconGravity="textStart"
                     app:iconPadding="4dp"
@@ -388,7 +436,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:gravity="center"
-                    app:cornerRadius="24dp"
+                    app:cornerRadius="12dp"
                     app:icon="@drawable/edit2"
                     app:iconGravity="textStart"
                     app:iconPadding="4dp"
