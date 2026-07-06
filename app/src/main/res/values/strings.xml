@@ -552,6 +552,7 @@
     <string name="str_promotion_type">Discount Type</string>
     <string name="str_type_amount">Fixed Amount</string>
     <string name="str_type_percent">Percentage (%)</string>
+    <string name="str_type_per_item">Per Item</string>
     <string name="str_promotion_value">Discount Value</string>
     <string name="hint_enter_value">Enter value</string>
     <string name="str_min_subtotal">Minimum Subtotal</string>
@@ -1116,6 +1117,20 @@
     <string name="loyalty_redeem_history_desc">Redeem 8 points for 1 free cup</string>
     <string name="loyalty_reward_title">1 Free Cup (8 Points)</string>
     <string name="loyalty_reward_description">Redeem for any drink at the counter.</string>
+    <string name="str_image_source">Nguồn ảnh</string>
+    <string name="str_image_local">Ảnh máy</string>
+    <string name="str_image_remote">Link ảnh</string>
+    <string name="hint_enter_image_url">Nhập link ảnh (Cloudinary/Firebase...)</string>
+    <string name="str_promotion_preview">Xem trước khuyến mãi</string>
+    <string name="str_preview_discount">Giảm: %s</string>
+    <string name="str_preview_min_order">Đơn tối thiểu: %sđ</string>
+    <string name="str_preview_expiry">Hết hạn: %s</string>
+    <string name="str_select_image">Chọn ảnh</string>
+    <string name="str_change_image">Đổi ảnh</string>
+    <string name="str_preview_empty">Nhập dữ liệu để xem trước</string>
+    <string name="str_max_discount">Giảm tối đa</string>
+    <string name="hint_enter_max_discount">Nhập số tiền giảm tối đa</string>
+
     <string name="loyalty_reward_unlimited">No expiry</string>
     <string name="loyalty_btn_redeem_placeholder">Redeem now</string>
     <string name="history_empty">You have no point transactions yet.</string>
@@ -1130,4 +1145,8 @@
     <string name="error_404_subtitle">Page Not Found</string>
     <string name="error_404_message">Sorry, the page you are looking for does not exist or has been moved.</string>
     <string name="error_404_btn_home">Back to Home</string>
+    <string name="str_desc_percent">Discount %1$d%%</string>
+    <string name="str_desc_max"> (Up to %1$s)</string>
+    <string name="str_desc_per_item">Discount %1$s per item</string>
+    <string name="str_desc_amount">Flat %1$s off</string>
 </resources>

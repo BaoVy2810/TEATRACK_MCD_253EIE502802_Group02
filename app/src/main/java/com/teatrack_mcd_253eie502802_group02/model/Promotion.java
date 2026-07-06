@@ -15,10 +15,17 @@ public class Promotion implements Serializable {
     private String type;
     private double value;
     private int imageRes;
+    private String image;
+    private String imageSourceType; // "local" or "remote"
+    private String discount; // Support Firebase field name for personal vouchers
+    private String date;     // Support Firebase field name for personal vouchers
+    private boolean isUsed;  // Support Firebase field name for personal vouchers
     private String createdAt;
     private String updatedAt;
 
-    public Promotion() {}
+    public Promotion() {
+        this.isActive = true;
+    }
 
     public Promotion(int imageRes) {
         this.imageRes = imageRes;
@@ -36,6 +43,7 @@ public class Promotion implements Serializable {
         this.minSubtotal = minSubtotal;
         this.type = type;
         this.value = value;
+        this.isActive = true;
     }
 
     public String getId() { return id; }
@@ -73,6 +81,21 @@ public class Promotion implements Serializable {
 
     public int getImageRes() { return imageRes; }
     public void setImageRes(int imageRes) { this.imageRes = imageRes; }
+
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
+
+    public String getImageSourceType() { return imageSourceType == null ? "local" : imageSourceType; }
+    public void setImageSourceType(String imageSourceType) { this.imageSourceType = imageSourceType; }
+
+    public String getDiscount() { return discount; }
+    public void setDiscount(String discount) { this.discount = discount; }
+
+    public String getDate() { return date; }
+    public void setDate(String date) { this.date = date; }
+
+    public boolean getIsUsed() { return isUsed; }
+    public void setIsUsed(boolean isUsed) { this.isUsed = isUsed; }
 
     public String getCreatedAt() { return createdAt; }
     public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }

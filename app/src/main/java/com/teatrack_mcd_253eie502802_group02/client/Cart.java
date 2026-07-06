@@ -209,6 +209,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                 handleConfirmOrder();
             });
         }
+        
 
         adapter = new CartItemAdapter(cartItems, new CartItemAdapter.CartItemActionListener() {
             @Override
@@ -882,7 +883,7 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                             Boolean isUsed = child.child("isUsed").getValue(Boolean.class);
                             if (p != null && (isUsed == null || !isUsed)) {
                                 p.setId(child.getKey());
-                                p.setType("personal");
+                                // Không ép kiểu p.setType("personal") để giữ nguyên logic percent/per_item
                                 personalVouchers.add(p);
                             }
                         }
@@ -906,7 +907,18 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
                             com.teatrack_mcd_253eie502802_group02.model.Promotion p =
                                     child.getValue(com.teatrack_mcd_253eie502802_group02.model.Promotion.class);
                             Boolean isActive = child.child("isActive").getValue(Boolean.class);
-                            if (p == null || Boolean.FALSE.equals(isActive)) {
+                            
+                            String code = (p != null) ? p.getCode() : "NULL_OBJECT";
+                            String type = (p != null) ? p.getType() : "N/A";
+                            boolean isSkip = (p == null || !p.getIsActive());
+                            
+                            android.util.Log.d("VOUCHER_DEBUG", "Cart Load - Code: " + code + 
+                                " | ID: " + child.getKey() + 
+                                " | Type: " + type + 
+                                " | isActive: " + (p != null && p.getIsActive()) + 
+                                " | Status: " + (isSkip ? "SKIPPED" : "ADDED"));
+
+                            if (isSkip) {
                                 continue;
                             }
                             p.setId(child.getKey());
@@ -1051,6 +1063,9 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if ("percent".equals(voucher.getType())) {
             return "-" + (int) voucher.getValue() + "%";
         }
+        if ("per_item".equals(voucher.getType())) {
+            return "-" + formatPrice((int) voucher.getValue()) + "/món";
+        }
         return "-" + formatPrice((int) voucher.getValue());
     }
 
@@ -1058,18 +1073,28 @@ public class Cart extends BaseActivity implements CartManager.CartChangeListener
         if (voucher == null) {
             return 0;
         }
-        if (freeItemName != null) {
+        if ("personal".equals(voucher.getType())) {
             return (int) voucher.getValue();
         }
         int subtotal = com.teatrack_mcd_253eie502802_group02.data.CartManager.getInstance().getSubtotal();
+        int discount = 0;
+
         if ("percent".equals(voucher.getType())) {
-            int discount = (int) Math.round(subtotal * voucher.getValue() / 100.0);
+            discount = (int) Math.round(subtotal * voucher.getValue() / 100.0);
             if (voucher.getMax() > 0) {
                 discount = Math.min(discount, (int) voucher.getMax());
             }
-            return discount;
+        } else if ("per_item".equals(voucher.getType())) {
+            int totalQty = com.teatrack_mcd_253eie502802_group02.data.CartManager.getInstance().getTotalQuantity();
+            discount = (int) Math.round(voucher.getValue() * totalQty);
+            android.util.Log.d("VOUCHER_DEBUG", "Calc per_item - Code: " + voucher.getCode() + " | Value: " + voucher.getValue() + " | TotalQty: " + totalQty + " | Discount: " + discount);
+        } else {
+            // Default: amount
+            discount = (int) voucher.getValue();
         }
-        return (int) voucher.getValue();
+
+        // Chặn discount âm hoặc vượt quá subtotal
+        return Math.max(0, Math.min(discount, subtotal));
     }
 
     private void applyPersonalVoucher(com.teatrack_mcd_253eie502802_group02.model.Promotion voucher) {

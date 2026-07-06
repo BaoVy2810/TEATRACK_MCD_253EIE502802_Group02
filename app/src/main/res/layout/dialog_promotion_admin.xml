@@ -151,12 +151,184 @@
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_min_subtotal"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="12dp"
                 android:textSize="13sp" />
+
+            <!-- Max Discount (Optional for Percent) -->
+            <TextView
+                android:id="@+id/tvMaxDiscountLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_max_discount"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/etMaxDiscount"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_input_rounded"
+                android:hint="@string/hint_enter_max_discount"
+                android:inputType="numberDecimal"
+                android:paddingHorizontal="12dp"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <!-- Image Selection Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_image_source"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggleImageSource"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="8dp"
+                app:singleSelection="true"
+                app:checkedButton="@+id/btnSourceLocal">
+
+                <Button
+                    android:id="@+id/btnSourceLocal"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/str_image_local"
+                    android:textSize="11sp" />
+
+                <Button
+                    android:id="@+id/btnSourceRemote"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/str_image_remote"
+                    android:textSize="11sp" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+            <!-- Local Image Picker -->
+            <LinearLayout
+                android:id="@+id/layoutLocalImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSelectLocalImage"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_select_image"
+                    app:icon="@drawable/cloud_upload" />
+            </LinearLayout>
+
+            <!-- Remote Image URL -->
+            <LinearLayout
+                android:id="@+id/layoutRemoteImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/etImageUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_input_rounded"
+                    android:hint="@string/hint_enter_image_url"
+                    android:inputType="textUri"
+                    android:paddingHorizontal="12dp"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivPromotionPreview"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/bg_input_rounded"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image"
+                android:contentDescription="@string/str_promotion_preview" />
+
+            <!-- Live Preview Card -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/str_promotion_preview"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/bg_light_gray"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:id="@+id/tvPreviewTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_promotion_code"
+                        android:textColor="@color/brand_blue"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvPreviewDiscount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_preview_discount"
+                        android:textColor="@color/danger"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvPreviewMinOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_preview_min_order"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Active Status -->
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/swPromotionActive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:checked="true"
+                android:text="Active"
+                android:textColor="@color/brand_blue"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <!-- Buttons Row -->
             <LinearLayout

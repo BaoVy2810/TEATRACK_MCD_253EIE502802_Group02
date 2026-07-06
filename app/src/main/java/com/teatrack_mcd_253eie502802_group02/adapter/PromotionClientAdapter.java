@@ -31,6 +31,10 @@ public class PromotionClientAdapter extends RecyclerView.Adapter<PromotionClient
         this.promotionList = promotionList;
     }
 
+    private String formatPrice(int price) {
+        return String.format(java.util.Locale.US, "%,d", price).replace(',', '.') + "đ";
+    }
+
     @NonNull
     @Override
     public PromotionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -49,9 +53,20 @@ public class PromotionClientAdapter extends RecyclerView.Adapter<PromotionClient
         holder.tvTitle.setText(title);
 
         String description = promotion.getDescription();
-        if (TextUtils.isEmpty(description) && !TextUtils.isEmpty(promotion.getExpiry())) {
-            description = holder.itemView.getContext().getString(
-                    R.string.loyalty_promo_expiry_format, promotion.getExpiry());
+        if (TextUtils.isEmpty(description)) {
+            android.content.Context ctx = holder.itemView.getContext();
+            if ("percent".equals(promotion.getType())) {
+                description = ctx.getString(R.string.str_desc_percent, (int) promotion.getValue());
+                if (promotion.getMax() > 0) {
+                    description += ctx.getString(R.string.str_desc_max, formatPrice((int) promotion.getMax()));
+                }
+            } else if ("per_item".equals(promotion.getType())) {
+                description = ctx.getString(R.string.str_desc_per_item, formatPrice((int) promotion.getValue()));
+            } else if ("amount".equals(promotion.getType())) {
+                description = ctx.getString(R.string.str_desc_amount, formatPrice((int) promotion.getValue()));
+            } else if (!TextUtils.isEmpty(promotion.getExpiry())) {
+                description = ctx.getString(R.string.loyalty_promo_expiry_format, promotion.getExpiry());
+            }
         }
         holder.tvContent.setText(TextUtils.isEmpty(description) ? title : description);
 
@@ -61,9 +76,13 @@ public class PromotionClientAdapter extends RecyclerView.Adapter<PromotionClient
         holder.tvBadge.setBackgroundResource(
                 exclusive ? R.drawable.bg_promo_badge_tertiary : R.drawable.bg_promo_badge_primary);
 
-        int imageRes = BANNER_IMAGES[position % BANNER_IMAGES.length];
+        int placeholderRes = BANNER_IMAGES[position % BANNER_IMAGES.length];
+        String imageUrl = promotion.getImage();
+
         Glide.with(holder.itemView.getContext())
-                .load(imageRes)
+                .load(TextUtils.isEmpty(imageUrl) ? placeholderRes : imageUrl)
+                .placeholder(placeholderRes)
+                .error(placeholderRes)
                 .centerCrop()
                 .into(holder.imgBanner);
     }
