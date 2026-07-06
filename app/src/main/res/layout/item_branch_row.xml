@@ -3,43 +3,47 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:minHeight="52dp"
+    android:minHeight="64dp"
     android:orientation="horizontal"
-    android:paddingStart="@dimen/table_row_padding_h"
-    android:paddingTop="@dimen/table_row_padding_v"
-    android:paddingEnd="@dimen/table_row_padding_h"
-    android:paddingBottom="@dimen/table_row_padding_v">
+    android:paddingStart="12dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="12dp"
+    android:paddingBottom="12dp">
 
     <TextView
         android:id="@+id/tvBranchAddress"
         style="@style/TextAppearance.TeaTrack.TableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2.45"
+        android:layout_weight="2.35"
         android:ellipsize="end"
         android:includeFontPadding="false"
-        android:maxLines="1" />
+        android:lineSpacingExtra="2dp"
+        android:maxLines="2"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tvBranchOrders"
         style="@style/TextAppearance.TeaTrack.TableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.75"
+        android:layout_weight="0.65"
         android:ellipsize="end"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/tvBranchRevenue"
         style="@style/TextAppearance.TeaTrack.TableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.05"
+        android:layout_weight="1.25"
         android:ellipsize="end"
         android:gravity="end"
         android:includeFontPadding="false"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:textSize="12sp" />
 
 </LinearLayout>

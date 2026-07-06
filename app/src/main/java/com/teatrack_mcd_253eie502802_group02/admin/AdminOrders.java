@@ -281,27 +281,27 @@ public class AdminOrders extends AppCompatActivity {
     private void showCancelDialog(FirebaseOrder order) {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_delete_confirm, null);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_cancel_order, null);
         dialog.setContentView(dialogView);
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            dialog.getWindow().setLayout(
-                    (int) (getResources().getDisplayMetrics().widthPixels * 0.88),
-                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
         }
 
         TextView tvTitle   = dialogView.findViewById(R.id.tvDeleteTitle);
         TextView tvMessage = dialogView.findViewById(R.id.tvDeleteMessage);
+        TextView tvOrderId = dialogView.findViewById(R.id.tvCancelOrderId);
         com.google.android.material.button.MaterialButton btnConfirm =
                 dialogView.findViewById(R.id.btnConfirmDelete);
 
         tvTitle.setText("Cancel Order");
-        tvTitle.setTextColor(getColor(R.color.brand_blue));
         String orderId = order.getOrderId() != null ? order.getOrderId() : "";
-        tvMessage.setText("Are you sure you want to cancel order #" + orderId + "?");
-        btnConfirm.setText("Yes, Cancel");
+        tvMessage.setText("Are you sure you want to cancel order");
+        if (tvOrderId != null) {
+            tvOrderId.setText("#" + orderId + "?");
+        }
+        btnConfirm.setText("Cancel");
         btnConfirm.setBackgroundTintList(
-                android.content.res.ColorStateList.valueOf(getColor(R.color.brand_blue)));
+                android.content.res.ColorStateList.valueOf(getColor(R.color.danger)));
 
         dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
         btnConfirm.setOnClickListener(v -> {
@@ -323,6 +323,11 @@ public class AdminOrders extends AppCompatActivity {
         });
 
         dialog.show();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setLayout(
+                    (int) (getResources().getDisplayMetrics().widthPixels * 0.76),
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
     }
 
     private void openOrderDetail(FirebaseOrder order) {

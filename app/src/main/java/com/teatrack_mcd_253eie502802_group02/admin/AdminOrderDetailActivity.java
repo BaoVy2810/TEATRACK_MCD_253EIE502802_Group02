@@ -207,7 +207,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         String[]       statuses = {STATUS_PENDING, STATUS_PROCESSING, STATUS_READY,
                 STATUS_SHIPPING, STATUS_COMPLETED, STATUS_CANCELLED};
         int[]          iconRes  = {R.drawable.pending_tab, R.drawable.processing_tab,
-                R.drawable.ready_tab, R.drawable.shipping_tab, R.drawable.finished_tab, R.drawable.cancel};
+                R.drawable.ready_tab, R.drawable.shipping_tab, R.drawable.finished_tab, R.drawable.ic_status_cancelled};
         int            colorBlue = 0xFF0088FF;
         int            colorText = 0xFF1C1C1E;
 
@@ -217,7 +217,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
             if (icon != null) {
                 icon = DrawableCompat.wrap(icon.mutate());
                 DrawableCompat.setTint(icon, colorBlue);
-                int sz = dpToPx(18);
+                int sz = dpToPx(iconRes[i] == R.drawable.ic_status_cancelled ? 20 : 18);
                 icon.setBounds(0, 0, sz, sz);
                 allRbs[i].setCompoundDrawables(icon, null, null, null);
             }

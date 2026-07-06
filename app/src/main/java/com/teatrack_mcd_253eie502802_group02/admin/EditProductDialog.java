@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -110,6 +111,7 @@ public class EditProductDialog {
         setupPriceFormatting(etPriceL);
         setupPriceFormatting(etVipPriceM);
         setupPriceFormatting(etVipPriceL);
+        setupNestedDescriptionScroll(etProductDesc);
 
         setupImageUpload(dialog);
 
@@ -353,6 +355,22 @@ public class EditProductDialog {
                     et.addTextChangedListener(this);
                 }
             }
+        });
+    }
+
+    private void setupNestedDescriptionScroll(EditText editText) {
+        editText.setVerticalScrollBarEnabled(false);
+        editText.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        editText.setOnTouchListener((view, event) -> {
+            boolean canScroll = view.canScrollVertically(-1) || view.canScrollVertically(1);
+            if (canScroll && view.getParent() != null) {
+                view.getParent().requestDisallowInterceptTouchEvent(true);
+            }
+            if ((event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL)
+                    && view.getParent() != null) {
+                view.getParent().requestDisallowInterceptTouchEvent(false);
+            }
+            return false;
         });
     }
 

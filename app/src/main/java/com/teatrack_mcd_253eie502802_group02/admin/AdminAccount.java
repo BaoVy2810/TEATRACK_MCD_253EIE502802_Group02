@@ -357,14 +357,20 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         }
 
         TextView tvMessage = dialog.findViewById(R.id.tvDeleteMessage);
+        tvMessage.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
         String name = safe(user.getFullName()).isEmpty() ? safe(user.getUsername()) : user.getFullName();
-        String html = getString(R.string.confirm_delete_account_message) + " <b>" + name + "</b>?";
+        String highlightedName = "<font color=\"#0088FF\"><b>" + TextUtils.htmlEncode(name) + "</b></font>";
+        String html = getString(R.string.confirm_delete_account_message) + " " + highlightedName + "?";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             tvMessage.setText(android.text.Html.fromHtml(html, android.text.Html.FROM_HTML_MODE_LEGACY));
         } else {
             tvMessage.setText(android.text.Html.fromHtml(html));
         }
 
+        com.google.android.material.button.MaterialButton btnCancel = dialog.findViewById(R.id.btnCancel);
+        btnCancel.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
+        btnCancel.setStrokeColor(android.content.res.ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color.brand_blue)));
         dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
         dialog.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
             usersRef.child(user.getId()).removeValue()
@@ -536,6 +542,18 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
             }
         } else {
             row.setBackground(null);
+            for (int i = 0; i < row.getChildCount(); i++) {
+                android.view.View child = row.getChildAt(i);
+                if (child instanceof android.widget.TextView) {
+                    ((android.widget.TextView) child).setTextColor(
+                            ContextCompat.getColor(this, R.color.brand_blue));
+                }
+                if (child instanceof android.widget.RadioButton) {
+                    ((android.widget.RadioButton) child).setButtonTintList(
+                            android.content.res.ColorStateList.valueOf(
+                                    ContextCompat.getColor(this, R.color.brand_blue)));
+                }
+            }
         }
     }
 
