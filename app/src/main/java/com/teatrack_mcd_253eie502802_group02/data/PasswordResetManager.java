@@ -255,7 +255,7 @@ public class PasswordResetManager {
     private void postOtpEmail(String baseUrl, String to, String subject, String html) throws Exception {
         String fullUrl = baseUrl + SEND_OTP_EMAIL_PATH;
         android.util.Log.d("PasswordResetManager", "Calling mail server: " + fullUrl);
-        
+
         HttpURLConnection connection = (HttpURLConnection) new URL(fullUrl).openConnection();
         connection.setRequestMethod("POST");
         connection.setConnectTimeout(MAIL_SERVER_TIMEOUT_MS);
@@ -263,17 +263,21 @@ public class PasswordResetManager {
         connection.setDoOutput(true);
         connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
 
-        String body = "{"
-                + "\"to\":\"" + jsonEscape(to) + "\","
-                + "\"subject\":\"" + jsonEscape(subject) + "\","
-                + "\"html\":\"" + jsonEscape(html) + "\""
-                + "}";
+        // Sử dụng JSONObject để đảm bảo định dạng JSON chuẩn
+        org.json.JSONObject jsonBody = new org.json.JSONObject();
+        jsonBody.put("to", to);
+        jsonBody.put("subject", subject);
+        jsonBody.put("html", html);
+
+        String body = jsonBody.toString();
 
         try (OutputStream os = connection.getOutputStream()) {
             os.write(body.getBytes(StandardCharsets.UTF_8));
         }
 
         int responseCode = connection.getResponseCode();
+        android.util.Log.d("PasswordResetManager", "Mail server response code: " + responseCode);
+
         if (responseCode < 200 || responseCode >= 300) {
             throw new IllegalStateException("Mail server returned HTTP " + responseCode);
         }
