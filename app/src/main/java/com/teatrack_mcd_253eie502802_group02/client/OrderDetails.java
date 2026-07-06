@@ -374,9 +374,9 @@ public class OrderDetails extends BaseActivity {
             case STATUS_SHIPPING: {
                 llTwoActions.setVisibility(View.VISIBLE);
                 btnLeftAction.setText(R.string.str_btn_track_order);
-                btnLeftAction.setIconResource(R.drawable.ic_track_order_order_detail);
+                btnLeftAction.setIconResource(R.drawable.ic_location_on);
                 btnRightAction.setText(R.string.str_btn_contact_support);
-                btnRightAction.setIconResource(R.drawable.ic_contact_support_order_detail);
+                btnRightAction.setIconResource(R.drawable.headphones);
                 btnLeftAction.setOnClickListener(v -> launchTrackOrder());
                 btnRightAction.setOnClickListener(v -> Homepage.openContactSupport(this));
                 tvActionHint.setText(R.string.str_hint_active_order);
@@ -385,9 +385,9 @@ public class OrderDetails extends BaseActivity {
             case STATUS_COMPLETED: {
                 llTwoActions.setVisibility(View.VISIBLE);
                 btnLeftAction.setText(R.string.str_btn_reorder);
-                btnLeftAction.setIconResource(R.drawable.ic_reorder_order_detail);
+                btnLeftAction.setIconResource(R.drawable.ic_reorder);
                 btnRightAction.setText(R.string.str_btn_contact_support);
-                btnRightAction.setIconResource(R.drawable.ic_contact_support_order_detail);
+                btnRightAction.setIconResource(R.drawable.headphones);
                 btnLeftAction.setOnClickListener(v -> launchReorder());
                 btnRightAction.setOnClickListener(v -> Homepage.openContactSupport(this));
                 tvActionHint.setText(R.string.str_hint_completed_order);
@@ -396,7 +396,7 @@ public class OrderDetails extends BaseActivity {
             case STATUS_CANCELLED: {
                 llSingleAction.setVisibility(View.VISIBLE);
                 btnSingleAction.setText(R.string.str_btn_order_again);
-                btnSingleAction.setIconResource(R.drawable.ic_reorder_order_detail);
+                btnSingleAction.setIconResource(R.drawable.ic_reorder);
                 btnSingleAction.setOnClickListener(v -> launchReorder());
                 tvActionHint.setText(R.string.str_hint_cancelled_order);
                 break;

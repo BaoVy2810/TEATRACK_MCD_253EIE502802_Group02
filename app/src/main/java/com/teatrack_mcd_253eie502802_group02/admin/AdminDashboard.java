@@ -327,7 +327,15 @@ public class AdminDashboard extends BaseActivity {
                 allOrders.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     FirebaseOrder order = data.getValue(FirebaseOrder.class);
-                    if (order != null) allOrders.add(0, order);
+                    if (order != null) {
+                        if (order.getId() == null || order.getId().isEmpty()) {
+                            order.setId(data.getKey());
+                        }
+                        if (order.getOrderId() == null || order.getOrderId().isEmpty()) {
+                            order.setOrderId(data.getKey());
+                        }
+                        allOrders.add(0, order);
+                    }
                 }
                 filterAndDisplayData();
             }
@@ -577,9 +585,11 @@ public class AdminDashboard extends BaseActivity {
         updateStatComparison(binding.cardOrders.getRoot(), rangeOrders, prevOrders, labelRes);
         updateStatComparison(binding.cardSold.getRoot(), rangeSold, prevSold, labelRes);
 
+        filteredOrders.sort((a, b) -> Long.compare(getOrderTime(b), getOrderTime(a)));
+
         if (!filteredOrders.isEmpty()) {
             List<FirebaseOrder> displayList = filteredOrders.subList(0, Math.min(filteredOrders.size(), 5));
-            binding.rvRecentOrders.setAdapter(new RecentOrderAdapter(displayList));
+            binding.rvRecentOrders.setAdapter(new RecentOrderAdapter(displayList, this::openOrderDetail));
         } else {
             binding.rvRecentOrders.setAdapter(new RecentOrderAdapter(new ArrayList<>()));
         }
@@ -1158,5 +1168,15 @@ public class AdminDashboard extends BaseActivity {
 
     private void setupRecentOrders() {
         binding.rvRecentOrders.setLayoutManager(new LinearLayoutManager(this));
+        binding.tvViewDetail.setOnClickListener(v -> {
+            startActivity(new Intent(this, AdminOrders.class));
+        });
+    }
+
+    private void openOrderDetail(FirebaseOrder order) {
+        if (order == null) return;
+        Intent intent = new Intent(this, AdminOrderDetailActivity.class);
+        intent.putExtra("order", order);
+        startActivity(intent);
     }
 }

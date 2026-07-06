@@ -261,7 +261,7 @@
     <!-- ── Table header cell ── -->
     <style name="TextAppearance.TeaTrack.TableHeader">
         <item name="android:textSize">@dimen/table_header_text_size</item>
-        <item name="android:textColor">@color/table_header_text</item>
+        <item name="android:textColor">@color/branch_table_white_text</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -285,6 +285,7 @@
     <style name="TextAppearance.TeaTrack.TableCell">
         <item name="android:textSize">@dimen/table_text_size</item>
         <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- ── Form TextInputLayout ── -->

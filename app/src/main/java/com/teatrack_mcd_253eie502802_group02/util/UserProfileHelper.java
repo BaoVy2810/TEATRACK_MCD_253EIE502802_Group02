@@ -17,6 +17,7 @@ public final class UserProfileHelper {
     public static final String KEY_USER_ROLE = "userRole";
     public static final String KEY_FULL_NAME = "userFullName";
     public static final String KEY_PHONE = "userPhone";
+    public static final String KEY_USERNAME = "username";
 
     private UserProfileHelper() {
     }
@@ -73,6 +74,10 @@ public final class UserProfileHelper {
             if (!displayName.isEmpty()) {
                 editor.putString(KEY_FULL_NAME, displayName);
             }
+            String username = user.getUsername();
+            if (username != null && !username.trim().isEmpty()) {
+                editor.putString(KEY_USERNAME, username.trim());
+            }
             String phone = user.getPhoneNumber();
             if (phone != null && !phone.trim().isEmpty()) {
                 editor.putString(KEY_PHONE, phone.trim());
@@ -110,6 +115,15 @@ public final class UserProfileHelper {
             editor.putString(KEY_PHONE, phone.trim());
         }
         editor.apply();
+    }
+
+    public static String getDisplayPhone(Context context) {
+        if (context == null) {
+            return "";
+        }
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        String phone = prefs.getString(KEY_PHONE, "");
+        return phone != null ? phone.trim() : "";
     }
 
     public static void refreshFromFirebase(Context context, UserRoleHelper.RefreshCallback callback) {

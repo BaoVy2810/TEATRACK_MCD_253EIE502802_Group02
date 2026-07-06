@@ -19,6 +19,11 @@
     <dimen name="mosaic_w">100dp</dimen>
     <dimen name="mosaic_h">150dp</dimen>
 
+    <!-- Promotion list: 3 voucher cards visible (192dp + 16dp gap) -->
+    <dimen name="promotion_item_height">192dp</dimen>
+    <dimen name="promotion_item_spacing">16dp</dimen>
+    <dimen name="promotion_list_visible_height">608dp</dimen>
+
 <!--    TEST FOR ADMIN DASHBOARD-->
     <!-- Screen -->
     <dimen name="screen_padding">16dp</dimen>
@@ -74,10 +79,10 @@
     <dimen name="view_detail_text_size">13sp</dimen>
 
     <!-- Branch table -->
-    <dimen name="table_header_padding_v">10dp</dimen>
-    <dimen name="table_header_padding_h">10dp</dimen>
-    <dimen name="table_row_padding_v">10dp</dimen>
-    <dimen name="table_row_padding_h">10dp</dimen>
+    <dimen name="table_header_padding_v">14dp</dimen>
+    <dimen name="table_header_padding_h">16dp</dimen>
+    <dimen name="table_row_padding_v">14dp</dimen>
+    <dimen name="table_row_padding_h">16dp</dimen>
     <dimen name="table_text_size">13sp</dimen>
     <dimen name="table_header_text_size">12sp</dimen>
     <dimen name="table_corner">12dp</dimen>

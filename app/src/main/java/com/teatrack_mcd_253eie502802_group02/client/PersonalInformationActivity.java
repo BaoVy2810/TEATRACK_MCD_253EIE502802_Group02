@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
 import com.teatrack_mcd_253eie502802_group02.databinding.ActivityPersonalInformationBinding;
 import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
@@ -38,9 +39,8 @@ public class PersonalInformationActivity extends BaseActivity {
     private ActivityPersonalInformationBinding binding;
     private DatabaseReference userRef;
     private String userId;
-    private static final String PREF_NAME = "LoginPrefs";
-    private static final String KEY_USER_ID = "userId";
     private static final int PICK_IMAGE_REQUEST = 1001;
+    private static final int EDIT_INFO_REQUEST = 1002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +50,8 @@ public class PersonalInformationActivity extends BaseActivity {
         setContentView(binding.getRoot());
 
         // ✅ Gán userId sớm nhất có thể
-        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        userId = sharedPreferences.getString(KEY_USER_ID, null);
+        SharedPreferences sharedPreferences = getSharedPreferences(UserProfileHelper.PREF_NAME, MODE_PRIVATE);
+        userId = sharedPreferences.getString(UserProfileHelper.KEY_USER_ID, null);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -61,9 +61,8 @@ public class PersonalInformationActivity extends BaseActivity {
 
         ProfileBackHelper.setupBackToProfile(this);
 
-        binding.btnEditInfo.setOnClickListener(v -> {
-            startActivity(new Intent(this, EditingPerInfoActivity.class));
-        });
+        binding.btnEditInfo.setOnClickListener(v ->
+                startActivityForResult(new Intent(this, EditingPerInfoActivity.class), EDIT_INFO_REQUEST));
 
         binding.btnEditAvatar.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
@@ -77,6 +76,11 @@ public class PersonalInformationActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == EDIT_INFO_REQUEST && resultCode == RESULT_OK) {
+            loadUserInfo();
+            return;
+        }
 
         if (requestCode == PICK_IMAGE_REQUEST
                 && resultCode == RESULT_OK
@@ -114,7 +118,7 @@ public class PersonalInformationActivity extends BaseActivity {
             return;
         }
 
-        FirebaseDatabase.getInstance()
+        FirebaseDatabase.getInstance(FirebaseProductRepository.DB_URL)
                 .getReference("Users")
                 .child(userId)
                 .child("avatarBase64")
@@ -136,7 +140,8 @@ public class PersonalInformationActivity extends BaseActivity {
 
     private void loadUserInfo() {
         if (userId != null) {
-            userRef = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+            userRef = FirebaseDatabase.getInstance(FirebaseProductRepository.DB_URL)
+                    .getReference("Users").child(userId);
             userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

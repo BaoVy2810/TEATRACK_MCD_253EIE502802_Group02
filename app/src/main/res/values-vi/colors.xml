@@ -101,6 +101,11 @@
     <color name="table_row_even">#FFFFFF</color>
     <color name="table_row_odd">#F9FAFB</color>
     <color name="table_row_selected">#EBF5FF</color>
+    <color name="branch_table_header_bg">#0A8EF3</color>
+    <color name="branch_table_cream">#F6EFE2</color>
+    <color name="branch_table_cyan">#68CBE0</color>
+    <color name="branch_table_blue_text">#0088FF</color>
+    <color name="branch_table_white_text">#FFFFFF</color>
 
     <!-- ── Status badges ── -->
     <color name="badge_pending_bg">#FEF9C3</color>

@@ -170,8 +170,11 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:justificationMode="inter_word"
+                                android:lineSpacingExtra="4dp"
                                 android:text="@string/membership_bronze_desc"
                                 android:textColor="@color/Gray"
                                 android:textSize="12sp" />
@@ -205,8 +208,11 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:justificationMode="inter_word"
+                                android:lineSpacingExtra="4dp"
                                 android:text="@string/membership_silver_desc"
                                 android:textColor="@color/Gray"
                                 android:textSize="12sp" />
@@ -239,8 +245,11 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:justificationMode="inter_word"
+                                android:lineSpacingExtra="4dp"
                                 android:text="@string/membership_gold_desc"
                                 android:textColor="@color/Gray"
                                 android:textSize="12sp" />
@@ -310,12 +319,15 @@
                         android:textSize="10sp"
                         android:textStyle="bold" />
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
+                        android:lineSpacingExtra="4dp"
                         android:text="@string/membership_validity_desc"
                         android:textColor="@color/black"
                         android:textSize="12sp"
-                        android:layout_marginTop="4dp"
                         android:layout_marginBottom="16dp"/>
 
                     <!-- Grace -->
@@ -337,12 +349,15 @@
                         android:textSize="10sp"
                         android:textStyle="bold" />
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
+                        android:lineSpacingExtra="4dp"
                         android:text="@string/membership_grace_desc"
                         android:textColor="@color/black"
                         android:textSize="12sp"
-                        android:layout_marginTop="4dp"
                         android:layout_marginBottom="16dp"/>
 
                     <!-- Fee -->
@@ -364,12 +379,15 @@
                         android:textSize="10sp"
                         android:textStyle="bold" />
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/inter"
+                        android:justificationMode="inter_word"
+                        android:lineSpacingExtra="4dp"
                         android:text="@string/membership_fee_desc"
                         android:textColor="@color/black"
-                        android:textSize="12sp"
-                        android:layout_marginTop="4dp"/>
+                        android:textSize="12sp" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -445,8 +463,11 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:justificationMode="inter_word"
+                                android:lineSpacingExtra="4dp"
                                 android:text="@string/membership_benefit_birthday_desc"
                                 android:textColor="@color/Gray"
                                 android:textSize="12sp" />
@@ -480,8 +501,11 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:justificationMode="inter_word"
+                                android:lineSpacingExtra="4dp"
                                 android:text="@string/membership_benefit_delivery_desc"
                                 android:textColor="@color/Gray"
                                 android:textSize="12sp" />
@@ -514,8 +538,11 @@
                                 android:textSize="14sp"
                                 android:textStyle="bold" />
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/inter"
+                                android:justificationMode="inter_word"
+                                android:lineSpacingExtra="4dp"
                                 android:text="@string/membership_benefit_events_desc"
                                 android:textColor="@color/Gray"
                                 android:textSize="12sp" />

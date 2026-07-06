@@ -1,43 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    item_branch_row.xml
-    Mỗi hàng trong bảng Branch Analysis.
-    Màu nền alternating (trắng / xanh nhạt) set từ adapter.
--->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="52dp"
     android:orientation="horizontal"
     android:paddingStart="@dimen/table_row_padding_h"
-    android:paddingEnd="@dimen/table_row_padding_h"
     android:paddingTop="@dimen/table_row_padding_v"
+    android:paddingEnd="@dimen/table_row_padding_h"
     android:paddingBottom="@dimen/table_row_padding_v">
 
-    <!-- Branch address (weight=2) -->
     <TextView
         android:id="@+id/tvBranchAddress"
+        style="@style/TextAppearance.TeaTrack.TableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
-        style="@style/TextAppearance.TeaTrack.TableCell" />
+        android:layout_weight="2.45"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:maxLines="1" />
 
-    <!-- Number of orders (weight=1, center) -->
     <TextView
         android:id="@+id/tvBranchOrders"
+        style="@style/TextAppearance.TeaTrack.TableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0.75"
+        android:ellipsize="end"
         android:gravity="center"
-        style="@style/TextAppearance.TeaTrack.TableCell" />
+        android:includeFontPadding="false"
+        android:maxLines="1" />
 
-    <!-- Revenue (weight=1, end) -->
     <TextView
         android:id="@+id/tvBranchRevenue"
+        style="@style/TextAppearance.TeaTrack.TableCell"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="1.05"
+        android:ellipsize="end"
         android:gravity="end"
-        style="@style/TextAppearance.TeaTrack.TableCell" />
+        android:includeFontPadding="false"
+        android:maxLines="1" />
 
 </LinearLayout>

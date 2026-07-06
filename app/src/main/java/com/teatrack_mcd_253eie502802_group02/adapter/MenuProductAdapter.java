@@ -140,13 +140,16 @@ public class MenuProductAdapter extends ListAdapter<Product, MenuProductAdapter.
 
         @Override
         public boolean areContentsTheSame(@NonNull Product oldItem, @NonNull Product newItem) {
-            return Objects.equals(oldItem.getName(), newItem.getName())
+            return Objects.equals(oldItem.getId(), newItem.getId())
+                    && Objects.equals(oldItem.getImage(), newItem.getImage())
+                    && Objects.equals(oldItem.getName(), newItem.getName())
                     && oldItem.getPriceM() == newItem.getPriceM()
                     && oldItem.getPriceL() == newItem.getPriceL()
                     && oldItem.getVipPriceM() == newItem.getVipPriceM()
                     && oldItem.getVipPriceL() == newItem.getVipPriceL()
                     && Float.compare(oldItem.getRating(), newItem.getRating()) == 0
-                    && Objects.equals(oldItem.getReviewCount(), newItem.getReviewCount());
+                    && Objects.equals(oldItem.getReviewCount(), newItem.getReviewCount())
+                    && oldItem.getImageRes() == newItem.getImageRes();
         }
     }
 }
