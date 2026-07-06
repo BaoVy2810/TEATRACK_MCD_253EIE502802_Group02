@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="32dp"
+    android:layout_margin="10dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="24dp"
     app:cardElevation="8dp">
@@ -76,6 +76,8 @@
                 android:hint="@string/hint_enter_blog_title"
                 android:inputType="text"
                 android:paddingHorizontal="12dp"
+                android:textColor="#0088FF"
+                android:textColorHint="#800088FF"
                 android:textSize="13sp" />
 
             <!-- Blog Content -->
@@ -90,33 +92,19 @@
             <EditText
                 android:id="@+id/etBlogContent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="112dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_input_rounded"
                 android:gravity="top"
                 android:hint="@string/hint_enter_blog_content"
                 android:inputType="textMultiLine"
-                android:minLines="4"
+                android:maxLines="6"
                 android:padding="12dp"
+                android:scrollbars="none"
+                android:textColor="#0088FF"
+                android:textColorHint="#800088FF"
                 android:textSize="13sp" />
-
-            <!-- Blog Category -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str_blog_category"
-                android:textColor="@color/brand_blue"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/spBlogCategory"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_input_rounded" />
 
             <!-- Image Source -->
             <TextView
@@ -144,6 +132,8 @@
                     android:hint="@string/hint_image_url_or_upload"
                     android:inputType="text"
                     android:paddingHorizontal="12dp"
+                    android:textColor="#0088FF"
+                    android:textColorHint="#800088FF"
                     android:textSize="13sp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -197,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/str_status_published"
                     android:textSize="13sp"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/brand_blue" />
             </LinearLayout>
 
             <!-- Buttons Row -->

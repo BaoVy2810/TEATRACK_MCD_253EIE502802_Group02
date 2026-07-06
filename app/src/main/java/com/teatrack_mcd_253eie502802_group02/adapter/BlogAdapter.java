@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.admin.AdminBlog;
+import com.teatrack_mcd_253eie502802_group02.admin.AdminBlogDetail;
 import com.teatrack_mcd_253eie502802_group02.client.BlogDetail;
 import com.teatrack_mcd_253eie502802_group02.model.Blog;
 
@@ -112,8 +113,8 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
         loadImage(imageUrl, holder.ivBlogThumbnail, true);
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, BlogDetail.class);
-            intent.putExtra("blog", blog);
+            Intent intent = new Intent(context, AdminBlogDetail.class);
+            intent.putExtra("blog_id", blog.getId());
             context.startActivity(intent);
         });
 

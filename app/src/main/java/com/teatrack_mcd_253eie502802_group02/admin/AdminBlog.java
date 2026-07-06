@@ -10,15 +10,12 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +52,7 @@ public class AdminBlog extends AppCompatActivity {
 
     private EditText etSearch;
     private RecyclerView rvBlogList;
-    private Button btnAddBlog;
+    private View btnAddBlog;
     private TextView tvEmptyState;
 
     private static final int[] NAV_ITEM_IDS = {
@@ -154,7 +151,11 @@ public class AdminBlog extends AppCompatActivity {
 
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.90f);
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            dialog.getWindow().setAttributes(params);
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         }
 
         TextView tvDialogTitle = view.findViewById(R.id.tvDialogTitle);
@@ -162,25 +163,23 @@ public class AdminBlog extends AppCompatActivity {
         EditText etBlogTitle = view.findViewById(R.id.etBlogTitle);
         EditText etBlogContent = view.findViewById(R.id.etBlogContent);
         EditText etBlogImage = view.findViewById(R.id.etBlogImage);
-        Spinner spBlogCategory = view.findViewById(R.id.spBlogCategory);
         SwitchMaterial swPublished = view.findViewById(R.id.swPublished);
         com.google.android.material.button.MaterialButton btnCancel = view.findViewById(R.id.btnCancel);
         com.google.android.material.button.MaterialButton btnSubmit = view.findViewById(R.id.btnSubmit);
         com.google.android.material.button.MaterialButton btnChooseImage = view.findViewById(R.id.btnChooseBlogImage);
         ShapeableImageView ivPreview = view.findViewById(R.id.ivBlogPreview);
 
-        // Setup Category Spinner
-        String[] categories = {
-                getString(R.string.pure_tea),
-                getString(R.string.tea_latte),
-                getString(R.string.milk_tea),
-                getString(R.string.fruit_tea),
-                getString(R.string.str_category_news),
-                getString(R.string.str_category_events)
-        };
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spBlogCategory.setAdapter(adapter);
+        etBlogContent.setVerticalScrollBarEnabled(false);
+        etBlogContent.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        etBlogContent.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                v.getParent().requestDisallowInterceptTouchEvent(false);
+            }
+            return false;
+        });
 
         if (blog == null) {
             tvDialogTitle.setText(R.string.str_add_blog);
@@ -192,14 +191,6 @@ public class AdminBlog extends AppCompatActivity {
             etBlogContent.setText(blog.getContent());
             etBlogImage.setText(blog.getThumbnailImage() != null ? blog.getThumbnailImage() : blog.getImage());
             swPublished.setChecked("published".equalsIgnoreCase(blog.getStatus()));
-            
-            // Set category selection
-            for (int i = 0; i < categories.length; i++) {
-                if (categories[i].equals(blog.getCategory())) {
-                    spBlogCategory.setSelection(i);
-                    break;
-                }
-            }
 
             String displayImg = blog.getThumbnailImage() != null && !blog.getThumbnailImage().isEmpty() 
                     ? blog.getThumbnailImage() : blog.getImage();
@@ -224,7 +215,6 @@ public class AdminBlog extends AppCompatActivity {
             String title = etBlogTitle.getText().toString().trim();
             String content = etBlogContent.getText().toString().trim();
             String image = etBlogImage.getText().toString().trim();
-            String category = spBlogCategory.getSelectedItem().toString();
             String status = swPublished.isChecked() ? "published" : "draft";
 
             if (title.isEmpty() || content.isEmpty()) {
@@ -243,7 +233,7 @@ public class AdminBlog extends AppCompatActivity {
             blogToSave.setContent(content);
             blogToSave.setImage(image);
             blogToSave.setThumbnailImage(image); 
-            blogToSave.setCategory(category);
+            blogToSave.setCategory(blog != null && blog.getCategory() != null ? blog.getCategory() : "");
             blogToSave.setStatus(status);
             
             if (blog == null) {
@@ -374,7 +364,7 @@ public class AdminBlog extends AppCompatActivity {
         rvBlogList.setLayoutManager(new LinearLayoutManager(this));
         blogList = new ArrayList<>();
         fullBlogList = new ArrayList<>();
-        blogAdapter = new BlogAdapter(this, blogList);
+        blogAdapter = new BlogAdapter(this, blogList, true);
         rvBlogList.setAdapter(blogAdapter);
     }
 

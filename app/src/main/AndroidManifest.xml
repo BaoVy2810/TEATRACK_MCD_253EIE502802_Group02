@@ -150,6 +150,9 @@
             android:name=".admin.AdminBlog"
             android:exported="false" />
         <activity
+            android:name=".admin.AdminBlogDetail"
+            android:exported="false" />
+        <activity
             android:name=".admin.AdminAgency"
             android:exported="false" />
         <activity
