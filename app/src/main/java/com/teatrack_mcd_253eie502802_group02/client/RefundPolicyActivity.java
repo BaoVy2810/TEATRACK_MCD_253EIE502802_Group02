@@ -3,7 +3,7 @@ package com.teatrack_mcd_253eie502802_group02.client;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.PolicyBackHelper;
 
-public class RefundPolicyActivity extends AppCompatActivity {
+public class RefundPolicyActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

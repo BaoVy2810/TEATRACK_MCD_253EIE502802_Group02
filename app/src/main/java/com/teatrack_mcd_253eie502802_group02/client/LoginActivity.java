@@ -227,7 +227,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onError(GetCredentialException e) {
-                        Toast.makeText(LoginActivity.this, "Google Sign-In failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getString(R.string.error_google_signin_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
                     }
                 }
         );
@@ -250,7 +250,7 @@ public class LoginActivity extends BaseActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
                         saveUserToDatabase(user);
                     } else {
-                        Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.error_auth_failed), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -350,7 +350,7 @@ public class LoginActivity extends BaseActivity {
         hideError();
 
         if (TextUtils.isEmpty(loginName) || TextUtils.isEmpty(password)) {
-            showError("Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!");
+            showError(getString(R.string.error_login_empty_fields));
             if (TextUtils.isEmpty(loginName)) setFieldError(tilLoginName, true);
             if (TextUtils.isEmpty(password)) setFieldError(tilPassword, true);
             return;
@@ -361,7 +361,7 @@ public class LoginActivity extends BaseActivity {
         Runnable timeoutRunnable = () -> {
             if (!isFinishing()) {
                 btnLogIn.setEnabled(true);
-                showError("Kết nối quá lâu, vui lòng kiểm tra mạng!");
+                showError(getString(R.string.error_network_timeout));
                 Log.e(TAG, "Login timeout reached");
             }
         };
@@ -370,7 +370,7 @@ public class LoginActivity extends BaseActivity {
         if (loginName.equalsIgnoreCase("admin") && password.equals("admin123")) {
             timeoutHandler.removeCallbacks(timeoutRunnable);
             hideError();
-            Toast.makeText(this, "Chào mừng Admin!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_welcome_admin), Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, AdminDashboard.class));
             finish();
             return;
@@ -387,7 +387,7 @@ public class LoginActivity extends BaseActivity {
                     btnLogIn.setEnabled(true);
 
                     if (!snapshot.exists()) {
-                        showError("Tên đăng nhập hoặc mật khẩu không đúng!");
+                        showError(getString(R.string.error_invalid_credentials));
                         setFieldError(tilLoginName, true);
                         setFieldError(tilPassword, true);
                         return;
@@ -439,7 +439,7 @@ public class LoginActivity extends BaseActivity {
                     }
 
                     if (!passwordMatched) {
-                        showError("Tên đăng nhập hoặc mật khẩu không đúng!");
+                        showError(getString(R.string.error_invalid_credentials));
                         setFieldError(tilPassword, true);
                     }
                 }
@@ -448,13 +448,13 @@ public class LoginActivity extends BaseActivity {
                 public void onCancelled(@NonNull DatabaseError error) {
                     timeoutHandler.removeCallbacks(timeoutRunnable);
                     btnLogIn.setEnabled(true);
-                    showError("Lỗi hệ thống: " + error.getMessage());
+                    showError(getString(R.string.error_system_general, error.getMessage()));
                 }
             });
         } catch (Exception e) {
             timeoutHandler.removeCallbacks(timeoutRunnable);
             btnLogIn.setEnabled(true);
-            showError("Lỗi kết nối Firebase!");
+            showError(getString(R.string.error_firebase_connection));
         }
     }
 

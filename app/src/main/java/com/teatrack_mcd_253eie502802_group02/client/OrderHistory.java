@@ -92,6 +92,12 @@ public class OrderHistory extends BaseActivity {
     protected void onResume() {
         super.onResume();
         CartBadgeHelper.updateBadge(this);
+        // Cập nhật lại nhãn các Tab theo ngôn ngữ hiện tại
+        initTabLabels();
+        // Cập nhật lại danh sách đơn hàng (để làm mới các chuỗi trạng thái, ngày tháng...)
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

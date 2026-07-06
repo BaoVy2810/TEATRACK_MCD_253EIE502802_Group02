@@ -30,7 +30,9 @@ import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Agency extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class Agency extends BaseActivity {
 
     private static final String DATABASE_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
     private EditText etSearch;

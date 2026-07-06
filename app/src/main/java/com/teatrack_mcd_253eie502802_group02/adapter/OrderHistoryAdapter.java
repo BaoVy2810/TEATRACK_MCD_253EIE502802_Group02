@@ -330,21 +330,22 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 
     private String formatDate(String isoDate) {
         if (isoDate == null || isoDate.isEmpty()) return "";
+        // Sử dụng Locale hiện tại của ứng dụng thay vì hardcode Locale.ENGLISH
+        Locale currentLocale = context.getResources().getConfiguration().getLocales().get(0);
         try {
             SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
             input.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
             Date date = input.parse(isoDate);
             if (date == null) return isoDate;
-            SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy • hh:mm a", Locale.ENGLISH);
+            SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy • hh:mm a", currentLocale);
             return output.format(date);
         } catch (ParseException e) {
-            // Try shorter ISO
             try {
                 SimpleDateFormat input2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
                 input2.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
                 Date date = input2.parse(isoDate);
                 if (date == null) return isoDate;
-                SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy • hh:mm a", Locale.ENGLISH);
+                SimpleDateFormat output = new SimpleDateFormat("dd MMM yyyy • hh:mm a", currentLocale);
                 return output.format(date);
             } catch (ParseException ex) {
                 return isoDate;

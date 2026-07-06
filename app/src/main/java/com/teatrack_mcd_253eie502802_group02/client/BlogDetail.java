@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -33,7 +33,7 @@ import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlogDetail extends AppCompatActivity {
+public class BlogDetail extends BaseActivity {
 
     private TextView txtDate, txtHeading, txtContent, tvTopTitle;
     private ImageView imgSingle, imgGalleryLeft, imgGalleryRight1, imgGalleryRight2;

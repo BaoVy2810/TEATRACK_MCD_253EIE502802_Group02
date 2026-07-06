@@ -37,7 +37,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ContactWithUs extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class ContactWithUs extends BaseActivity {
 
     private static final String DATABASE_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
     private EditText edtFullName, edtEmail, edtPhone, edtContent;
