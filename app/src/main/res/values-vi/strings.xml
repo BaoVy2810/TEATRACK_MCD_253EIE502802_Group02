@@ -122,9 +122,9 @@
     <string name="stat_orders_title">ĐƠN HÀNG TUẦN NÀY</string>
     <string name="stat_sold_title">SẢN PHẨM ĐÃ BÁN</string>
     <string name="stat_products_title">SẢN PHẨM</string>
-    <string name="stat_mom">Tháng trước (MoM)</string>
-    <string name="stat_dod">Ngày trước (DoD)</string>
-    <string name="stat_wow">Tuần trước (WoW)</string>
+    <string name="stat_mom">MoM</string>
+    <string name="stat_dod">DoD</string>
+    <string name="stat_wow">WoW</string>
     <string name="stat_active_trading">Đang giao dịch</string>
 
     <string name="chart_performance_title">Hiệu suất (Doanh thu &amp; Chi phí)</string>

@@ -55,7 +55,7 @@
     <dimen name="stat_icon_size">22dp</dimen>
     <dimen name="stat_value_size">20sp</dimen>
     <dimen name="stat_title_size">10sp</dimen>
-    <dimen name="stat_desc_size">11sp</dimen>
+    <dimen name="stat_desc_size">12sp</dimen>
     <dimen name="stat_delta_icon_size">12dp</dimen>
     <dimen name="stat_circle_overlay_size">90dp</dimen>
 
@@ -77,18 +77,20 @@
     <!-- Recent Orders list -->
     <dimen name="order_item_padding_v">12dp</dimen>
     <dimen name="order_icon_size">36dp</dimen>
-    <dimen name="order_title_size">13sp</dimen>
+    <dimen name="order_title_size">14sp</dimen>
     <dimen name="order_subtitle_size">12sp</dimen>
     <dimen name="order_link_color_size">13sp</dimen>
     <dimen name="order_item_gap">4dp</dimen>
-    <dimen name="view_detail_text_size">13sp</dimen>
+    <dimen name="view_detail_text_size">12sp</dimen>
 
     <!-- Branch table -->
     <dimen name="table_header_padding_v">14dp</dimen>
     <dimen name="table_header_padding_h">16dp</dimen>
     <dimen name="table_row_padding_v">14dp</dimen>
     <dimen name="table_row_padding_h">16dp</dimen>
-    <dimen name="table_text_size">13sp</dimen>
+    <dimen name="table_text_size">12sp</dimen>
+    <dimen name="branch_table_row_height">64dp</dimen>
+    <dimen name="branch_table_visible_height">256dp</dimen>
     <dimen name="table_header_text_size">12sp</dimen>
     <dimen name="table_corner">12dp</dimen>
 

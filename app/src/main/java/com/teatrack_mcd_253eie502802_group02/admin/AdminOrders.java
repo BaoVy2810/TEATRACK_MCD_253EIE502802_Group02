@@ -42,7 +42,7 @@ public class AdminOrders extends AppCompatActivity {
 
     private RecyclerView    rvOrders;
     private LinearLayout    layoutEmptyOrders;
-    private EditText        etSearchOrders;
+    private EditText        etSearch;
     private TextView        tabAll, tabPending, tabProcessing, tabShipping, tabCompleted, tabCancelled;
 
     private AdminOrderAdapter       adapter;
@@ -70,7 +70,8 @@ public class AdminOrders extends AppCompatActivity {
     private void bindViews() {
         rvOrders          = findViewById(R.id.rvOrders);
         layoutEmptyOrders = findViewById(R.id.layoutEmptyOrders);
-        etSearchOrders    = findViewById(R.id.etSearchOrders);
+        etSearch          = findViewById(R.id.etSearch);
+        etSearch.setHint(R.string.hint_search_orders);
         tabAll            = findViewById(R.id.tabAll);
         tabPending        = findViewById(R.id.tabPending);
         tabProcessing     = findViewById(R.id.tabProcessing);
@@ -177,7 +178,7 @@ public class AdminOrders extends AppCompatActivity {
     // ── Search ────────────────────────────────────────────────────────────────
 
     private void setupSearch() {
-        etSearchOrders.addTextChangedListener(new TextWatcher() {
+        etSearch.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int st, int c, int a) {}
             @Override public void onTextChanged(CharSequence s, int st, int b, int c) { applyFilter(); }
             @Override public void afterTextChanged(Editable s) {}
@@ -185,7 +186,7 @@ public class AdminOrders extends AppCompatActivity {
     }
 
     private void applyFilter() {
-        String query = etSearchOrders.getText().toString().trim().toLowerCase();
+        String query = etSearch.getText().toString().trim().toLowerCase();
         List<FirebaseOrder> filtered = new ArrayList<>();
 
         for (FirebaseOrder order : allOrders) {

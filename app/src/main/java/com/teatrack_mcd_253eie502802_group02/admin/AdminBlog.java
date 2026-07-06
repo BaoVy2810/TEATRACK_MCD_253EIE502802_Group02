@@ -53,7 +53,7 @@ import java.util.UUID;
 
 public class AdminBlog extends AppCompatActivity {
 
-    private EditText etSearchBlog;
+    private EditText etSearch;
     private RecyclerView rvBlogList;
     private Button btnAddBlog;
     private TextView tvEmptyState;
@@ -315,7 +315,7 @@ public class AdminBlog extends AppCompatActivity {
     }
 
     private void setupSearch() {
-        etSearchBlog.addTextChangedListener(new TextWatcher() {
+        etSearch.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 filter(s.toString());
@@ -363,7 +363,8 @@ public class AdminBlog extends AppCompatActivity {
     }
 
     private void initViews() {
-        etSearchBlog = findViewById(R.id.etSearchBlog);
+        etSearch = findViewById(R.id.etSearch);
+        etSearch.setHint(R.string.str_blog_search);
         rvBlogList = findViewById(R.id.rvBlogList);
         btnAddBlog = findViewById(R.id.btnAddBlog);
         tvEmptyState = findViewById(R.id.tvEmptyState);

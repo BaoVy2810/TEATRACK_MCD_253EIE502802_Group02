@@ -10,7 +10,7 @@
         android:id="@+id/viewDot"
         android:layout_width="@dimen/chart_legend_icon_size"
         android:layout_height="@dimen/chart_legend_icon_size"
-        android:background="@drawable/dot_shape"
+        android:background="@drawable/bg_legend_marker"
         android:layout_marginEnd="@dimen/sp_8" />
 
     <TextView

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/adminSearchCard"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_marginStart="14dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginEnd="14dp"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="14dp">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:contentDescription="@string/menu_search_desc"
+            android:src="@drawable/search"
+            app:tint="@color/brand_blue" />
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:autofillHints=""
+            android:background="@android:color/transparent"
+            android:hint="@string/str_search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:singleLine="true"
+            android:textColor="@color/brand_blue"
+            android:textColorHint="@color/brand_blue"
+            android:textSize="12sp"
+            tools:hint="Search…" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

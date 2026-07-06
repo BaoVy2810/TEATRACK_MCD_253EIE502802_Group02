@@ -1,192 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="160dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_white_rounded_16"
     android:elevation="6dp"
     android:orientation="vertical"
-    android:padding="2dp">
+    android:padding="4dp">
 
-    <!-- Today -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/btnToday"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="32dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp">
+
         <TextView
             android:id="@+id/tvToday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/icToday"
-            android:layout_alignParentStart="true"
             android:text="@string/btn_today"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/icToday"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@null"
             android:src="@drawable/ic_check_circle"
             android:visibility="gone"
-            android:contentDescription="@null"
             app:tint="@color/white" />
-    </RelativeLayout>
+    </LinearLayout>
 
-    <!-- Last 7 Days -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/btnLast7Days"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="32dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp">
+
         <TextView
             android:id="@+id/tvLast7Days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/icLast7Days"
-            android:layout_alignParentStart="true"
             android:text="@string/btn_last_7_days"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/icLast7Days"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@null"
             android:src="@drawable/ic_check_circle"
             android:visibility="gone"
-            android:contentDescription="@null"
             app:tint="@color/white" />
-    </RelativeLayout>
+    </LinearLayout>
 
-    <!-- Last 30 Days -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/btnLast30Days"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="32dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp">
+
         <TextView
             android:id="@+id/tvLast30Days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/icLast30Days"
-            android:layout_alignParentStart="true"
             android:text="@string/btn_last_30_days"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/icLast30Days"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@null"
             android:src="@drawable/ic_check_circle"
             android:visibility="gone"
-            android:contentDescription="@null"
             app:tint="@color/white" />
-    </RelativeLayout>
+    </LinearLayout>
 
-    <!-- Last 90 Days -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/btnLast90Days"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="32dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp">
+
         <TextView
             android:id="@+id/tvLast90Days"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/icLast90Days"
-            android:layout_alignParentStart="true"
             android:text="@string/btn_last_90_days"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/icLast90Days"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@null"
             android:src="@drawable/ic_check_circle"
             android:visibility="gone"
-            android:contentDescription="@null"
             app:tint="@color/white" />
-    </RelativeLayout>
+    </LinearLayout>
 
-    <!-- Year to Date -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/btnYearToDate"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="32dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp">
+
         <TextView
             android:id="@+id/tvYearToDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/icYearToDate"
-            android:layout_alignParentStart="true"
             android:text="@string/btn_year_to_date"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
+
         <ImageView
             android:id="@+id/icYearToDate"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@null"
             android:src="@drawable/ic_check_circle"
             android:visibility="gone"
-            android:contentDescription="@null"
             app:tint="@color/white" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="1dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:background="@color/divider" />
 
-    <!-- Custom Range -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/btnCustomRange"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
-
-        <ImageView
-            android:id="@+id/icChevron"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_chevron_right"
-            app:tint="@color/brand_blue" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="32dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="8dp">
 
         <TextView
             android:id="@+id/tvCustomRange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/icChevron"
             android:text="@string/btn_custom_range"
             android:textColor="@color/brand_blue"
             android:textSize="12sp" />
-    </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/icChevron"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_chevron_right"
+            app:tint="@color/brand_blue" />
+    </LinearLayout>
 </LinearLayout>

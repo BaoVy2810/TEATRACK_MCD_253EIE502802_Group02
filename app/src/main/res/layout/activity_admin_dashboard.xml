@@ -11,7 +11,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_screen">
+    android:background="@color/bg_baby_blue">
 
     <include
         android:id="@+id/layout_header"
@@ -159,31 +159,26 @@
                         android:orientation="vertical"
                         android:padding="@dimen/chart_card_padding">
 
-                        <!-- Card header row: title + toggle (Monthly/Weekly/Today) -->
-                        <LinearLayout
+                        <!-- Card header: title + toggle (left-aligned) -->
+                        <TextView
+                            android:id="@+id/tvLineChartTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_marginBottom="@dimen/sp_12">
+                            android:layout_marginBottom="@dimen/sp_8"
+                            android:text="@string/chart_performance_title"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/tvLineChartTitle"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/chart_performance_title"
-                                android:textSize="13sp"
-                                android:textColor="@color/brand_blue"
-                                android:textStyle="bold"
-                                android:layout_marginBottom="@dimen/sp_8" />
-
-                            <!-- Toggle group -->
-                            <LinearLayout
-                                android:id="@+id/toggleGroupLine"
-                                android:layout_width="wrap_content"
-                                android:layout_height="36dp"
-                                android:orientation="horizontal"
-                                android:background="@drawable/bg_toggle_group_blue"
-                                android:padding="2dp">
+                        <LinearLayout
+                            android:id="@+id/toggleGroupLine"
+                            android:layout_width="wrap_content"
+                            android:layout_height="36dp"
+                            android:layout_gravity="start"
+                            android:layout_marginBottom="@dimen/sp_12"
+                            android:background="@drawable/bg_toggle_group_blue"
+                            android:orientation="horizontal"
+                            android:padding="2dp">
 
                                 <TextView
                                     android:id="@+id/btnToggleMonthly"
@@ -221,7 +216,6 @@
                                     android:textSize="12sp"
                                     android:background="@drawable/bg_toggle_item_inactive_transparent" />
 
-                            </LinearLayout>
                         </LinearLayout>
 
                         <!-- MPAndroidChart LineChart -->
@@ -302,17 +296,19 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:text="@string/chart_daily_trend_title"
-                                android:textSize="13sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/brand_blue"
                                 android:textStyle="bold" />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnBarChartRange"
-                                style="@style/Widget.TeaTrack.Button.Primary"
+                                style="@style/Widget.TeaTrack.Button.ChartRange"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:minHeight="0dp"
+                                android:minWidth="0dp"
                                 android:text="@string/btn_last_7_days"
-                                android:textSize="11sp" />
+                                app:minHeight="0dp" />
 
 
                         </LinearLayout>
@@ -359,13 +355,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/chart_donut_height" />
 
-                        <!-- Legend: 2-column grid -->
-                        <GridLayout
-                            android:id="@+id/donutLegend"
+                        <!-- Legend: 2-column grid, centered -->
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:columnCount="2"
-                            android:layout_marginTop="@dimen/sp_12">
+                            android:layout_marginTop="@dimen/sp_12"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical">
+
+                            <GridLayout
+                                android:id="@+id/donutLegend"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:alignmentMode="alignBounds"
+                                android:columnCount="2"
+                                android:useDefaultMargins="true">
 
                             <!-- Hot Drinks -->
                             <include layout="@layout/item_legend_dot"
@@ -386,7 +390,8 @@
                             <include layout="@layout/item_legend_dot"
                                 android:id="@+id/legendMilkTea" />
 
-                        </GridLayout>
+                            </GridLayout>
+                        </LinearLayout>
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -479,36 +484,34 @@
                                 style="@style/TextAppearance.TeaTrack.TableHeader"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="2.35"
+                                android:layout_weight="1"
                                 android:ellipsize="end"
                                 android:includeFontPadding="false"
                                 android:maxLines="1"
-                                android:text="@string/col_branch_address"
-                                android:textSize="11sp" />
+                                android:text="@string/col_branch_address" />
 
                             <TextView
                                 style="@style/TextAppearance.TeaTrack.TableHeader"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.65"
                                 android:ellipsize="end"
                                 android:gravity="center"
                                 android:includeFontPadding="false"
                                 android:maxLines="1"
-                                android:text="@string/col_num_orders"
-                                android:textSize="11sp" />
+                                android:minWidth="72dp"
+                                android:paddingHorizontal="8dp"
+                                android:text="@string/col_num_orders" />
 
                             <TextView
                                 style="@style/TextAppearance.TeaTrack.TableHeader"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.25"
                                 android:ellipsize="end"
                                 android:gravity="end"
                                 android:includeFontPadding="false"
                                 android:maxLines="1"
-                                android:text="@string/col_revenue"
-                                android:textSize="11sp" />
+                                android:minWidth="96dp"
+                                android:text="@string/col_revenue" />
 
                         </LinearLayout>
 
@@ -516,8 +519,9 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvBranchAnalysis"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false" />
+                            android:layout_height="@dimen/branch_table_visible_height"
+                            android:nestedScrollingEnabled="true"
+                            android:overScrollMode="ifContentScrolls" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>

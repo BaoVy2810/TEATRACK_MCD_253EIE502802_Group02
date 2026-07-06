@@ -504,6 +504,7 @@ public class AdminAgency extends AppCompatActivity {
 
     private void initViews() {
         etSearch = findViewById(R.id.etSearch);
+        etSearch.setHint(R.string.str_agency_search);
         rvStores = findViewById(R.id.rvStores);
         btnAddAgency = findViewById(R.id.btnAddAgency);
     }

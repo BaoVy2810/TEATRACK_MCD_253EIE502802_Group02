@@ -105,8 +105,13 @@ public class AdminDashboard extends BaseActivity {
 
     private void showTimeRangePicker(View anchor) {
         View popupView = LayoutInflater.from(this).inflate(R.layout.layout_time_range_picker, null);
+        popupView.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        );
+
         PopupWindow popupWindow = new PopupWindow(popupView,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                popupView.getMeasuredWidth(),
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 true);
 
@@ -626,22 +631,27 @@ public class AdminDashboard extends BaseActivity {
         android.widget.ImageView ivTrend = cardView.findViewById(R.id.ivTrendIcon);
 
         tvLabel.setText(getString(labelRes));
+        int softColor = ContextCompat.getColor(this, R.color.stat_text_soft);
 
         if (prev == 0) {
             tvDelta.setText(current > 0 ? "+100%" : "0%");
+            tvDelta.setTextColor(softColor);
         } else {
             double percent = ((current - prev) / prev) * 100;
             String sign = percent >= 0 ? "+" : "";
             tvDelta.setText(sign + new DecimalFormat("#.#").format(percent) + "%");
 
             if (ivTrend != null) {
+                ivTrend.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN);
                 if (percent < 0) {
                     ivTrend.setRotation(180);
-                    tvDelta.setTextColor(Color.parseColor("#FF3B30")); // Red for decrease
+                    tvDelta.setTextColor(Color.parseColor("#FF3B30"));
                 } else {
                     ivTrend.setRotation(0);
-                    tvDelta.setTextColor(Color.WHITE);
+                    tvDelta.setTextColor(softColor);
                 }
+            } else {
+                tvDelta.setTextColor(percent < 0 ? Color.parseColor("#FF3B30") : softColor);
             }
         }
     }
@@ -1076,6 +1086,10 @@ public class AdminDashboard extends BaseActivity {
         ((android.widget.TextView)cardView.findViewById(R.id.tvStatDelta)).setText(delta);
         ((android.widget.TextView)cardView.findViewById(R.id.tvStatLabel)).setText(label);
         ((android.widget.ImageView)cardView.findViewById(R.id.ivStatIcon)).setImageResource(iconRes);
+        android.widget.ImageView ivTrend = cardView.findViewById(R.id.ivTrendIcon);
+        if (ivTrend != null) {
+            ivTrend.setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN);
+        }
 
         GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.TL_BR, new int[] { ContextCompat.getColor(this, startColor), ContextCompat.getColor(this, endColor) });
         gd.setCornerRadius(getResources().getDimension(R.dimen.stat_card_corner));
@@ -1153,12 +1167,12 @@ public class AdminDashboard extends BaseActivity {
         chart.getDescription().setEnabled(false);
         chart.invalidate();
 
-        setupLegendItem(binding.legendHotDrinks.getRoot(), R.string.legend_hot_drinks, R.color.pie_hot_drinks);
-        setupLegendItem(binding.legendFruitTea.getRoot(), R.string.legend_fruit_tea, R.color.pie_fruit_tea);
-        setupLegendItem(binding.legendPureTea.getRoot(), R.string.legend_pure_tea, R.color.pie_pure_tea);
-        setupLegendItem(binding.legendNewDrinks.getRoot(), R.string.legend_new_drinks, R.color.pie_new_drinks);
-        setupLegendItem(binding.legendLatteTea.getRoot(), R.string.legend_latte_tea, R.color.pie_latte_tea);
-        setupLegendItem(binding.legendMilkTea.getRoot(), R.string.legend_milk_tea, R.color.pie_milk_tea);
+        setupLegendItem(binding.legendHotDrinks.getRoot(), R.string.firebase_category_best_sellers, R.color.pie_hot_drinks);
+        setupLegendItem(binding.legendFruitTea.getRoot(), R.string.firebase_category_fruit_tea, R.color.pie_fruit_tea);
+        setupLegendItem(binding.legendPureTea.getRoot(), R.string.firebase_category_pure_tea, R.color.pie_pure_tea);
+        setupLegendItem(binding.legendNewDrinks.getRoot(), R.string.firebase_category_new_arrivals, R.color.pie_new_drinks);
+        setupLegendItem(binding.legendLatteTea.getRoot(), R.string.firebase_category_tea_latte, R.color.pie_latte_tea);
+        setupLegendItem(binding.legendMilkTea.getRoot(), R.string.firebase_category_milk_tea, R.color.pie_milk_tea);
     }
 
     private void setupLegendItem(View view, int textRes, int colorRes) {

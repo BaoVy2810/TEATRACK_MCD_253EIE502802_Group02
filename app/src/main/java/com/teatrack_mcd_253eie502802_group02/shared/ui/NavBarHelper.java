@@ -3,14 +3,12 @@ package com.teatrack_mcd_253eie502802_group02.shared.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -19,13 +17,8 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 
-
 public final class NavBarHelper {
 
-    private static final String ADMIN_NAV_PREFS = "admin_nav_prefs";
-    private static final String KEY_PROMOTED_TAB_ID = "promoted_tab_id";
-
-    private static final int PRIMARY_SWAP_INDEX = 3;
     private static final int EXPAND_DRAG_THRESHOLD_PX = 56;
     private static final float EXPAND_SNAP_RATIO = 0.38f;
 
@@ -41,21 +34,12 @@ public final class NavBarHelper {
 
     public static void setupNavBar(Context context, int[] itemIds, int selectedId, View.OnClickListener listener) {
         Activity activity = (Activity) context;
-        applyPersistedAdminLayout(activity);
 
-        if (isSecondaryNavItem(selectedId)) {
-            promoteSecondaryTab(activity, selectedId);
+        View expandHandle = activity.findViewById(R.id.nav_expand_handle);
+        Runnable collapseExpanded = null;
+        if (expandHandle != null) {
+            collapseExpanded = setupAdminExpandBehavior(context, expandHandle, selectedId);
         }
-
-        View.OnClickListener wrappedListener = v -> {
-            int id = v.getId();
-            if (isSecondaryNavItem(id)) {
-                promoteSecondaryTab(activity, id);
-            } else if (id == R.id.nav_account) {
-                restoreAccountToPrimary(activity);
-            }
-            listener.onClick(v);
-        };
 
         for (int itemId : itemIds) {
             View item = activity.findViewById(itemId);
@@ -63,138 +47,17 @@ public final class NavBarHelper {
                 continue;
             }
             updateItemState(context, item, itemId == selectedId);
-            item.setOnClickListener(wrappedListener);
-        }
 
-        View expandHandle = activity.findViewById(R.id.nav_expand_handle);
-        if (expandHandle != null) {
-            setupAdminExpandBehavior(context, expandHandle, selectedId);
-        }
-    }
-
-    private static void applyPersistedAdminLayout(Activity activity) {
-        int promotedId = getPromotedTabId(activity);
-        if (promotedId != View.NO_ID && isSecondaryNavItem(promotedId)) {
-            promoteSecondaryTab(activity, promotedId);
-        }
-    }
-
-    private static void promoteSecondaryTab(Activity activity, int secondaryItemId) {
-        if (!isSecondaryNavItem(secondaryItemId)) {
-            return;
-        }
-
-        LinearLayout primaryRow = activity.findViewById(R.id.nav_row_primary);
-        LinearLayout secondaryRow = activity.findViewById(R.id.nav_row_secondary);
-        if (primaryRow == null || secondaryRow == null) {
-            return;
-        }
-
-        View primarySlot = primaryRow.getChildAt(PRIMARY_SWAP_INDEX);
-        if (primarySlot != null && primarySlot.getId() == secondaryItemId) {
-            savePromotedTabId(activity, secondaryItemId);
-            return;
-        }
-
-        int secondaryIndex = findChildIndexById(secondaryRow, secondaryItemId);
-        if (secondaryIndex < 0) {
-            return;
-        }
-
-        swapNavChildren(primaryRow, secondaryRow, PRIMARY_SWAP_INDEX, secondaryIndex);
-        savePromotedTabId(activity, secondaryItemId);
-    }
-
-    private static void restoreAccountToPrimary(Activity activity) {
-        LinearLayout primaryRow = activity.findViewById(R.id.nav_row_primary);
-        LinearLayout secondaryRow = activity.findViewById(R.id.nav_row_secondary);
-        if (primaryRow == null || secondaryRow == null) {
-            return;
-        }
-
-        View primarySlot = primaryRow.getChildAt(PRIMARY_SWAP_INDEX);
-        if (primarySlot != null && primarySlot.getId() == R.id.nav_account) {
-            clearPromotedTabId(activity);
-            return;
-        }
-
-        int accountSecondaryIndex = findChildIndexById(secondaryRow, R.id.nav_account);
-        if (accountSecondaryIndex < 0) {
-            return;
-        }
-
-        swapNavChildren(primaryRow, secondaryRow, PRIMARY_SWAP_INDEX, accountSecondaryIndex);
-        clearPromotedTabId(activity);
-    }
-
-    private static void swapNavChildren(
-            LinearLayout primaryRow,
-            LinearLayout secondaryRow,
-            int primaryIndex,
-            int secondaryIndex
-    ) {
-        View primaryChild = primaryRow.getChildAt(primaryIndex);
-        View secondaryChild = secondaryRow.getChildAt(secondaryIndex);
-        if (primaryChild == null || secondaryChild == null) {
-            return;
-        }
-
-        LinearLayout.LayoutParams primaryLp = copyNavItemLayoutParams(
-                (LinearLayout.LayoutParams) primaryChild.getLayoutParams()
-        );
-        LinearLayout.LayoutParams secondaryLp = copyNavItemLayoutParams(
-                (LinearLayout.LayoutParams) secondaryChild.getLayoutParams()
-        );
-
-        primaryRow.removeViewAt(primaryIndex);
-        secondaryRow.removeViewAt(secondaryIndex);
-
-        primaryChild.setLayoutParams(primaryLp);
-        secondaryChild.setLayoutParams(secondaryLp);
-
-        primaryRow.addView(secondaryChild, primaryIndex);
-        secondaryRow.addView(primaryChild, secondaryIndex);
-    }
-
-    private static LinearLayout.LayoutParams copyNavItemLayoutParams(LinearLayout.LayoutParams source) {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                1f
-        );
-        if (source != null) {
-            params.gravity = source.gravity;
-            params.leftMargin = source.leftMargin;
-            params.topMargin = source.topMargin;
-            params.rightMargin = source.rightMargin;
-            params.bottomMargin = source.bottomMargin;
-        }
-        return params;
-    }
-
-    private static int findChildIndexById(ViewGroup parent, int viewId) {
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            if (parent.getChildAt(i).getId() == viewId) {
-                return i;
+            View.OnClickListener itemListener = listener;
+            if (collapseExpanded != null && isPrimaryNavItem(itemId)) {
+                Runnable collapse = collapseExpanded;
+                itemListener = v -> {
+                    collapse.run();
+                    listener.onClick(v);
+                };
             }
+            item.setOnClickListener(itemListener);
         }
-        return -1;
-    }
-
-    private static SharedPreferences adminNavPrefs(Context context) {
-        return context.getSharedPreferences(ADMIN_NAV_PREFS, Context.MODE_PRIVATE);
-    }
-
-    private static void savePromotedTabId(Context context, int tabId) {
-        adminNavPrefs(context).edit().putInt(KEY_PROMOTED_TAB_ID, tabId).apply();
-    }
-
-    private static void clearPromotedTabId(Context context) {
-        adminNavPrefs(context).edit().remove(KEY_PROMOTED_TAB_ID).apply();
-    }
-
-    private static int getPromotedTabId(Context context) {
-        return adminNavPrefs(context).getInt(KEY_PROMOTED_TAB_ID, View.NO_ID);
     }
 
     public static void updateItemState(Context context, View item, boolean selected) {
@@ -218,12 +81,12 @@ public final class NavBarHelper {
         }
     }
 
-    private static void setupAdminExpandBehavior(Context context, View handle, int selectedId) {
+    private static Runnable setupAdminExpandBehavior(Context context, View handle, int selectedId) {
         Activity activity = (Activity) context;
         View secondaryRow = activity.findViewById(R.id.nav_row_secondary);
         View dragPill = activity.findViewById(R.id.nav_drag_pill);
         if (secondaryRow == null) {
-            return;
+            return () -> {};
         }
 
         final boolean[] expanded = {isSecondaryNavItem(selectedId)};
@@ -232,6 +95,13 @@ public final class NavBarHelper {
         } else {
             setExpandProgress(secondaryRow, dragPill, 0f);
         }
+
+        Runnable collapseIfExpanded = () -> {
+            if (expanded[0]) {
+                expanded[0] = false;
+                animateAdminNavExpand(secondaryRow, dragPill, false, handle);
+            }
+        };
 
         Runnable toggleExpanded = () -> {
             expanded[0] = !expanded[0];
@@ -285,6 +155,8 @@ public final class NavBarHelper {
                 }
             }
         });
+
+        return collapseIfExpanded;
     }
 
     private static void setExpandProgress(View secondaryRow, View dragPill, float progress) {
@@ -305,6 +177,13 @@ public final class NavBarHelper {
             dragPill.setScaleX(scale);
             dragPill.setScaleY(scale);
         }
+    }
+
+    private static boolean isPrimaryNavItem(int itemId) {
+        return itemId == R.id.nav_dashboard
+                || itemId == R.id.nav_products
+                || itemId == R.id.nav_orders
+                || itemId == R.id.nav_account;
     }
 
     private static boolean isSecondaryNavItem(int itemId) {

@@ -101,6 +101,7 @@
                     android:layout_height="@dimen/stat_delta_icon_size"
                     android:src="@drawable/up"
                     android:layout_marginEnd="@dimen/sp_4"
+                    app:tint="@color/white"
                     android:importantForAccessibility="no" />
 
                 <!-- Delta % (e.g. +5.2%) -->

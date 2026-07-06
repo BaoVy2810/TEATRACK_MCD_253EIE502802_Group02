@@ -42,7 +42,8 @@
             android:background="@drawable/bg_nav_admin_body"
             android:baselineAligned="false"
             android:orientation="horizontal"
-            android:paddingHorizontal="8dp">
+            android:paddingHorizontal="8dp"
+            android:paddingBottom="12dp">
 
             <LinearLayout
                 android:id="@+id/nav_dashboard"

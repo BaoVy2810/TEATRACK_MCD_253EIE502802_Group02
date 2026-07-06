@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -110,7 +111,9 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
     }
 
     private void setupFilters() {
-        binding.etSearch.addTextChangedListener(new TextWatcher() {
+        EditText etSearch = binding.getRoot().findViewById(R.id.etSearch);
+        etSearch.setHint(R.string.str_search_hint_account);
+        etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 

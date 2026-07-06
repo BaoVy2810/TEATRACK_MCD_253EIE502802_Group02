@@ -70,6 +70,7 @@ public class AdminPromotion extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_promotion);
+        com.teatrack_mcd_253eie502802_group02.shared.ui.AdminInsetsHelper.apply(this);
 
         CloudinaryHelper.init(this);
         initViews();
@@ -143,7 +144,8 @@ public class AdminPromotion extends BaseActivity {
 
     private void initViews() {
         rvPromotionList = findViewById(R.id.rvPromotionList);
-        etSearch = findViewById(R.id.etSearchPromotion);
+        etSearch = findViewById(R.id.etSearch);
+        etSearch.setHint(R.string.str_promotion_search);
         tvEmptyState = findViewById(R.id.tvEmptyState);
         btnAddPromotion = findViewById(R.id.btnAddPromotion);
 
@@ -191,8 +193,7 @@ public class AdminPromotion extends BaseActivity {
             else if (id == R.id.nav_feedbacks) destination = AdminComplaints.class;
 
             if (destination != null) {
-                startActivity(new Intent(this, destination));
-                finish();
+                NavBarHelper.navigateWithoutTransition(this, destination);
             }
         });
     }

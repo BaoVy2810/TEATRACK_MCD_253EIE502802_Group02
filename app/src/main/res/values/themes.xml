@@ -199,6 +199,43 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- ── Chart date-range chip (dashboard bar chart) ── -->
+    <style name="Widget.TeaTrack.Button.ChartRange" parent="Widget.MaterialComponents.Button">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="backgroundTint">@color/brand_blue</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!-- ── Filter outline button (dashboard date range, account filters) ── -->
+    <style name="Widget.TeaTrack.Button.FilterOutline" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">@dimen/filter_button_height</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/brand_blue</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">-0.04</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="cornerRadius">@dimen/filter_button_radius</item>
+        <item name="strokeColor">@color/brand_blue</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="elevation">0dp</item>
+    </style>
+
     <!-- ── Primary button ── -->
     <style name="Widget.TeaTrack.Button.Primary" parent="Widget.MaterialComponents.Button">
         <item name="android:backgroundTint">@color/btn_primary_bg</item>
@@ -332,31 +369,65 @@
     </style>
 
     <style name="CustomMaterialCalendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
-        <item name="colorPrimary">@color/brand_blue</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:datePickerStyle">@style/CustomDatePickerStyle</item>
-        <!-- For Material 3 / Modern Calendar Components -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/brand_blue</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorAccent">@color/brand_blue</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/on_surface</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:textColorPrimary">@color/brand_blue</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="materialCalendarStyle">@style/CustomMaterialCalendarViewStyle</item>
+        <item name="materialCalendarHeaderTitle">@style/CustomMaterialCalendarHeaderTitle</item>
         <item name="materialCalendarHeaderSelection">@style/CustomMaterialCalendarHeaderSelection</item>
+        <item name="materialCalendarHeaderToggleButton">@style/CustomMaterialCalendarHeaderToggle</item>
+        <item name="materialCalendarMonthNavigationButton">@style/CustomMaterialCalendarMonthNav</item>
+        <item name="buttonBarPositiveButtonStyle">@style/CustomMaterialCalendarTextButton</item>
+        <item name="buttonBarNegativeButtonStyle">@style/CustomMaterialCalendarTextButton</item>
     </style>
 
     <style name="CustomMaterialCalendarViewStyle" parent="Widget.MaterialComponents.MaterialCalendar">
         <item name="daySelectedStyle">@style/CustomMaterialCalendarDaySelectedStyle</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.TeaTrack.Rounded16</item>
+        <item name="android:background">@drawable/bg_white_rounded_16</item>
+    </style>
+
+    <style name="ShapeAppearance.TeaTrack.Rounded16" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
     </style>
 
     <style name="CustomMaterialCalendarDaySelectedStyle" parent="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
         <item name="itemFillColor">@color/brand_blue</item>
         <item name="itemTextColor">@color/white</item>
+        <item name="itemStrokeColor">@color/brand_blue</item>
         <item name="itemShapeAppearance">@style/ShapeAppearance.Material3.SmallComponent</item>
     </style>
 
+    <style name="CustomMaterialCalendarHeaderTitle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
+        <item name="android:textColor">@color/secondary</item>
+    </style>
+
     <style name="CustomMaterialCalendarHeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/brand_blue</item>
+    </style>
+
+    <style name="CustomMaterialCalendarHeaderToggle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton">
+        <item name="iconTint">@color/brand_blue</item>
+    </style>
+
+    <style name="CustomMaterialCalendarMonthNav" parent="Widget.MaterialComponents.MaterialCalendar.MonthNavigationButton">
+        <item name="iconTint">@color/brand_blue</item>
+    </style>
+
+    <style name="CustomMaterialCalendarTextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/brand_blue</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="CustomDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">
-        <item name="android:headerBackground">@color/brand_blue</item>
+        <item name="android:headerBackground">@color/white</item>
         <item name="android:calendarTextColor">@color/on_surface</item>
         <item name="android:dayOfWeekBackground">@color/white</item>
         <item name="android:dayOfWeekTextAppearance">@style/CalendarDayOfWeekStyle</item>
@@ -372,18 +443,18 @@
     </style>
 
     <style name="CalendarHeaderMonthStyle" parent="">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/brand_blue</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="CalendarHeaderDayOfMonthStyle" parent="">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/brand_blue</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="CalendarHeaderYearStyle" parent="">
-        <item name="android:textColor">#B3FFFFFF</item>
+        <item name="android:textColor">@color/secondary</item>
         <item name="android:textSize">14sp</item>
     </style>
 </resources>

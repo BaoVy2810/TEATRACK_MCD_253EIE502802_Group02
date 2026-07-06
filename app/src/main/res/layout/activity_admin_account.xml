@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_screen"
+    android:background="@color/bg_baby_blue"
     tools:context="com.teatrack_mcd_253eie502802_group02.admin.AdminAccount">
 
     <include
@@ -56,31 +56,17 @@
                     android:layout_marginStart="@dimen/sp_16"
                     android:text="@string/title_account_management"
                     android:textColor="@color/brand_blue"
-                    android:textSize="@dimen/sp_14"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
             </FrameLayout>
+
+            <include layout="@layout/layout_admin_search_bar" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/screen_padding">
-
-                <EditText
-                    android:id="@+id/etSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/search_input_height"
-                    android:layout_marginHorizontal="@dimen/sp_16"
-                    android:layout_marginBottom="@dimen/sp_12"
-                    android:background="@drawable/bg_input_rounded"
-                    android:drawableStart="@drawable/search"
-                    android:drawablePadding="@dimen/sp_10"
-                    android:hint="@string/str_search_hint_account"
-                    android:paddingHorizontal="15dp"
-                    android:singleLine="true"
-                    android:textColor="@color/brand_blue"
-                    android:textColorHint="#800088FF"
-                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
