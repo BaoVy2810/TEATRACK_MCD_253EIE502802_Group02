@@ -203,6 +203,8 @@ public class PromotionClient extends BaseActivity {
     private void setupRecyclerView() {
         promotionAdapter = new PromotionClientAdapter(promotionList);
         rvPromotions.setLayoutManager(new LinearLayoutManager(this));
+        rvPromotions.setNestedScrollingEnabled(true);
+        rvPromotions.setHasFixedSize(true);
         rvPromotions.setAdapter(promotionAdapter);
     }
 

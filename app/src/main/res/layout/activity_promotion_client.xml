@@ -443,9 +443,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvPromotions"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/promotion_list_visible_height"
                 android:layout_marginTop="16dp"
-                android:nestedScrollingEnabled="false"
+                android:nestedScrollingEnabled="true"
+                android:overScrollMode="ifContentScrolls"
                 tools:listitem="@layout/item_promotion_client" />
 
         </LinearLayout>

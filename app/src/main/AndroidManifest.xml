@@ -93,7 +93,8 @@
             android:exported="false" />
         <activity
             android:name=".client.AboutUsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:hardwareAccelerated="true" />
         <activity
             android:name=".client.Payment"
             android:exported="false" />

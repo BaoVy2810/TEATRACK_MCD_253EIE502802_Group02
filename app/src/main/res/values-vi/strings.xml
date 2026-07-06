@@ -709,32 +709,34 @@
     <string name="btn_choose">Chọn tệp</string>
 
     <!-- Giới thiệu (About Us) -->
-    <string name="about_hero_eyebrow">Hồng Trà Ngô Gia</string>
-    <string name="about_hero_title">Tự hào với hành trình 74 năm hình thành và phát triển</string>
+    <string name="about_hero_eyebrow">Hồng trà Ngô gia</string>
+    <string name="about_hero_eyebrow_prefix">Hồng trà </string>
+    <string name="about_hero_eyebrow_highlight">Ngô gia</string>
+    <string name="about_hero_title">Tự hào 74 năm hình thành và phát triển</string>
     <string name="about_logo_content_desc">Logo thương hiệu Hồng Trà Ngô Gia</string>
     <string name="about_story_title">CÂU CHUYỆN THƯƠNG HIỆU</string>
-    <string name="about_story_desc">Vào năm 1951, giữa mảnh đất trà mộc mạc đậm hương đất trời, thương hiệu đã ra đời với tình yêu trọn vẹn dành cho từng ly trà đậm vị. Trải qua chặng đường dài, Ngô Gia đã trở thành một trong những cái tên quen thuộc và được ưu ái nhất nhờ giữ trọn chất lượng ổn định, cung cách phục vụ tận tâm kết hợp với sự sáng tạo không ngừng để chinh phục xu thế của thế hệ trẻ Việt Nam.</string>
+    <string name="about_story_desc">Năm 1951, giữa đất trà mộc mạc, thương hiệu ra đời với đam mê tạo nên những ly trà đậm vị. Từ đó, Ngô Gia đã trở thành một trong những thương hiệu trà được yêu thích nhờ chất lượng ổn định, dịch vụ tận tâm và không ngừng đổi mới để bắt kịp xu hướng của giới trẻ Việt.</string>
     <string name="about_feature_quality_content_desc">Chất lượng cốt lõi</string>
     <string name="about_feature_quality_title">Chất lượng hàng đầu</string>
-    <string name="about_feature_quality_desc">An toàn, vệ sinh và thơm ngon trọn vẹn. Sử dụng nguồn nguyên liệu tự nhiên, an toàn và đảm bảo vệ sinh luôn là ưu tiên tối thượng hàng đầu tại hệ thống Hồng Trà Ngô Gia.</string>
+    <string name="about_feature_quality_desc">An toàn, vệ sinh và ngon miệng. Việc sử dụng các nguyên liệu an toàn, tự nhiên và vệ sinh là ưu tiên hàng đầu của Hồng trà Ngô Gia. Hương vị tuyệt hảo của các món thức uống là mục đích quan trọng tiếp theo mà chúng tôi muốn hướng đến.</string>
     <string name="about_feature_service_content_desc">Dịch vụ khách hàng</string>
     <string name="about_feature_service_title">Dịch vụ tận tâm</string>
-    <string name="about_feature_service_desc">Hồng Trà Ngô Gia luôn khát khao mang lại sự hài lòng cao nhất cho khách hàng bằng tác phong phục vụ chuyên nghiệp, nồng hậu và vô cùng thân thiện.</string>
+    <string name="about_feature_service_desc">Hồng trà Ngô Gia mong muốn làm hài lòng khách hàng tốt nhất với tác phong phục vụ chuyên nghiệp và thân thiện, luôn lắng nghe những đóng góp của khách hàng.</string>
     <string name="about_feature_tradition_content_desc">Kế thừa và Phát triển</string>
-    <string name="about_feature_tradition_title">Truyền thống &amp; Sáng tạo</string>
-    <string name="about_feature_tradition_desc">Dựa trên nền tảng vững chắc từ hai giá trị cốt lõi là Chất Lượng và Dịch Vụ, Hồng Trà Ngô Gia luôn không ngừng đổi mới để xây dựng một thương hiệu tin cậy bền vững.</string>
-    <string name="about_video_overlay">HỒNG TRÀ NGÔ GIA</string>
-    <string name="about_mission_title">SỬ MỆNH CỦA CHÚNG TÔI</string>
-    <string name="about_mission_desc">Hồng Trà Ngô Gia cam kết mang đến những thức uống tự nhiên, không chất bảo quản, an toàn cho sức khỏe và giữ trọn hương vị trà truyền thống. Thương hiệu hướng tới việc lan tỏa văn hóa trà Đài Loan đến người Việt, mang lại trải nghiệm thưởng trà tinh tế với nguyên liệu rõ ràng, chất lượng ổn định. Đồng thời, Hồng Trà Ngô Gia mong muốn xây dựng cộng đồng yêu trà, góp phần gìn giữ và phát triển văn hóa thưởng trà trong đời sống hiện đại.</string>
+    <string name="about_feature_tradition_title">Truyền thống &amp; sáng tạo</string>
+    <string name="about_feature_tradition_desc">Dựa trên hai nền tảng cốt lõi là Chất Lượng và Dịch Vụ, Hồng trà Ngô gia luôn nỗ lực xây dựng và duy trì hình ảnh thương hiệu đáng tin cậy trong mắt khách hàng.</string>
+    <string name="about_mission_title">SỨ MỆNH</string>
+    <string name="about_mission_desc">Hồng Trà Ngô Gia cam kết mang đến những thức uống tinh tế, lành mạnh và an toàn cho sức khỏe. Chúng tôi luôn hướng tới trải nghiệm khách hàng hoàn hảo: từ mùi vị chuẩn, không gian dễ chịu, cho đến dịch vụ chu đáo. Mỗi ly trà là tâm huyết của người làm nghề, gửi gắm niềm tự hào Việt.</string>
     <string name="about_mission_banner_content_desc">Hình ảnh sứ mệnh Ngô Gia</string>
     <string name="about_vision_banner_content_desc">Hình ảnh tầm nhìn Ngô Gia</string>
     <string name="about_vision_title">TẦM NHÌN THƯƠNG HIỆU</string>
-    <string name="about_vision_desc">Trở thành thương hiệu tiên phong trong lĩnh vực trà chất lượng cao tại Việt Nam, được người tiêu dùng tin chọn vì nguồn nguyên liệu minh bạch, hương vị trà Đài Loan nguyên bản và cam kết phát triển bền vững. Đồng thời, mang văn hóa thưởng trà đến mọi miền đất nước, góp phần nâng tầm trải nghiệm trà Việt và tạo ảnh hưởng tích cực tới cộng đồng.</string>
+    <string name="about_vision_desc">Trở thành thương hiệu tiên phong trong lĩnh vực đồ uống chất lượng cao tại Việt Nam, được người tiêu dùng tin cậy và yêu mến. Ngô Gia hướng đến phát triển bền vững, đóng góp tích cực cho cộng đồng và lan tỏa văn hóa trà hiện đại.</string>
     <string name="about_drink_content_desc">Hình ảnh thức uống</string>
     <string name="about_customer_centric_title">KHÁCH HÀNG LÀ TRỌNG TÂM</string>
-    <string name="about_customer_centric_desc">Hồng Trà Ngô Gia luôn thấu hiểu, lắng nghe sâu sắc và không ngừng cải thiện mỗi ngày nhằm mang đến cho bạn trải nghiệm trà tuyệt vời nhất. Từng ly trà được phục vụ không chỉ chứa đựng hương vị tinh tế, mà đó còn là cả một tấm lòng trân quý chân thành gửi gắm đến mỗi vị khách hàng ghé thăm.</string>
+    <string name="about_customer_centric_desc">Hồng Trà Ngô Gia luôn lắng nghe, thấu hiểu và không ngừng hoàn thiện để mang đến trải nghiệm trà tốt nhất cho bạn. Mỗi ly trà được pha không chỉ bằng hương vị tinh tế, mà còn bằng sự trân trọng và tận tâm dành cho từng vị khách.</string>
     <string name="about_greeting">NGÔ GIA XIN CHÀO</string>
-    <string name="about_greeting_marquee">NGÔ GIA XIN CHÀO&#160;&#160;&#160;NGÔ GIA XIN CHÀO&#160;&#160;&#160;NGÔ GIA XIN CHÀO</string>
+    <string name="about_greeting_marquee">NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO   NGÔ GIA XIN CHÀO</string>
+    <string name="about_greeting_marquee_ghost">XIN CHÀO NGÔ GIA   XIN CHÀO NGÔ GIA   XIN CHÀO NGÔ GIA   XIN CHÀO NGÔ GIA</string>
     <string name="about_background_content_desc">Hình nền hiển thị</string>
     <string name="str_coming_soon">Tính năng đang được phát triển</string>
 
@@ -779,7 +781,7 @@
     <string name="str_contact_info">Thông tin liên hệ</string>
     <string name="str_contact_desc">Chúng tôi luôn lắng nghe ý kiến của bạn để hoàn thiện hơn mỗi ngày.</string>
     <string name="str_phone">Hotline: 02-723-979-518</string>
-    <string name="str_email">Email: contact@teatrack.com</string>
+    <string name="str_email">Email: teatrack0410@gmail.com</string>
     <string name="str_fullname">Họ và tên</string>
     <string name="str_fullname_hint">Nhập họ và tên của bạn</string>
     <string name="str_email_hint">Địa chỉ Email</string>
