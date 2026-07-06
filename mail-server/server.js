@@ -34,34 +34,78 @@ function createTransporter() {
   });
 }
 
+async function sendWithBrevo({ to, subject, html }) {
+  const apiKey = process.env.BREVO_API_KEY;
+  const senderEmail = process.env.MAIL_FROM || process.env.SMTP_USER;
+  const senderName = process.env.MAIL_FROM_NAME || "TeaTrack Support";
+
+  if (!apiKey) {
+    throw new Error("Missing BREVO_API_KEY");
+  }
+  if (!senderEmail) {
+    throw new Error("Missing MAIL_FROM or SMTP_USER");
+  }
+
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "api-key": apiKey,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      sender: { name: senderName, email: senderEmail },
+      to: [{ email: to }],
+      subject,
+      htmlContent: html,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(`Brevo returned HTTP ${response.status}: ${errorBody}`);
+  }
+}
+
+async function sendEmail({ to, subject, html }) {
+  if (process.env.BREVO_API_KEY) {
+    await sendWithBrevo({ to, subject, html });
+    return "brevo";
+  }
+
+  const smtpUser = process.env.SMTP_USER;
+  const transporter = createTransporter();
+
+  await transporter.sendMail({
+    from: `"TeaTrack Support" <${smtpUser}>`,
+    to,
+    subject,
+    html,
+  });
+
+  return "smtp";
+}
+
 app.get("/health", (req, res) => {
   res.json({ ok: true, service: "teatrack-otp-mail-server" });
 });
 
 app.post("/api/auth/send-otp-email", async (req, res) => {
   const { to, subject, html } = req.body || {};
-  console.log(`[${new Date().toISOString()}] Nhận yêu cầu gửi OTP đến: ${to}`);
+  console.log(`[${new Date().toISOString()}] Received OTP email request for: ${to}`);
 
   try {
     if (!to || !subject || !html) {
-      console.error("Thiếu dữ liệu email trong request body");
+      console.error("Missing email data in request body");
       return res.status(400).json({ message: "Missing email data" });
     }
 
-    const smtpUser = process.env.SMTP_USER;
-    const transporter = createTransporter();
+    const provider = await sendEmail({ to, subject, html });
 
-    await transporter.sendMail({
-      from: `"TeaTrack Support" <${smtpUser}>`,
-      to,
-      subject,
-      html,
-    });
-
-    console.log(`[${new Date().toISOString()}] Gửi mail THÀNH CÔNG tới: ${to}`);
-    return res.json({ message: "OTP email sent" });
+    console.log(`[${new Date().toISOString()}] OTP email sent to: ${to} via ${provider}`);
+    return res.json({ message: "OTP email sent", provider });
   } catch (error) {
-    console.error(`[${new Date().toISOString()}] Gửi mail THẤT BẠI:`, error);
+    console.error(`[${new Date().toISOString()}] Failed to send OTP email:`, error);
     return res.status(500).json({
       message: "Failed to send OTP email",
       error: error.message,
