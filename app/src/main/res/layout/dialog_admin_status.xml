@@ -13,23 +13,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Handle bar -->
-        <View
-            android:layout_width="36dp"
-            android:layout_height="4dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="4dp"
-            android:background="#E0E0E0"
-            android:backgroundTint="#E0E0E0" />
-
         <!-- Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="8dp"
             android:text="Update Order Status"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -49,8 +39,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="8dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp">
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
             <!-- Pending -->
             <RadioButton
@@ -156,35 +146,45 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="16dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="18dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDialogCancel"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="44dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="10dp"
+                android:backgroundTint="@color/white"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
+                android:letterSpacing="0"
+                android:minWidth="0dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
                 android:text="Cancel"
                 android:textAllCaps="false"
-                android:textColor="#666666"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp"
+                android:textStyle="bold"
                 app:cornerRadius="12dp"
-                app:strokeColor="#E0E0E0"
+                app:strokeColor="#C9D7EA"
                 app:strokeWidth="1dp"
-                app:rippleColor="#F5F5F5" />
+                app:rippleColor="#E8F4FF" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDialogConfirm"
                 android:layout_width="0dp"
-                android:layout_height="44dp"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:backgroundTint="#0088FF"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
+                android:letterSpacing="0"
+                android:minWidth="0dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
                 android:text="Confirm"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

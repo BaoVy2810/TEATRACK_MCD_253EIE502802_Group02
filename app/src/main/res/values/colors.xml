@@ -122,8 +122,8 @@
     <color name="table_row_odd">#F9FAFB</color>
     <color name="table_row_selected">#EBF5FF</color>
     <color name="branch_table_header_bg">#0A8EF3</color>
-    <color name="branch_table_cream">#F6EFE2</color>
-    <color name="branch_table_cyan">#68CBE0</color>
+    <color name="branch_table_cream">#F7F1E4</color>
+    <color name="branch_table_cyan">#72D5EC</color>
     <color name="branch_table_blue_text">#0088FF</color>
     <color name="branch_table_white_text">#FFFFFF</color>
 

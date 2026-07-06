@@ -71,6 +71,8 @@
                     android:hint="@string/str_search_hint_account"
                     android:paddingHorizontal="15dp"
                     android:singleLine="true"
+                    android:textColor="@color/brand_blue"
+                    android:textColorHint="#800088FF"
                     android:textSize="12sp" />
 
                 <LinearLayout

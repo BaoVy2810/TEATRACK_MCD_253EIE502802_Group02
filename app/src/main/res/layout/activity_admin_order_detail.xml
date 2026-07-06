@@ -568,10 +568,12 @@
                             android:textColor="@color/text_secondary" />
                         <TextView
                             android:id="@+id/tvDeliveryAddress"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:maxWidth="180dp"
+                            android:layout_weight="1.35"
                             android:gravity="end"
+                            android:lineSpacingExtra="2dp"
+                            android:maxLines="4"
                             android:textSize="12sp"
                             android:textColor="@color/text_primary" />
                     </LinearLayout>
@@ -610,14 +612,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:gravity="top">
                         <ImageView
                             android:layout_width="14dp"
                             android:layout_height="14dp"
                             android:layout_marginEnd="8dp"
+                            android:layout_marginTop="2dp"
                             android:importantForAccessibility="no"
-                            android:src="@drawable/ic_location_on"
+                            android:src="@drawable/ic_branch_store"
                             app:tint="@color/brand_blue" />
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -625,10 +629,15 @@
                             android:text="Branch"
                             android:textSize="12sp"
                             android:textColor="@color/text_secondary" />
+
                         <TextView
                             android:id="@+id/tvDeliveryBranch"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1.35"
+                            android:gravity="end"
+                            android:lineSpacingExtra="2dp"
+                            android:maxLines="4"
                             android:textSize="12sp"
                             android:textColor="@color/text_primary" />
                     </LinearLayout>

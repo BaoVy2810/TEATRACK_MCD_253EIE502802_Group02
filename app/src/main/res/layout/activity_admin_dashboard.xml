@@ -38,7 +38,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/nav_height">
+        android:paddingBottom="112dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -468,8 +468,8 @@
                             android:layout_marginTop="@dimen/sp_10"
                             android:orientation="horizontal"
                             android:background="@drawable/bg_table_header"
-                            android:paddingStart="@dimen/table_header_padding_h"
-                            android:paddingEnd="@dimen/table_header_padding_h"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
                             android:paddingTop="@dimen/table_header_padding_v"
                             android:paddingBottom="@dimen/table_header_padding_v">
 
@@ -477,33 +477,36 @@
                                 style="@style/TextAppearance.TeaTrack.TableHeader"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="2.45"
+                                android:layout_weight="2.35"
                                 android:ellipsize="end"
                                 android:includeFontPadding="false"
                                 android:maxLines="1"
-                                android:text="@string/col_branch_address" />
+                                android:text="@string/col_branch_address"
+                                android:textSize="11sp" />
 
                             <TextView
                                 style="@style/TextAppearance.TeaTrack.TableHeader"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="0.75"
+                                android:layout_weight="0.65"
                                 android:ellipsize="end"
                                 android:gravity="center"
                                 android:includeFontPadding="false"
                                 android:maxLines="1"
-                                android:text="@string/col_num_orders" />
+                                android:text="@string/col_num_orders"
+                                android:textSize="11sp" />
 
                             <TextView
                                 style="@style/TextAppearance.TeaTrack.TableHeader"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.05"
+                                android:layout_weight="1.25"
                                 android:ellipsize="end"
                                 android:gravity="end"
                                 android:includeFontPadding="false"
                                 android:maxLines="1"
-                                android:text="@string/col_revenue" />
+                                android:text="@string/col_revenue"
+                                android:textSize="11sp" />
 
                         </LinearLayout>
 

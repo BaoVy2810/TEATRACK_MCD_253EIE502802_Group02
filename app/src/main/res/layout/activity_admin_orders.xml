@@ -77,25 +77,6 @@
                 android:inputType="text"
                 app:tint="@color/text_muted" />
 
-            <FrameLayout
-                android:id="@+id/btnFilterOrders"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:background="@drawable/bg_filter_icon_button"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackgroundBorderless">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/filter"
-                    android:importantForAccessibility="no"
-                    app:tint="@color/brand_blue" />
-
-            </FrameLayout>
-
         </LinearLayout>
 
         <!-- Status filter tabs (horizontal scroll) -->

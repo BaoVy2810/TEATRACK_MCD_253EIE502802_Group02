@@ -575,7 +575,7 @@
                 android:textSize="11sp"
                 android:visibility="gone"
                 app:cornerRadius="10dp"
-                app:icon="@drawable/trash_can"
+                app:icon="@drawable/ic_cancel_x_red"
                 app:iconGravity="textStart"
                 app:iconPadding="3dp"
                 app:iconSize="13dp"

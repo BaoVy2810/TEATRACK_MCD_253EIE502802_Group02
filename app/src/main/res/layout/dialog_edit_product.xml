@@ -359,8 +359,8 @@
                 android:hint="@string/hint_product_desc"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
-                android:scrollbars="vertical"
-                android:fadeScrollbars="false"
+                android:scrollbars="none"
+                android:overScrollMode="never"
                 android:textColor="@color/brand_blue"
                 android:textColorHint="#800088FF"
                 android:textSize="13sp" />
