@@ -31,8 +31,9 @@ import com.teatrack_mcd_253eie502802_group02.model.Promotion;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.CartActions;
-import com.teatrack_mcd_253eie502802_group02.util.UserRoleHelper;
 import com.teatrack_mcd_253eie502802_group02.util.ReviewStatsHelper;
+import com.teatrack_mcd_253eie502802_group02.util.UserRoleHelper;
+import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -380,7 +381,7 @@ public class Homepage extends BaseActivity {
         intent.putExtra("priceL", String.valueOf(product.getPriceL()));
         intent.putExtra("vipM", String.valueOf(product.getVipPriceM()));
         intent.putExtra("vipL", String.valueOf(product.getVipPriceL()));
-        intent.putExtra("imageRes", product.getImageRes(this));
+        ProductImageHelper.putDetailExtras(intent, this, product);
         intent.putExtra("rating", product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());
         if (product.getId() != null && !product.getId().isEmpty()) {

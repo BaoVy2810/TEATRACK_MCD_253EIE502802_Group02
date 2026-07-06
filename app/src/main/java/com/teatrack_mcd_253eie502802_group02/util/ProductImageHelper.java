@@ -1,6 +1,7 @@
 package com.teatrack_mcd_253eie502802_group02.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -18,20 +19,109 @@ import java.util.Map;
 
 public final class ProductImageHelper {
 
-    /** Legacy order/product ids from seed data -> mipmap basename (without extension). */
-    private static final Map<String, String> LEGACY_ID_IMAGE = new HashMap<>();
+    /** Firebase RTDB product id/code (NG01–NG47) -> mipmap basename. */
+    private static final Map<String, String> PRODUCT_CODE_IMAGE = new HashMap<>();
 
     static {
-        LEGACY_ID_IMAGE.put("prod_hongtra_ngogia", "hongtradailoan");
-        LEGACY_ID_IMAGE.put("prod_olong_mochuong", "traolongmochuong");
-        LEGACY_ID_IMAGE.put("prod_hongtra_bidao", "hongtrabidao");
-        LEGACY_ID_IMAGE.put("prod_traxanh_bidao", "traxanhbidao");
-        LEGACY_ID_IMAGE.put("prod_suatuoi_khoaimon", "suatuoikhoaimonnghien");
-        LEGACY_ID_IMAGE.put("prod_olong_latte", "olonglatte");
-        LEGACY_ID_IMAGE.put("prod_trasuatranchau", "trasuatranchauduongden");
+        PRODUCT_CODE_IMAGE.put("NG01", "traolongmochuong");
+        PRODUCT_CODE_IMAGE.put("NG02", "hongtrabidao");
+        PRODUCT_CODE_IMAGE.put("NG03", "traxanhbidao");
+        PRODUCT_CODE_IMAGE.put("NG04", "traxanhhoanhai");
+        PRODUCT_CODE_IMAGE.put("NG05", "hongtravaithieu");
+        PRODUCT_CODE_IMAGE.put("NG06", "trabidaongogia");
+        PRODUCT_CODE_IMAGE.put("NG07", "hongtradailoan");
+        PRODUCT_CODE_IMAGE.put("NG08", "trasuauyenuong");
+        PRODUCT_CODE_IMAGE.put("NG09", "trasuaolong");
+        PRODUCT_CODE_IMAGE.put("NG10", "trasuasocola");
+        PRODUCT_CODE_IMAGE.put("NG11", "trasuatranchauduongden");
+        PRODUCT_CODE_IMAGE.put("NG12", "traxanhsua");
+        PRODUCT_CODE_IMAGE.put("NG13", "trasuavaithieu");
+        PRODUCT_CODE_IMAGE.put("NG14", "trasuabidao");
+        PRODUCT_CODE_IMAGE.put("NG15", "trasuadailoan");
+        PRODUCT_CODE_IMAGE.put("NG16", "suatuoikhoaimonnghien");
+        PRODUCT_CODE_IMAGE.put("NG17", "olonglatte");
+        PRODUCT_CODE_IMAGE.put("NG18", "suatuoitranchauduongden");
+        PRODUCT_CODE_IMAGE.put("NG19", "tranchauduongdenlatte");
+        PRODUCT_CODE_IMAGE.put("NG20", "traxanhlatte");
+        PRODUCT_CODE_IMAGE.put("NG21", "hongtralattevaithieu");
+        PRODUCT_CODE_IMAGE.put("NG22", "bidaolatte");
+        PRODUCT_CODE_IMAGE.put("NG23", "hongtralattedailoan");
+        PRODUCT_CODE_IMAGE.put("NG24", "olongnho");
+        PRODUCT_CODE_IMAGE.put("NG25", "traolongdao");
+        PRODUCT_CODE_IMAGE.put("NG26", "mauhonglangman");
+        PRODUCT_CODE_IMAGE.put("NG27", "traxanhdaongogia");
+        PRODUCT_CODE_IMAGE.put("NG28", "hongtradaongogia");
+        PRODUCT_CODE_IMAGE.put("NG29", "traxanhchanh");
+        PRODUCT_CODE_IMAGE.put("NG30", "hongtrachanhvaithieu");
+        PRODUCT_CODE_IMAGE.put("NG31", "trabidaochanh");
+        PRODUCT_CODE_IMAGE.put("NG32", "hongtrachanhdailoan");
+        PRODUCT_CODE_IMAGE.put("NG33", "hongtratrungkhunglong");
+        PRODUCT_CODE_IMAGE.put("NG34", "trasualongchau");
+        PRODUCT_CODE_IMAGE.put("NG35", "olongomaichanhday");
+        PRODUCT_CODE_IMAGE.put("NG36", "traxanhomaichanhday");
+        PRODUCT_CODE_IMAGE.put("NG37", "trasuaolongkhoaimonnghien");
+        PRODUCT_CODE_IMAGE.put("NG38", "trasuakhoaimonnghien");
+        PRODUCT_CODE_IMAGE.put("NG39", "traolongbidao");
+        PRODUCT_CODE_IMAGE.put("NG40", "batbaongogiangot");
+        PRODUCT_CODE_IMAGE.put("NG41", "hongtrakemtuoi");
+        PRODUCT_CODE_IMAGE.put("NG42", "olongkemcheese");
+        PRODUCT_CODE_IMAGE.put("NG43", "traxanhkemcheese");
+        PRODUCT_CODE_IMAGE.put("NG44", "hongtrakemcheese");
+        PRODUCT_CODE_IMAGE.put("NG45", "traximuoiolong");
+        PRODUCT_CODE_IMAGE.put("NG46", "traximuoibidao");
+        PRODUCT_CODE_IMAGE.put("NG47", "traximuoingogia");
+        PRODUCT_CODE_IMAGE.put("prod_hongtra_ngogia", "hongtradailoan");
+        PRODUCT_CODE_IMAGE.put("prod_olong_mochuong", "traolongmochuong");
+        PRODUCT_CODE_IMAGE.put("prod_hongtra_bidao", "hongtrabidao");
+        PRODUCT_CODE_IMAGE.put("prod_traxanh_bidao", "traxanhbidao");
+        PRODUCT_CODE_IMAGE.put("prod_suatuoi_khoaimon", "suatuoikhoaimonnghien");
+        PRODUCT_CODE_IMAGE.put("prod_olong_latte", "olonglatte");
+        PRODUCT_CODE_IMAGE.put("prod_trasuatranchau", "trasuatranchauduongden");
     }
 
     private ProductImageHelper() {
+    }
+
+    public static void putDetailExtras(Intent intent, Context context, Product product) {
+        if (product == null || intent == null) {
+            return;
+        }
+        enrichFromFirebase(product);
+        if (product.getImage() != null && !product.getImage().trim().isEmpty()) {
+            intent.putExtra("productImage", product.getImage().trim());
+        }
+        if (product.getCode() != null && !product.getCode().trim().isEmpty()) {
+            intent.putExtra("productCode", product.getCode().trim());
+        }
+        intent.putExtra("imageRes", product.getImageRes(context));
+    }
+
+    /** Fill missing Firebase metadata (code, image filename) from NG product id. */
+    public static void enrichFromFirebase(Product product) {
+        if (product == null) {
+            return;
+        }
+        String key = product.getId();
+        if ((product.getCode() == null || product.getCode().isEmpty()) && key != null && !key.isEmpty()) {
+            product.setCode(key);
+        }
+        String image = product.getImage();
+        if (image != null && !image.trim().isEmpty()) {
+            product.setImage(image.trim());
+            return;
+        }
+        String basename = resolveBasenameForProduct(product);
+        if (basename != null) {
+            product.setImage(basename + ".png");
+        }
+    }
+
+    public static void prepareForDisplay(Context context, Product product) {
+        if (product == null || context == null) {
+            return;
+        }
+        enrichFromFirebase(product);
+        applyTrustedImageRes(context, product);
     }
 
     public static void load(ImageView imageView, Product product) {
@@ -40,11 +130,12 @@ public final class ProductImageHelper {
         }
 
         Context context = imageView.getContext();
+        prepareForDisplay(context, product);
         Glide.with(context).clear(imageView);
 
         int localRes = resolveTrustedLocalRes(context, product);
         if (localRes != 0) {
-            loadResource(imageView, localRes);
+            imageView.setImageResource(localRes);
             return;
         }
 
@@ -54,7 +145,7 @@ public final class ProductImageHelper {
             return;
         }
 
-        loadResource(imageView, R.mipmap.logo_ngo_gia);
+        imageView.setImageResource(R.mipmap.logo_ngo_gia);
     }
 
     public static int resolveLocalRes(Context context, Product product) {
@@ -63,9 +154,9 @@ public final class ProductImageHelper {
 
     /**
      * Priority:
-     * 1) Firebase {@code image} / {@code images} local filename (source of truth in RTDB)
-     * 2) Legacy {@code prod_*} ids from older order seeds
-     * 3) Exact catalog name match (offline menu fallback only)
+     * 1) Firebase {@code image} / {@code images} filename
+     * 2) Product {@code id} / {@code code} map (NG01–NG47)
+     * 3) Exact catalog name (offline fallback)
      * 4) Cached {@code imageRes} from navigation intent
      */
     public static int resolveTrustedLocalRes(Context context, Product product) {
@@ -78,9 +169,14 @@ public final class ProductImageHelper {
             return fromFirebase;
         }
 
-        int fromLegacyId = resolveFromLegacyProductId(context, product.getId());
-        if (fromLegacyId != 0) {
-            return fromLegacyId;
+        int fromCode = resolveFromProductCode(context, product.getId());
+        if (fromCode != 0) {
+            return fromCode;
+        }
+
+        fromCode = resolveFromProductCode(context, product.getCode());
+        if (fromCode != 0) {
+            return fromCode;
         }
 
         int fromCatalog = resolveFromCatalogExact(product.getName());
@@ -176,15 +272,33 @@ public final class ProductImageHelper {
         return 0;
     }
 
-    private static int resolveFromLegacyProductId(Context context, String productId) {
-        if (productId == null || productId.isEmpty()) {
+    private static int resolveFromProductCode(Context context, String productCode) {
+        if (productCode == null || productCode.isEmpty()) {
             return 0;
         }
-        String basename = LEGACY_ID_IMAGE.get(productId.trim());
+        String basename = resolveBasenameForCode(productCode.trim());
         if (basename == null) {
             return 0;
         }
         return resolveResourceId(context, basename);
+    }
+
+    private static String resolveBasenameForProduct(Product product) {
+        if (product == null) {
+            return null;
+        }
+        String fromId = resolveBasenameForCode(product.getId());
+        if (fromId != null) {
+            return fromId;
+        }
+        return resolveBasenameForCode(product.getCode());
+    }
+
+    private static String resolveBasenameForCode(String productCode) {
+        if (productCode == null || productCode.isEmpty()) {
+            return null;
+        }
+        return PRODUCT_CODE_IMAGE.get(productCode.trim());
     }
 
     private static int resolveFromCatalogExact(String productName) {

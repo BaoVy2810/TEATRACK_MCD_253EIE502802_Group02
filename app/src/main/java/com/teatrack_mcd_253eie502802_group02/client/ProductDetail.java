@@ -832,8 +832,9 @@ public class ProductDetail extends BaseActivity {
                 R.string.product_detail_views_format,
                 reviewCount == null ? "1k" : reviewCount));
         tvDescription.setText(getString(R.string.product_detail_description_default));
-        imgDetail.setImageResource(imageRes);
         currentProduct = buildProductFromIntent(name, category, priceM, priceL, vipM, vipL, imageRes, rating, reviewCount);
+        applyResolvedImageRes(currentProduct);
+        ProductImageHelper.load(imgDetail, currentProduct);
     }
 
     private void fetchFromFirebase(String name) {
@@ -925,9 +926,10 @@ public class ProductDetail extends BaseActivity {
                 findViewById(R.id.thumb4)
         };
 
-        int resolvedRes = product.getImageRes() != 0
-                ? product.getImageRes()
-                : ProductImageHelper.resolveLocalRes(this, product);
+        int resolvedRes = ProductImageHelper.resolveLocalRes(this, product);
+        if (resolvedRes == 0 && product.getImageRes() != 0) {
+            resolvedRes = product.getImageRes();
+        }
 
         List<String> sources = resolvedRes != 0
                 ? new ArrayList<>()
@@ -1158,7 +1160,7 @@ public class ProductDetail extends BaseActivity {
         intent.putExtra("priceL", String.valueOf(product.getPriceL()));
         intent.putExtra("vipM", String.valueOf(product.getVipPriceM()));
         intent.putExtra("vipL", String.valueOf(product.getVipPriceL()));
-        intent.putExtra("imageRes", product.getImageRes(this));
+        ProductImageHelper.putDetailExtras(intent, this, product);
         intent.putExtra("rating", product.getRating());
         intent.putExtra("reviewCount", product.getReviewCount());
         if (product.getId() != null && !product.getId().isEmpty()) {
@@ -1466,6 +1468,14 @@ public class ProductDetail extends BaseActivity {
         String productId = getIntent().getStringExtra("productId");
         if (productId != null && !productId.isEmpty()) {
             product.setId(productId);
+        }
+        String productCode = getIntent().getStringExtra("productCode");
+        if (productCode != null && !productCode.isEmpty()) {
+            product.setCode(productCode);
+        }
+        String productImage = getIntent().getStringExtra("productImage");
+        if (productImage != null && !productImage.isEmpty()) {
+            product.setImage(productImage);
         }
         return product;
     }

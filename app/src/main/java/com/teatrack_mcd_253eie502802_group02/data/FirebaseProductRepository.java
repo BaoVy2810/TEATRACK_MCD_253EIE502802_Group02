@@ -11,6 +11,7 @@ import com.teatrack_mcd_253eie502802_group02.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
 
 public class FirebaseProductRepository {
 
@@ -54,6 +55,7 @@ public class FirebaseProductRepository {
                     if (product.getId() == null || product.getId().isEmpty()) {
                         product.setId(child.getKey());
                     }
+                    ProductImageHelper.enrichFromFirebase(product);
                     products.add(product);
                 }
                 callback.onSuccess(products);
@@ -118,6 +120,7 @@ public class FirebaseProductRepository {
                     return;
                 }
                 product.setId(snapshot.getKey());
+                ProductImageHelper.enrichFromFirebase(product);
                 callback.onSuccess(product);
             }
 

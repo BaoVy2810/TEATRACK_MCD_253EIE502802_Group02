@@ -131,7 +131,7 @@ public class CategoryProductDialog extends DialogFragment {
         intent.putExtra("priceL", product.getPriceL());
         intent.putExtra("vipM", product.getVipPriceM());
         intent.putExtra("vipL", product.getVipPriceL());
-        intent.putExtra("imageRes", product.getImageRes(requireContext()));
+        ProductImageHelper.putDetailExtras(intent, requireContext(), product);
         if (product.getId() != null && !product.getId().isEmpty()) {
             intent.putExtra("productId", product.getId());
         }
