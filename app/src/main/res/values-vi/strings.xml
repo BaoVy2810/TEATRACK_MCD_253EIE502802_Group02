@@ -151,7 +151,7 @@
 
     <string name="section_branch_analysis">Phân tích chi nhánh</string>
     <string name="col_branch_address">Địa chỉ chi nhánh</string>
-    <string name="col_num_orders">Số lượng đơn hàng</string>
+    <string name="col_num_orders">Đơn hàng</string>
     <string name="col_revenue">Doanh thu</string>
     <string name="loading_data">Đang tải dữ liệu&#8230;</string>
 
@@ -435,6 +435,8 @@
     <string name="forgot_password_sign_in">Đăng nhập</string>
     <string name="forgot_password_error_empty">Vui lòng điền đầy đủ địa chỉ email của bạn.</string>
     <string name="forgot_password_error_not_found">Không tìm thấy tài khoản liên kết với email này. Vui lòng kiểm tra lại.</string>
+    <string name="forgot_password_otp_sent">OTP đã được gửi đến email của bạn.</string>
+    <string name="forgot_password_server_error">Lỗi server. Vui lòng thử lại.</string>
 
     <string name="reset_password_title">Đặt lại mật khẩu</string>
     <string name="reset_password_content">Vui lòng tạo một mật khẩu mới bảo mật hơn cho tài khoản của bạn.</string>
@@ -447,6 +449,8 @@
     <string name="reset_password_back_to_sign_in">Quay lại trang Đăng nhập</string>
     <string name="reset_password_error_empty">Lỗi cập nhật! Vui lòng điền đầy đủ các thông tin bắt buộc.</string>
     <string name="reset_password_error_mismatch">Mật khẩu mới không trùng khớp nhau. Vui lòng điền lại.</string>
+    <string name="reset_password_error_request_otp_first">Vui lòng yêu cầu và xác thực OTP trước khi đặt lại mật khẩu.</string>
+    <string name="reset_password_update_success">Mật khẩu đã được cập nhật.</string>
 
     <string name="success_password_title">Đổi mật khẩu thành công!</string>
     <string name="success_password_content">Bây giờ bạn có thể sử dụng mật khẩu mới này để truy cập vào hệ thống. Cảm ơn bạn đã tin tưởng dịch vụ của chúng tôi. Vui lòng đăng nhập lại.</string>
@@ -610,6 +614,19 @@
     <string name="otp_resend">Gửi lại mã OTP</string>
     <string name="otp_verify_btn">XÁC NHẬN</string>
     <string name="otp_back">← Quay lại</string>
+    <string name="otp_error_missing">Thiếu thông tin.</string>
+    <string name="otp_error_invalid_or_expired">OTP không tồn tại hoặc đã hết hạn.</string>
+    <string name="otp_error_expired">OTP đã hết hạn, vui lòng yêu cầu lại.</string>
+    <string name="otp_valid">OTP hợp lệ.</string>
+    <string name="otp_resend_success">OTP mới đã được gửi đến email của bạn.</string>
+    <string name="password_reset_email_subject">Mã OTP khôi phục mật khẩu - TeaTrack</string>
+    <string name="password_reset_email_title">TeaTrack - Khôi phục mật khẩu</string>
+    <string name="password_reset_email_greeting">Chào bạn,</string>
+    <string name="password_reset_email_intro">Bạn đã yêu cầu đặt lại mật khẩu. Dưới đây là mã OTP của bạn:</string>
+    <string name="password_reset_email_valid_minutes">Mã OTP có hiệu lực trong</string>
+    <string name="password_reset_email_minutes">10 phút</string>
+    <string name="password_reset_email_do_not_share">Vui lòng không chia sẻ mã này với bất kỳ ai.</string>
+    <string name="password_reset_email_ignore">Nếu bạn không yêu cầu, hãy bỏ qua email này.</string>
     <string name="str_otp">-</string>
     <string name="str_email_masked">ethan@gmail.com</string>
     <string name="str_agency_location">Vị Trí Đại Lý</string>

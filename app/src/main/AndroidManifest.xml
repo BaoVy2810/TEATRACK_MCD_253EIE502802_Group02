@@ -83,6 +83,9 @@
             android:name=".client.FilledOTP"
             android:exported="false" />
         <activity
+            android:name=".client.FilledOtpActivity"
+            android:exported="false" />
+        <activity
             android:name=".client.BlogDetail"
             android:exported="false" />
         <activity

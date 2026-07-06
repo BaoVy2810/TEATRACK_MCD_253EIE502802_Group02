@@ -1,5 +1,6 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,10 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.teatrack_mcd_253eie502802_group02.R;
+import com.teatrack_mcd_253eie502802_group02.data.PasswordResetManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,8 @@ public class FilledOtpActivity extends AppCompatActivity {
     private TextView tvCountdown;
     private TextView tvResendOtp;
     private Button btnVerifyOtp;
+    private PasswordResetManager passwordResetManager;
+    private String email;
 
     private final List<EditText> otpFields = new ArrayList<>();
     private CountDownTimer countDownTimer;
@@ -44,16 +49,17 @@ public class FilledOtpActivity extends AppCompatActivity {
         tvCountdown = findViewById(R.id.tvCountdown);
         tvResendOtp = findViewById(R.id.tvResendOtp);
         btnVerifyOtp = findViewById(R.id.btnVerifyOtp);
+        passwordResetManager = new PasswordResetManager(this);
+        email = getIntent().getStringExtra(EXTRA_EMAIL);
 
         ImageButton btnBack = findViewById(R.id.btnBack);
-        TextView tvBackLink = findViewById(R.id.tvBackLink);
 
         tvResendOtp.setPaintFlags(tvResendOtp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         collectOtpFields();
         setupMaskedEmail();
         setupOtpInputs();
-        setupActions(btnBack, tvBackLink);
+        setupActions(btnBack);
 
         startCountdown();
         updateVerifyButtonState();
@@ -70,7 +76,6 @@ public class FilledOtpActivity extends AppCompatActivity {
     }
 
     private void setupMaskedEmail() {
-        String email = getIntent().getStringExtra(EXTRA_EMAIL);
         if (email == null || email.isEmpty()) {
             tvEmailMasked.setVisibility(View.GONE);
             return;
@@ -78,19 +83,62 @@ public class FilledOtpActivity extends AppCompatActivity {
         tvEmailMasked.setText(maskEmail(email));
     }
 
-    private void setupActions(ImageButton btnBack, TextView tvBackLink) {
+    private void setupActions(ImageButton btnBack) {
         View.OnClickListener backListener = v -> finish();
         btnBack.setOnClickListener(backListener);
-        tvBackLink.setOnClickListener(backListener);
+        tvResendOtp.setOnClickListener(v -> resendOtp());
+        btnVerifyOtp.setOnClickListener(v -> verifyOtp());
+    }
 
-        tvResendOtp.setOnClickListener(v -> {
-            clearOtpFields();
-            startCountdown();
-            otpFields.get(0).requestFocus();
+    private void resendOtp() {
+        if (email == null || email.isEmpty()) {
+            Toast.makeText(this, R.string.otp_error_missing, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        tvResendOtp.setEnabled(false);
+        passwordResetManager.sendOtp(email, new PasswordResetManager.Callback() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(FilledOtpActivity.this, R.string.otp_resend_success, Toast.LENGTH_SHORT).show();
+                tvResendOtp.setEnabled(true);
+                setOtpErrorState(false);
+                clearOtpFields();
+                startCountdown();
+                otpFields.get(0).requestFocus();
+            }
+
+            @Override
+            public void onError(String message) {
+                tvResendOtp.setEnabled(true);
+                Toast.makeText(FilledOtpActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
         });
+    }
 
-        btnVerifyOtp.setOnClickListener(v -> {
-            // TODO: Gọi API xác thực OTP với getOtpCode()
+    private void verifyOtp() {
+        if (email == null || email.isEmpty()) {
+            Toast.makeText(this, R.string.otp_error_missing, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        btnVerifyOtp.setEnabled(false);
+        passwordResetManager.verifyOtp(email, getOtpCode(), new PasswordResetManager.Callback() {
+            @Override
+            public void onSuccess() {
+                setOtpErrorState(false);
+                Toast.makeText(FilledOtpActivity.this, R.string.otp_valid, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(FilledOtpActivity.this, ResetPasswordActivity.class);
+                intent.putExtra("email", email);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onError(String message) {
+                setOtpErrorState(true);
+                Toast.makeText(FilledOtpActivity.this, message, Toast.LENGTH_SHORT).show();
+                updateVerifyButtonState();
+            }
         });
     }
 

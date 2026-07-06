@@ -36,12 +36,23 @@ public class BranchAnalysisAdapter extends RecyclerView.Adapter<BranchAnalysisAd
         holder.tvBranchOrders.setText(String.valueOf(branch.getNumOrders()));
         holder.tvBranchRevenue.setText(branch.getRevenue());
 
-        // Alternating background colors
-        if (position % 2 == 0) {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.table_row_even));
+        boolean cyanRow = position % 2 == 1;
+        boolean lastRow = position == getItemCount() - 1;
+        int backgroundRes;
+        if (cyanRow) {
+            backgroundRes = lastRow ? R.drawable.bg_branch_row_cyan_bottom : R.drawable.bg_branch_row_cyan;
         } else {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.table_row_odd));
+            backgroundRes = lastRow ? R.drawable.bg_branch_row_cream_bottom : R.drawable.bg_branch_row_cream;
         }
+        int textColor = ContextCompat.getColor(
+                holder.itemView.getContext(),
+                cyanRow ? R.color.branch_table_white_text : R.color.branch_table_blue_text
+        );
+
+        holder.itemView.setBackgroundResource(backgroundRes);
+        holder.tvBranchAddress.setTextColor(textColor);
+        holder.tvBranchOrders.setTextColor(textColor);
+        holder.tvBranchRevenue.setTextColor(textColor);
     }
 
     @Override
