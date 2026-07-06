@@ -10,11 +10,11 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -50,7 +50,7 @@ public class AdminAgency extends AppCompatActivity {
 
     private EditText etSearch;
     private RecyclerView rvStores;
-    private Button btnAddAgency;
+    private View fabAddAgency;
 
     private static final int[] NAV_ITEM_IDS = {
             R.id.nav_dashboard,
@@ -102,8 +102,37 @@ public class AdminAgency extends AppCompatActivity {
         setupNavBar();
         setupHeader();
 
-        if (btnAddAgency != null) {
-            btnAddAgency.setOnClickListener(v -> showAddAgencyDialog());
+        if (fabAddAgency != null) {
+            fabAddAgency.setOnTouchListener(new View.OnTouchListener() {
+                private float initialX, initialY, initialTouchX, initialTouchY;
+                private static final int CLICK_THRESHOLD = 10;
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            initialX = v.getX();
+                            initialY = v.getY();
+                            initialTouchX = event.getRawX();
+                            initialTouchY = event.getRawY();
+                            return true;
+
+                        case MotionEvent.ACTION_MOVE:
+                            v.setX(initialX + (event.getRawX() - initialTouchX));
+                            v.setY(initialY + (event.getRawY() - initialTouchY));
+                            return true;
+
+                        case MotionEvent.ACTION_UP:
+                            float diffX = Math.abs(event.getRawX() - initialTouchX);
+                            float diffY = Math.abs(event.getRawY() - initialTouchY);
+                            if (diffX < CLICK_THRESHOLD && diffY < CLICK_THRESHOLD) {
+                                showAddAgencyDialog();
+                            }
+                            return true;
+                    }
+                    return false;
+                }
+            });
         }
         setupSearch();
     }
@@ -408,21 +437,21 @@ public class AdminAgency extends AppCompatActivity {
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
             dialog.getWindow().setAttributes(params);
         }
 
         TextView tvTitle = dialog.findViewById(R.id.tvDeleteTitle);
-        if (tvTitle != null) tvTitle.setText("Xóa chi nhánh");
+        if (tvTitle != null) tvTitle.setText(R.string.modal_delete_title);
 
         TextView tvMessage = dialog.findViewById(R.id.tvDeleteMessage);
         String name = agency.getName();
-        String html = "Bạn có chắc chắn muốn xóa chi nhánh <b>" + name + "</b>?";
+        String fullMessage = "The agency <font color='#0088ff'><b>" + android.text.TextUtils.htmlEncode(name) + "</b></font> will be permanently deleted.";
         
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            tvMessage.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
+            tvMessage.setText(Html.fromHtml(fullMessage, Html.FROM_HTML_MODE_LEGACY));
         } else {
-            tvMessage.setText(Html.fromHtml(html));
+            tvMessage.setText(Html.fromHtml(fullMessage));
         }
 
         dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
@@ -506,7 +535,7 @@ public class AdminAgency extends AppCompatActivity {
         etSearch = findViewById(R.id.etSearch);
         etSearch.setHint(R.string.str_agency_search);
         rvStores = findViewById(R.id.rvStores);
-        btnAddAgency = findViewById(R.id.btnAddAgency);
+        fabAddAgency = findViewById(R.id.fabAddAgency);
     }
 
     private void setupRecyclerView() {

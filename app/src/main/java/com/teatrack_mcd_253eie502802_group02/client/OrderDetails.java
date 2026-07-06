@@ -35,6 +35,7 @@ import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.util.FirebaseOrderHelper;
 import com.teatrack_mcd_253eie502802_group02.util.OrderItemDisplayHelper;
 import com.teatrack_mcd_253eie502802_group02.util.OrderStatusBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.util.PaymentMethodBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.util.PriceFormatHelper;
 
 import java.text.NumberFormat;
@@ -260,9 +261,8 @@ public class OrderDetails extends BaseActivity {
         if (rawDate.isEmpty()) rawDate = safe(order.getCreatedAt());
         tvDetailDate.setText(formatDate(rawDate));
 
-        // Payment chip — neutral blue style, different from status badges
-        String payment = safe(order.getPaymentMethod());
-        tvPaymentChip.setText(payment.isEmpty() ? "—" : payment);
+        // Payment chip — method-specific badge style
+        PaymentMethodBadgeHelper.apply(tvPaymentChip, order.getPaymentMethod());
 
         // Status badge
         OrderStatusBadgeHelper.apply(tvDetailStatusBadge, status);
@@ -346,7 +346,7 @@ public class OrderDetails extends BaseActivity {
         tvDeliveryName.setText(safe(order.getCustomerName(), "—"));
         tvDeliveryPhone.setText(safe(order.getCustomerPhone(), "—"));
         tvDeliveryAddress.setText(safe(order.getCustomerAddress(), "—"));
-        tvDeliveryPayment.setText(safe(order.getPaymentMethod(), "—"));
+        PaymentMethodBadgeHelper.apply(tvDeliveryPayment, order.getPaymentMethod());
         OrderStatusBadgeHelper.apply(tvDeliveryStatus, safe(order.getStatus()));
     }
 

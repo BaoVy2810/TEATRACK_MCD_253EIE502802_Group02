@@ -30,9 +30,7 @@ public final class OrderItemDisplayHelper {
 
         String header = context.getString(R.string.cart_topping_header);
         StringBuilder builder = new StringBuilder(header);
-        String[] parts = toppings.contains("\n")
-                ? toppings.split("\n")
-                : toppings.split(", ");
+        String[] parts = splitToppingParts(toppings);
 
         for (String part : parts) {
             String trimmed = part.trim();
@@ -82,6 +80,19 @@ public final class OrderItemDisplayHelper {
             builder.append(topping.name.trim()).append(" x").append(qty);
         }
         return builder.toString();
+    }
+
+    private static String[] splitToppingParts(String toppings) {
+        if (toppings.contains("\n")) {
+            return toppings.split("\n");
+        }
+        if (toppings.contains(", ")) {
+            return toppings.split(", ");
+        }
+        if (toppings.contains(",")) {
+            return toppings.split(",");
+        }
+        return new String[]{toppings};
     }
 
     private static String safe(String value) {

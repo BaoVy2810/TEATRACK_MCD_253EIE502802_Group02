@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="32dp"
+    android:layout_margin="16dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="24dp"
     app:cardElevation="8dp">
@@ -36,7 +36,7 @@
                     android:layout_toStartOf="@id/btnCloseDialog"
                     android:text="@string/str_promotion_details"
                     android:textColor="@color/brand_blue"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <ImageButton
@@ -54,7 +54,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:background="@color/divider" />
 
             <!-- Promotion Code -->
@@ -63,20 +63,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_promotion_code"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etPromotionCode"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_promotion_code"
                 android:inputType="textCapCharacters"
                 android:paddingHorizontal="12dp"
-                android:textSize="13sp" />
+                android:textColor="@color/brand_blue"
+                android:textColorHint="#0088FF"
+                android:textSize="12sp" />
 
             <!-- Promotion Description -->
             <TextView
@@ -84,20 +86,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_promotion_description"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etPromotionDesc"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_promotion_desc"
                 android:inputType="text"
                 android:paddingHorizontal="12dp"
-                android:textSize="13sp" />
+                android:textColor="@color/brand_blue"
+                android:textColorHint="#0088FF"
+                android:textSize="12sp" />
 
             <!-- Promotion Type -->
             <TextView
@@ -105,14 +109,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_promotion_type"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spnPromotionType"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_input_rounded" />
 
@@ -122,20 +126,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_promotion_value"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etPromotionValue"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_value"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="12dp"
-                android:textSize="13sp" />
+                android:textColor="@color/brand_blue"
+                android:textColorHint="#0088FF"
+                android:textSize="12sp" />
 
             <!-- Min Subtotal -->
             <TextView
@@ -143,20 +149,22 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_min_subtotal"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etMinSubtotal"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_min_subtotal"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="12dp"
-                android:textSize="13sp" />
+                android:textColor="@color/brand_blue"
+                android:textColorHint="#0088FF"
+                android:textSize="12sp" />
 
             <!-- Max Discount (Optional for Percent) -->
             <TextView
@@ -165,21 +173,23 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_max_discount"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 android:visibility="gone" />
 
             <EditText
                 android:id="@+id/etMaxDiscount"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_input_rounded"
                 android:hint="@string/hint_enter_max_discount"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="12dp"
-                android:textSize="13sp"
+                android:textColor="@color/brand_blue"
+                android:textColorHint="#0088FF"
+                android:textSize="12sp"
                 android:visibility="gone" />
 
             <!-- Image Selection Section -->
@@ -188,7 +198,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_image_source"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
@@ -247,12 +257,14 @@
                 <EditText
                     android:id="@+id/etImageUrl"
                     android:layout_width="match_parent"
-                    android:layout_height="38dp"
+                    android:layout_height="40dp"
                     android:background="@drawable/bg_input_rounded"
                     android:hint="@string/hint_enter_image_url"
                     android:inputType="textUri"
                     android:paddingHorizontal="12dp"
-                    android:textSize="13sp" />
+                    android:textColor="@color/brand_blue"
+                    android:textColorHint="#0088FF"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <ImageView
@@ -272,7 +284,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/str_promotion_preview"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.card.MaterialCardView
@@ -307,7 +319,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/str_preview_discount"
                         android:textColor="@color/danger"
-                        android:textSize="13sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tvPreviewMinOrder"
@@ -327,7 +339,7 @@
                 android:checked="true"
                 android:text="Active"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <!-- Buttons Row -->
@@ -340,41 +352,47 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCancelPromotion"
                     android:layout_width="0dp"
-                    android:layout_height="34dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:backgroundTint="@color/danger"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:text="@string/btn_cancel"
                     android:textAllCaps="false"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
                     android:gravity="center"
-                    app:cornerRadius="17dp"
+                    app:cornerRadius="24dp"
                     app:icon="@drawable/ic_close"
                     app:iconGravity="textStart"
                     app:iconPadding="4dp"
-                    app:iconSize="12dp"
+                    app:iconSize="16dp"
                     app:iconTint="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSavePromotion"
                     android:layout_width="0dp"
-                    android:layout_height="34dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:backgroundTint="@color/brand_blue"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:text="@string/btn_save"
                     android:textAllCaps="false"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
                     android:gravity="center"
-                    app:cornerRadius="17dp"
+                    app:cornerRadius="24dp"
                     app:icon="@drawable/edit2"
                     app:iconGravity="textStart"
                     app:iconPadding="4dp"
-                    app:iconSize="12dp"
+                    app:iconSize="16dp"
                     app:iconTint="@color/white" />
             </LinearLayout>
 

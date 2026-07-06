@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Vòng tròn ngoài cùng (rất nhạt) -->
+    <!-- Outer pastel red ring -->
     <item>
         <shape android:shape="oval">
-            <solid android:color="#FFF5F5" />
+            <solid android:color="@color/danger_bg" />
         </shape>
     </item>
-    <!-- Vòng tròn bên trong (nhạt vừa) -->
+    <!-- Inner pastel red circle -->
     <item
         android:bottom="12dp"
         android:left="12dp"
         android:right="12dp"
         android:top="12dp">
         <shape android:shape="oval">
-            <solid android:color="#FFEBEE" />
+            <solid android:color="@color/danger_border" />
         </shape>
     </item>
 </layer-list>

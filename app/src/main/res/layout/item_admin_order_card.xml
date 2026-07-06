@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:padding="14dp">
 
-        <!-- ── Row 1: Order ID + Status badge + Arrow ── -->
+        <!-- ── Row 1: Order ID + Status badge ── -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/brand_blue"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="#HTNG-52422" />
@@ -41,21 +41,13 @@
                 android:id="@+id/tvStatusBadge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="4dp"
                 android:textSize="11sp"
                 android:textStyle="bold"
-                tools:background="@drawable/bg_badge_pending_admin"
+                tools:background="@drawable/bg_status_pending"
                 tools:text="Chờ xác nhận"
-                tools:textColor="#854D0E" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_chevron_right"
-                app:tint="@color/text_muted" />
+                tools:textColor="#EA580C" />
 
         </LinearLayout>
 
@@ -82,31 +74,6 @@
                 android:orientation="vertical">
 
                 <!-- Row 1: Date -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="4dp">
-
-                    <ImageView
-                        android:layout_width="11dp"
-                        android:layout_height="11dp"
-                        android:layout_marginEnd="4dp"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/alarm_clock"
-                        app:tint="@color/brand_blue" />
-
-                    <TextView
-                        android:id="@+id/tvOrderDate"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="11sp"
-                        tools:text="26 Jun 2026 • 02:19 PM" />
-
-                </LinearLayout>
 
                 <!-- Row 2: Customer name + Phone -->
                 <LinearLayout
@@ -150,9 +117,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="4dp">
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="11dp"
@@ -168,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/text_secondary"
-                        android:textSize="11sp"
+                        android:textSize="12sp"
                         tools:text="1 items" />
 
                     <TextView
@@ -178,7 +145,33 @@
                         android:textColor="@color/brand_blue"
                         android:textSize="13sp"
                         android:textStyle="bold"
-                        tools:text="48.000₫" />
+                        tools:text="48.000đ" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_marginEnd="4dp"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/alarm_clock"
+                        app:tint="@color/brand_blue" />
+
+                    <TextView
+                        android:id="@+id/tvOrderDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="11sp"
+                        tools:text="26 Jun 2026 • 02:19 PM" />
 
                 </LinearLayout>
 
@@ -229,6 +222,7 @@
                         android:id="@+id/tvOrderBranch"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:ellipsize="end"
                         android:maxLines="1"
@@ -296,7 +290,7 @@
                         android:id="@+id/stepLine1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#4CAF50"
+                        android:background="@color/brand_blue"
                         android:scaleX="0"
                         android:transformPivotX="0dp" />
 
@@ -331,7 +325,7 @@
                         android:id="@+id/stepLine2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#4CAF50"
+                        android:background="@color/brand_blue"
                         android:scaleX="0"
                         android:transformPivotX="0dp" />
 
@@ -366,7 +360,7 @@
                         android:id="@+id/stepLine3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#4CAF50"
+                        android:background="@color/brand_blue"
                         android:scaleX="0"
                         android:transformPivotX="0dp" />
 
@@ -401,7 +395,7 @@
                         android:id="@+id/stepLine4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#4CAF50"
+                        android:background="@color/brand_blue"
                         android:scaleX="0"
                         android:transformPivotX="0dp" />
 
@@ -533,53 +527,41 @@
                 app:iconTint="@color/white" />
 
             <!-- View Detail -->
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/btnViewDetail"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="4dp"
-                android:backgroundTint="#EAF3FF"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:minWidth="0dp"
+                android:background="@drawable/bg_btn_admin_view_detail"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingHorizontal="8dp"
                 android:text="@string/btn_admin_view_detail"
-                android:textAllCaps="false"
                 android:textColor="@color/brand_blue"
                 android:textSize="11sp"
-                android:visibility="gone"
-                app:cornerRadius="10dp"
-                app:icon="@drawable/eye"
-                app:iconGravity="textStart"
-                app:iconPadding="3dp"
-                app:iconSize="13dp"
-                app:iconTint="@color/brand_blue" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <!-- Cancel order (pending, processing) -->
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/btnCancelOrder"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
                 android:layout_weight="1"
-                android:backgroundTint="#FEE2E2"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:minWidth="0dp"
+                android:background="@drawable/bg_btn_admin_cancel"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingHorizontal="8dp"
                 android:text="@string/btn_admin_cancel_order"
-                android:textAllCaps="false"
-                android:textColor="@color/danger"
+                android:textColor="@color/Red"
                 android:textSize="11sp"
-                android:visibility="gone"
-                app:cornerRadius="10dp"
-                app:icon="@drawable/ic_cancel_x_red"
-                app:iconGravity="textStart"
-                app:iconPadding="3dp"
-                app:iconSize="13dp"
-                app:iconTint="@color/danger" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
             <!-- Update status (shipping) -->
             <com.google.android.material.button.MaterialButton

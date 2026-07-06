@@ -55,6 +55,7 @@ public class EditProductDialog {
     private Uri cameraImageUri;
     private ImageView ivMainPreview;
     private View llPlaceholder;
+    private android.widget.ImageButton btnRemoveImage;
     private String uploadedImageUrl;
     private String selectedCategory;
     private final DecimalFormat priceFormatter = new DecimalFormat("#,###");
@@ -82,6 +83,7 @@ public class EditProductDialog {
 
         EditText etProductName = dialog.findViewById(R.id.etProductName);
         TextView tvCategorySelect = dialog.findViewById(R.id.tvCategorySelect);
+        View categorySelectRow = dialog.findViewById(R.id.categorySelectRow);
         CheckBox cbVisible = dialog.findViewById(R.id.cbVisible);
         CheckBox cbSpecial = dialog.findViewById(R.id.cbSpecial);
         EditText etPriceM = dialog.findViewById(R.id.etPriceM);
@@ -116,9 +118,9 @@ public class EditProductDialog {
         setupImageUpload(dialog);
 
         // Setup Category Select
-        if (tvCategorySelect != null) {
+        if (tvCategorySelect != null && categorySelectRow != null) {
             tvCategorySelect.setText(selectedCategory);
-            tvCategorySelect.setOnClickListener(v -> showCategoryPopup(v));
+            categorySelectRow.setOnClickListener(v -> showCategoryPopup(categorySelectRow, tvCategorySelect));
         }
 
         btnClose.setOnClickListener(v -> dialog.dismiss());
@@ -153,7 +155,7 @@ public class EditProductDialog {
         dialog.show();
     }
 
-    private void showCategoryPopup(View anchor) {
+    private void showCategoryPopup(View anchor, TextView tvCategorySelect) {
         List<String> popupCats = new ArrayList<>(categories);
         popupCats.remove(context.getString(R.string.filter_all));
         if (popupCats.isEmpty()) {
@@ -177,7 +179,7 @@ public class EditProductDialog {
             rvCategories.setLayoutManager(new LinearLayoutManager(context));
             rvCategories.setAdapter(new CategoryDialogAdapter(popupCats, selectedCategory, category -> {
                 selectedCategory = category;
-                ((TextView) anchor).setText(selectedCategory);
+                tvCategorySelect.setText(selectedCategory);
                 popupWindow.dismiss();
             }));
         }
@@ -200,20 +202,28 @@ public class EditProductDialog {
             if (i == 0) {
                 ivMainPreview = ivPreview;
                 llPlaceholder = placeholder;
+                btnRemoveImage = slotView.findViewById(R.id.btnRemoveImage);
+                if (btnRemoveImage != null) {
+                    btnRemoveImage.setOnClickListener(v -> {
+                        selectedImageUri = null;
+                        uploadedImageUrl = "";
+                        if (ivMainPreview != null) {
+                            ivMainPreview.setImageDrawable(null);
+                        }
+                        setImageSlotVisible(false);
+                    });
+                }
             }
 
             // Hiển thị ảnh cũ nếu có
             if (productImages != null && index < productImages.size()) {
                 String imgUrl = productImages.get(index);
                 if (imgUrl != null && !imgUrl.isEmpty()) {
-                    placeholder.setVisibility(View.GONE);
-                    ivPreview.setVisibility(View.VISIBLE);
+                    showSlotImage(placeholder, ivPreview, slotView, index == 0);
                     ProductImageHelper.loadFromUrl(ivPreview, imgUrl);
                 }
             } else if (i == 0 && (product.getImage() != null || product.getImageRes() != 0)) {
-                // Fallback cho ảnh chính cũ (trường image)
-                placeholder.setVisibility(View.GONE);
-                ivPreview.setVisibility(View.VISIBLE);
+                showSlotImage(placeholder, ivPreview, slotView, true);
                 ProductImageHelper.load(ivPreview, product);
             }
 
@@ -269,11 +279,10 @@ public class EditProductDialog {
     public void handleImageResult(Uri uri) {
         if (uri != null) {
             selectedImageUri = uri;
-            if (ivMainPreview != null && llPlaceholder != null) {
-                llPlaceholder.setVisibility(View.GONE);
-                ivMainPreview.setVisibility(View.VISIBLE);
+            if (ivMainPreview != null) {
                 Glide.with(context).load(uri).into(ivMainPreview);
             }
+            setImageSlotVisible(true);
         }
     }
 
@@ -306,6 +315,31 @@ public class EditProductDialog {
                     @Override
                     public void onReschedule(String requestId, ErrorInfo error) {}
                 }).dispatch();
+    }
+
+    private void showSlotImage(View placeholder, ImageView ivPreview, View slotView, boolean isMainSlot) {
+        if (isMainSlot) {
+            setImageSlotVisible(true);
+            return;
+        }
+        placeholder.setVisibility(View.GONE);
+        ivPreview.setVisibility(View.VISIBLE);
+        ImageButton removeBtn = slotView.findViewById(R.id.btnRemoveImage);
+        if (removeBtn != null) {
+            removeBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setImageSlotVisible(boolean hasImage) {
+        if (llPlaceholder != null) {
+            llPlaceholder.setVisibility(hasImage ? View.GONE : View.VISIBLE);
+        }
+        if (ivMainPreview != null) {
+            ivMainPreview.setVisibility(hasImage ? View.VISIBLE : View.GONE);
+        }
+        if (btnRemoveImage != null) {
+            btnRemoveImage.setVisibility(hasImage ? View.VISIBLE : View.GONE);
+        }
     }
 
     private void saveToFirebase(Dialog dialog) {

@@ -27,6 +27,7 @@
 
     <color name="payment_momo_pink">#D6336C</color>
     <color name="payment_zalopay_blue">#4285F4</color>
+    <color name="payment_ewallet_purple">#7C3AED</color>
     <color name="payment_bank_blue">#4285F4</color>
 <!--    TEST ADMIN DASHBOARD-->
     <!-- ── Brand / Primary ── -->

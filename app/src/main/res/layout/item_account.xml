@@ -103,7 +103,7 @@
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="4dp"
                 android:textColor="@color/brand_blue"
-                android:textSize="11sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/tvInitial"
                 app:layout_constraintTop_toTopOf="@id/tvInitial"
@@ -201,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_role"
                         android:textColor="@color/text_secondary"
-                        android:textSize="@dimen/label_text_size" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvRole"
@@ -211,7 +211,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/text_primary"
-                        android:textSize="@dimen/detail_value_text_size"
+                        android:textSize="12sp"
                         tools:text="Customer" />
 
                 </LinearLayout>
@@ -249,7 +249,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_phone_account"
                         android:textColor="@color/text_secondary"
-                        android:textSize="@dimen/label_text_size" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/tvPhone"
@@ -259,7 +259,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="@color/text_primary"
-                        android:textSize="@dimen/detail_value_text_size"
+                        android:textSize="12sp"
                         tools:text="0952643575" />
 
                 </LinearLayout>
@@ -294,7 +294,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/label_address_account"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/label_text_size" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tvAddress"
@@ -304,7 +304,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="@color/text_primary"
-                    android:textSize="@dimen/detail_value_text_size"
+                    android:textSize="12sp"
                     tools:text="Thu Duc, HCM" />
 
             </LinearLayout>
@@ -345,7 +345,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/label_created_date"
                     android:textColor="@color/text_secondary"
-                    android:textSize="@dimen/label_text_size" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tvCreatedAt"
@@ -355,7 +355,7 @@
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="@color/text_primary"
-                    android:textSize="@dimen/label_text_size"
+                    android:textSize="12sp"
                     tools:text="18/06/2026 10:35 PM" />
 
             </LinearLayout>

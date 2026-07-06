@@ -2,20 +2,19 @@ package com.teatrack_mcd_253eie502802_group02.admin;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,7 +42,8 @@ public class AdminOrders extends AppCompatActivity {
     private RecyclerView    rvOrders;
     private LinearLayout    layoutEmptyOrders;
     private EditText        etSearch;
-    private TextView        tabAll, tabPending, tabProcessing, tabShipping, tabCompleted, tabCancelled;
+    private View tabAll, tabPending, tabProcessing, tabShipping, tabCompleted, tabCancelled;
+    private View activeTab;
 
     private AdminOrderAdapter       adapter;
     private final List<FirebaseOrder> allOrders = new ArrayList<>();
@@ -78,6 +78,26 @@ public class AdminOrders extends AppCompatActivity {
         tabShipping       = findViewById(R.id.tabShipping);
         tabCompleted      = findViewById(R.id.tabCompleted);
         tabCancelled      = findViewById(R.id.tabCancelled);
+
+        activeTab = tabAll;
+        initTabLabels();
+        setTabActive(tabAll);
+    }
+
+    private void initTabLabels() {
+        setTabLabel(tabAll, R.string.tab_all_orders);
+        setTabLabel(tabPending, R.string.tab_pending_orders);
+        setTabLabel(tabProcessing, R.string.tab_processing_orders);
+        setTabLabel(tabShipping, R.string.tab_shipping_orders);
+        setTabLabel(tabCompleted, R.string.tab_completed_orders);
+        setTabLabel(tabCancelled, R.string.tab_cancelled_orders);
+    }
+
+    private void setTabLabel(View tab, int labelRes) {
+        TextView label = tab.findViewById(R.id.tvTabLabel);
+        if (label != null) {
+            label.setText(labelRes);
+        }
     }
 
     private void setupRecyclerView() {
@@ -112,44 +132,56 @@ public class AdminOrders extends AppCompatActivity {
     }
 
     private void updateTabSelection() {
-        TextView[] tabs    = {tabAll, tabPending, tabProcessing, tabShipping, tabCompleted, tabCancelled};
-        String[]   filters = {"all", "pending", "processing", "shipping", "completed", "cancelled"};
-        int[]      icons   = {
-                0,                          // All — no icon
-                R.drawable.pending_tab,
-                R.drawable.processing_tab,
-                R.drawable.shipping_tab,
-                R.drawable.finished_tab,
-                R.drawable.cancel
-        };
+        View[] tabs    = {tabAll, tabPending, tabProcessing, tabShipping, tabCompleted, tabCancelled};
+        String[] filters = {"all", "pending", "processing", "shipping", "completed", "cancelled"};
 
-        int colorActive   = getColor(R.color.white);
-        int colorInactive = getColor(R.color.text_secondary);
-
+        setTabInactive(activeTab);
         for (int i = 0; i < tabs.length; i++) {
-            boolean active = filters[i].equals(currentFilter);
-            tabs[i].setBackgroundResource(active
-                    ? R.drawable.bg_admin_order_tab_active
-                    : R.drawable.bg_admin_order_tab_inactive);
-            int textColor = active ? colorActive : colorInactive;
-            tabs[i].setTextColor(textColor);
-            tabs[i].setTypeface(null, active
-                    ? android.graphics.Typeface.BOLD
-                    : android.graphics.Typeface.NORMAL);
-
-            // Tint icon to match text color (skip if no icon)
-            if (icons[i] != 0) {
-                Drawable icon = AppCompatResources.getDrawable(this, icons[i]);
-                if (icon != null) {
-                    icon = DrawableCompat.wrap(icon.mutate());
-                    DrawableCompat.setTint(icon, textColor);
-                    int size = Math.round(14 * getResources().getDisplayMetrics().density);
-                    icon.setBounds(0, 0, size, size);
-                    tabs[i].setCompoundDrawables(icon, null, null, null);
-                }
-            } else {
-                tabs[i].setCompoundDrawables(null, null, null, null);
+            if (filters[i].equals(currentFilter)) {
+                setTabActive(tabs[i]);
+                activeTab = tabs[i];
+                break;
             }
+        }
+    }
+
+    private void setTabActive(View tab) {
+        if (tab == null) return;
+        tab.setBackgroundResource(R.drawable.bg_order_tab_active);
+        TextView label = tab.findViewById(R.id.tvTabLabel);
+        TextView count = tab.findViewById(R.id.tvTabCount);
+        if (label != null) {
+            label.setTextColor(ContextCompat.getColor(this, R.color.white));
+            label.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
+        if (count != null) {
+            count.setBackgroundResource(R.drawable.bg_order_tab_count_active);
+            count.setTextColor(ContextCompat.getColor(this, R.color.white));
+            count.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
+    }
+
+    private void setTabInactive(View tab) {
+        if (tab == null) return;
+        tab.setBackgroundResource(R.drawable.bg_order_tab_inactive);
+        TextView label = tab.findViewById(R.id.tvTabLabel);
+        TextView count = tab.findViewById(R.id.tvTabCount);
+        if (label != null) {
+            label.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
+            label.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
+        if (count != null) {
+            count.setBackgroundResource(R.drawable.bg_order_tab_count_inactive);
+            count.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+            count.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
+    }
+
+    private void setTabCount(View tab, int count) {
+        if (tab == null) return;
+        TextView countView = tab.findViewById(R.id.tvTabCount);
+        if (countView != null) {
+            countView.setText(String.valueOf(count));
         }
     }
 
@@ -167,12 +199,12 @@ public class AdminOrders extends AppCompatActivity {
                 case "cancelled":  cntCancelled++;  break;
             }
         }
-        tabAll.setText("All (" + cntAll + ")");
-        tabPending.setText("Pending (" + cntPending + ")");
-        tabProcessing.setText("Processing (" + cntProcessing + ")");
-        tabShipping.setText("Shipping (" + cntShipping + ")");
-        tabCompleted.setText("Completed (" + cntCompleted + ")");
-        tabCancelled.setText("Cancelled (" + cntCancelled + ")");
+        setTabCount(tabAll, cntAll);
+        setTabCount(tabPending, cntPending);
+        setTabCount(tabProcessing, cntProcessing);
+        setTabCount(tabShipping, cntShipping);
+        setTabCount(tabCompleted, cntCompleted);
+        setTabCount(tabCancelled, cntCancelled);
     }
 
     // ── Search ────────────────────────────────────────────────────────────────
@@ -282,27 +314,29 @@ public class AdminOrders extends AppCompatActivity {
     private void showCancelDialog(FirebaseOrder order) {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_cancel_order, null);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_delete_confirm, null);
         dialog.setContentView(dialogView);
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
+            dialog.getWindow().setAttributes(params);
         }
 
         TextView tvTitle   = dialogView.findViewById(R.id.tvDeleteTitle);
         TextView tvMessage = dialogView.findViewById(R.id.tvDeleteMessage);
-        TextView tvOrderId = dialogView.findViewById(R.id.tvCancelOrderId);
         com.google.android.material.button.MaterialButton btnConfirm =
                 dialogView.findViewById(R.id.btnConfirmDelete);
 
         tvTitle.setText("Cancel Order");
         String orderId = order.getOrderId() != null ? order.getOrderId() : "";
-        tvMessage.setText("Are you sure you want to cancel order");
-        if (tvOrderId != null) {
-            tvOrderId.setText("#" + orderId + "?");
+        String fullMessage = "Order <font color='#0088ff'><b>#" + orderId + "</b></font> will be cancelled.";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            tvMessage.setText(android.text.Html.fromHtml(fullMessage, android.text.Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvMessage.setText(android.text.Html.fromHtml(fullMessage));
         }
-        btnConfirm.setText("Cancel");
-        btnConfirm.setBackgroundTintList(
-                android.content.res.ColorStateList.valueOf(getColor(R.color.danger)));
+        btnConfirm.setText(R.string.btn_admin_cancel_order);
 
         dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
         btnConfirm.setOnClickListener(v -> {

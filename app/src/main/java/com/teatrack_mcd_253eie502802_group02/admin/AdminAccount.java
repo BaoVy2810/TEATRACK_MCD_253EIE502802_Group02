@@ -10,12 +10,13 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +25,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +43,7 @@ import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -127,57 +132,91 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
             public void afterTextChanged(Editable s) {}
         });
 
-        binding.btnRoleFilter.setText(currentRoleFilter);
+        updateRoleFilterButtonText();
         binding.btnRoleFilter.setOnClickListener(this::showRoleFilterPopup);
     }
 
+    private void updateRoleFilterButtonText() {
+        binding.btnRoleFilter.setText(String.format("%s ▾", currentRoleFilter));
+    }
+
     private void showRoleFilterPopup(View anchor) {
-        View popupView = LayoutInflater.from(this).inflate(R.layout.layout_role_filter_popup, null);
-        int halfScreenWidth = getResources().getDisplayMetrics().widthPixels / 2;
-        PopupWindow popup = new PopupWindow(
+        showOptionPopup(anchor, Arrays.asList(ROLE_FILTERS), currentRoleFilter, selected -> {
+            currentRoleFilter = selected;
+            updateRoleFilterButtonText();
+            applyFilters();
+        });
+    }
+
+    private void showOptionPopup(View anchor, List<String> options, String selected,
+                                 OptionSelectedListener listener) {
+        View popupView = LayoutInflater.from(this).inflate(R.layout.dialog_category_selector, null);
+        popupView.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        );
+        int minWidth = (int) (getResources().getDisplayMetrics().widthPixels * 0.45);
+        int anchorWidth = anchor.getWidth() > 0 ? anchor.getWidth() : 0;
+        int popupWidth = Math.max(Math.max(anchorWidth, popupView.getMeasuredWidth()), minWidth);
+
+        PopupWindow popupWindow = new PopupWindow(
                 popupView,
-                halfScreenWidth,
-                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                popupWidth,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 true);
-        popup.setElevation(8f);
-        popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setElevation(20);
 
-        // Show checkmark on currently selected item
-        int[][] iconIds = {
-                {R.id.icFilterAll},
-                {R.id.icFilterAdmin},
-                {R.id.icFilterCustomer},
-                {R.id.icFilterCustomerVip}
-        };
-        for (int i = 0; i < ROLE_FILTERS.length; i++) {
-            ImageView icon = popupView.findViewById(iconIds[i][0]);
-            icon.setVisibility(currentRoleFilter.equals(ROLE_FILTERS[i]) ? View.VISIBLE : View.GONE);
+        RecyclerView rvCategories = popupView.findViewById(R.id.rvCategoryList);
+        if (rvCategories != null) {
+            rvCategories.setLayoutManager(new LinearLayoutManager(this));
+            rvCategories.setAdapter(new CategoryDialogAdapter(options, selected, choice -> {
+                listener.onSelected(choice);
+                popupWindow.dismiss();
+            }));
         }
 
-        // Click handlers
-        int[] itemIds = {R.id.btnFilterAll, R.id.btnFilterAdmin, R.id.btnFilterCustomer, R.id.btnFilterCustomerVip};
-        for (int i = 0; i < ROLE_FILTERS.length; i++) {
-            final String role = ROLE_FILTERS[i];
-            popupView.findViewById(itemIds[i]).setOnClickListener(v -> {
-                currentRoleFilter = role;
-                binding.btnRoleFilter.setText(role);
-                applyFilters();
-                popup.dismiss();
-            });
-        }
+        popupWindow.showAsDropDown(anchor, 0, 10);
+    }
 
-        popup.showAsDropDown(anchor, 0, 4);
+    private interface OptionSelectedListener {
+        void onSelected(String value);
     }
 
     private void setupActions() {
-        binding.btnAddAccount.setOnClickListener(v -> showAccountDialog(null));
-        binding.btnRefresh.setOnClickListener(v -> applyFilters());
-        
-        // Nhấn giữ nút Refresh để chạy Migration dữ liệu cũ
-        binding.btnRefresh.setOnLongClickListener(v -> {
-            migrateUserData();
-            return true;
-        });
+        View fabAddAccount = binding.fabAddAccount;
+        if (fabAddAccount != null) {
+            fabAddAccount.setOnTouchListener(new View.OnTouchListener() {
+                private float initialX, initialY, initialTouchX, initialTouchY;
+                private static final int CLICK_THRESHOLD = 10;
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            initialX = v.getX();
+                            initialY = v.getY();
+                            initialTouchX = event.getRawX();
+                            initialTouchY = event.getRawY();
+                            return true;
+
+                        case MotionEvent.ACTION_MOVE:
+                            v.setX(initialX + (event.getRawX() - initialTouchX));
+                            v.setY(initialY + (event.getRawY() - initialTouchY));
+                            return true;
+
+                        case MotionEvent.ACTION_UP:
+                            float diffX = Math.abs(event.getRawX() - initialTouchX);
+                            float diffY = Math.abs(event.getRawY() - initialTouchY);
+                            if (diffX < CLICK_THRESHOLD && diffY < CLICK_THRESHOLD) {
+                                showAccountDialog(null);
+                            }
+                            return true;
+                    }
+                    return false;
+                }
+            });
+        }
 
         binding.btnExportExcel.setOnClickListener(v ->
                 Toast.makeText(this, getString(R.string.msg_export_excel), Toast.LENGTH_SHORT).show());
@@ -355,25 +394,19 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
             dialog.getWindow().setAttributes(params);
         }
 
         TextView tvMessage = dialog.findViewById(R.id.tvDeleteMessage);
-        tvMessage.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
         String name = safe(user.getFullName()).isEmpty() ? safe(user.getUsername()) : user.getFullName();
-        String highlightedName = "<font color=\"#0088FF\"><b>" + TextUtils.htmlEncode(name) + "</b></font>";
-        String html = getString(R.string.confirm_delete_account_message) + " " + highlightedName + "?";
+        String fullMessage = "The account <font color='#0088ff'><b>" + android.text.TextUtils.htmlEncode(name) + "</b></font> will be permanently deleted.";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            tvMessage.setText(android.text.Html.fromHtml(html, android.text.Html.FROM_HTML_MODE_LEGACY));
+            tvMessage.setText(android.text.Html.fromHtml(fullMessage, android.text.Html.FROM_HTML_MODE_LEGACY));
         } else {
-            tvMessage.setText(android.text.Html.fromHtml(html));
+            tvMessage.setText(android.text.Html.fromHtml(fullMessage));
         }
 
-        com.google.android.material.button.MaterialButton btnCancel = dialog.findViewById(R.id.btnCancel);
-        btnCancel.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
-        btnCancel.setStrokeColor(android.content.res.ColorStateList.valueOf(
-                ContextCompat.getColor(this, R.color.brand_blue)));
         dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
         dialog.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
             usersRef.child(user.getId()).removeValue()
@@ -403,7 +436,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
             dialog.getWindow().setAttributes(params);
         }
 
@@ -443,6 +476,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
             params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.92);
             dialog.getWindow().setAttributes(params);
+            dialog.getWindow().setWindowAnimations(android.R.style.Animation_Dialog);
         }
 
         setupDialogDropdowns(dialogBinding);
@@ -456,114 +490,24 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
     }
 
     private void setupDialogDropdowns(DialogAddEditAccountBinding dialogBinding) {
-        dialogBinding.btnRoleSelect.setOnClickListener(v ->
-                showRolePickerDialog(dialogBinding.btnRoleSelect));
-        dialogBinding.btnStatusSelect.setOnClickListener(v ->
-                showStatusPickerDialog(dialogBinding.btnStatusSelect));
-    }
-
-    private void showRolePickerDialog(TextView targetView) {
-        Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_dialog_role_popup, null);
-        dialog.setContentView(view);
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.78);
-            dialog.getWindow().setAttributes(params);
-        }
-        // Rounded white card background
-        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
-        bg.setColor(android.graphics.Color.WHITE);
-        bg.setCornerRadius(20 * getResources().getDisplayMetrics().density);
-        view.setBackground(bg);
-
-        String current = targetView.getText() != null ? targetView.getText().toString() : "";
-        int[] rowIds = {R.id.btnPopupAdmin, R.id.btnPopupCustomer, R.id.btnPopupCustomerVip};
-        int[] rbIds  = {R.id.rbAdmin, R.id.rbCustomer, R.id.rbCustomerVip};
-        for (int i = 0; i < ROLES.length; i++) {
-            boolean selected = ROLES[i].equalsIgnoreCase(current);
-            ((android.widget.RadioButton) view.findViewById(rbIds[i])).setChecked(selected);
-            highlightPickerRow(view.findViewById(rowIds[i]), selected);
-        }
-        for (int i = 0; i < ROLES.length; i++) {
-            final String role = ROLES[i];
-            view.findViewById(rowIds[i]).setOnClickListener(v -> { targetView.setText(role); dialog.dismiss(); });
-        }
-        dialog.show();
-    }
-
-    private void showStatusPickerDialog(TextView targetView) {
-        Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        View view = LayoutInflater.from(this).inflate(R.layout.layout_dialog_status_popup, null);
-        dialog.setContentView(view);
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.78);
-            dialog.getWindow().setAttributes(params);
-        }
-        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
-        bg.setColor(android.graphics.Color.WHITE);
-        bg.setCornerRadius(20 * getResources().getDisplayMetrics().density);
-        view.setBackground(bg);
-
-        String current = targetView.getText() != null ? targetView.getText().toString() : "";
-        int[] rowIds = {R.id.btnPopupActive, R.id.btnPopupInactive, R.id.btnPopupLocked};
-        int[] rbIds  = {R.id.rbActive, R.id.rbInactive, R.id.rbLocked};
-        for (int i = 0; i < STATUSES.length; i++) {
-            boolean selected = STATUSES[i].equalsIgnoreCase(current);
-            ((android.widget.RadioButton) view.findViewById(rbIds[i])).setChecked(selected);
-            highlightPickerRow(view.findViewById(rowIds[i]), selected);
-        }
-        for (int i = 0; i < STATUSES.length; i++) {
-            final String status = STATUSES[i];
-            view.findViewById(rowIds[i]).setOnClickListener(v -> { targetView.setText(status); dialog.dismiss(); });
-        }
-        dialog.show();
-    }
-
-    private void highlightPickerRow(android.view.ViewGroup row, boolean selected) {
-        float density = getResources().getDisplayMetrics().density;
-        if (selected) {
-            android.graphics.drawable.GradientDrawable rowBg = new android.graphics.drawable.GradientDrawable();
-            rowBg.setColor(0xFF0088FF);
-            rowBg.setCornerRadius(10 * density);
-            row.setBackground(rowBg);
-            // tint text + radio white
-            for (int i = 0; i < row.getChildCount(); i++) {
-                android.view.View child = row.getChildAt(i);
-                if (child instanceof android.widget.TextView) {
-                    ((android.widget.TextView) child).setTextColor(android.graphics.Color.WHITE);
-                }
-                if (child instanceof android.widget.RadioButton) {
-                    ((android.widget.RadioButton) child).setButtonTintList(
-                            android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
-                }
-            }
-        } else {
-            row.setBackground(null);
-            for (int i = 0; i < row.getChildCount(); i++) {
-                android.view.View child = row.getChildAt(i);
-                if (child instanceof android.widget.TextView) {
-                    ((android.widget.TextView) child).setTextColor(
-                            ContextCompat.getColor(this, R.color.brand_blue));
-                }
-                if (child instanceof android.widget.RadioButton) {
-                    ((android.widget.RadioButton) child).setButtonTintList(
-                            android.content.res.ColorStateList.valueOf(
-                                    ContextCompat.getColor(this, R.color.brand_blue)));
-                }
-            }
-        }
+        dialogBinding.roleSelectRow.setOnClickListener(v ->
+                showOptionPopup(v, Arrays.asList(ROLES), textOf(dialogBinding.tvRoleSelect),
+                        selected -> dialogBinding.tvRoleSelect.setText(selected)));
+        dialogBinding.statusSelectRow.setOnClickListener(v ->
+                showOptionPopup(v, Arrays.asList(STATUSES), textOf(dialogBinding.tvStatusSelect),
+                        selected -> dialogBinding.tvStatusSelect.setText(selected)));
     }
 
     private void bindDialogData(DialogAddEditAccountBinding dialogBinding, User user) {
         boolean isEdit = user != null;
         dialogBinding.tvDialogTitle.setText(isEdit ? getString(R.string.dialog_edit_account_title) : getString(R.string.dialog_add_account_title));
-        dialogBinding.btnSave.setText(isEdit ? getString(R.string.btn_update) : getString(R.string.btn_save));
+        if (isEdit) {
+            dialogBinding.btnSave.setText(getString(R.string.btn_edit));
+            dialogBinding.btnSave.setIcon(ContextCompat.getDrawable(this, R.drawable.edit2));
+        } else {
+            dialogBinding.btnSave.setText(getString(R.string.btn_add));
+            dialogBinding.btnSave.setIcon(ContextCompat.getDrawable(this, R.drawable.plus));
+        }
 
         if (isEdit) {
             dialogBinding.etFullName.setText(user.getFullName());
@@ -571,11 +515,11 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
             dialogBinding.etEmail.setText(user.getEmail());
             dialogBinding.etPhoneNumber.setText(user.getPhoneNumber());
             dialogBinding.etAddress.setText(user.getAddress());
-            dialogBinding.btnRoleSelect.setText(user.getRole());
-            dialogBinding.btnStatusSelect.setText(user.getStatus());
+            dialogBinding.tvRoleSelect.setText(user.getRole());
+            dialogBinding.tvStatusSelect.setText(user.getStatus());
         } else {
-            dialogBinding.btnRoleSelect.setText(ROLES[1]);
-            dialogBinding.btnStatusSelect.setText(STATUSES[0]);
+            dialogBinding.tvRoleSelect.setText(ROLES[1]);
+            dialogBinding.tvStatusSelect.setText(STATUSES[0]);
         }
 
         TextWatcher clearErrorsWatcher = new TextWatcher() {
@@ -608,8 +552,8 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
         String email = textOf(dialogBinding.etEmail);
         String phoneNumber = textOf(dialogBinding.etPhoneNumber);
         String address = textOf(dialogBinding.etAddress);
-        String role = textOf(dialogBinding.btnRoleSelect);
-        String status = textOf(dialogBinding.btnStatusSelect);
+        String role = textOf(dialogBinding.tvRoleSelect);
+        String status = textOf(dialogBinding.tvStatusSelect);
 
         if (!validate(dialogBinding, editingUser, fullName, username, email, phoneNumber)) {
             return;

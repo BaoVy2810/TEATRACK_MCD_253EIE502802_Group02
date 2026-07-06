@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -62,7 +63,7 @@ public class AdminPromotion extends BaseActivity {
     private DatabaseReference databaseReference;
     private EditText etSearch;
     private TextView tvEmptyState;
-    private Button btnAddPromotion;
+    private View fabAddPromotion;
     private Uri selectedImageUri;
     private ImageView ivDialogPreview;
 
@@ -79,7 +80,39 @@ public class AdminPromotion extends BaseActivity {
         setupBottomNavigation();
         setupHeader();
 
-        btnAddPromotion.setOnClickListener(v -> showPromotionDialog(null));
+        View fab = findViewById(R.id.fabAddPromotion);
+        if (fab != null) {
+            fab.setOnTouchListener(new View.OnTouchListener() {
+                private float initialX, initialY, initialTouchX, initialTouchY;
+                private static final int CLICK_THRESHOLD = 10;
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            initialX = v.getX();
+                            initialY = v.getY();
+                            initialTouchX = event.getRawX();
+                            initialTouchY = event.getRawY();
+                            return true;
+
+                        case MotionEvent.ACTION_MOVE:
+                            v.setX(initialX + (event.getRawX() - initialTouchX));
+                            v.setY(initialY + (event.getRawY() - initialTouchY));
+                            return true;
+
+                        case MotionEvent.ACTION_UP:
+                            float diffX = Math.abs(event.getRawX() - initialTouchX);
+                            float diffY = Math.abs(event.getRawY() - initialTouchY);
+                            if (diffX < CLICK_THRESHOLD && diffY < CLICK_THRESHOLD) {
+                                showPromotionDialog(null);
+                            }
+                            return true;
+                    }
+                    return false;
+                }
+            });
+        }
 
         // PHẦN B: SEEDING DATA AN TOÀN - Long press vào tiêu đề để kích hoạt
         TextView txtTitle = findViewById(R.id.txtPromotionManagement);
@@ -147,7 +180,7 @@ public class AdminPromotion extends BaseActivity {
         etSearch = findViewById(R.id.etSearch);
         etSearch.setHint(R.string.str_promotion_search);
         tvEmptyState = findViewById(R.id.tvEmptyState);
-        btnAddPromotion = findViewById(R.id.btnAddPromotion);
+        fabAddPromotion = findViewById(R.id.fabAddPromotion);
 
         promotionList = new ArrayList<>();
         filteredList = new ArrayList<>();
@@ -552,21 +585,21 @@ public class AdminPromotion extends BaseActivity {
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
-            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.88);
+            params.width = (int) (getResources().getDisplayMetrics().widthPixels * 0.9);
             dialog.getWindow().setAttributes(params);
         }
 
         TextView tvTitle = dialog.findViewById(R.id.tvDeleteTitle);
-        if (tvTitle != null) tvTitle.setText(R.string.str_delete_promotion);
+        if (tvTitle != null) tvTitle.setText(R.string.modal_delete_title);
 
         TextView tvMessage = dialog.findViewById(R.id.tvDeleteMessage);
         String code = promotion.getCode();
-        String html = getString(R.string.str_delete_promotion_confirm) + " <b>" + code + "</b>?";
+        String fullMessage = "The promotion <font color='#0088ff'><b>" + android.text.TextUtils.htmlEncode(code) + "</b></font> will be permanently deleted.";
         
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            tvMessage.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY));
+            tvMessage.setText(Html.fromHtml(fullMessage, Html.FROM_HTML_MODE_LEGACY));
         } else {
-            tvMessage.setText(Html.fromHtml(html));
+            tvMessage.setText(Html.fromHtml(fullMessage));
         }
 
         dialog.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());

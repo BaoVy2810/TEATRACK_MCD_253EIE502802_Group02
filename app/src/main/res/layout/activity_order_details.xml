@@ -337,7 +337,24 @@
 
                     <LinearLayout style="@style/OrderDetailInfoRow">
                         <TextView style="@style/OrderDetailInfoLabel" android:text="@string/str_label_payment_method" />
-                        <TextView android:id="@+id/tvDeliveryPayment" style="@style/OrderDetailInfoValue" tools:text="Cash on hand" />
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tvDeliveryPayment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="4dp"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                tools:background="@drawable/bg_payment_momo"
+                                tools:text="MoMo" />
+                        </FrameLayout>
                     </LinearLayout>
                     <View style="@style/OrderDetailRowDivider" />
 

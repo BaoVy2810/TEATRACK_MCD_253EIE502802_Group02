@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="32dp"
+    android:layout_margin="16dp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="24dp"
     app:cardElevation="8dp">
@@ -21,11 +21,10 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp">
+                android:layout_marginBottom="8dp">
 
                 <TextView
                     android:id="@+id/tvDialogTitle"
@@ -36,7 +35,7 @@
                     android:layout_toStartOf="@id/btnClose"
                     android:text="@string/dialog_add_account_title"
                     android:textColor="@color/brand_blue"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <ImageButton
@@ -54,23 +53,22 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:background="@color/divider" />
 
-            <!-- Full Name -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_full_name"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etFullName"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:autofillHints="name"
                 android:background="@drawable/bg_input_rounded"
@@ -78,23 +76,22 @@
                 android:inputType="textPersonName"
                 android:paddingHorizontal="12dp"
                 android:textColor="@color/brand_blue"
-                android:textColorHint="#800088FF"
-                android:textSize="13sp" />
+                android:textColorHint="#0088FF"
+                android:textSize="12sp" />
 
-            <!-- Username -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_username"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:autofillHints="username"
                 android:background="@drawable/bg_input_rounded"
@@ -102,23 +99,22 @@
                 android:inputType="text"
                 android:paddingHorizontal="12dp"
                 android:textColor="@color/brand_blue"
-                android:textColorHint="#800088FF"
-                android:textSize="13sp" />
+                android:textColorHint="#0088FF"
+                android:textSize="12sp" />
 
-            <!-- Email -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_email"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:autofillHints="emailAddress"
                 android:background="@drawable/bg_input_rounded"
@@ -126,23 +122,22 @@
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="12dp"
                 android:textColor="@color/brand_blue"
-                android:textColorHint="#800088FF"
-                android:textSize="13sp" />
+                android:textColorHint="#0088FF"
+                android:textSize="12sp" />
 
-            <!-- Phone Number -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_phone_number"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etPhoneNumber"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:autofillHints="phone"
                 android:background="@drawable/bg_input_rounded"
@@ -151,23 +146,22 @@
                 android:maxLength="10"
                 android:paddingHorizontal="12dp"
                 android:textColor="@color/brand_blue"
-                android:textColorHint="#800088FF"
-                android:textSize="13sp" />
+                android:textColorHint="#0088FF"
+                android:textSize="12sp" />
 
-            <!-- Address -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_address_account"
                 android:textColor="@color/brand_blue"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/etAddress"
                 android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_marginTop="2dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:autofillHints=""
                 android:background="@drawable/bg_input_rounded"
@@ -175,21 +169,20 @@
                 android:inputType="textPostalAddress"
                 android:paddingHorizontal="12dp"
                 android:textColor="@color/brand_blue"
-                android:textColorHint="#800088FF"
-                android:textSize="13sp" />
+                android:textColorHint="#0088FF"
+                android:textSize="12sp" />
 
-            <!-- Role & Status -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
+                android:baselineAligned="false"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -197,11 +190,11 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_role"
                         android:textColor="@color/brand_blue"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/btnRoleSelect"
+                    <LinearLayout
+                        android:id="@+id/roleSelectRow"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginTop="4dp"
@@ -210,17 +203,38 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center_vertical"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="@color/brand_blue"
-                        android:textSize="13sp"
-                        tools:text="Customer" />
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="4dp">
+
+                        <TextView
+                            android:id="@+id/tvRoleSelect"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical|start"
+                            android:maxLines="1"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="12sp"
+                            tools:text="Customer" />
+
+                        <TextView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="⌃"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="20sp" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="6dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
@@ -228,11 +242,11 @@
                         android:layout_height="wrap_content"
                         android:text="@string/label_status"
                         android:textColor="@color/brand_blue"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/btnStatusSelect"
+                    <LinearLayout
+                        android:id="@+id/statusSelectRow"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginTop="4dp"
@@ -241,60 +255,86 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:gravity="center_vertical"
-                        android:paddingHorizontal="12dp"
-                        android:textColor="@color/brand_blue"
-                        android:textSize="13sp"
-                        tools:text="Active" />
+                        android:orientation="horizontal"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="4dp">
+
+                        <TextView
+                            android:id="@+id/tvStatusSelect"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="center_vertical|start"
+                            android:maxLines="1"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="12sp"
+                            tools:text="Active" />
+
+                        <TextView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="⌃"
+                            android:textColor="@color/brand_blue"
+                            android:textSize="20sp" />
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Buttons Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnCancel"
                     android:layout_width="0dp"
-                    android:layout_height="34dp"
-                    android:layout_weight="1"
+                    android:layout_height="48dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
                     android:backgroundTint="@color/danger"
+                    android:gravity="center"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:text="@string/btn_cancel"
                     android:textAllCaps="false"
-                    android:textSize="12sp"
-                    android:gravity="center"
-                    app:cornerRadius="17dp"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
                     app:icon="@drawable/ic_close"
                     app:iconGravity="textStart"
                     app:iconPadding="4dp"
-                    app:iconSize="12dp"
+                    app:iconSize="16dp"
                     app:iconTint="@color/white" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSave"
                     android:layout_width="0dp"
-                    android:layout_height="34dp"
-                    android:layout_weight="1"
+                    android:layout_height="48dp"
                     android:layout_marginStart="8dp"
+                    android:layout_weight="1"
                     android:backgroundTint="@color/brand_blue"
+                    android:gravity="center"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
-                    android:text="@string/btn_save"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="@string/btn_add"
                     android:textAllCaps="false"
-                    android:textSize="12sp"
-                    android:gravity="center"
-                    app:cornerRadius="17dp"
-                    app:icon="@drawable/document"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:icon="@drawable/plus"
                     app:iconGravity="textStart"
                     app:iconPadding="4dp"
-                    app:iconSize="12dp"
+                    app:iconSize="16dp"
                     app:iconTint="@color/white" />
             </LinearLayout>
 

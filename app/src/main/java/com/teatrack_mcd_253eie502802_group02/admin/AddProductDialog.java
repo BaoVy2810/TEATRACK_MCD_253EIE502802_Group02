@@ -58,6 +58,7 @@ public class AddProductDialog {
     private Uri cameraImageUri;
     private ImageView ivMainPreview;
     private View llPlaceholder;
+    private ImageButton btnRemoveImage;
     private String uploadedImageUrl = "logo_ngo_gia.png"; // Mặc định
     private final DecimalFormat priceFormatter = new DecimalFormat("#,###");
     private String selectedCategory;
@@ -89,6 +90,7 @@ public class AddProductDialog {
         EditText etProductId = dialog.findViewById(R.id.etProductId);
         EditText etProductName = dialog.findViewById(R.id.etProductName);
         TextView tvCategorySelect = dialog.findViewById(R.id.tvCategorySelect);
+        View categorySelectRow = dialog.findViewById(R.id.categorySelectRow);
         CheckBox cbVisible = dialog.findViewById(R.id.cbVisible);
         CheckBox cbSpecial = dialog.findViewById(R.id.cbSpecial);
         EditText etPriceM = dialog.findViewById(R.id.etPriceM);
@@ -112,9 +114,9 @@ public class AddProductDialog {
         setupImageUpload(dialog);
 
         // Setup Category Select
-        if (tvCategorySelect != null) {
+        if (tvCategorySelect != null && categorySelectRow != null) {
             tvCategorySelect.setText(selectedCategory);
-            tvCategorySelect.setOnClickListener(v -> showCategoryPopup(v));
+            categorySelectRow.setOnClickListener(v -> showCategoryPopup(categorySelectRow, tvCategorySelect));
         }
 
         btnClose.setOnClickListener(v -> dialog.dismiss());
@@ -142,7 +144,7 @@ public class AddProductDialog {
         dialog.show();
     }
 
-    private void showCategoryPopup(View anchor) {
+    private void showCategoryPopup(View anchor, TextView tvCategorySelect) {
         List<String> popupCats = new ArrayList<>(categories);
         popupCats.remove(context.getString(R.string.filter_all));
         if (popupCats.isEmpty()) {
@@ -166,7 +168,7 @@ public class AddProductDialog {
             rvCategories.setLayoutManager(new LinearLayoutManager(context));
             rvCategories.setAdapter(new CategoryDialogAdapter(popupCats, selectedCategory, category -> {
                 selectedCategory = category;
-                ((TextView) anchor).setText(selectedCategory);
+                tvCategorySelect.setText(selectedCategory);
                 popupWindow.dismiss();
             }));
         }
@@ -180,8 +182,30 @@ public class AddProductDialog {
         if (slotView != null) {
             ivMainPreview = slotView.findViewById(R.id.ivProductImage);
             llPlaceholder = slotView.findViewById(R.id.llUploadPlaceholder);
+            btnRemoveImage = slotView.findViewById(R.id.btnRemoveImage);
+            if (btnRemoveImage != null) {
+                btnRemoveImage.setOnClickListener(v -> {
+                    selectedImageUri = null;
+                    if (ivMainPreview != null) {
+                        ivMainPreview.setImageDrawable(null);
+                    }
+                    setImageSlotVisible(false);
+                });
+            }
 
             slotView.setOnClickListener(v -> showImageSourceDialog());
+        }
+    }
+
+    private void setImageSlotVisible(boolean hasImage) {
+        if (llPlaceholder != null) {
+            llPlaceholder.setVisibility(hasImage ? View.GONE : View.VISIBLE);
+        }
+        if (ivMainPreview != null) {
+            ivMainPreview.setVisibility(hasImage ? View.VISIBLE : View.GONE);
+        }
+        if (btnRemoveImage != null) {
+            btnRemoveImage.setVisibility(hasImage ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -228,11 +252,10 @@ public class AddProductDialog {
     public void handleImageResult(Uri uri) {
         if (uri != null) {
             selectedImageUri = uri;
-            if (ivMainPreview != null && llPlaceholder != null) {
-                llPlaceholder.setVisibility(View.GONE);
-                ivMainPreview.setVisibility(View.VISIBLE);
+            if (ivMainPreview != null) {
                 Glide.with(context).load(uri).into(ivMainPreview);
             }
+            setImageSlotVisible(true);
         }
     }
 

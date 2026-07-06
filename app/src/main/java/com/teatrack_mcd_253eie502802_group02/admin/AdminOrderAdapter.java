@@ -1,7 +1,6 @@
 package com.teatrack_mcd_253eie502802_group02.admin;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -25,9 +22,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem;
+import com.teatrack_mcd_253eie502802_group02.util.AgencyNameHelper;
 import com.teatrack_mcd_253eie502802_group02.util.OrderStatusBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.util.PaymentMethodBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.util.PriceFormatHelper;
 
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -97,8 +96,8 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Vi
         if (rawDate.isEmpty()) rawDate = safe(order.getCreatedAt());
         h.tvOrderDate.setText(formatDate(rawDate));
 
-        // Payment
-        h.tvPaymentMethod.setText(safe(order.getPaymentMethod(), "—"));
+        // Payment — plain text row (same style as branch)
+        PaymentMethodBadgeHelper.applyPlain(h.tvPaymentMethod, order.getPaymentMethod());
 
         // Customer
         h.tvCustomerName.setText(safe(order.getCustomerName(), "—"));
@@ -107,15 +106,14 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Vi
         // Item count
         List<FirebaseOrderItem> items = order.getItems();
         int count = (items != null) ? items.size() : 0;
-        h.tvItemCount.setText(count + " " + context.getString(R.string.str_item_unit));
+        h.tvItemCount.setText(context.getResources().getQuantityString(
+                R.plurals.str_item_count, count, count));
 
         // Total
         h.tvOrderTotal.setText(formatVnd(order.getTotal()));
 
-        // Branch address — prefer branchAddress, fall back to agencyId for legacy orders
-        String branch = safe(order.getBranchAddress());
-        if (branch.isEmpty()) branch = safe(order.getAgencyId());
-        h.tvOrderBranch.setText(branch.isEmpty() ? "—" : branch);
+        // Branch name from Firebase agencies node
+        AgencyNameHelper.loadName(h.tvOrderBranch, order, context);
 
         // Status badge
         OrderStatusBadgeHelper.apply(h.tvStatusBadge, status);
@@ -337,7 +335,7 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Vi
     }
 
     private static String formatVnd(int amount) {
-        return NumberFormat.getNumberInstance(new Locale("vi", "VN")).format(amount) + "₫";
+        return PriceFormatHelper.formatVnd(amount);
     }
 
     private static String safe(String s) {
@@ -346,10 +344,6 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Vi
 
     private static String safe(String s, String fallback) {
         return (s != null && !s.isEmpty()) ? s : fallback;
-    }
-
-    private int dpToPx(int dp) {
-        return Math.round(dp * context.getResources().getDisplayMetrics().density);
     }
 
     @Override
@@ -363,7 +357,8 @@ public class AdminOrderAdapter extends RecyclerView.Adapter<AdminOrderAdapter.Vi
         TextView     tvOrderId, tvStatusBadge, tvOrderDate, tvPaymentMethod;
         TextView     tvCustomerName, tvCustomerPhone, tvItemCount, tvOrderTotal, tvOrderBranch;
         ImageView    ivOrderThumbnail;
-        MaterialButton btnConfirmOrder, btnViewDetail, btnCancelOrder, btnUpdateStatus;
+        TextView     btnViewDetail, btnCancelOrder;
+        MaterialButton btnConfirmOrder, btnUpdateStatus;
         ViewGroup    layoutActions;
 
         FrameLayout  stepCircle1, stepCircle2, stepCircle3, stepCircle4, stepCircle5;

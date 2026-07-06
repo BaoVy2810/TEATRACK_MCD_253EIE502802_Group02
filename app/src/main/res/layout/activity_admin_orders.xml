@@ -69,8 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none"
-            android:paddingHorizontal="16dp"
-            android:layout_marginBottom="12dp"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="12dp"
             android:clipToPadding="false">
 
             <LinearLayout
@@ -80,106 +80,29 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <TextView
+                <include
                     android:id="@+id/tabAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_admin_order_tab_active"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:drawablePadding="5dp"
-                    android:text="@string/tab_all_orders"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    layout="@layout/layout_order_history_tab" />
 
-                <TextView
+                <include
                     android:id="@+id/tabPending"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_admin_order_tab_inactive"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:drawableStart="@drawable/pending_tab"
-                    android:drawablePadding="5dp"
-                    android:text="@string/tab_pending_orders"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    layout="@layout/layout_order_history_tab" />
 
-                <TextView
+                <include
                     android:id="@+id/tabProcessing"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_admin_order_tab_inactive"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:drawableStart="@drawable/processing_tab"
-                    android:drawablePadding="5dp"
-                    android:text="@string/tab_processing_orders"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    layout="@layout/layout_order_history_tab" />
 
-                <TextView
+                <include
                     android:id="@+id/tabShipping"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_admin_order_tab_inactive"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:drawableStart="@drawable/shipping_tab"
-                    android:drawablePadding="5dp"
-                    android:text="@string/tab_shipping_orders"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    layout="@layout/layout_order_history_tab" />
 
-                <TextView
+                <include
                     android:id="@+id/tabCompleted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_admin_order_tab_inactive"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:drawableStart="@drawable/finished_tab"
-                    android:drawablePadding="5dp"
-                    android:text="@string/tab_completed_orders"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    layout="@layout/layout_order_history_tab" />
 
-                <TextView
+                <include
                     android:id="@+id/tabCancelled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:background="@drawable/bg_admin_order_tab_inactive"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingHorizontal="14dp"
-                    android:drawableStart="@drawable/cancel"
-                    android:drawablePadding="5dp"
-                    android:text="@string/tab_cancelled_orders"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp" />
+                    layout="@layout/layout_order_history_tab" />
 
             </LinearLayout>
 
@@ -209,14 +132,14 @@
                 android:layout_height="80dp"
                 android:src="@drawable/cart"
                 android:importantForAccessibility="no"
-                app:tint="@color/outline_variant" />
+                app:tint="@color/brand_blue" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="@string/str_no_orders"
-                android:textColor="@color/text_secondary"
+                android:textColor="@color/brand_blue"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -227,7 +150,7 @@
                 android:gravity="center"
                 android:paddingHorizontal="32dp"
                 android:text="@string/str_no_orders_desc"
-                android:textColor="@color/text_muted"
+                android:textColor="@color/brand_blue"
                 android:textSize="12sp" />
 
         </LinearLayout>

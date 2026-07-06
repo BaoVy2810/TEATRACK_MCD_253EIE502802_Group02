@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -35,12 +36,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrderItem;
-import com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper;
 import com.teatrack_mcd_253eie502802_group02.util.FirebaseOrderHelper;
+import com.teatrack_mcd_253eie502802_group02.util.OrderItemDisplayHelper;
 import com.teatrack_mcd_253eie502802_group02.util.OrderStatusBadgeHelper;
-import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
+import com.teatrack_mcd_253eie502802_group02.util.PaymentMethodBadgeHelper;
+import com.teatrack_mcd_253eie502802_group02.util.PriceFormatHelper;
 
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -89,10 +90,10 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     private TextView     tvDeliveryAddress;
     private TextView     tvDeliveryPayment;
     private TextView     tvDeliveryBranch;
+    private TextView     tvDeliveryStatus;
 
     // Payment
     private TextView     tvPaySubtotal;
-    private LinearLayout llDiscountRow;
     private TextView     tvPayDiscount;
     private TextView     tvPayShipping;
     private TextView     tvPayTotal;
@@ -102,6 +103,8 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     private MaterialButton btnAdminDeleteOrder;
 
     private FirebaseOrder currentOrder;
+    private DatabaseReference orderRef;
+    private ValueEventListener orderListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,16 +116,57 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         if (currentOrder == null) { finish(); return; }
 
         bindViews();
+        setupTopBar();
         setupActionButtons();
-        setupBottomNavigation();
-        HeaderMenuHelper.setupProfileMenu(this);
         populateOrder(currentOrder);
+    }
 
-        // Back navigation
-        View backBtn = findViewById(R.id.btnBack);
-        if (backBtn != null) {
-            backBtn.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+    @Override
+    protected void onStart() {
+        super.onStart();
+        attachOrderListener();
+    }
+
+    @Override
+    protected void onStop() {
+        detachOrderListener();
+        super.onStop();
+    }
+
+    private void attachOrderListener() {
+        String key = FirebaseOrderHelper.resolveFirebaseKey(currentOrder);
+        if (key == null || key.isEmpty()) return;
+
+        detachOrderListener();
+        orderRef = FirebaseDatabase.getInstance(DB_URL).getReference("orders").child(key);
+        orderListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) return;
+                FirebaseOrder fresh = snapshot.getValue(FirebaseOrder.class);
+                if (fresh == null) return;
+                fresh.setId(snapshot.getKey());
+                if (fresh.getOrderId() == null || fresh.getOrderId().isEmpty()) {
+                    fresh.setOrderId(snapshot.getKey());
+                }
+                currentOrder = fresh;
+                populateOrder(fresh);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AdminOrderDetailActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        orderRef.addValueEventListener(orderListener);
+    }
+
+    private void detachOrderListener() {
+        if (orderRef != null && orderListener != null) {
+            orderRef.removeEventListener(orderListener);
         }
+        orderRef = null;
+        orderListener = null;
     }
 
     // ── Bind ──────────────────────────────────────────────────────────────────
@@ -163,15 +207,26 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         tvDeliveryAddress  = findViewById(R.id.tvDeliveryAddress);
         tvDeliveryPayment  = findViewById(R.id.tvDeliveryPayment);
         tvDeliveryBranch   = findViewById(R.id.tvDeliveryBranch);
+        tvDeliveryStatus   = findViewById(R.id.tvDeliveryStatus);
 
         tvPaySubtotal      = findViewById(R.id.tvPaySubtotal);
-        llDiscountRow      = findViewById(R.id.llDiscountRow);
         tvPayDiscount      = findViewById(R.id.tvPayDiscount);
         tvPayShipping      = findViewById(R.id.tvPayShipping);
         tvPayTotal         = findViewById(R.id.tvPayTotal);
 
         btnAdminUpdateStatus = findViewById(R.id.btnAdminUpdateStatus);
         btnAdminDeleteOrder  = findViewById(R.id.btnAdminDeleteOrder);
+    }
+
+    private void setupTopBar() {
+        TextView tvTopTitle = findViewById(R.id.tvTopTitle);
+        if (tvTopTitle != null) {
+            tvTopTitle.setText(R.string.str_order_details_title);
+        }
+        View btnBack = findViewById(R.id.btnBack);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+        }
     }
 
     // ── Action buttons ────────────────────────────────────────────────────────
@@ -346,14 +401,21 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             dialog.getWindow().setLayout(
-                    (int) (getResources().getDisplayMetrics().widthPixels * 0.88),
+                    (int) (getResources().getDisplayMetrics().widthPixels * 0.9),
                     android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
         }
 
         TextView tvTitle   = dialogView.findViewById(R.id.tvDeleteTitle);
         TextView tvMessage = dialogView.findViewById(R.id.tvDeleteMessage);
-        tvTitle.setText("Delete Order");
-        tvMessage.setText("This order will be permanently removed from the system.");
+        tvTitle.setText(R.string.modal_delete_title);
+        String orderId = currentOrder != null && currentOrder.getOrderId() != null
+                ? currentOrder.getOrderId() : "";
+        String fullMessage = "Order <font color='#0088ff'><b>#" + orderId + "</b></font> will be permanently deleted.";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            tvMessage.setText(android.text.Html.fromHtml(fullMessage, android.text.Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            tvMessage.setText(android.text.Html.fromHtml(fullMessage));
+        }
 
         dialogView.findViewById(R.id.btnCancel).setOnClickListener(v -> dialog.dismiss());
         dialogView.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
@@ -404,7 +466,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         tvAdminOrderDate.setText(formatDate(rawDate));
 
         // Payment chip
-        tvAdminPaymentChip.setText(safe(order.getPaymentMethod(), "—"));
+        PaymentMethodBadgeHelper.apply(tvAdminPaymentChip, order.getPaymentMethod());
 
         // Status badge
         OrderStatusBadgeHelper.apply(tvAdminStatusBadge, safe(order.getStatus()));
@@ -420,51 +482,56 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         if (items == null || items.isEmpty()) return;
 
         LayoutInflater inflater = LayoutInflater.from(this);
+        float density = getResources().getDisplayMetrics().density;
+        int gapBetweenItems = (int) (8 * density);
+        int gapBeforePayment = (int) (12 * density);
+
         for (int i = 0; i < items.size(); i++) {
             FirebaseOrderItem item = items.get(i);
-            View row = inflater.inflate(R.layout.item_order_detail_product, llAdminOrderItems, false);
+            View row = inflater.inflate(R.layout.item_order_detail_line, llAdminOrderItems, false);
 
-            ImageView ivImage = row.findViewById(R.id.ivItemImage);
-            TextView tvName   = row.findViewById(R.id.tvItemName);
-            TextView tvCustom = row.findViewById(R.id.tvItemCustomizations);
-            TextView tvToppin = row.findViewById(R.id.tvItemToppings);
-            TextView tvTotal  = row.findViewById(R.id.tvItemLineTotal);
-            TextView tvQty    = row.findViewById(R.id.tvItemQtyUnit);
+            ImageView ivImage = row.findViewById(R.id.imgOrderItem);
+            TextView tvName = row.findViewById(R.id.tvOrderItemName);
+            TextView tvCustom = row.findViewById(R.id.tvOrderItemConfig);
+            TextView tvToppin = row.findViewById(R.id.tvOrderItemToppings);
+            TextView tvTotal = row.findViewById(R.id.tvOrderItemLineTotal);
+            TextView tvQty = row.findViewById(R.id.tvOrderItemQtyUnit);
 
             loadProductImage(ivImage, item);
 
             tvName.setText(safe(item.getProductName()));
 
-            StringBuilder custom = new StringBuilder();
-            String size  = safe(item.getSize());
-            String sugar = safe(item.getSugar());
-            String ice   = safe(item.getIce());
-            if (!size.isEmpty())  { custom.append("Size ").append(size); }
-            if (!sugar.isEmpty()) { if (custom.length() > 0) custom.append("  •  "); custom.append(sugar).append(" sugar"); }
-            if (!ice.isEmpty())   { if (custom.length() > 0) custom.append("  •  "); custom.append(ice).append(" ice"); }
-            tvCustom.setText(custom.toString());
+            tvCustom.setText(OrderItemDisplayHelper.formatConfigLine(
+                    this,
+                    item.getSize(),
+                    item.getSugar(),
+                    item.getIce()
+            ));
 
-            String toppings = safe(item.getToppings());
-            if (!toppings.isEmpty()) {
+            String toppingsBlock = OrderItemDisplayHelper.formatToppingsBlock(
+                    this,
+                    safe(item.getToppings())
+            );
+            if (!toppingsBlock.isEmpty()) {
                 tvToppin.setVisibility(View.VISIBLE);
-                tvToppin.setText("+ " + toppings);
+                tvToppin.setText(toppingsBlock);
             } else {
                 tvToppin.setVisibility(View.GONE);
             }
 
             tvTotal.setText(formatVnd(item.getLineTotal()));
-            tvQty.setText("x" + item.getQuantity() + "  •  " + formatVnd(item.getUnitPrice()) + "/sp");
+            tvQty.setText("x" + item.getQuantity() + " • " + formatVnd(item.getUnitPrice()) + "/sp");
+
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) row.getLayoutParams();
+            if (lp == null) {
+                lp = new ViewGroup.MarginLayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+            lp.bottomMargin = (i == items.size() - 1) ? gapBeforePayment : gapBetweenItems;
+            row.setLayoutParams(lp);
 
             llAdminOrderItems.addView(row);
-
-            if (i < items.size() - 1) {
-                View divider = new View(this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, 1);
-                divider.setLayoutParams(lp);
-                divider.setBackgroundColor(0xFFF3F4F6);
-                llAdminOrderItems.addView(divider);
-            }
         }
     }
 
@@ -472,27 +539,23 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         tvDeliveryName.setText(safe(order.getCustomerName(), "—"));
         tvDeliveryPhone.setText(safe(order.getCustomerPhone(), "—"));
         tvDeliveryAddress.setText(safe(order.getCustomerAddress(), "—"));
-        tvDeliveryPayment.setText(safe(order.getPaymentMethod(), "—"));
+        PaymentMethodBadgeHelper.apply(tvDeliveryPayment, order.getPaymentMethod());
         String branchAddr = safe(order.getBranchAddress());
-        if (branchAddr.isEmpty()) branchAddr = safe(order.getAgencyId()); // legacy fallback
+        if (branchAddr.isEmpty()) branchAddr = safe(order.getAgencyId());
         tvDeliveryBranch.setText(branchAddr.isEmpty() ? "—" : branchAddr);
+        OrderStatusBadgeHelper.apply(tvDeliveryStatus, safe(order.getStatus()));
     }
 
     private void populatePaymentCard(FirebaseOrder order) {
         tvPaySubtotal.setText(formatVnd(order.getSubtotal()));
+        tvPayShipping.setText(formatVnd(order.getShipping()));
 
         int discount = order.getDiscount();
         if (discount > 0) {
-            llDiscountRow.setVisibility(View.VISIBLE);
-            tvPayDiscount.setText("−" + formatVnd(discount));
+            tvPayDiscount.setText("-" + formatVnd(discount));
         } else {
-            llDiscountRow.setVisibility(View.GONE);
+            tvPayDiscount.setText("0đ");
         }
-
-        int shipping = order.getShipping();
-        tvPayShipping.setText(shipping == 0
-                ? getString(R.string.str_free_shipping)
-                : formatVnd(shipping));
 
         tvPayTotal.setText(formatVnd(order.getTotal()));
     }
@@ -634,39 +697,6 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
         Glide.with(this).load(R.mipmap.logo_ngo_gia).centerCrop().into(iv);
     }
 
-    // ── Bottom navigation ─────────────────────────────────────────────────────
-
-    private void setupBottomNavigation() {
-        int[] navItemIds = {
-                R.id.nav_dashboard,
-                R.id.nav_products,
-                R.id.nav_orders,
-                R.id.nav_account,
-                R.id.nav_forum,
-                R.id.nav_branch,
-                R.id.nav_feedbacks,
-                R.id.nav_promotion
-        };
-
-        NavBarHelper.setupNavBar(this, navItemIds, R.id.nav_orders, v -> {
-            int id = v.getId();
-            if (id == R.id.nav_orders) return;
-
-            Class<?> destination = null;
-            if      (id == R.id.nav_dashboard)  destination = AdminDashboard.class;
-            else if (id == R.id.nav_products)   destination = AdminProduct.class;
-            else if (id == R.id.nav_account)    destination = AdminAccount.class;
-            else if (id == R.id.nav_forum)      destination = AdminBlog.class;
-            else if (id == R.id.nav_branch)     destination = AdminAgency.class;
-            else if (id == R.id.nav_feedbacks)  destination = AdminComplaints.class;
-            else if (id == R.id.nav_promotion)  destination = AdminPromotion.class;
-
-            if (destination != null) {
-                NavBarHelper.navigateWithoutTransition(this, destination);
-            }
-        });
-    }
-
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private static String formatDate(String rawDate) {
@@ -690,7 +720,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
     }
 
     private static String formatVnd(int amount) {
-        return NumberFormat.getNumberInstance(new Locale("vi", "VN")).format(amount) + "₫";
+        return PriceFormatHelper.formatVnd(amount);
     }
 
     private static String safe(String s) {
