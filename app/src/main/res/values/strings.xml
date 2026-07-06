@@ -447,7 +447,18 @@
     <string name="login_dont_have_account">Don\'t have an account? </string>
     <string name="login_sign_up">Sign Up</string>
     <string name="login_error_invalid">Login Error! Invalid username or password.</string>
+    <string name="error_invalid_credentials">Invalid username or password.</string>
     <string name="login_error_empty">Login Error! Please complete all required fields.</string>
+    <string name="error_login_empty_fields">Please enter both username and password!</string>
+    <string name="error_network_timeout">Connection timeout, please check your network!</string>
+    <string name="msg_welcome_admin">Welcome Admin!</string>
+    <string name="error_system_general">System error: %1$s</string>
+    <string name="error_firebase_connection">Firebase connection error!</string>
+    <string name="error_google_signin_failed">Google Sign-In failed: %1$s</string>
+    <string name="error_auth_failed">Authentication Failed.</string>
+    <string name="msg_register_success">Registration successful!</string>
+    <string name="error_register_failed">Registration failed: %1$s</string>
+    <string name="error_account_creation_failed">Cannot create account: %1$s</string>
 
     <string name="welcome_title">Welcome</string>
     <string name="welcome_subtitle">Sign in to your registered account.</string>
@@ -947,6 +958,10 @@
     <string name="history_dummy_store4_name">H086 - 125 Đặng Văn Bi, Phường Thủ Đức, Hồ Chí Minh</string>
     <string name="history_dummy_store4_addr">125 Đặng Văn Bi, Phường Thủ Đức, Thành Phố Hồ Chí Minh</string>
     <string name="blog_detail_title">Blog Detail</string>
+    <string name="err_blog_not_found">Blog content not found</string>
+    <string name="err_firebase_load">Firebase connection error</string>
+    <string name="blog_share_prefix">Check out this blog: </string>
+    <string name="blog_share_title">Share via</string>
     <string name="reviews_title">My Reviews</string>
     <string name="blog_detail_share">Share Blog</string>
     <string name="reviews_dummy_date1">Oct 12, 2025</string>

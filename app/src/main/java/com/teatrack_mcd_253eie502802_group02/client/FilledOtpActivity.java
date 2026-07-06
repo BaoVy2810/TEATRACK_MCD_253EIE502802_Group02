@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.data.PasswordResetManager;
@@ -22,7 +22,7 @@ import com.teatrack_mcd_253eie502802_group02.data.PasswordResetManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilledOtpActivity extends AppCompatActivity {
+public class FilledOtpActivity extends BaseActivity {
 
     public static final String EXTRA_EMAIL = "extra_email";
 

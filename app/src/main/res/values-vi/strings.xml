@@ -10,6 +10,10 @@
     <string name="nav_account">Tài khoản</string>
     <string name="blog_breadcrumb_forum">Trang chủ / Diễn đàn</string>
     <string name="blog_detail_title">Chi tiết bài viết</string>
+    <string name="err_blog_not_found">Không tìm thấy nội dung bài viết</string>
+    <string name="err_firebase_load">Lỗi kết nối Firebase</string>
+    <string name="blog_share_prefix">Xem bài viết này: </string>
+    <string name="blog_share_title">Chia sẻ qua</string>
     <string name="blog_detail_share">Chia sẻ bài viết</string>
     <string name="blog_page_title_forum">Diễn đàn</string>
     <string name="nav_forum">Diễn đàn</string>
@@ -400,7 +404,18 @@
     <string name="login_dont_have_account">Chưa có tài khoản? </string>
     <string name="login_sign_up">Đăng ký ngay</string>
     <string name="login_error_invalid">Lỗi đăng nhập! Tên tài khoản hoặc mật khẩu không đúng.</string>
+    <string name="error_invalid_credentials">Tên đăng nhập hoặc mật khẩu không hợp lệ.</string>
     <string name="login_error_empty">Lỗi đăng nhập! Vui lòng điền đầy đủ các thông tin bắt buộc.</string>
+    <string name="error_login_empty_fields">Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!</string>
+    <string name="error_network_timeout">Kết nối quá lâu, vui lòng kiểm tra mạng!</string>
+    <string name="msg_welcome_admin">Chào mừng Admin!</string>
+    <string name="error_system_general">Lỗi hệ thống: %1$s</string>
+    <string name="error_firebase_connection">Lỗi kết nối Firebase!</string>
+    <string name="error_google_signin_failed">Đăng nhập Google thất bại: %1$s</string>
+    <string name="error_auth_failed">Xác thực thất bại.</string>
+    <string name="msg_register_success">Đăng ký thành công!</string>
+    <string name="error_register_failed">Đăng ký thất bại: %1$s</string>
+    <string name="error_account_creation_failed">Không thể tạo tài khoản: %1$s</string>
 
     <string name="welcome_title">Chào mừng bạn</string>
     <string name="welcome_subtitle">Đăng nhập vào tài khoản đã đăng ký của bạn.</string>
@@ -717,7 +732,7 @@
     <string name="about_hero_title">Tự hào 74 năm hình thành và phát triển</string>
     <string name="about_logo_content_desc">Logo thương hiệu Hồng Trà Ngô Gia</string>
     <string name="about_story_title">CÂU CHUYỆN THƯƠNG HIỆU</string>
-    <string name="about_story_desc">Năm 1951, giữa đất trà mộc mạc, thương hiệu ra đời với đam mê tạo nên những ly trà đậm vị. Từ đó, Ngô Gia đã trở thành một trong những thương hiệu trà được yêu thích nhờ chất lượng ổn định, dịch vụ tận tâm và không ngừng đổi mới để bắt kịp xu hướng của giới trẻ Việt.</string>
+    <string name="about_story_desc">Vào năm 1951, giữa mảnh đất trà mộc mạc đậm hương đất trời, thương hiệu đã ra đời với tình yêu trọn vẹn dành cho từng ly trà đậm vị. Trải qua chặng đường dài, Ngô Gia đã trở thành một trong những cái tên quen thuộc và được ưu ái nhất nhờ giữ trọn chất lượng ổn định, cung cách phục vụ tận tâm kết hợp với sự sáng tạo không ngừng để chinh phục xu thế của thế hệ trẻ Việt Nam.</string>
     <string name="about_feature_quality_content_desc">Chất lượng cốt lõi</string>
     <string name="about_feature_quality_title">Chất lượng hàng đầu</string>
     <string name="about_feature_quality_desc">An toàn, vệ sinh và ngon miệng. Việc sử dụng các nguyên liệu an toàn, tự nhiên và vệ sinh là ưu tiên hàng đầu của Hồng trà Ngô Gia. Hương vị tuyệt hảo của các món thức uống là mục đích quan trọng tiếp theo mà chúng tôi muốn hướng đến.</string>
@@ -884,4 +899,28 @@
     <string name="str_desc_max"> (Tối đa %1$s)</string>
     <string name="str_desc_per_item">Giảm %1$s mỗi sản phẩm</string>
     <string name="str_desc_amount">Giảm trực tiếp %1$s</string>
+
+    <!-- Các nhãn đơn hàng bổ sung -->
+    <string name="str_my_orders">Đơn hàng của tôi</string>
+    <string name="str_search_order_hint">Tìm theo mã đơn hàng...</string>
+    <string name="str_tab_all">Tất cả</string>
+    <string name="str_tab_pending">Chờ xác nhận</string>
+    <string name="str_tab_processing">Đang chuẩn bị</string>
+    <string name="str_tab_ready">Chờ lấy hàng</string>
+    <string name="str_tab_shipping">Đang giao</string>
+    <string name="str_tab_delivered">Đã giao</string>
+    <string name="str_tab_cancelled">Đã hủy</string>
+    <string name="str_no_orders">Chưa có đơn hàng nào</string>
+    <string name="str_no_orders_desc">Có vẻ như bạn chưa đặt món nào. Hãy khám phá thực đơn ngay nhé!</string>
+    <string name="str_order_id_prefix">Mã đơn: #%1$s</string>
+    <string name="str_load_orders_error">Lỗi khi tải danh sách đơn hàng</string>
+
+    <!-- Order Statuses for Badges -->
+    <string name="str_status_pending">Chờ xác nhận</string>
+    <string name="str_status_processing">Đang chuẩn bị</string>
+    <string name="str_status_ready">Chờ lấy hàng</string>
+    <string name="str_status_shipping">Đang giao hàng</string>
+    <string name="str_status_delivered">Đã hoàn thành</string>
+    <string name="str_status_completed">Đã hoàn thành</string>
+    <string name="str_status_cancelled">Đã hủy</string>
 </resources>

@@ -6,8 +6,9 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import com.teatrack_mcd_253eie502802_group02.client.LoginActivity;
 import com.teatrack_mcd_253eie502802_group02.client.Menu;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     public static final String EXTRA_SELECTED_TAB = "extra_selected_tab";
     public static final String EXTRA_MENU_CATEGORY = "extra_menu_category";
     public static final String TAB_HOME = "home";

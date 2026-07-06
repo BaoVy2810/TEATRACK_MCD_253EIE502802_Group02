@@ -11,7 +11,9 @@ import androidx.core.view.WindowInsetsCompat;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.ProfileBackHelper;
 
-public class MyReviewsActivity extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class MyReviewsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

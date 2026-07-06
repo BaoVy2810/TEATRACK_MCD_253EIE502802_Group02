@@ -132,15 +132,15 @@ public class RegisterActivity extends BaseActivity {
                                     getSharedPreferences("LoginPrefs", MODE_PRIVATE);
                             sharedPreferences.edit().putString("userId", userId).apply();
 
-                            Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, getString(R.string.msg_register_success), Toast.LENGTH_SHORT).show();
                             finish();
                         })
-                        .addOnFailureListener(e -> showError("Đăng ký thất bại: " + e.getMessage()));
+                        .addOnFailureListener(e -> showError(getString(R.string.error_register_failed, e.getMessage())));
             }
 
             @Override
             public void onError(String message) {
-                showError("Không thể tạo tài khoản: " + message);
+                showError(getString(R.string.error_account_creation_failed, message));
             }
         });
     }

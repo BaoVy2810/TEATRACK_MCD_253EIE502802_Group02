@@ -11,16 +11,24 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.data.PasswordResetManager;
 
-public class ForgotPassword extends AppCompatActivity {
+public class ForgotPassword extends BaseActivity {
 
     private TextView tvSignIn, tvErrorMessage;
     private TextInputLayout tilEmail;
@@ -72,22 +80,32 @@ public class ForgotPassword extends AppCompatActivity {
             return;
         }
 
-        setLoading(true);
-        passwordResetManager.sendOtp(email, new PasswordResetManager.Callback() {
+        checkEmailInFirebase(email);
+    }
+
+    private void checkEmailInFirebase(String email) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        Query query = usersRef.orderByChild("email").equalTo(email);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onSuccess() {
-                setLoading(false);
-                Toast.makeText(ForgotPassword.this, R.string.forgot_password_otp_sent, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(ForgotPassword.this, FilledOtpActivity.class);
-                intent.putExtra(FilledOtpActivity.EXTRA_EMAIL, email);
-                startActivity(intent);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    // Email found, proceed to next screen (ResetPassword or OTP)
+                    // For now, let's assume it goes to ResetPasswordActivity
+                    Intent intent = new Intent(ForgotPassword.this, ResetPasswordActivity.class);
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+                } else {
+                    // Email not found
+                    showError(getString(R.string.forgot_password_error_not_found));
+                    setFieldError(true);
+                }
             }
 
             @Override
-            public void onError(String message) {
-                setLoading(false);
-                showError(message);
-                setFieldError(true);
+            public void onCancelled(@NonNull DatabaseError error) {
+                showError("Database Error: " + error.getMessage());
             }
         });
     }

@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -39,7 +39,7 @@ import com.teatrack_mcd_253eie502802_group02.model.FirebaseOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderTracking extends AppCompatActivity {
+public class OrderTracking extends BaseActivity {
 
     private static final String DB_URL =
             "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";

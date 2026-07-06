@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -31,7 +31,7 @@ import com.teatrack_mcd_253eie502802_group02.data.PasswordResetManager;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends BaseActivity {
 
     private TextInputLayout tilPassword, tilConfirm;
     private TextInputEditText etPassword, etConfirm;

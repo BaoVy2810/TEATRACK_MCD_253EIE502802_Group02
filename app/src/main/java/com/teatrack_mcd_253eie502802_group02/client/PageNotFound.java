@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 
-public class PageNotFound extends AppCompatActivity {
+public class PageNotFound extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

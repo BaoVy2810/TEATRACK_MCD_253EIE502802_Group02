@@ -38,7 +38,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditingPerInfoActivity extends AppCompatActivity {
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+
+public class EditingPerInfoActivity extends BaseActivity {
 
     private ActivityEditingPerInfoBinding binding;
     private DatabaseReference userRef;
