@@ -14,14 +14,23 @@ app.use(express.json({ limit: "1mb" }));
 function createTransporter() {
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
+  const host = process.env.SMTP_HOST || "smtp.gmail.com";
+  const port = Number(process.env.SMTP_PORT || 587);
+  const secure = String(process.env.SMTP_SECURE || "false").toLowerCase() === "true";
 
   if (!user || !pass) {
     throw new Error("Missing SMTP_USER or SMTP_PASS in mail-server/.env");
   }
 
   return nodemailer.createTransport({
-    service: "gmail",
+    host,
+    port,
+    secure,
+    requireTLS: !secure,
     auth: { user, pass },
+    connectionTimeout: 30_000,
+    greetingTimeout: 30_000,
+    socketTimeout: 30_000,
   });
 }
 
