@@ -3,25 +3,28 @@ package com.teatrack_mcd_253eie502802_group02.client;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.ContactRequest;
-import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,18 +40,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
-
 public class ContactWithUs extends BaseActivity {
 
     private static final String DATABASE_URL = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
+
     private EditText edtFullName, edtEmail, edtPhone, edtContent;
-    private AutoCompleteTextView spinnerBranch;
+    private TextView tvBranchSelection;
+    private View btnSelectBranch;
     private RadioGroup radioTopic;
     private View btnSubmit;
     private DatabaseReference mDatabase;
-    private List<String> branchNames = new ArrayList<>();
-    private ArrayAdapter<String> branchAdapter;
+    private final List<String> agencyNames = new ArrayList<>();
+    private String selectedBranchName = "";
+    private PopupWindow branchPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +69,11 @@ public class ContactWithUs extends BaseActivity {
             });
         }
 
-        // Khởi tạo Firebase với URL Singapore
         mDatabase = FirebaseDatabase.getInstance(DATABASE_URL).getReference();
 
         initViews();
         setupHeader();
-        setupNavBar();
-        setupBranchSpinner();
+        setupBranchPicker();
         loadBranchesFromFirebase();
 
         btnSubmit.setOnClickListener(v -> submitFeedback());
@@ -82,16 +84,15 @@ public class ContactWithUs extends BaseActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtPhone = findViewById(R.id.edtPhone);
         edtContent = findViewById(R.id.edtContent);
-        spinnerBranch = findViewById(R.id.spinnerBranch);
+        tvBranchSelection = findViewById(R.id.tvBranchSelection);
+        btnSelectBranch = findViewById(R.id.btnSelectBranch);
         radioTopic = findViewById(R.id.radioTopic);
         btnSubmit = findViewById(R.id.btnSubmit);
 
-        // Setup TextWatchers to maintain blue color when text is present
         setupTextWatcher(edtFullName);
         setupTextWatcher(edtEmail);
         setupTextWatcher(edtPhone);
         setupTextWatcher(edtContent);
-        setupTextWatcher(spinnerBranch);
 
         radioTopic.setOnCheckedChangeListener((group, checkedId) -> {
             for (int i = 0; i < group.getChildCount(); i++) {
@@ -99,20 +100,14 @@ public class ContactWithUs extends BaseActivity {
                 if (child instanceof android.widget.RadioButton) {
                     android.widget.RadioButton rb = (android.widget.RadioButton) child;
                     if (rb.getId() == checkedId) {
-                        rb.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.brand_blue));
-                        // Sử dụng font SemiBold (thay cho Bold) để không bị lỗi font mặc định
+                        rb.setTextColor(ContextCompat.getColor(this, R.color.brand_blue));
                         rb.setTypeface(androidx.core.content.res.ResourcesCompat.getFont(this, R.font.inter_semibold));
                     } else {
                         rb.setTextColor(0xFF333333);
-                        // Quay lại font Regular
                         rb.setTypeface(androidx.core.content.res.ResourcesCompat.getFont(this, R.font.inter));
                     }
                 }
             }
-        });
-        spinnerBranch.setOnItemClickListener((parent, view, position, id) -> {
-            spinnerBranch.setActivated(true);
-            spinnerBranch.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.brand_blue));
         });
     }
 
@@ -148,32 +143,29 @@ public class ContactWithUs extends BaseActivity {
         }
     }
 
-    private void setupNavBar() {
-        // Nav bar removed from layout
-    }
-
-    private void setupBranchSpinner() {
-        branchAdapter = new ArrayAdapter<>(
-                this,
-                R.layout.item_spinner_branch,
-                branchNames
-        );
-        spinnerBranch.setAdapter(branchAdapter);
+    private void setupBranchPicker() {
+        if (btnSelectBranch != null) {
+            btnSelectBranch.setOnClickListener(v -> showBranchPopup());
+        }
     }
 
     private void loadBranchesFromFirebase() {
         mDatabase.child("agencies").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String prompt = getString(R.string.str_branch_prompt);
-                branchNames.clear();
-                branchNames.add(prompt);
-
+                agencyNames.clear();
                 for (DataSnapshot agencySnapshot : snapshot.getChildren()) {
                     String name = agencySnapshot.child("name").getValue(String.class);
-                    if (name != null) branchNames.add(name);
+                    if (name != null && !name.trim().isEmpty()) {
+                        agencyNames.add(name.trim());
+                    }
                 }
-                branchAdapter.notifyDataSetChanged();
+                if (branchPopupWindow != null && branchPopupWindow.isShowing()) {
+                    View content = branchPopupWindow.getContentView();
+                    if (content != null) {
+                        populateBranchOptions(content.findViewById(R.id.layoutBranchOptions));
+                    }
+                }
             }
 
             @Override
@@ -181,47 +173,136 @@ public class ContactWithUs extends BaseActivity {
         });
     }
 
+    private void showBranchPopup() {
+        if (btnSelectBranch == null) {
+            return;
+        }
+        if (agencyNames.isEmpty()) {
+            Toast.makeText(this, R.string.str_branch_prompt, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (branchPopupWindow != null && branchPopupWindow.isShowing()) {
+            branchPopupWindow.dismiss();
+            return;
+        }
+
+        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_contact_branch, null, false);
+        branchPopupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
+        branchPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        branchPopupWindow.setOutsideTouchable(true);
+        branchPopupWindow.setElevation(16f);
+
+        populateBranchOptions(popupView.findViewById(R.id.layoutBranchOptions));
+
+        popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int xOff = btnSelectBranch.getWidth() - popupView.getMeasuredWidth();
+        branchPopupWindow.showAsDropDown(btnSelectBranch, Math.max(xOff, 0), 8);
+    }
+
+    private void populateBranchOptions(LinearLayout container) {
+        if (container == null) {
+            return;
+        }
+        container.removeAllViews();
+        for (String name : agencyNames) {
+            TextView option = createBranchOption(name);
+            container.addView(option);
+        }
+    }
+
+    private TextView createBranchOption(String name) {
+        TextView option = new TextView(this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        params.topMargin = containerTopMargin(name);
+        option.setLayoutParams(params);
+        option.setPadding(dp(8), dp(8), dp(32), dp(8));
+        option.setText(name);
+        option.setTextSize(12f);
+        option.setTextColor(ContextCompat.getColor(this, R.color.black));
+        applyPopupOptionState(option, name.equals(selectedBranchName));
+        option.setOnClickListener(v -> {
+            selectedBranchName = name;
+            updateBranchSelectionUi();
+            if (branchPopupWindow != null) {
+                branchPopupWindow.dismiss();
+            }
+        });
+        return option;
+    }
+
+    private int containerTopMargin(String name) {
+        return agencyNames.indexOf(name) == 0 ? dp(6) : dp(1);
+    }
+
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
+    }
+
+    private void applyPopupOptionState(TextView option, boolean selected) {
+        option.setBackgroundResource(selected ? R.drawable.bg_filter_option_selected : android.R.color.transparent);
+        option.setTextColor(ContextCompat.getColor(this, selected ? R.color.brand_blue : R.color.black));
+        option.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
+    }
+
+    private void updateBranchSelectionUi() {
+        if (tvBranchSelection == null) {
+            return;
+        }
+        boolean hasSelection = selectedBranchName != null && !selectedBranchName.isEmpty();
+        tvBranchSelection.setText(hasSelection ? selectedBranchName : "");
+        tvBranchSelection.setTextColor(ContextCompat.getColor(
+                this,
+                hasSelection ? R.color.brand_blue : R.color.edittext_text_color
+        ));
+        if (btnSelectBranch != null) {
+            btnSelectBranch.setActivated(hasSelection);
+        }
+    }
+
     private void submitFeedback() {
         if (!validateForm()) return;
 
-        // Thu thập dữ liệu
         String fullname = edtFullName.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
         String phone = edtPhone.getText().toString().trim();
-        String branch = spinnerBranch.getText().toString();
+        String branch = selectedBranchName.trim();
         String content = edtContent.getText().toString().trim();
 
         int selectedTopicId = radioTopic.getCheckedRadioButtonId();
         android.widget.RadioButton rbSelected = findViewById(selectedTopicId);
         String topic = rbSelected.getText().toString();
 
-        // Tạo key tự sinh bằng push()
         String pushKey = mDatabase.child("contacts").push().getKey();
         if (pushKey == null) {
             Toast.makeText(this, "Lỗi: Không thể tạo ID", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Định dạng thời gian: 16/03/2026 10:23
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         String currentTime = sdf.format(new Date());
 
-        // Tạo đối tượng yêu cầu với pushKey
         ContactRequest request = new ContactRequest(
                 pushKey,
                 fullname,
                 email,
                 phone,
                 branch,
-                topic.toLowerCase(), // Lưu topic viết thường
+                topic.toLowerCase(),
                 content,
                 currentTime,
-                1, // status: 1 (Chờ xử lý)
-                false, // read: false
-                "" // note: rỗng
+                1,
+                false,
+                ""
         );
 
-        // Lưu vào Firebase
         mDatabase.child("contacts").child(pushKey).setValue(request)
                 .addOnSuccessListener(aVoid -> showSuccessDialog())
                 .addOnFailureListener(e -> Toast.makeText(ContactWithUs.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
@@ -241,8 +322,8 @@ public class ContactWithUs extends BaseActivity {
             edtPhone.setError(getString(R.string.err_required));
             return false;
         }
-        if (spinnerBranch.getText().toString().isEmpty() || 
-            spinnerBranch.getText().toString().equals(getString(R.string.str_branch_prompt))) {
+        if (selectedBranchName == null || selectedBranchName.trim().isEmpty()
+                || !agencyNames.contains(selectedBranchName)) {
             Toast.makeText(this, R.string.str_branch_prompt, Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -277,13 +358,12 @@ public class ContactWithUs extends BaseActivity {
         edtPhone.setText("");
         edtContent.setText("");
         radioTopic.clearCheck();
-        spinnerBranch.setText(""); // Xóa text của dropdown
-        
-        // Reset activated states
+        selectedBranchName = "";
+        updateBranchSelectionUi();
+
         edtFullName.setActivated(false);
         edtEmail.setActivated(false);
         edtPhone.setActivated(false);
         edtContent.setActivated(false);
-        spinnerBranch.setActivated(false);
     }
 }

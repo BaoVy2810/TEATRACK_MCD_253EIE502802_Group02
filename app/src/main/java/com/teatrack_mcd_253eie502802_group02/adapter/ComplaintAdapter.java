@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.ContactRequest;
+import com.teatrack_mcd_253eie502802_group02.util.AgencyNameHelper;
 import com.teatrack_mcd_253eie502802_group02.util.FeedbackTopicHelper;
 
 import java.util.List;
@@ -51,7 +52,10 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
         }
         holder.tvContent.setText(content);
         holder.tvCreatedAt.setText(contact.getTime() != null ? contact.getTime() : "");
-        holder.tvBranchAddress.setText(contact.getBranch() != null ? contact.getBranch() : "");
+        AgencyNameHelper.bindBranchDisplay(
+                holder.tvBranchAddress,
+                contact.getBranch(),
+                holder.itemView.getContext());
         FeedbackTopicHelper.applyTopicBadgeV2(holder.tvTopicBadge, contact.getTopic());
 
         // Status mapping: 1 -> Pending, 2 -> Resolved

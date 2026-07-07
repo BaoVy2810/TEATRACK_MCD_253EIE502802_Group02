@@ -246,31 +246,32 @@
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        <LinearLayout
+                            android:id="@+id/btnSelectBranch"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            app:boxStrokeWidth="0dp"
-                            app:boxStrokeWidthFocused="0dp"
-                            app:endIconTint="@color/brand_blue"
-                            app:hintEnabled="false">
+                            android:background="@drawable/bg_edittext_contact"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:gravity="center_vertical"
+                            android:minHeight="48dp"
+                            android:orientation="horizontal"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="10dp">
 
-                            <AutoCompleteTextView
-                                android:id="@+id/spinnerBranch"
-                                android:layout_width="match_parent"
+                            <TextView
+                                android:id="@+id/tvBranchSelection"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:inputType="none"
-                                android:textSize="12sp"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/inter"
                                 android:hint="@string/str_branch_prompt"
-                                android:background="@drawable/bg_edittext_contact"
                                 android:textColor="@color/edittext_text_color"
-                                android:padding="12dp"
-                                android:popupBackground="@drawable/bg_filter_panel"
-                                android:dropDownHeight="180dp"
-                                android:dropDownVerticalOffset="4dp" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                                android:textColorHint="#9CA3AF"
+                                android:textSize="12sp" />
+                        </LinearLayout>
 
                         <!-- Topic -->
                         <TextView

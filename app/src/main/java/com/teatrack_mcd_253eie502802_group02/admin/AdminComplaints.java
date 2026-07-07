@@ -174,9 +174,11 @@ public class AdminComplaints extends BaseActivity {
 
     private void setupFirebase() {
         String dbUrl = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
-        mDatabase = FirebaseDatabase.getInstance(dbUrl).getReference("contacts");
+        DatabaseReference rootRef = FirebaseDatabase.getInstance(dbUrl).getReference();
+        mDatabase = rootRef.child("contacts");
 
-        ContactSampleSeeder.ensureSamples(mDatabase, null);
+        ContactSampleSeeder.ensureSamples(mDatabase, () ->
+                ContactSampleSeeder.syncBranchNamesWithAgencies(rootRef, null));
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -187,6 +189,10 @@ public class AdminComplaints extends BaseActivity {
                 int resolved = 0;
 
                 for (DataSnapshot ds : snapshot.getChildren()) {
+                    String key = ds.getKey();
+                    if (key != null && key.startsWith("_")) {
+                        continue;
+                    }
                     ContactRequest contact = ds.getValue(ContactRequest.class);
                     if (contact != null) {
                         if (contact.get_id() == null) contact.set_id(ds.getKey());
