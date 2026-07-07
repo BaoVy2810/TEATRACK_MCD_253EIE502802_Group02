@@ -21,6 +21,7 @@ public final class NavBarHelper {
 
     private static final int EXPAND_DRAG_THRESHOLD_PX = 56;
     private static final float EXPAND_SNAP_RATIO = 0.38f;
+    private static boolean adminNavExpanded = false;
 
     private NavBarHelper() {
     }
@@ -36,9 +37,8 @@ public final class NavBarHelper {
         Activity activity = (Activity) context;
 
         View expandHandle = activity.findViewById(R.id.nav_expand_handle);
-        Runnable collapseExpanded = null;
         if (expandHandle != null) {
-            collapseExpanded = setupAdminExpandBehavior(context, expandHandle, selectedId);
+            setupAdminExpandBehavior(context, expandHandle);
         }
 
         for (int itemId : itemIds) {
@@ -47,16 +47,7 @@ public final class NavBarHelper {
                 continue;
             }
             updateItemState(context, item, itemId == selectedId);
-
-            View.OnClickListener itemListener = listener;
-            if (collapseExpanded != null && isPrimaryNavItem(itemId)) {
-                Runnable collapse = collapseExpanded;
-                itemListener = v -> {
-                    collapse.run();
-                    listener.onClick(v);
-                };
-            }
-            item.setOnClickListener(itemListener);
+            item.setOnClickListener(listener);
         }
     }
 
@@ -81,30 +72,20 @@ public final class NavBarHelper {
         }
     }
 
-    private static Runnable setupAdminExpandBehavior(Context context, View handle, int selectedId) {
+    private static void setupAdminExpandBehavior(Context context, View handle) {
         Activity activity = (Activity) context;
         View secondaryRow = activity.findViewById(R.id.nav_row_secondary);
         View dragPill = activity.findViewById(R.id.nav_drag_pill);
         if (secondaryRow == null) {
-            return () -> {};
+            return;
         }
 
-        final boolean[] expanded = {isSecondaryNavItem(selectedId)};
-        if (expanded[0]) {
-            setExpandProgress(secondaryRow, dragPill, 1f);
-        } else {
-            setExpandProgress(secondaryRow, dragPill, 0f);
-        }
-
-        Runnable collapseIfExpanded = () -> {
-            if (expanded[0]) {
-                expanded[0] = false;
-                animateAdminNavExpand(secondaryRow, dragPill, false, handle);
-            }
-        };
+        final boolean[] expanded = {adminNavExpanded};
+        setExpandProgress(secondaryRow, dragPill, expanded[0] ? 1f : 0f);
 
         Runnable toggleExpanded = () -> {
             expanded[0] = !expanded[0];
+            adminNavExpanded = expanded[0];
             animateAdminNavExpand(secondaryRow, dragPill, expanded[0], handle);
         };
 
@@ -148,6 +129,7 @@ public final class NavBarHelper {
                         float releaseProgress = startProgress + (releaseDelta / EXPAND_DRAG_THRESHOLD_PX);
                         boolean shouldExpand = releaseProgress >= EXPAND_SNAP_RATIO;
                         expanded[0] = shouldExpand;
+                        adminNavExpanded = shouldExpand;
                         animateAdminNavExpand(secondaryRow, dragPill, shouldExpand, handle);
                         return true;
                     default:
@@ -155,8 +137,6 @@ public final class NavBarHelper {
                 }
             }
         });
-
-        return collapseIfExpanded;
     }
 
     private static void setExpandProgress(View secondaryRow, View dragPill, float progress) {
@@ -177,20 +157,6 @@ public final class NavBarHelper {
             dragPill.setScaleX(scale);
             dragPill.setScaleY(scale);
         }
-    }
-
-    private static boolean isPrimaryNavItem(int itemId) {
-        return itemId == R.id.nav_dashboard
-                || itemId == R.id.nav_products
-                || itemId == R.id.nav_orders
-                || itemId == R.id.nav_account;
-    }
-
-    private static boolean isSecondaryNavItem(int itemId) {
-        return itemId == R.id.nav_forum
-                || itemId == R.id.nav_branch
-                || itemId == R.id.nav_feedbacks
-                || itemId == R.id.nav_promotion;
     }
 
     private static void animateAdminNavExpand(
