@@ -18,6 +18,7 @@ import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.admin.AdminProfile;
 import com.teatrack_mcd_253eie502802_group02.util.AdminSessionHelper;
+import com.teatrack_mcd_253eie502802_group02.util.GoogleSignInHelper;
 
 public final class HeaderMenuHelper {
 
@@ -72,6 +73,7 @@ public final class HeaderMenuHelper {
         if (signOutItem != null) {
             signOutItem.setOnClickListener(v -> {
                 popupWindow.dismiss();
+                GoogleSignInHelper.signOutGoogle(activity);
                 FirebaseAuth.getInstance().signOut();
                 com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper.clearSession(activity);
                 Intent intent = new Intent(activity, MainActivity.class);

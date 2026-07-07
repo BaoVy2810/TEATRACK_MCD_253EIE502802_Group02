@@ -14,15 +14,6 @@ import android.widget.FrameLayout;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.client.ChatbotBubble;
-import com.teatrack_mcd_253eie502802_group02.client.FilledOTP;
-import com.teatrack_mcd_253eie502802_group02.client.FilledOtpActivity;
-import com.teatrack_mcd_253eie502802_group02.client.ForgotPassword;
-import com.teatrack_mcd_253eie502802_group02.client.ForgotPasswordActivity;
-import com.teatrack_mcd_253eie502802_group02.client.LoginActivity;
-import com.teatrack_mcd_253eie502802_group02.client.PageNotFound;
-import com.teatrack_mcd_253eie502802_group02.client.RegisterActivity;
-import com.teatrack_mcd_253eie502802_group02.client.ResetPasswordActivity;
-import com.teatrack_mcd_253eie502802_group02.client.SucessfullyChangePasswordActivity;
 
 public final class ChatbotFabHelper {
 
@@ -162,7 +153,10 @@ public final class ChatbotFabHelper {
     }
 
     private static float getTopBound(Activity activity, View overlay) {
-        View header = activity.findViewById(R.id.header_container);
+        View header = activity.findViewById(R.id.header_client);
+        if (header == null) {
+            header = activity.findViewById(R.id.headerClient);
+        }
         if (header != null && header.getHeight() > 0) {
             int[] headerLoc = new int[2];
             int[] overlayLoc = new int[2];
@@ -210,21 +204,14 @@ public final class ChatbotFabHelper {
     }
 
     private static boolean shouldShow(Activity activity) {
-        String packageName = activity.getClass().getPackageName();
-        if (!packageName.endsWith(".client")) {
+        if (activity instanceof ChatbotBubble) {
             return false;
         }
+        return hasClientHeader(activity) && hasClientNavBar(activity);
+    }
 
-        return !(activity instanceof LoginActivity)
-                && !(activity instanceof RegisterActivity)
-                && !(activity instanceof ForgotPassword)
-                && !(activity instanceof ForgotPasswordActivity)
-                && !(activity instanceof FilledOTP)
-                && !(activity instanceof FilledOtpActivity)
-                && !(activity instanceof ResetPasswordActivity)
-                && !(activity instanceof SucessfullyChangePasswordActivity)
-                && !(activity instanceof PageNotFound)
-                && !(activity instanceof ChatbotBubble);
+    private static boolean hasClientHeader(Activity activity) {
+        return activity.findViewById(R.id.header_client) != null;
     }
 
     private static boolean hasClientNavBar(Activity activity) {

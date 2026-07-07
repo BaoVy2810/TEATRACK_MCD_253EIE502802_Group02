@@ -33,6 +33,7 @@ import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
 import com.teatrack_mcd_253eie502802_group02.util.CustomerSessionHelper;
+import com.teatrack_mcd_253eie502802_group02.util.GoogleSignInHelper;
 import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 import java.util.Arrays;
@@ -80,6 +81,7 @@ public final class HeaderClientHelper {
         if (signOutItem != null) {
             signOutItem.setOnClickListener(v -> {
                 popupWindow.dismiss();
+                GoogleSignInHelper.signOutGoogle(activity);
                 FirebaseAuth.getInstance().signOut();
                 UserProfileHelper.clearSession(activity);
                 Intent intent = new Intent(activity, MainActivity.class);

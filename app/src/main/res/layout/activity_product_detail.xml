@@ -72,7 +72,7 @@
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@id/navBarClient"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_container">
 
         <LinearLayout
@@ -1923,14 +1923,5 @@
                 tools:listitem="@layout/item_product_card" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <include
-        android:id="@+id/navBarClient"
-        layout="@layout/activity_nav_bar_client"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

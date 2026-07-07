@@ -45,7 +45,6 @@ import com.teatrack_mcd_253eie502802_group02.model.CartItem;
 import com.teatrack_mcd_253eie502802_group02.model.Product;
 import com.teatrack_mcd_253eie502802_group02.model.ProductReview;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
-import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.CartActions;
 import com.teatrack_mcd_253eie502802_group02.util.DateTimeHelper;
 import com.teatrack_mcd_253eie502802_group02.util.ProductImageHelper;
@@ -311,7 +310,6 @@ public class ProductDetail extends BaseActivity {
             ));
         }
 
-        setupBottomNavigation();
         setupTabs();
         setupOptionSelections();
         setupToppingRows();
@@ -1182,53 +1180,6 @@ public class ProductDetail extends BaseActivity {
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
-    }
-
-    private void setupBottomNavigation() {
-        View navHome = findViewById(R.id.nav_home);
-        View navMenu = findViewById(R.id.nav_menu);
-        View navOrders = findViewById(R.id.nav_orders);
-        View navPromotion = findViewById(R.id.nav_promotion);
-        View navProfile = findViewById(R.id.nav_profile);
-
-        int[] navIds = {
-                R.id.nav_home,
-                R.id.nav_menu,
-                R.id.nav_orders,
-                R.id.nav_promotion,
-                R.id.nav_profile
-        };
-        NavBarHelper.setupNavBar(this, navIds, R.id.nav_menu, v -> {
-            int id = v.getId();
-            if (id == R.id.nav_home) {
-                Intent intent = new Intent(this, Homepage.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            } else if (id == R.id.nav_menu) {
-                openMainTab(MainActivity.TAB_MENU, null);
-                overridePendingTransition(0, 0);
-            } else if (id == R.id.nav_orders) {
-                Intent intent = new Intent(this, OrderHistory.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            } else if (id == R.id.nav_promotion) {
-                Intent intent = new Intent(this, PromotionClient.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            } else if (id == R.id.nav_profile) {
-                Intent intent = new Intent(this, UserProfile.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
-        });
-
-        if (navMenu != null) {
-            NavBarHelper.updateItemState(this, navMenu, true);
-        }
     }
 
     private void setupTabs() {

@@ -56,6 +56,7 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.util.AdminSessionHelper;
+import com.teatrack_mcd_253eie502802_group02.util.GoogleSignInHelper;
 import com.teatrack_mcd_253eie502802_group02.util.UserIdGenerator;
 import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
@@ -274,7 +275,7 @@ public class LoginActivity extends BaseActivity {
     private void signInWithGoogle() {
         googleNavigationStarted = false;
         setGoogleLoading(true);
-        launchLegacyGoogleSignIn();
+        GoogleSignInHelper.getClient(this).signOut().addOnCompleteListener(task -> requestGoogleCredential(false));
     }
 
     private void requestGoogleCredential(boolean autoSelect) {
@@ -312,6 +313,7 @@ public class LoginActivity extends BaseActivity {
                             return;
                         }
                         Log.e(TAG, "Google credential error", e);
+                        setGoogleLoading(false);
                         Toast.makeText(
                                 LoginActivity.this,
                                 getString(R.string.error_google_signin_failed, e.getMessage()),
@@ -328,15 +330,16 @@ public class LoginActivity extends BaseActivity {
             Toast.makeText(this, getString(R.string.error_auth_failed), Toast.LENGTH_SHORT).show();
             return;
         }
-        // Clear cached Google/Firebase session so the account picker shows every time.
         mAuth.signOut();
-        googleSignInClient.signOut().addOnCompleteListener(task -> {
-            if (isFinishing()) {
-                setGoogleLoading(false);
-                return;
-            }
-            legacyGoogleSignInLauncher.launch(googleSignInClient.getSignInIntent());
-        });
+        googleSignInClient.signOut().addOnCompleteListener(signOutTask ->
+                googleSignInClient.revokeAccess().addOnCompleteListener(revokeTask -> {
+                    if (isFinishing()) {
+                        setGoogleLoading(false);
+                        return;
+                    }
+                    legacyGoogleSignInLauncher.launch(googleSignInClient.getSignInIntent());
+                })
+        );
     }
 
     private void handleSignIn(Credential credential) {
@@ -428,67 +431,102 @@ public class LoginActivity extends BaseActivity {
             googleHandler.postDelayed(googleDbTimeoutRunnable, GOOGLE_DB_TIMEOUT_MS);
         }
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (resolved[0]) {
-                    return;
-                }
-                resolved[0] = true;
-                clearGoogleDbTimeout();
-
-                DataSnapshot matchedByUid = null;
-                DataSnapshot matchedByEmail = null;
-
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    if (child.getKey() == null) {
-                        continue;
-                    }
-                    String storedUid = child.child("firebaseUid").getValue(String.class);
-                    if (uid.equals(storedUid)) {
-                        matchedByUid = child;
-                        break;
-                    }
-                    if (matchedByEmail == null && normalizedEmail != null) {
-                        String storedEmail = child.child("email").getValue(String.class);
-                        if (storedEmail != null && normalizedEmail.equals(normalizeEmail(storedEmail))) {
-                            matchedByEmail = child;
+        databaseReference.orderByChild("firebaseUid").equalTo(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (resolved[0]) {
+                            return;
                         }
+                        if (snapshot.exists()) {
+                            resolved[0] = true;
+                            clearGoogleDbTimeout();
+                            completeGoogleLogin(snapshot.getChildren().iterator().next(), silentRestore);
+                            return;
+                        }
+                        lookupGoogleUserByEmail(user, uid, normalizedEmail, silentRestore, resolved);
                     }
-                }
 
-                if (matchedByUid != null) {
-                    completeGoogleLogin(matchedByUid, silentRestore);
-                    return;
-                }
-                if (matchedByEmail != null) {
-                    linkFirebaseUidAndLogin(matchedByEmail, uid, user, silentRestore);
-                    return;
-                }
-                if (silentRestore) {
-                    mAuth.signOut();
-                    setGoogleLoading(false);
-                    return;
-                }
-                createGoogleUser(user, uid);
-            }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        if (resolved[0]) {
+                            return;
+                        }
+                        resolved[0] = true;
+                        clearGoogleDbTimeout();
+                        Log.e(TAG, "Failed to query Users by firebaseUid: " + error.getMessage());
+                        handleGoogleLookupFailure(user, silentRestore);
+                    }
+                });
+    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                if (resolved[0]) {
-                    return;
-                }
-                resolved[0] = true;
-                clearGoogleDbTimeout();
-                Log.e(TAG, "Failed to load Users for Google login: " + error.getMessage());
-                if (silentRestore) {
-                    mAuth.signOut();
-                    setGoogleLoading(false);
-                    return;
-                }
-                openHomeAfterGoogleAuth(user);
+    private void lookupGoogleUserByEmail(
+            @NonNull FirebaseUser user,
+            @NonNull String uid,
+            @Nullable String normalizedEmail,
+            boolean silentRestore,
+            boolean[] resolved
+    ) {
+        if (normalizedEmail == null) {
+            if (resolved[0]) {
+                return;
             }
-        });
+            resolved[0] = true;
+            clearGoogleDbTimeout();
+            handleGoogleUserNotFound(user, uid, silentRestore);
+            return;
+        }
+
+        databaseReference.orderByChild("email").equalTo(normalizedEmail)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (resolved[0]) {
+                            return;
+                        }
+                        resolved[0] = true;
+                        clearGoogleDbTimeout();
+                        if (snapshot.exists()) {
+                            linkFirebaseUidAndLogin(
+                                    snapshot.getChildren().iterator().next(),
+                                    uid,
+                                    user,
+                                    silentRestore
+                            );
+                            return;
+                        }
+                        handleGoogleUserNotFound(user, uid, silentRestore);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        if (resolved[0]) {
+                            return;
+                        }
+                        resolved[0] = true;
+                        clearGoogleDbTimeout();
+                        Log.e(TAG, "Failed to query Users by email: " + error.getMessage());
+                        handleGoogleLookupFailure(user, silentRestore);
+                    }
+                });
+    }
+
+    private void handleGoogleUserNotFound(@NonNull FirebaseUser user, @NonNull String uid, boolean silentRestore) {
+        if (silentRestore) {
+            mAuth.signOut();
+            setGoogleLoading(false);
+            return;
+        }
+        createGoogleUser(user, uid);
+    }
+
+    private void handleGoogleLookupFailure(@NonNull FirebaseUser user, boolean silentRestore) {
+        if (silentRestore) {
+            mAuth.signOut();
+            setGoogleLoading(false);
+            return;
+        }
+        openHomeAfterGoogleAuth(user);
     }
 
     private void openHomeAfterGoogleAuth(@NonNull FirebaseUser user) {
@@ -517,67 +555,86 @@ public class LoginActivity extends BaseActivity {
         final String uid = user.getUid();
         final String normalizedEmail = normalizeEmail(user.getEmail());
         DatabaseReference usersRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference("Users");
-        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot child : snapshot.getChildren()) {
-                    String key = child.getKey();
-                    if (key == null) {
-                        continue;
-                    }
-                    String storedUid = child.child("firebaseUid").getValue(String.class);
-                    if (uid.equals(storedUid)) {
-                        cacheGoogleProfileFromSnapshot(child);
-                        return;
-                    }
-                    if (normalizedEmail != null) {
-                        String storedEmail = child.child("email").getValue(String.class);
-                        if (storedEmail != null && normalizedEmail.equals(normalizeEmail(storedEmail))) {
-                            usersRef.child(key).updateChildren(buildGoogleLinkUpdates(user));
-                            cacheGoogleProfileFromSnapshot(child);
+        usersRef.orderByChild("firebaseUid").equalTo(uid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            cacheGoogleProfileFromSnapshot(snapshot.getChildren().iterator().next());
                             return;
                         }
-                    }
-                }
-                UserIdGenerator.next(usersRef, new UserIdGenerator.Callback() {
-                    @Override
-                    public void onGenerated(String csId) {
-                        Map<String, Object> userMap = new HashMap<>();
-                        userMap.put("id", csId);
-                        userMap.put("firebaseUid", uid);
-                        userMap.put("name", user.getDisplayName());
-                        userMap.put("fullName", user.getDisplayName());
-                        userMap.put("email", normalizedEmail);
-                        userMap.put("role", "Customer");
-                        userMap.put("status", "Active");
-                        userMap.put("provider", "google");
-                        userMap.put("createdAt", String.valueOf(System.currentTimeMillis()));
-                        usersRef.child(csId).setValue(userMap);
-                        getApplicationContext()
-                                .getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-                                .edit()
-                                .putString(KEY_USER_ID, csId)
-                                .putString("userRole", "Customer")
-                                .apply();
-                        UserProfileHelper.cacheProfile(
-                                getApplicationContext(),
-                                csId,
-                                "Customer",
-                                user.getDisplayName(),
-                                null
-                        );
+                        if (normalizedEmail == null) {
+                            createGoogleUserRecordInBackground(usersRef, user, uid, normalizedEmail);
+                            return;
+                        }
+                        usersRef.orderByChild("email").equalTo(normalizedEmail)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot emailSnapshot) {
+                                        if (emailSnapshot.exists()) {
+                                            DataSnapshot existing = emailSnapshot.getChildren().iterator().next();
+                                            String key = existing.getKey();
+                                            if (key != null) {
+                                                usersRef.child(key).updateChildren(buildGoogleLinkUpdates(user));
+                                            }
+                                            cacheGoogleProfileFromSnapshot(existing);
+                                            return;
+                                        }
+                                        createGoogleUserRecordInBackground(usersRef, user, uid, normalizedEmail);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        Log.e(TAG, "Background email lookup cancelled: " + error.getMessage());
+                                    }
+                                });
                     }
 
                     @Override
-                    public void onError(String message) {
-                        Log.e(TAG, "Background Google user create failed: " + message);
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG, "Background uid lookup cancelled: " + error.getMessage());
                     }
                 });
+    }
+
+    private void createGoogleUserRecordInBackground(
+            DatabaseReference usersRef,
+            @NonNull FirebaseUser user,
+            @NonNull String uid,
+            @Nullable String normalizedEmail
+    ) {
+        UserIdGenerator.next(usersRef, new UserIdGenerator.Callback() {
+            @Override
+            public void onGenerated(String csId) {
+                Map<String, Object> userMap = new HashMap<>();
+                userMap.put("id", csId);
+                userMap.put("firebaseUid", uid);
+                userMap.put("name", user.getDisplayName());
+                userMap.put("fullName", user.getDisplayName());
+                userMap.put("email", normalizedEmail);
+                userMap.put("role", "Customer");
+                userMap.put("status", "Active");
+                userMap.put("provider", "google");
+                userMap.put("createdAt", String.valueOf(System.currentTimeMillis()));
+                usersRef.child(csId).setValue(userMap);
+                getApplicationContext()
+                        .getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+                        .edit()
+                        .putString(KEY_USER_ID, csId)
+                        .putString("userRole", "Customer")
+                        .apply();
+                UserProfileHelper.cacheProfile(
+                        getApplicationContext(),
+                        csId,
+                        "Customer",
+                        user.getDisplayName(),
+                        null
+                );
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Background Google user sync cancelled: " + error.getMessage());
+            public void onError(String message) {
+                Log.e(TAG, "Background Google user create failed: " + message);
             }
         });
     }
@@ -611,7 +668,7 @@ public class LoginActivity extends BaseActivity {
         if (phone == null || phone.trim().isEmpty()) {
             phone = userSnapshot.child("phone").getValue(String.class);
         }
-        UserProfileHelper.cacheProfile(this, userId, role, fullName, phone);
+        UserProfileHelper.cacheProfile(getApplicationContext(), userId, role, fullName, phone);
         sharedPreferences.edit()
                 .putString(KEY_USER_ID, userId)
                 .putString("userRole", role)
@@ -677,12 +734,15 @@ public class LoginActivity extends BaseActivity {
             phone = userSnapshot.child("phone").getValue(String.class);
         }
 
-        UserProfileHelper.cacheProfile(this, userId, role, fullName, phone);
+        UserProfileHelper.cacheProfile(getApplicationContext(), userId, role, fullName, phone);
         sharedPreferences.edit()
                 .putString(KEY_USER_ID, userId)
                 .putString("userRole", role)
                 .apply();
 
+        if (googleNavigationStarted || isFinishing()) {
+            return;
+        }
         googleNavigationStarted = true;
         Intent destination = "Admin".equalsIgnoreCase(role)
                 ? new Intent(this, AdminDashboard.class)

@@ -15,6 +15,7 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.client.Cart;
 import com.teatrack_mcd_253eie502802_group02.client.Homepage;
 import com.teatrack_mcd_253eie502802_group02.client.UserProfile;
+import com.teatrack_mcd_253eie502802_group02.util.GoogleSignInHelper;
 
 public class HeaderClient extends AppCompatActivity {
 
@@ -37,6 +38,7 @@ public class HeaderClient extends AppCompatActivity {
             popup.getMenuInflater().inflate(R.menu.menu_profile_header, popup.getMenu());
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.menu_signout) {
+                    GoogleSignInHelper.signOutGoogle(this);
                     com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
                     com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper.clearSession(this);
                     Intent intent = new Intent(this, com.teatrack_mcd_253eie502802_group02.MainActivity.class);
