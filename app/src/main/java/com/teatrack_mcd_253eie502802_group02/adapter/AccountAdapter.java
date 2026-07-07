@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.databinding.ItemAccountBinding;
 import com.teatrack_mcd_253eie502802_group02.model.User;
+import com.teatrack_mcd_253eie502802_group02.util.AdminAvatarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.AccountV
 
         void bind(User user) {
             binding.tvInitial.setText(getInitial(user.getFullName(), user.getUsername()));
+            AdminAvatarHelper.bindUserAvatar(binding.ivAvatar, binding.tvInitial, user);
             binding.tvAccountId.setText(safe(user.getId()));
             binding.tvFullName.setText(safe(user.getFullName()));
             binding.tvUsername.setText("@" + safe(user.getUsername()));

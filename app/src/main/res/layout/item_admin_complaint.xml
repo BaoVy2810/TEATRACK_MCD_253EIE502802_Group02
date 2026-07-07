@@ -25,27 +25,21 @@
 
             <TextView
                 android:id="@+id/tvTopicBadge"
+                style="@style/Widget.TeaTrack.Badge.V2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_badge_danger"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
-                android:text="@string/label_topic_complaint"
-                android:textColor="@color/danger"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                tools:ignore="SmallSp" />
+                tools:text="Khen ngợi" />
 
             <TextView
                 android:id="@+id/tvUserName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                tools:text="User Name"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/brand_blue"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="User Name" />
 
             <TextView
                 android:id="@+id/tvStatus"
@@ -54,20 +48,20 @@
                 android:background="@drawable/bg_badge_pending"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="4dp"
-                tools:text="Pending"
                 android:textColor="@color/badge_pending_text"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Pending" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/tvUserContact"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            tools:text="email@example.com | 0123456789"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp" />
+            android:layout_marginTop="8dp"
+            android:textColor="@color/brand_blue"
+            android:textSize="12sp"
+            tools:text="email@example.com | 0123456789" />
 
         <View
             android:layout_width="match_parent"
@@ -79,50 +73,85 @@
             android:id="@+id/tvContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Complaint content goes here..."
-            android:textColor="@color/text_primary"
+            android:lineSpacingExtra="4dp"
+            android:textColor="@color/brand_blue"
             android:textSize="12sp"
-            android:lineSpacingExtra="4dp"/>
+            tools:text="Complaint content goes here..." />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@drawable/time_circle"
-                app:tint="@color/text_muted"
-                android:layout_marginEnd="4dp"
-                android:importantForAccessibility="no" />
-
-            <TextView
-                android:id="@+id/tvCreatedAt"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="2023-10-27 10:00"
-                android:textColor="@color/text_muted"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnReply"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:minHeight="0dp"
-                android:padding="0dp"
-                android:text="@string/btn_view_details"
-                android:textAllCaps="false"
-                android:textColor="@color/brand_blue"
-                android:textSize="12sp"
-                app:icon="@drawable/ic_arrow_right"
-                app:iconGravity="textEnd"
-                app:iconSize="16dp"
-                app:iconPadding="4dp"/>
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="4dp"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/time_circle"
+                    app:tint="@color/brand_blue" />
+
+                <TextView
+                    android:id="@+id/tvCreatedAt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="12sp"
+                    tools:text="27/10/2023 10:00" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnReply"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:minHeight="0dp"
+                    android:padding="0dp"
+                    android:text="@string/btn_view_details"
+                    android:textAllCaps="false"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:icon="@drawable/ic_arrow_right"
+                    app:iconGravity="textEnd"
+                    app:iconPadding="4dp"
+                    app:iconSize="16dp"
+                    app:iconTint="@color/brand_blue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="4dp"
+                    android:contentDescription="@string/cd_address"
+                    android:src="@drawable/ic_location_on"
+                    app:tint="@color/brand_blue" />
+
+                <TextView
+                    android:id="@+id/tvBranchAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/brand_blue"
+                    android:textSize="12sp"
+                    tools:text="TeaTrack Ngô Gia" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -130,7 +159,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:background="@color/bg_screen"
+            android:background="@drawable/bg_admin_reply_rounded"
             android:orientation="vertical"
             android:padding="12dp"
             android:visibility="gone">
@@ -139,7 +168,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_admin_reply_prefix"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/brand_blue"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
@@ -148,9 +177,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                tools:text="Reply content..."
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp" />
+                android:textColor="@color/brand_blue"
+                android:textSize="12sp"
+                tools:text="Reply content..." />
         </LinearLayout>
 
     </LinearLayout>

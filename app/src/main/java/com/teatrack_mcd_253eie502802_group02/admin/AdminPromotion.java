@@ -130,7 +130,7 @@ public class AdminPromotion extends BaseActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Toast.makeText(AdminPromotion.this, "Data already seeded!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminPromotion.this, getString(R.string.msg_data_already_seeded), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 
@@ -165,7 +165,7 @@ public class AdminPromotion extends BaseActivity {
                     p.setCategory("Global");
                     if (id != null) ref.child(id).setValue(p);
                 }
-                Toast.makeText(AdminPromotion.this, "Seeding 10 vouchers successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminPromotion.this, getString(R.string.msg_seeding_vouchers_success), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -238,7 +238,8 @@ public class AdminPromotion extends BaseActivity {
         if (header != null) {
             View btnNotif = header.findViewById(R.id.btn_notification);
             if (btnNotif != null) {
-                btnNotif.setOnClickListener(v -> Toast.makeText(this, "Opening Notifications...", Toast.LENGTH_SHORT).show());
+                btnNotif.setOnClickListener(v ->
+                        Toast.makeText(this, getString(R.string.msg_opening_notifications), Toast.LENGTH_SHORT).show());
             }
         }
     }
@@ -609,7 +610,9 @@ public class AdminPromotion extends BaseActivity {
                         savePromotion(dialog, promotion, code, desc, min, max, type, value, imageUrl, imageSourceType, true);
                     }
                     @Override public void onError(String requestId, ErrorInfo error) {
-                        Toast.makeText(AdminPromotion.this, "Upload failed: " + error.getDescription(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminPromotion.this,
+                                getString(R.string.msg_upload_failed, error.getDescription()),
+                                Toast.LENGTH_SHORT).show();
                     }
                     @Override public void onReschedule(String requestId, ErrorInfo error) {}
                 }).dispatch();

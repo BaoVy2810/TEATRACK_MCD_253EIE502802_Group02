@@ -143,6 +143,11 @@
     <!-- ── Status badges ── -->
     <color name="badge_pending_bg">#FEF9C3</color>
     <color name="badge_pending_text">#854D0E</color>
+
+    <color name="topic_praise">#008D5F</color>
+    <color name="topic_suggest">#2F69E3</color>
+    <color name="topic_complain">#D32F2F</color>
+    <color name="topic_other">#5E6E82</color>
     <color name="badge_processing_bg">#DBEAFE</color>
     <color name="badge_processing_text">#1E40AF</color>
     <color name="badge_completed_bg">#D1FAE5</color>

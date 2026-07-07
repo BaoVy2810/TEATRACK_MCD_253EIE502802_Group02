@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.Blog;
 
-public class AdminBlogDetail extends AppCompatActivity {
+public class AdminBlogDetail extends BaseActivity {
 
     private TextView tvDate;
     private TextView tvTitle;
@@ -39,7 +39,7 @@ public class AdminBlogDetail extends AppCompatActivity {
 
         blogId = getIntent().getStringExtra("blog_id");
         if (blogId == null || blogId.trim().isEmpty()) {
-            Toast.makeText(this, "Blog not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.err_blog_not_found_short), Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -73,7 +73,7 @@ public class AdminBlogDetail extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Blog blog = snapshot.getValue(Blog.class);
                 if (blog == null) {
-                    Toast.makeText(AdminBlogDetail.this, "Blog not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminBlogDetail.this, getString(R.string.err_blog_not_found_short), Toast.LENGTH_SHORT).show();
                     returnToAdminBlogList();
                     return;
                 }

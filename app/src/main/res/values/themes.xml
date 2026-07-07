@@ -368,6 +368,12 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="Widget.TeaTrack.Badge.V2" parent="Widget.TeaTrack.Badge">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <style name="CustomMaterialCalendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
         <item name="colorPrimary">@color/white</item>
         <item name="colorOnPrimary">@color/brand_blue</item>

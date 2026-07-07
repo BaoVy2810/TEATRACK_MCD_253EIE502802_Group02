@@ -237,7 +237,8 @@ public class AdminDashboard extends BaseActivity {
         View header = findViewById(R.id.layout_header);
         if (header != null) {
             com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper.setupProfileMenu(this);
-            header.findViewById(R.id.btn_notification).setOnClickListener(v -> Toast.makeText(this, "Opening Notifications...", Toast.LENGTH_SHORT).show());
+            header.findViewById(R.id.btn_notification).setOnClickListener(v ->
+                    Toast.makeText(this, getString(R.string.msg_opening_notifications), Toast.LENGTH_SHORT).show());
         }
     }
 

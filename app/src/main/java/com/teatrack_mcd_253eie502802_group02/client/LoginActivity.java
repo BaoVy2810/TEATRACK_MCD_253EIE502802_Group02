@@ -43,6 +43,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.admin.AdminDashboard;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+import com.teatrack_mcd_253eie502802_group02.util.AdminSessionHelper;
 import com.teatrack_mcd_253eie502802_group02.util.UserIdGenerator;
 import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
@@ -370,9 +371,7 @@ public class LoginActivity extends BaseActivity {
         if (loginName.equalsIgnoreCase("admin") && password.equals("admin123")) {
             timeoutHandler.removeCallbacks(timeoutRunnable);
             hideError();
-            Toast.makeText(this, getString(R.string.msg_welcome_admin), Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, AdminDashboard.class));
-            finish();
+            loginAsAdminShortcut();
             return;
         }
 
@@ -456,6 +455,30 @@ public class LoginActivity extends BaseActivity {
             btnLogIn.setEnabled(true);
             showError(getString(R.string.error_firebase_connection));
         }
+    }
+
+    private void loginAsAdminShortcut() {
+        databaseReference.orderByChild("name").equalTo("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                btnLogIn.setEnabled(true);
+                if (!snapshot.exists()) {
+                    showError(getString(R.string.error_invalid_credentials));
+                    return;
+                }
+                DataSnapshot adminSnap = snapshot.getChildren().iterator().next();
+                AdminSessionHelper.cacheAdminSnapshot(LoginActivity.this, adminSnap);
+                Toast.makeText(LoginActivity.this, getString(R.string.msg_welcome_admin), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, AdminDashboard.class));
+                finish();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                btnLogIn.setEnabled(true);
+                showError(getString(R.string.error_system_general, error.getMessage()));
+            }
+        });
     }
 
     private void loadRememberedData() {

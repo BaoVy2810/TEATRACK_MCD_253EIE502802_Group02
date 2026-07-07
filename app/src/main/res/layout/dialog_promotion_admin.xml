@@ -35,6 +35,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@id/btnCloseDialog"
                     android:text="@string/str_promotion_details"
+                    android:textAllCaps="true"
                     android:textColor="@color/brand_blue"
                     android:textSize="14sp"
                     android:textStyle="bold" />

@@ -129,7 +129,7 @@ public class EditProductDialog {
         btnEdit.setOnClickListener(v -> {
             String name = etProductName.getText().toString().trim();
             if (name.isEmpty()) {
-                Toast.makeText(context, "Product name cannot be empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.error_product_name_required), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -231,7 +231,7 @@ public class EditProductDialog {
                 if (index == 0) {
                     showImageSourceDialog();
                 } else {
-                    Toast.makeText(context, "Currently only support editing the main image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.error_product_image_edit_only), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -293,7 +293,7 @@ public class EditProductDialog {
     }
 
     private void uploadImageAndSaveProduct(Dialog dialog) {
-        Toast.makeText(context, "Uploading image...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, context.getString(R.string.msg_uploading_image), Toast.LENGTH_SHORT).show();
 
         MediaManager.get().upload(selectedImageUri)
                 .unsigned(CloudinaryHelper.UPLOAD_PRESET)
@@ -310,7 +310,7 @@ public class EditProductDialog {
                     }
                     @Override
                     public void onError(String requestId, ErrorInfo error) {
-                        Toast.makeText(context, "Upload failed: " + error.getDescription(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.msg_upload_failed, error.getDescription()), Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void onReschedule(String requestId, ErrorInfo error) {}
@@ -345,9 +345,9 @@ public class EditProductDialog {
     private void saveToFirebase(Dialog dialog) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("products").child(product.getId());
         ref.setValue(product).addOnSuccessListener(aVoid -> {
-            Toast.makeText(context, "Product updated successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.msg_product_update_success), Toast.LENGTH_SHORT).show();
             dialog.dismiss();
-        }).addOnFailureListener(e -> Toast.makeText(context, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        }).addOnFailureListener(e -> Toast.makeText(context, context.getString(R.string.msg_product_update_failed, e.getMessage()), Toast.LENGTH_SHORT).show());
     }
 
     private String formatInitialPrice(int price) {

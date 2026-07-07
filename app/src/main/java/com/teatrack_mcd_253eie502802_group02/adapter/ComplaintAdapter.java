@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.ContactRequest;
+import com.teatrack_mcd_253eie502802_group02.util.FeedbackTopicHelper;
 
 import java.util.List;
 
@@ -49,7 +50,9 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
             content = content.substring(0, 97) + "...";
         }
         holder.tvContent.setText(content);
-        holder.tvCreatedAt.setText(contact.getTime() + " | " + contact.getBranch());
+        holder.tvCreatedAt.setText(contact.getTime() != null ? contact.getTime() : "");
+        holder.tvBranchAddress.setText(contact.getBranch() != null ? contact.getBranch() : "");
+        FeedbackTopicHelper.applyTopicBadgeV2(holder.tvTopicBadge, contact.getTopic());
 
         // Status mapping: 1 -> Pending, 2 -> Resolved
         if (contact.getStatus() == 1) {
@@ -89,7 +92,7 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
     }
 
     static class ComplaintViewHolder extends RecyclerView.ViewHolder {
-        TextView tvUserName, tvStatus, tvUserContact, tvContent, tvCreatedAt, tvAdminReply;
+        TextView tvUserName, tvStatus, tvTopicBadge, tvUserContact, tvContent, tvCreatedAt, tvBranchAddress, tvAdminReply;
         LinearLayout layoutAdminReply;
         MaterialButton btnReply;
 
@@ -97,9 +100,11 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
             super(itemView);
             tvUserName = itemView.findViewById(R.id.tvUserName);
             tvStatus = itemView.findViewById(R.id.tvStatus);
+            tvTopicBadge = itemView.findViewById(R.id.tvTopicBadge);
             tvUserContact = itemView.findViewById(R.id.tvUserContact);
             tvContent = itemView.findViewById(R.id.tvContent);
             tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
+            tvBranchAddress = itemView.findViewById(R.id.tvBranchAddress);
             tvAdminReply = itemView.findViewById(R.id.tvAdminReply);
             layoutAdminReply = itemView.findViewById(R.id.layoutAdminReply);
             btnReply = itemView.findViewById(R.id.btnReply);

@@ -181,4 +181,9 @@
     <dimen name="action_buttons_height">44dp</dimen>
     <dimen name="filter_menu_item_height">36dp</dimen>
     <dimen name="filter_check_icon_size">12dp</dimen>
+
+    <!-- Floating action button (matches admin product FAB) -->
+    <dimen name="fab_margin_end">16dp</dimen>
+    <dimen name="fab_margin_bottom">16dp</dimen>
+    <dimen name="fab_margin_bottom_above_nav">91dp</dimen>
 </resources>

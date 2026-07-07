@@ -25,7 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,7 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class AdminProduct extends AppCompatActivity {
+public class AdminProduct extends BaseActivity {
 
     private ProductAdapter productAdapter;
     private List<Product> productList;
@@ -153,7 +153,7 @@ public class AdminProduct extends AppCompatActivity {
 
                 if (!snapshot.exists()) {
                     android.util.Log.w("AdminProduct", "Không tìm thấy nút 'products' trên Firebase");
-                    Toast.makeText(AdminProduct.this, "Chưa có dữ liệu sản phẩm", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminProduct.this, getString(R.string.msg_no_product_data), Toast.LENGTH_SHORT).show();
                 }
 
                 Set<String> categories = new HashSet<>();
@@ -201,7 +201,9 @@ public class AdminProduct extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 android.util.Log.e("AdminProduct", "Lỗi Firebase: " + error.getMessage());
-                Toast.makeText(AdminProduct.this, "Lỗi kết nối Firebase: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(AdminProduct.this,
+                        getString(R.string.error_firebase_connection, error.getMessage()),
+                        Toast.LENGTH_LONG).show();
             }
         });
     }

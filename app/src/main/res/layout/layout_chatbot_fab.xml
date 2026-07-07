@@ -1,19 +1,22 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="false"
     android:focusable="false">
-    <ImageButton
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabChatbot"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        android:background="@drawable/bg_fab_chatbot"
-        android:src="@drawable/ic_chat_bubble"
-        android:contentDescription="Chat hỗ trợ"
-        android:elevation="10dp"
-        android:stateListAnimator="@null"
-        android:padding="12dp"/>
+        android:layout_marginEnd="@dimen/fab_margin_end"
+        android:layout_marginBottom="@dimen/fab_margin_bottom_above_nav"
+        android:backgroundTint="@color/brand_blue"
+        android:contentDescription="@string/chatbot_fab_cd"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_chat_bubble"
+        app:tint="@color/white" />
+
 </FrameLayout>

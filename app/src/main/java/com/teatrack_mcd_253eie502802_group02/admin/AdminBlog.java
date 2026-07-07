@@ -22,7 +22,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class AdminBlog extends AppCompatActivity {
+public class AdminBlog extends BaseActivity {
 
     private EditText etSearch;
     private RecyclerView rvBlogList;

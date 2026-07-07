@@ -127,7 +127,7 @@ public class AddProductDialog {
             String name = etProductName.getText().toString().trim();
 
             if (id.isEmpty() || name.isEmpty()) {
-                Toast.makeText(context, "Please fill in ID and Name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.error_product_id_name_required), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -271,7 +271,7 @@ public class AddProductDialog {
                                            EditText etPriceL, EditText etVipPriceM, EditText etVipPriceL,
                                            EditText etProductInfo, EditText etProductDesc) {
 
-        Toast.makeText(context, "Uploading image...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, context.getString(R.string.msg_uploading_image), Toast.LENGTH_SHORT).show();
 
         MediaManager.get().upload(selectedImageUri)
                 .unsigned(CloudinaryHelper.UPLOAD_PRESET)
@@ -289,7 +289,7 @@ public class AddProductDialog {
                     }
                     @Override
                     public void onError(String requestId, ErrorInfo error) {
-                        Toast.makeText(context, "Upload failed: " + error.getDescription(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.msg_upload_failed, error.getDescription()), Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void onReschedule(String requestId, ErrorInfo error) {}
@@ -313,8 +313,8 @@ public class AddProductDialog {
         String collectionPath = context.getString(R.string.firebase_collection_products);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(collectionPath).child(id);
         ref.setValue(newProduct).addOnSuccessListener(aVoid -> {
-            Toast.makeText(context, "Product added successfully", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> Toast.makeText(context, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            Toast.makeText(context, context.getString(R.string.msg_product_add_success), Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(e -> Toast.makeText(context, context.getString(R.string.msg_product_add_failed, e.getMessage()), Toast.LENGTH_SHORT).show());
     }
 
     private void setupDefaultImage(Dialog dialog) {

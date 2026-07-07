@@ -23,7 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,6 +42,7 @@ import com.teatrack_mcd_253eie502802_group02.databinding.ActivityAdminAccountBin
 import com.teatrack_mcd_253eie502802_group02.databinding.DialogAddEditAccountBinding;
 import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
+import com.teatrack_mcd_253eie502802_group02.util.AdminAvatarHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -52,7 +53,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AdminAccount extends AppCompatActivity implements AccountAdapter.AccountActionListener {
+public class AdminAccount extends BaseActivity implements AccountAdapter.AccountActionListener {
 
     private String[] ROLE_FILTERS;
     private String[] ROLES;
@@ -93,6 +94,7 @@ public class AdminAccount extends AppCompatActivity implements AccountAdapter.Ac
 
         String firebaseUrl = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
         usersRef = FirebaseDatabase.getInstance(firebaseUrl).getReference("Users");
+        AdminAvatarHelper.ensureListening();
         setupRecyclerView();
         setupFilters();
         setupActions();

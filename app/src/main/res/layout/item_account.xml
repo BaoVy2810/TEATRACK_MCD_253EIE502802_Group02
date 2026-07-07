@@ -29,18 +29,34 @@
             android:layout_height="wrap_content">
 
             <!-- Avatar -->
-            <TextView
-                android:id="@+id/tvInitial"
+            <FrameLayout
+                android:id="@+id/avatarContainer"
                 android:layout_width="@dimen/avatar_size"
                 android:layout_height="@dimen/avatar_size"
-                android:background="@drawable/bg_circle_brand_blue"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:textSize="@dimen/avatar_text_size"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="T" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:visibility="visible"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.TeaTrack.Circle"
+                    app:strokeColor="@color/divider"
+                    app:strokeWidth="1dp" />
+
+                <TextView
+                    android:id="@+id/tvInitial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_circle_brand_blue"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/avatar_text_size"
+                    android:textStyle="bold"
+                    tools:text="T" />
+            </FrameLayout>
 
             <!-- Badge Active — góc phải trên -->
             <TextView
@@ -105,8 +121,8 @@
                 android:textColor="@color/brand_blue"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/tvInitial"
-                app:layout_constraintTop_toTopOf="@id/tvInitial"
+                app:layout_constraintStart_toEndOf="@id/avatarContainer"
+                app:layout_constraintTop_toTopOf="@id/avatarContainer"
                 tools:text="CS01" />
 
             <!-- Tên — chiều rộng đến sát layoutVipDelete -->
@@ -123,7 +139,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@id/layoutVipDelete"
-                app:layout_constraintStart_toEndOf="@id/tvInitial"
+                app:layout_constraintStart_toEndOf="@id/avatarContainer"
                 app:layout_constraintTop_toBottomOf="@id/tvAccountId"
                 tools:text="Nguyen Thanh Long" />
 
@@ -139,7 +155,7 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toStartOf="@id/layoutVipDelete"
-                app:layout_constraintStart_toEndOf="@id/tvInitial"
+                app:layout_constraintStart_toEndOf="@id/avatarContainer"
                 app:layout_constraintTop_toBottomOf="@id/tvFullName"
                 tools:text="@thanh2603" />
 
@@ -153,7 +169,7 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tvInitial"
+                app:layout_constraintStart_toEndOf="@id/avatarContainer"
                 app:layout_constraintTop_toBottomOf="@id/tvUsername"
                 tools:text="thanhtr234112e@st.uel.edu" />
 

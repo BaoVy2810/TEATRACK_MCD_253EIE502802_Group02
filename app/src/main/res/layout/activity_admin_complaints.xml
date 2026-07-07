@@ -26,76 +26,82 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:clipToPadding="false"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/layout_nav_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_header">
 
-        <LinearLayout
+        <!-- Feedback Management header -->
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/white"
+            android:elevation="1dp"
+            android:paddingVertical="10dp">
 
-            <!-- Status filter tabs (horizontal scroll) -->
-            <HorizontalScrollView
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:paddingHorizontal="12dp"
-                android:layout_marginTop="12dp"
-                android:paddingBottom="12dp"
-                android:clipToPadding="false">
+                android:layout_marginStart="16dp"
+                android:text="@string/title_feedback_management"
+                android:textColor="@color/brand_blue"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </FrameLayout>
 
-                <LinearLayout
-                    android:id="@+id/layoutFilterTabs"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <include
-                        android:id="@+id/tabAll"
-                        layout="@layout/layout_order_history_tab" />
-
-                    <include
-                        android:id="@+id/tabUnread"
-                        layout="@layout/layout_order_history_tab" />
-
-                    <include
-                        android:id="@+id/tabPending"
-                        layout="@layout/layout_order_history_tab" />
-
-                    <include
-                        android:id="@+id/tabResolved"
-                        layout="@layout/layout_order_history_tab" />
-
-                </LinearLayout>
-
-            </HorizontalScrollView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="8dp" />
+        <!-- Status filter tabs (pinned — only list scrolls below) -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingHorizontal="12dp"
+            android:paddingBottom="12dp"
+            android:scrollbars="none">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/layoutFilterTabs"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvComplaints"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    tools:listitem="@layout/item_admin_complaint" />
+                <include
+                    android:id="@+id/tabAll"
+                    layout="@layout/layout_order_history_tab" />
+
+                <include
+                    android:id="@+id/tabUnread"
+                    layout="@layout/layout_order_history_tab" />
+
+                <include
+                    android:id="@+id/tabPending"
+                    layout="@layout/layout_order_history_tab" />
+
+                <include
+                    android:id="@+id/tabResolved"
+                    layout="@layout/layout_order_history_tab" />
 
             </LinearLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+
+        </HorizontalScrollView>
+
+        <!-- Feedback list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComplaints"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="8dp"
+            tools:listitem="@layout/item_admin_complaint" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

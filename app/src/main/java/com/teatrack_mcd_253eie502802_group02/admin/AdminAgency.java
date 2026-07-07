@@ -25,7 +25,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class AdminAgency extends AppCompatActivity {
+public class AdminAgency extends BaseActivity {
 
     private EditText etSearch;
     private RecyclerView rvStores;
@@ -212,7 +212,7 @@ public class AdminAgency extends AppCompatActivity {
         com.google.android.material.button.MaterialButton btnChooseImage = view.findViewById(R.id.btnChooseImage);
         ShapeableImageView ivPreview = view.findViewById(R.id.ivPreview);
 
-        tvDialogTitle.setText("ADD NEW AGENCY");
+        tvDialogTitle.setText(R.string.dialog_add_agency_title);
         if (btnSubmit != null) {
             btnSubmit.setText(R.string.btn_add);
             btnSubmit.setIcon(androidx.core.content.ContextCompat.getDrawable(this, R.drawable.plus));
@@ -272,7 +272,7 @@ public class AdminAgency extends AppCompatActivity {
                 String mapEmbed = etMapEmbed != null ? etMapEmbed.getText().toString().trim() : "";
 
                 if (name.isEmpty() || address.isEmpty()) {
-                    Toast.makeText(this, "Vui lòng nhập đầy đủ Tên và Địa chỉ chi nhánh!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.error_agency_required_fields), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -283,10 +283,10 @@ public class AdminAgency extends AppCompatActivity {
 
                 databaseReference.child(id).setValue(newAgency).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "Thêm chi nhánh thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.msg_agency_add_success), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     } else {
-                        Toast.makeText(this, "Lỗi: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.str_error, task.getException().getMessage()), Toast.LENGTH_SHORT).show();
                     }
                 });
             });
@@ -322,7 +322,7 @@ public class AdminAgency extends AppCompatActivity {
         ShapeableImageView ivPreview = view.findViewById(R.id.ivPreview);
 
         if (tvDialogTitle != null) {
-            tvDialogTitle.setText("EDIT AGENCY");
+            tvDialogTitle.setText(R.string.dialog_edit_agency_title);
         }
         if (btnSubmit != null) {
             btnSubmit.setText(R.string.btn_edit);
@@ -410,7 +410,7 @@ public class AdminAgency extends AppCompatActivity {
                 String mapEmbed = etMapEmbed != null ? etMapEmbed.getText().toString().trim() : "";
 
                 if (name.isEmpty() || address.isEmpty()) {
-                    Toast.makeText(this, "Vui lòng nhập đầy đủ Tên và Địa chỉ chi nhánh!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.error_agency_required_fields), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -418,10 +418,10 @@ public class AdminAgency extends AppCompatActivity {
 
                 databaseReference.child(id).setValue(updatedAgency).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "Cập nhật chi nhánh thành công", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.msg_agency_update_success), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     } else {
-                        Toast.makeText(this, "Lỗi: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.str_error, task.getException().getMessage()), Toast.LENGTH_SHORT).show();
                     }
                 });
             });
@@ -462,10 +462,10 @@ public class AdminAgency extends AppCompatActivity {
         dialog.findViewById(R.id.btnConfirmDelete).setOnClickListener(v -> {
             databaseReference.child(agency.getId()).removeValue().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(AdminAgency.this, "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminAgency.this, getString(R.string.msg_agency_delete_success), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 } else {
-                    Toast.makeText(AdminAgency.this, "Lỗi khi xóa", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AdminAgency.this, getString(R.string.error_agency_delete_failed), Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -541,17 +541,17 @@ public class AdminAgency extends AppCompatActivity {
         String fileName = UUID.randomUUID().toString() + ".jpg";
         StorageReference fileRef = storageReference.child(fileName);
 
-        Toast.makeText(this, "Đang tải ảnh lên...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.str_uploading_image), Toast.LENGTH_SHORT).show();
 
         fileRef.putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
             fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 if (currentImageEditText != null) {
                     currentImageEditText.setText(uri.toString());
                 }
-                Toast.makeText(AdminAgency.this, "Tải ảnh thành công", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminAgency.this, getString(R.string.str_upload_success), Toast.LENGTH_SHORT).show();
             });
         }).addOnFailureListener(e -> {
-            Toast.makeText(AdminAgency.this, "Lỗi tải ảnh: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AdminAgency.this, getString(R.string.str_upload_error, e.getMessage()), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -599,7 +599,7 @@ public class AdminAgency extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminAgency.this, "Lỗi tải dữ liệu: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminAgency.this, getString(R.string.error_agency_load_failed, error.getMessage()), Toast.LENGTH_SHORT).show();
             }
         });
     }

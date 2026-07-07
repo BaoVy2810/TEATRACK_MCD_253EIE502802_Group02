@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.graphics.drawable.DrawableCompat;
 
@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class AdminOrderDetailActivity extends AppCompatActivity {
+public class AdminOrderDetailActivity extends BaseActivity {
 
     private static final String DB_URL =
             "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
@@ -335,7 +335,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
                             awardPointsToUser(currentOrder);
                         }
                         
-                        Toast.makeText(this, "Status updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.msg_update_success), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     })
                     .addOnFailureListener(e -> {
@@ -427,7 +427,7 @@ public class AdminOrderDetailActivity extends AppCompatActivity {
                     .removeValue()
                     .addOnSuccessListener(unused -> {
                         dialog.dismiss();
-                        Toast.makeText(this, "Order deleted", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.msg_delete_success), Toast.LENGTH_SHORT).show();
                         finish();
                     })
                     .addOnFailureListener(e -> {

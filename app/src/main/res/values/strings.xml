@@ -552,7 +552,7 @@
     <string name="str_blog_management">BLOG MANAGEMENT</string>
     <string name="str_promotion_management">Promotion Management</string>
     <string name="str_promotion_search">Search promotion by code or desc...</string>
-    <string name="str_add_promotion">+ Add New Promotion</string>
+    <string name="str_add_promotion">Add New Promotion</string>
     <string name="str_search_desc">Search promotions by code or description...</string>
     <string name="str_no_promotions">No promotions yet</string>
     <string name="str_promotion_details">PROMOTION DETAILS</string>
@@ -623,6 +623,7 @@
     <string name="payment_title_zalopay">Thanh toán ZaloPay QR</string>
     <string name="payment_title_bank">Thanh toán Ngân hàng/Ví</string>
     <!-- Blog & Chatbot -->
+    <string name="chatbot_fab_cd">Chat support</string>
 
     <string name="blog_image_desc">Blog post image</string>
     <string name="blog_detail_related_title">Related posts</string>
@@ -811,6 +812,10 @@
     <string name="str_topic_quality">Quality</string>
     <string name="str_topic_service">Service</string>
     <string name="str_topic_other">Other</string>
+    <string name="str_topic_badge_praise">Praise</string>
+    <string name="str_topic_badge_suggest">Suggestion</string>
+    <string name="str_topic_badge_complain">Complaint</string>
+    <string name="str_topic_badge_other">Other issues</string>
     <string name="str_content_label">Content</string>
     <string name="str_submit">Submit</string>
 
@@ -1160,7 +1165,7 @@
     <string name="str_preview_expiry">Hết hạn: %s</string>
     <string name="str_select_image">Chọn ảnh</string>
     <string name="str_change_image">Đổi ảnh</string>
-    <string name="str_preview_empty">Nhập dữ liệu để xem trước</string>
+    <string name="str_preview_empty">Enter data to preview</string>
     <string name="str_max_discount">Giảm tối đa</string>
     <string name="hint_enter_max_discount">Nhập số tiền giảm tối đa</string>
 
@@ -1195,4 +1200,44 @@
     <string name="label_admin_reply_prefix">Admin Reply:</string>
     <string name="label_topic_complaint">COMPLAINT</string>
     <string name="btn_view_details">View Details</string>
+
+    <!-- Admin localization (dialogs & order detail) -->
+    <string name="dialog_cancel_order_title">Cancel Order</string>
+    <string name="dialog_cancel_order_message">Order &lt;font color=\'#0088ff\'&gt;&lt;b&gt;#%1$s&lt;/b&gt;&lt;/font&gt; will be cancelled.</string>
+    <string name="dialog_keep_order">Keep Order</string>
+    <string name="dialog_update_order_status_title">Update Order Status</string>
+    <string name="dialog_add_agency_title">ADD NEW AGENCY</string>
+    <string name="dialog_edit_agency_title">EDIT AGENCY</string>
+    <string name="error_agency_required_fields">Please enter branch name and address.</string>
+    <string name="msg_agency_add_success">Branch added successfully</string>
+    <string name="msg_agency_update_success">Branch updated successfully</string>
+    <string name="msg_agency_delete_success">Deleted successfully!</string>
+    <string name="error_agency_delete_failed">Failed to delete</string>
+    <string name="error_agency_load_failed">Failed to load data: %1$s</string>
+    <string name="admin_label_items">ITEMS</string>
+    <string name="admin_label_total">TOTAL</string>
+    <string name="admin_order_progress_title">ORDER PROGRESS</string>
+    <string name="btn_admin_update_status_label">Update Status</string>
+    <string name="btn_admin_delete_order">Delete Order</string>
+    <string name="msg_order_confirmed">Order confirmed</string>
+    <string name="msg_order_cancelled">Order cancelled</string>
+    <string name="msg_opening_notifications">Opening notifications...</string>
+    <string name="msg_data_already_seeded">Data already seeded!</string>
+    <string name="msg_seeding_vouchers_success">Seeding 10 vouchers successfully!</string>
+    <string name="err_blog_not_found_short">Blog not found</string>
+    <string name="msg_uploading_image">Uploading image...</string>
+    <string name="msg_upload_failed">Upload failed: %1$s</string>
+    <string name="msg_product_add_success">Product added successfully</string>
+    <string name="msg_product_add_failed">Failed: %1$s</string>
+    <string name="msg_product_update_success">Product updated successfully</string>
+    <string name="msg_product_update_failed">Update failed: %1$s</string>
+    <string name="error_product_id_name_required">Please fill in ID and Name</string>
+    <string name="error_product_name_required">Product name cannot be empty</string>
+    <string name="error_product_image_edit_only">Currently only support editing the main image</string>
+    <string name="msg_no_product_data">No product data yet</string>
+    <string name="msg_avatar_process_error">Failed to process image!</string>
+    <string name="msg_user_id_not_found">Error: userId not found!</string>
+    <string name="msg_avatar_update_success">Avatar updated successfully!</string>
+    <string name="msg_avatar_save_failed">Failed to save avatar: %1$s</string>
+    <string name="error_loading_data">Error loading data</string>
 </resources>

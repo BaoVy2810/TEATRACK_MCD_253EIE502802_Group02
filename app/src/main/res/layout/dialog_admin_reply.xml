@@ -35,6 +35,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@id/btnClose"
                     android:text="@string/complaint_detail_title"
+                    android:textAllCaps="true"
                     android:textColor="@color/brand_blue"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -63,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="8dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/ivUserAvatar"
@@ -86,18 +87,18 @@
                         android:id="@+id/tvDetailUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="John Doe"
-                        android:textColor="@color/text_primary"
+                        android:textColor="@color/brand_blue"
                         android:textSize="14sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="John Doe" />
 
                     <TextView
                         android:id="@+id/tvDetailUserEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="johndoe@email.com"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="12sp" />
+                        android:textColor="@color/brand_blue"
+                        android:textSize="12sp"
+                        tools:text="johndoe@email.com" />
                 </LinearLayout>
 
                 <TextView
@@ -119,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="2"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="8dp">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -133,14 +134,14 @@
                         android:textColor="@color/brand_blue"
                         android:textSize="14sp"
                         android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/tvDetailTopic"
+                        style="@style/Widget.TeaTrack.Badge.V2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        tools:text="Service Quality"
-                        android:textColor="@color/text_primary"
-                        android:textSize="12sp" />
+                        tools:text="Khen ngợi" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -155,14 +156,15 @@
                         android:textColor="@color/brand_blue"
                         android:textSize="14sp"
                         android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/tvDetailDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        tools:text="2023-10-27 10:30"
-                        android:textColor="@color/text_primary"
-                        android:textSize="12sp" />
+                        android:textColor="@color/brand_blue"
+                        android:textSize="12sp"
+                        tools:text="2023-10-27 10:30" />
                 </LinearLayout>
             </GridLayout>
 
@@ -180,13 +182,13 @@
                 android:id="@+id/tvDetailContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/bg_input_rounded"
-                android:padding="12dp"
-                tools:text="The drink was cold and the service was slow."
-                android:textColor="@color/text_primary"
-                android:textSize="12sp"
                 android:lineSpacingExtra="4dp"
-                android:layout_marginBottom="16dp"/>
+                android:padding="12dp"
+                android:textColor="@color/brand_blue"
+                android:textSize="12sp"
+                tools:text="The drink was cold and the service was slow." />
 
             <!-- Reply Field -->
             <TextView

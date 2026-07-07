@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AdminOrders extends AppCompatActivity {
+public class AdminOrders extends BaseActivity {
 
     private static final String DB_URL =
             "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
@@ -306,7 +306,7 @@ public class AdminOrders extends AppCompatActivity {
                 .child("status")
                 .setValue("processing")
                 .addOnSuccessListener(unused ->
-                        Toast.makeText(this, "Order confirmed", Toast.LENGTH_SHORT).show())
+                        Toast.makeText(this, getString(R.string.msg_order_confirmed), Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e ->
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show());
     }
@@ -328,9 +328,9 @@ public class AdminOrders extends AppCompatActivity {
         com.google.android.material.button.MaterialButton btnConfirm =
                 dialogView.findViewById(R.id.btnConfirmDelete);
 
-        tvTitle.setText("Cancel Order");
+        tvTitle.setText(R.string.dialog_cancel_order_title);
         String orderId = order.getOrderId() != null ? order.getOrderId() : "";
-        String fullMessage = "Order <font color='#0088ff'><b>#" + orderId + "</b></font> will be cancelled.";
+        String fullMessage = getString(R.string.dialog_cancel_order_message, orderId);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             tvMessage.setText(android.text.Html.fromHtml(fullMessage, android.text.Html.FROM_HTML_MODE_LEGACY));
         } else {
@@ -349,7 +349,7 @@ public class AdminOrders extends AppCompatActivity {
                     .setValue("cancelled")
                     .addOnSuccessListener(unused -> {
                         dialog.dismiss();
-                        Toast.makeText(this, "Order cancelled", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, getString(R.string.msg_order_cancelled), Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
                         dialog.dismiss();

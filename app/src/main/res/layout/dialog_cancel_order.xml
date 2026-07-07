@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:gravity="center"
-            android:text="Cancel Order"
+            android:text="@string/dialog_cancel_order_title"
             android:textColor="@color/text_primary"
             android:textSize="21sp"
             android:textStyle="bold" />
@@ -50,7 +50,7 @@
             android:layout_marginTop="14dp"
             android:gravity="center"
             android:lineSpacingExtra="2dp"
-            android:text="Are you sure you want to cancel order"
+            android:text="@string/dialog_cancel_order_message"
             android:textColor="@color/text_primary"
             android:textSize="14sp" />
 
@@ -112,7 +112,7 @@
                 android:insetTop="0dp"
                 android:insetRight="0dp"
                 android:insetBottom="0dp"
-                android:text="Keep Order"
+                android:text="@string/dialog_keep_order"
                 android:textAllCaps="false"
                 android:textColor="@color/text_secondary"
                 android:textSize="11sp"

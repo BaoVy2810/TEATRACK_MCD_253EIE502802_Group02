@@ -10,12 +10,12 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
+import com.google.android.material.imageview.ShapeableImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +30,8 @@ import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.ComplaintAdapter;
 import com.teatrack_mcd_253eie502802_group02.model.ContactRequest;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
+import com.teatrack_mcd_253eie502802_group02.util.AdminAvatarHelper;
+import com.teatrack_mcd_253eie502802_group02.util.FeedbackTopicHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,7 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class AdminComplaints extends AppCompatActivity {
+public class AdminComplaints extends BaseActivity {
 
     private RecyclerView rvComplaints;
     private ComplaintAdapter adapter;
@@ -60,6 +62,7 @@ public class AdminComplaints extends AppCompatActivity {
         com.teatrack_mcd_253eie502802_group02.shared.ui.AdminInsetsHelper.apply(this);
 
         initViews();
+        AdminAvatarHelper.ensureListening();
         setupFirebase();
         setupBottomNavigation();
         com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderMenuHelper.setupProfileMenu(this);
@@ -210,7 +213,7 @@ public class AdminComplaints extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AdminComplaints.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminComplaints.this, getString(R.string.str_error, error.getMessage()), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -257,6 +260,7 @@ public class AdminComplaints extends AppCompatActivity {
         TextView tvEmail = view.findViewById(R.id.tvDetailUserEmail);
         TextView tvStatus = view.findViewById(R.id.tvDetailStatus);
         TextView tvTopic = view.findViewById(R.id.tvDetailTopic);
+        ShapeableImageView ivUserAvatar = view.findViewById(R.id.ivUserAvatar);
         TextView tvDate = view.findViewById(R.id.tvDetailDate);
         TextView tvContent = view.findViewById(R.id.tvDetailContent);
         EditText etReply = view.findViewById(R.id.etReply);
@@ -266,17 +270,18 @@ public class AdminComplaints extends AppCompatActivity {
 
         tvName.setText(contact.getFullname());
         tvEmail.setText(contact.getEmail());
-        tvTopic.setText(contact.getTopic());
+        FeedbackTopicHelper.applyTopicBadgeV2(tvTopic, contact.getTopic());
+        AdminAvatarHelper.bindAvatar(ivUserAvatar, null, contact.getEmail());
         tvDate.setText(contact.getTime());
         tvContent.setText(contact.getContent());
         etReply.setText(contact.getNote());
 
         if (contact.getStatus() == 1) {
-            tvStatus.setText("Pending");
+            tvStatus.setText(R.string.str_tab_pending);
             tvStatus.setBackgroundResource(R.drawable.bg_badge_pending);
             tvStatus.setTextColor(ContextCompat.getColor(this, R.color.badge_pending_text));
         } else {
-            tvStatus.setText("Resolved");
+            tvStatus.setText(R.string.str_tab_resolved);
             tvStatus.setBackgroundResource(R.drawable.bg_badge_completed);
             tvStatus.setTextColor(ContextCompat.getColor(this, R.color.badge_completed_text));
         }
@@ -309,8 +314,8 @@ public class AdminComplaints extends AppCompatActivity {
         updates.put("read", true);
 
         mDatabase.child(contact.get_id()).updateChildren(updates)
-                .addOnSuccessListener(aVoid -> Toast.makeText(this, "Updated successfully", Toast.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Toast.makeText(this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(aVoid -> Toast.makeText(this, getString(R.string.msg_update_success), Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(this, getString(R.string.str_error, e.getMessage()), Toast.LENGTH_SHORT).show());
     }
 
     private void setupBottomNavigation() {
