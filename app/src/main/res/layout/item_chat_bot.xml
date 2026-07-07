@@ -21,16 +21,18 @@
 
     <TextView
         android:id="@+id/tvMessage"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:background="@drawable/bg_chat_bot_bubble"
         android:fontFamily="@font/inter"
         android:justificationMode="inter_word"
         android:maxWidth="260dp"
+        android:lineSpacingExtra="3dp"
         android:padding="12dp"
         android:text="@string/chatbot_welcome"
         android:textAlignment="viewStart"
         android:textColor="@color/brand_blue"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
 </LinearLayout>

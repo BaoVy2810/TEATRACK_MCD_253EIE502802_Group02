@@ -19,7 +19,7 @@
         android:padding="12dp"
         android:textAlignment="viewStart"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="12sp"
         tools:text="User message" />
 
 </LinearLayout>

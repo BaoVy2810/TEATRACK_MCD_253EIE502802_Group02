@@ -630,7 +630,9 @@
     <string name="chatbot_send_cd">Send message</string>
     <string name="chatbot_welcome">Hello! I am TeaTrack\'s virtual assistant. I can help you choose drinks or answer questions about Ngô Gia milk tea. How are you today?</string>
     <string name="chatbot_api_key_missing">Please add GEMINI_API_KEY to local.properties to use AI chat.</string>
+    <string name="chatbot_api_key_invalid">Invalid Gemini API key. Get a key from Google AI Studio (aistudio.google.com/apikey) — it should start with AIzaSy.</string>
     <string name="chatbot_error_connection">Sorry, I am having connection issues. Please try again later.</string>
+    <string name="chatbot_error_quota">The AI quota has been reached for today. Please wait a minute and try again, or check your Gemini API plan at ai.google.dev.</string>
 
     <string name="blog_image_desc">Blog post image</string>
     <string name="blog_detail_related_title">Related posts</string>

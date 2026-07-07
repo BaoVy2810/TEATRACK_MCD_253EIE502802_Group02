@@ -1087,7 +1087,9 @@
     <string name="chatbot_send_cd">Gửi tin nhắn</string>
     <string name="chatbot_welcome">Xin chào! Tôi là trợ lý ảo của TeaTrack. Tôi có thể giúp bạn chọn món hoặc trả lời các thắc mắc về trà sữa Ngô Gia. Hôm nay bạn thấy thế nào?</string>
     <string name="chatbot_api_key_missing">Vui lòng thêm GEMINI_API_KEY vào local.properties để dùng chat AI.</string>
+    <string name="chatbot_api_key_invalid">API key Gemini không hợp lệ. Lấy key tại Google AI Studio (aistudio.google.com/apikey) — key thường bắt đầu bằng AIzaSy.</string>
     <string name="chatbot_error_connection">Rất tiếc, tôi đang gặp sự cố kết nối. Bạn vui lòng thử lại sau nhé!</string>
+    <string name="chatbot_error_quota">Đã hết hạn mức AI miễn phí hôm nay. Vui lòng đợi khoảng 1 phút rồi thử lại, hoặc kiểm tra gói Gemini API tại ai.google.dev.</string>
     <string name="msg_opening_notifications">Đang mở thông báo...</string>
     <string name="msg_data_already_seeded">Dữ liệu đã được khởi tạo!</string>
     <string name="msg_seeding_vouchers_success">Đã khởi tạo 10 voucher thành công!</string>

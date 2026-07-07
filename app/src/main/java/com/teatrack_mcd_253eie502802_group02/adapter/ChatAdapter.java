@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.model.ChatMessage;
+import com.teatrack_mcd_253eie502802_group02.util.ChatMessageFormatter;
 
 import java.util.List;
 
@@ -44,7 +45,8 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof UserViewHolder) {
             ((UserViewHolder) holder).tvMessage.setText(message.getContent());
         } else {
-            ((BotViewHolder) holder).tvMessage.setText(message.getContent());
+            ((BotViewHolder) holder).tvMessage.setText(
+                    ChatMessageFormatter.formatBotMessage(message.getContent()));
         }
     }
 
