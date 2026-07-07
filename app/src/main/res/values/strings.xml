@@ -374,10 +374,10 @@
     <string name="cart_subtotal">Subtotal</string>
     <string name="cart_delivery_fee">Delivery Fee</string>
     <string name="cart_voucher">Voucher</string>
-    <string name="cart_voucher_empty">Không có ưu đãi nào</string>
-    <string name="cart_voucher_use_now">Dùng ngay</string>
-    <string name="cart_voucher_conditions">Điều kiện</string>
-    <string name="cart_voucher_min_order">Đơn hàng tối thiểu %1$s để sử dụng ưu đãi này</string>
+    <string name="cart_voucher_empty">No offers available</string>
+    <string name="cart_voucher_use_now">Use now</string>
+    <string name="cart_voucher_conditions">Conditions</string>
+    <string name="cart_voucher_min_order">Minimum order %1$s to use this offer</string>
     <string name="cart_voucher_enter_code">Please enter a voucher code</string>
     <string name="cart_voucher_invalid">Invalid voucher code</string>
     <string name="cart_voucher_not_found">No voucher found for \"%1$s\"</string>
@@ -393,7 +393,7 @@
     <string name="cart_recipient_details">Recipient Details</string>
     <string name="cart_pickup_time_label">Pickup Time</string>
     <string name="cart_pickup_time_display">Pickup: %1$s</string>
-    <string name="cart_apply_voucher">Áp dụng mã giảm giá</string>
+    <string name="cart_apply_voucher">Apply discount code</string>
     <string name="cart_note">Note</string>
     <string name="cart_note_hint">Please write your note here</string>
     <string name="cart_payment_method">Payment Method</string>
@@ -611,17 +611,17 @@
     <string name="str_btn_save">Save</string>
     <string name="str_category_news">News</string>
     <string name="str_category_events">Events</string>
-    <string name="payment_qr_title">Quét mã QR để thanh toán</string>
-    <string name="payment_instructions_momo">Sử dụng App MoMo hoặc ứng dụng camera để thanh toán</string>
-    <string name="payment_instructions_zalopay">Sử dụng App ZaloPay hoặc camera để thanh toán</string>
-    <string name="payment_instructions_bank">Sử dụng App Ngân hàng hoặc camera để thanh toán</string>
-    <string name="payment_bank_support_title">Ngân hàng hỗ trợ</string>
-    <string name="payment_action_download">Tải về</string>
-    <string name="payment_action_customize">Tùy chỉnh</string>
-    <string name="payment_action_share">Chia sẻ</string>
-    <string name="payment_title_momo">Thanh toán MoMo QR</string>
-    <string name="payment_title_zalopay">Thanh toán ZaloPay QR</string>
-    <string name="payment_title_bank">Thanh toán Ngân hàng/Ví</string>
+    <string name="payment_qr_title">Scan QR code to pay</string>
+    <string name="payment_instructions_momo">Use the MoMo app or your camera to pay</string>
+    <string name="payment_instructions_zalopay">Use the ZaloPay app or your camera to pay</string>
+    <string name="payment_instructions_bank">Use your banking app or camera to pay</string>
+    <string name="payment_bank_support_title">Supported banks</string>
+    <string name="payment_action_download">Download</string>
+    <string name="payment_action_customize">Customize</string>
+    <string name="payment_action_share">Share</string>
+    <string name="payment_title_momo">MoMo QR Payment</string>
+    <string name="payment_title_zalopay">ZaloPay QR Payment</string>
+    <string name="payment_title_bank">Bank / Wallet Payment</string>
     <!-- Blog & Chatbot -->
     <string name="chatbot_fab_cd">Chat support</string>
     <string name="chatbot_title">TeaTrack Assistant</string>
@@ -996,11 +996,11 @@
     <string name="reviews_dummy_date4">Sep 12, 2026</string>
     <string name="reviews_dummy_content4">Nice location, but the beverage quality could be improved.</string>
     <string name="home_view_all">View all</string>
-    <string name="home_agency_title">HỆ THỐNG CHI NHÁNH</string>
-    <string name="home_find_branch_title">Tìm cửa hàng gần bạn nhất</string>
-    <string name="home_find_branch_subtitle">Hơn 50 chi nhánh trên toàn quốc</string>
-    <string name="home_contact_title">Liên hệ &amp; Góp ý</string>
-    <string name="home_contact_subtitle">Chúng tôi luôn lắng nghe ý kiến của bạn để hoàn thiện hơn mỗi ngày.</string>
+    <string name="home_agency_title">BRANCH NETWORK</string>
+    <string name="home_find_branch_title">Find the nearest store</string>
+    <string name="home_find_branch_subtitle">More than 50 branches nationwide</string>
+    <string name="home_contact_title">Contact &amp; Feedback</string>
+    <string name="home_contact_subtitle">We always listen to your feedback to improve every day.</string>
     <string name="home_hotline">Hotline</string>
     <string name="home_email">Email</string>
     <string name="header_sign_out">Sign out</string>
@@ -1048,16 +1048,16 @@
     <string name="topping_price_format">+ %s</string>
     <string name="order_pickup_time_value">15 - 20 minutes</string>
 
-    <string name="order_save_error">Lỗi lưu đơn hàng!</string>
-    <string name="order_saving">Đang lưu đơn hàng...</string>
+    <string name="order_save_error">Failed to save order!</string>
+    <string name="order_saving">Saving order...</string>
     <string name="order_success_order_line">Order &lt;b&gt;%s&lt;/b&gt; is being prepared.</string>
 
     <!-- Agency/Order Hints -->
-    <string name="hint_agency_id_example">Ví dụ: AG01</string>
-    <string name="hint_enter_agency_name">Nhập tên đại lý</string>
-    <string name="hint_enter_full_address">Nhập địa chỉ</string>
-    <string name="hint_phone_example">Ví dụ: 09xxx</string>
-    <string name="hint_image_url_or_upload">Link ảnh hoặc tải lên</string>
+    <string name="hint_agency_id_example">Example: AG01</string>
+    <string name="hint_enter_agency_name">Enter branch name</string>
+    <string name="hint_enter_full_address">Enter address</string>
+    <string name="hint_phone_example">Example: 09xxx</string>
+    <string name="hint_image_url_or_upload">Image link or upload</string>
     <string name="hint_maps_url_example">Link Google Maps</string>
     <string name="str_edit_info">Edit</string>
 
@@ -1128,11 +1128,11 @@
     <string name="str_vnd_format">%1$s₫</string>
     <string name="str_items_count_format">%1$d item(s)</string>
     <string name="str_qty_unit_format">x%1$d • %2$s₫/item</string>
-    <string name="str_add_voucher">Thêm ưu đãi</string>
-    <string name="str_subtitle_voucher">Chọn để khám phá nhiều ưu đãi</string>
-    <string name="cart_picker_voucher_title">Chọn mã giảm giá</string>
-    <string name="cart_picker_branch_title">Chọn chi nhánh</string>
-    <string name="cart_recipient_edit_title">Chỉnh sửa thông tin người nhận</string>
+    <string name="str_add_voucher">Add offer</string>
+    <string name="str_subtitle_voucher">Tap to explore more offers</string>
+    <string name="cart_picker_voucher_title">Select discount code</string>
+    <string name="cart_picker_branch_title">Select branch</string>
+    <string name="cart_recipient_edit_title">Edit recipient details</string>
     <string name="cart_recipient_confirm">Confirm Changes</string>
 
     <!-- Loyalty & Rewards System -->
@@ -1164,19 +1164,19 @@
     <string name="loyalty_redeem_history_desc">Redeem 8 points for 1 free cup</string>
     <string name="loyalty_reward_title">1 Free Cup (8 Points)</string>
     <string name="loyalty_reward_description">Redeem for any drink at the counter.</string>
-    <string name="str_image_source">Nguồn ảnh</string>
-    <string name="str_image_local">Ảnh máy</string>
-    <string name="str_image_remote">Link ảnh</string>
-    <string name="hint_enter_image_url">Nhập link ảnh (Cloudinary/Firebase...)</string>
-    <string name="str_promotion_preview">Xem trước khuyến mãi</string>
-    <string name="str_preview_discount">Giảm: %s</string>
-    <string name="str_preview_min_order">Đơn tối thiểu: %sđ</string>
-    <string name="str_preview_expiry">Hết hạn: %s</string>
-    <string name="str_select_image">Chọn ảnh</string>
-    <string name="str_change_image">Đổi ảnh</string>
+    <string name="str_image_source">Image source</string>
+    <string name="str_image_local">Device photo</string>
+    <string name="str_image_remote">Image link</string>
+    <string name="hint_enter_image_url">Enter image link (Cloudinary/Firebase...)</string>
+    <string name="str_promotion_preview">Promotion preview</string>
+    <string name="str_preview_discount">Discount: %s</string>
+    <string name="str_preview_min_order">Min. order: %sđ</string>
+    <string name="str_preview_expiry">Expires: %s</string>
+    <string name="str_select_image">Select image</string>
+    <string name="str_change_image">Change image</string>
     <string name="str_preview_empty">Enter data to preview</string>
-    <string name="str_max_discount">Giảm tối đa</string>
-    <string name="hint_enter_max_discount">Nhập số tiền giảm tối đa</string>
+    <string name="str_max_discount">Maximum discount</string>
+    <string name="hint_enter_max_discount">Enter maximum discount amount</string>
 
     <string name="loyalty_reward_unlimited">No expiry</string>
     <string name="loyalty_btn_redeem_placeholder">Redeem now</string>

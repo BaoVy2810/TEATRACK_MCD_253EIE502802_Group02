@@ -361,6 +361,11 @@
     <string name="product_detail_buy_now">Mua ngay</string>
     <string name="product_detail_added_to_cart">Đã thêm vào giỏ hàng thành công!</string>
     <string name="product_detail_buy_now_message">Đang chuyển hướng đến trang thanh toán</string>
+    <string name="cart_option_ice">%1$s đá</string>
+    <string name="cart_option_sugar">%1$s đường</string>
+    <string name="cart_option_size">Size %1$s</string>
+    <string name="cart_items_selected_format">Đã chọn %1$d sản phẩm</string>
+    <string name="cart_title">Giỏ hàng</string>
     <string name="product_detail_write_review">Viết đánh giá</string>
     <string name="product_detail_empty_review">Chưa có đánh giá nào cho sản phẩm này.</string>
     <string name="product_detail_related_title">Có thể bạn cũng thích</string>
@@ -518,6 +523,7 @@
     <string name="language_english">Tiếng Anh</string>
     <string name="language_vietnamese">Tiếng Việt</string>
     <string name="language_btn_save">Lưu thay đổi</string>
+    <string name="default_web_client_id">276172473565-phfvd53bvqqpdqd1cs1r49ki201ag8td.apps.googleusercontent.com</string>
 
     <string name="terms_title">Điều khoản &amp; Điều kiện</string>
     <string name="terms_last_updated">Cập nhật mới nhất: 06/06/2026</string>
@@ -704,6 +710,17 @@
     <string name="str_btn_save">Lưu</string>
     <string name="str_category_news">Tin tức</string>
     <string name="str_category_events">Sự kiện</string>
+    <string name="payment_title_bank">Thanh toán Ngân hàng/Ví</string>
+    <string name="payment_title_zalopay">Thanh toán ZaloPay QR</string>
+    <string name="payment_title_momo">Thanh toán MoMo QR</string>
+    <string name="payment_action_share">Chia sẻ</string>
+    <string name="payment_action_customize">Tùy chỉnh</string>
+    <string name="payment_action_download">Tải về</string>
+    <string name="payment_bank_support_title">Ngân hàng hỗ trợ</string>
+    <string name="payment_instructions_bank">Sử dụng App Ngân hàng hoặc camera để thanh toán</string>
+    <string name="payment_instructions_zalopay">Sử dụng App ZaloPay hoặc camera để thanh toán</string>
+    <string name="payment_instructions_momo">Sử dụng App MoMo hoặc ứng dụng camera để thanh toán</string>
+    <string name="payment_qr_title">Quét mã QR để thanh toán</string>
     <string name="hint_enter_blog_title">Nhập tiêu đề bài viết</string>
     <string name="hint_enter_blog_content">Nhập nội dung bài viết</string>
     <string name="str_close">Đóng</string>
@@ -724,6 +741,7 @@
     <string name="hint_maps_url_example">http://maps.google.com/&#8230;</string>
 
     <string name="btn_choose">Chọn tệp</string>
+    <string name="about_page_title">Về chúng tôi</string>
 
     <!-- Giới thiệu (About Us) -->
     <string name="about_hero_eyebrow">Hồng trà Ngô gia</string>
@@ -742,6 +760,7 @@
     <string name="about_feature_tradition_content_desc">Kế thừa và Phát triển</string>
     <string name="about_feature_tradition_title">Truyền thống &amp; sáng tạo</string>
     <string name="about_feature_tradition_desc">Dựa trên hai nền tảng cốt lõi là Chất Lượng và Dịch Vụ, Hồng trà Ngô gia luôn nỗ lực xây dựng và duy trì hình ảnh thương hiệu đáng tin cậy trong mắt khách hàng.</string>
+    <string name="about_video_overlay">HỒNG TRÀ NGÔ GIA</string>
     <string name="about_mission_title">SỨ MỆNH</string>
     <string name="about_mission_desc">Hồng Trà Ngô Gia cam kết mang đến những thức uống tinh tế, lành mạnh và an toàn cho sức khỏe. Chúng tôi luôn hướng tới trải nghiệm khách hàng hoàn hảo: từ mùi vị chuẩn, không gian dễ chịu, cho đến dịch vụ chu đáo. Mỗi ly trà là tâm huyết của người làm nghề, gửi gắm niềm tự hào Việt.</string>
     <string name="about_mission_banner_content_desc">Hình ảnh sứ mệnh Ngô Gia</string>
@@ -764,6 +783,13 @@
     <string name="blog_detail_image_desc">Ảnh chính bài viết</string>
     <string name="blog_related_image_desc">Ảnh bài viết liên quan</string>
     <string name="home_view_all">Xem tất cả</string>
+    <string name="home_email">Email</string>
+    <string name="home_hotline">Hotline</string>
+    <string name="home_contact_subtitle">Chúng tôi luôn lắng nghe ý kiến của bạn để hoàn thiện hơn mỗi ngày.</string>
+    <string name="home_contact_title">Liên hệ &amp; Góp ý</string>
+    <string name="home_find_branch_subtitle">Hơn 50 chi nhánh trên toàn quốc</string>
+    <string name="home_find_branch_title">Tìm cửa hàng gần bạn nhất</string>
+    <string name="home_agency_title">HỆ THỐNG CHI NHÁNH</string>
     <string name="order_confirmation_title">Xác nhận</string>
     <string name="order_successful">Đặt hàng thành công!</string>
     <string name="order_success_message">Cảm ơn bạn đã lựa chọn Hồng Trà Ngô Gia.\nĐơn hàng &lt;b&gt;#%1$s&lt;/b&gt; đang được chuẩn bị.</string>
@@ -774,6 +800,17 @@
     <string name="order_pickup_time">Thời gian nhận hàng</string>
     <string name="cart_pickup_time_label">Thời gian nhận hàng</string>
     <string name="cart_pickup_time_display">Nhận hàng: %1$s</string>
+    <string name="cart_save_payment_details">Lưu thông tin thanh toán cho lần sau.</string>
+    <string name="cart_terms_link">Điều khoản Dịch vụ và Chính sách.</string>
+    <string name="cart_terms_prefix">Bằng việc đặt hàng, bạn đồng ý với Điều khoản Dịch vụ và Chính sách của Hồng Trà Ngô Gia</string>
+    <string name="cart_terms">Bằng việc đặt hàng, bạn đồng ý với Điều khoản Dịch vụ và Chính sách của Hồng Trà Ngô Gia.</string>
+    <string name="cart_cash_in_bank">Tiền trong ngân hàng</string>
+    <string name="cart_cash_on_hand">Tiền mặt</string>
+    <string name="payment_linked_title">Phương thức thanh toán đã liên kết</string>
+    <string name="cart_payment_method">Phương thức thanh toán</string>
+    <string name="cart_note_hint">Vui lòng viết ghi chú của bạn tại đây</string>
+    <string name="cart_note">Ghi chú</string>
+    <string name="cart_apply_voucher">Áp dụng mã giảm giá</string>
     <string name="cart_config_line">Size %1$s - %2$s: %3$s - %4$s: %5$s.</string>
     <string name="cart_label_sugar">Ngọt</string>
     <string name="cart_label_ice">Đá</string>
@@ -786,11 +823,27 @@
     <string name="cart_custom_time_hint">VD: Chuẩn bị lúc 17:30</string>
     <string name="cart_pickup_display">Nhận hàng: %1$s</string>
     <string name="cart_pickup_display_with_date">%1$s • %2$s</string>
+    <string name="cart_voucher">Mã giảm giá</string>
+    <string name="cart_delivery_fee">Phí giao hàng</string>
+    <string name="cart_subtotal">Tạm tính</string>
+    <string name="cart_item_removed">Đã xóa sản phẩm khỏi giỏ hàng.</string>
+    <string name="cart_empty">Giỏ hàng của bạn đang trống</string>
+    <string name="cart_remove_item">Xóa sản phẩm</string>
+    <string name="cart_vip_discount_format">Giảm giá VIP: -%1$s</string>
     <string name="order_pickup_address">Địa chỉ nhận hàng</string>
     <string name="order_total_label">Tổng cộng</string>
     <string name="order_track">Theo dõi đơn hàng</string>
     <string name="order_back_to_menu">Quay lại thực đơn</string>
     <string name="order_id_format">HTNG-%1$d</string>
+    <string name="order_pickup_time_value">15 - 20 phút</string>
+    <string name="topping_price_format">+ %s</string>
+    <string name="app_brand_chinese">吴家红茶水</string>
+    <string name="app_brand_name">HỒNG TRÀ NGÔ GIA</string>
+    <string name="payment_ewallet">Ví điện tử</string>
+    <string name="payment_zalopay">ZaloPay</string>
+    <string name="payment_momo">MoMo</string>
+    <string name="payment_waiting_format">Đang chờ thanh toán... (%1$ds)</string>
+    <string name="payment_qr_instructions">Vui lòng quét mã QR để hoàn tất thanh toán. Đơn hàng sẽ được xác nhận tự động sau khi nhận được thanh toán.</string>
     <string name="str_agency_title">Hệ Thống Chi Nhánh</string>
     <string name="str_breadcrumb_agency">Trang chủ / Chi nhánh</string>
     <string name="str_contact">Liên hệ với chúng tôi</string>
@@ -814,11 +867,19 @@
     <string name="str_topic_badge_suggest">Đề xuất</string>
     <string name="str_topic_badge_complain">Than phiền</string>
     <string name="str_topic_badge_other">Vấn đề khác</string>
+    <string name="str_submit">Gửi</string>
+    <string name="str_content_label">Nội dung</string>
     <string name="title_feedback_management">QUẢN LÝ PHẢN HỒI</string>
     <string name="str_feedback_content">Nội dung</string>
     <string name="str_feedback_content_hint">Nhập nội dung góp ý tại đây</string>
     <string name="str_send">Gửi</string>
     <string name="str_contact_success_title">Gửi thành công!</string>
+    <string name="login_required_complaint">Vui lòng đăng nhập để gửi khiếu nại</string>
+    <string name="error_send_complaint_failed">Gửi khiếu nại thất bại</string>
+    <string name="error_load_user_info">Không thể tải thông tin người dùng</string>
+    <string name="str_complaint_success">Gửi khiếu nại thành công!</string>
+    <string name="str_complaint_title">Gửi khiếu nại</string>
+    <string name="str_contact_success_msg">Cảm ơn bạn đã gửi phản hồi. <br/>Chúng tôi sẽ liên hệ lại với bạn sớm.</string>
     <string name="str_edit_info">Edit</string>
     <string name="order_tracking_title">Theo Dõi Đơn Hàng</string>
     <string name="order_tracking_id_prefix">#%1$s</string>
@@ -882,6 +943,16 @@
     <string name="loyalty_redeem_history_desc">Đổi 8 điểm lấy 1 ly miễn phí</string>
     <string name="loyalty_reward_title">1 Ly Miễn Phí (8 Điểm)</string>
     <string name="loyalty_reward_description">Dùng để đổi 1 ly nước bất kỳ tại quầy.</string>
+    <string name="str_change_image">Đổi ảnh</string>
+    <string name="str_select_image">Chọn ảnh</string>
+    <string name="str_preview_expiry">Hết hạn: %s</string>
+    <string name="str_preview_min_order">Đơn tối thiểu: %sđ</string>
+    <string name="str_preview_discount">Giảm: %s</string>
+    <string name="str_promotion_preview">Xem trước khuyến mãi</string>
+    <string name="hint_enter_image_url">Nhập link ảnh (Cloudinary/Firebase...)</string>
+    <string name="str_image_remote">Link ảnh</string>
+    <string name="str_image_local">Ảnh máy</string>
+    <string name="str_image_source">Nguồn ảnh</string>
     <string name="loyalty_reward_unlimited">Không giới hạn</string>
     <string name="loyalty_btn_redeem_placeholder">Đổi điểm ngay</string>
     <string name="history_empty">Bạn chưa có giao dịch điểm nào.</string>
@@ -891,6 +962,10 @@
     <string name="rewards_empty_title">Bạn chưa có ưu đãi nào</string>
     <string name="rewards_empty_subtitle">Tích điểm từ các đơn hàng để đổi lấy những phần quà hấp dẫn nhé!</string>
     <string name="rewards_empty_cta">Đặt hàng ngay</string>
+    <string name="error_404_btn_home">Về trang chủ</string>
+    <string name="error_404_message">Xin lỗi, trang bạn đang tìm không tồn tại hoặc đã được di chuyển.</string>
+    <string name="error_404_subtitle">Không tìm thấy trang</string>
+    <string name="error_404_title">404</string>
     <string name="cart_voucher_enter_code">Vui lòng nhập mã ưu đãi</string>
     <string name="cart_voucher_invalid">Mã ưu đãi không hợp lệ</string>
     <string name="cart_voucher_not_found">Không tìm thấy mã \"%1$s\"</string>
@@ -898,6 +973,12 @@
     <string name="cart_voucher_apply">Áp dụng</string>
     <string name="cart_voucher_section_personal">Ưu đãi của bạn</string>
     <string name="cart_voucher_section_global">Ưu đãi từ TeaTrack</string>
+    <string name="cart_recipient_details">Thông tin người nhận</string>
+    <string name="cart_selected_branch">Chi nhánh đã chọn:</string>
+    <string name="cart_change">Thay đổi</string>
+    <string name="cart_order_pickup">Đặt hàng lấy tại quán</string>
+    <string name="cart_confirm_order">Xác nhận đơn hàng</string>
+    <string name="cart_total">Tổng cộng</string>
     <string name="str_order_history_subtitle">Theo dõi và quản lý đơn hàng của bạn</string>
     <string name="order_history_banner_title">LỊCH SỬ ĐƠN HÀNG</string>
     <string name="order_history_hero_image_desc">Hình minh họa lịch sử đơn hàng</string>
@@ -909,6 +990,8 @@
     <!-- Các nhãn đơn hàng bổ sung -->
     <string name="str_my_orders">Đơn hàng của tôi</string>
     <string name="str_search_order_hint">Tìm theo mã đơn hàng...</string>
+    <string name="str_back">Quay lại</string>
+    <string name="str_filter">Lọc</string>
     <string name="str_tab_all">Tất cả</string>
     <string name="str_tab_unread">Chưa đọc</string>
     <string name="str_tab_pending">Chờ phản hồi</string>
@@ -921,7 +1004,10 @@
     <string name="str_no_orders">Chưa có đơn hàng nào</string>
     <string name="str_no_orders_desc">Có vẻ như bạn chưa đặt món nào. Hãy khám phá thực đơn ngay nhé!</string>
     <string name="str_order_id_prefix">Mã đơn: #%1$s</string>
+    <string name="str_view_details">Xem chi tiết</string>
+    <string name="str_order_total_label">Tổng cộng</string>
     <string name="str_load_orders_error">Không tải được đơn hàng. Vui lòng thử lại.</string>
+    <string name="str_order_thumbnail_desc">Ảnh thu nhỏ đơn hàng</string>
 
     <!-- Order Statuses for Badges -->
     <string name="str_status_pending">Chờ xác nhận</string>
@@ -990,6 +1076,7 @@
     <string name="status_active">Hoạt động</string>
     <string name="status_inactive">Không hoạt động</string>
     <string name="status_locked">Đã khóa</string>
+    <string name="empty_accounts_message">Không tìm thấy tài khoản nào</string>
     <string name="empty_agencies_title">Chưa có chi nhánh nào</string>
     <string name="empty_agencies_desc">Danh sách chi nhánh sẽ hiển thị tại đây sau khi bạn thêm mới.</string>
     <string name="str_agency_search">Tìm chi nhánh theo tên hoặc quận...</string>
@@ -1078,8 +1165,42 @@
     <string name="empty_blogs_desc">Bài viết sẽ hiển thị tại đây sau khi bạn tạo mới.</string>
     <string name="empty_promotions_title">Chưa có khuyến mãi nào</string>
     <string name="empty_promotions_desc">Khuyến mãi sẽ hiển thị tại đây sau khi bạn tạo mới.</string>
+    <string name="str_branch_unknown">Chi nhánh không xác định</string>
     <string name="str_order_details_title">Chi tiết đơn hàng</string>
+    <string name="str_qty_unit_format">x%1$d • %2$s₫/sản phẩm</string>
+    <string name="str_items_count_format">%1$d sản phẩm</string>
+    <string name="str_vnd_format">%1$s₫</string>
+    <string name="str_free_shipping">Miễn phí</string>
+    <string name="str_hint_cancelled_order">Đơn hàng này đã bị hủy. Bạn có thể đặt lại bất cứ lúc nào.</string>
+    <string name="str_hint_completed_order">Hy vọng bạn đã hài lòng! Đặt lại bất cứ lúc nào.</string>
+    <string name="str_hint_active_order">Đơn hàng của bạn đang được xử lý. Chúng tôi sẽ thông báo khi sẵn sàng.</string>
+    <string name="str_label_order_status">Trạng thái</string>
+    <string name="str_label_payment_method">Thanh toán</string>
+    <string name="str_label_delivery_address">Địa chỉ</string>
+    <string name="str_label_phone_number">Số điện thoại</string>
+    <string name="str_label_customer_name">Khách hàng</string>
+    <string name="str_label_total">Tổng cộng</string>
+    <string name="str_label_delivery_fee">Phí giao hàng</string>
+    <string name="str_label_discount">Giảm giá</string>
+    <string name="str_label_subtotal">Tạm tính</string>
+    <string name="str_btn_order_again">Đặt lại</string>
+    <string name="str_btn_reorder">Đặt lại</string>
+    <string name="str_btn_contact_support">Liên hệ hỗ trợ</string>
+    <string name="str_btn_track_order">Theo dõi đơn hàng</string>
+    <string name="str_section_payment_summary">TÓM TẮT THANH TOÁN</string>
+    <string name="str_section_delivery_info">THÔNG TIN GIAO HÀNG</string>
+    <string name="str_section_order_items">SẢN PHẨM ĐƠN HÀNG</string>
+    <string name="str_support">Hỗ trợ</string>
     <string name="str_agency_address">Địa chỉ chi nhánh</string>
+    <string name="str_topic_service">Dịch vụ</string>
+    <string name="str_topic_quality">Chất lượng</string>
+    <string name="str_topic_label">Chủ đề</string>
+    <string name="str_branch_prompt">-- Chọn chi nhánh --</string>
+    <string name="str_select_branch">Chọn chi nhánh</string>
+    <string name="str_phone_label">Số điện thoại</string>
+    <string name="str_email_label">Email</string>
+    <string name="str_full_name_label">Họ và tên</string>
+    <string name="str_contact_title">Liên hệ với chúng tôi</string>
     <string name="chatbot_fab_cd">Hỗ trợ chat</string>
     <string name="chatbot_title">Trợ lý TeaTrack</string>
     <string name="chatbot_status_online">AI · Đang trực tuyến</string>
@@ -1090,6 +1211,7 @@
     <string name="chatbot_api_key_invalid">API key Gemini không hợp lệ. Lấy key tại Google AI Studio (aistudio.google.com/apikey) — key thường bắt đầu bằng AIzaSy.</string>
     <string name="chatbot_error_connection">Rất tiếc, tôi đang gặp sự cố kết nối. Bạn vui lòng thử lại sau nhé!</string>
     <string name="chatbot_error_quota">Đã hết hạn mức AI miễn phí hôm nay. Vui lòng đợi khoảng 1 phút rồi thử lại, hoặc kiểm tra gói Gemini API tại ai.google.dev.</string>
+    <string name="blog_image_desc">Hình ảnh bài viết</string>
     <string name="msg_opening_notifications">Đang mở thông báo...</string>
     <string name="msg_data_already_seeded">Dữ liệu đã được khởi tạo!</string>
     <string name="msg_seeding_vouchers_success">Đã khởi tạo 10 voucher thành công!</string>
@@ -1110,4 +1232,6 @@
     <string name="msg_avatar_save_failed">Lưu ảnh thất bại: %1$s</string>
     <string name="error_loading_data">Không tải được dữ liệu</string>
     <string name="str_preview_empty">Nhập dữ liệu để xem trước</string>
+    <string name="hint_enter_max_discount">Nhập số tiền giảm tối đa</string>
+    <string name="str_max_discount">Giảm tối đa</string>
 </resources>
