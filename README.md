@@ -22,13 +22,13 @@ Dữ liệu được lưu trữ trên **Firebase Realtime Database**; xác thự
 
 ## 2. Thành viên nhóm
 
-| STT | Họ tên | Branch GitHub |
-|-----|--------|---------------|
-| 1 | Bảo Vy | `BaoVy` |
-| 2 | Thanh Thanh | `ThanhThanh` |
-| 3 | Hồng Hạnh | `HongHanh` |
-| 4 | Hoàng Đức | `HoangDuc` |
-| 5 | Trung Nhân | `TrungNhan` |
+| STT | Họ tên               | Branch GitHub |
+|-----|----------------------|---------------|
+| 1 | Trần Ngọc Bảo Vy     | `BaoVy` |
+| 2 | Nguyễn Thanh Thanh   | `ThanhThanh` |
+| 3 | Nguyễn Thị Hồng Hạnh | `HongHanh` |
+| 4 | Nguyễn Hoàng Đức     | `HoangDuc` |
+| 5 | Lê Trung Nhân        | `TrungNhan` |
 
 > Mỗi thành viên làm việc trên branch riêng, merge vào `main` qua Leader.
 
