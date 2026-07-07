@@ -115,11 +115,13 @@ public class RegisterActivity extends BaseActivity {
 
         String hashedPassword = hashPassword(password);
         String createdAt = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(new Date());
-        saveUserToFirebase(name, email, phone, hashedPassword, createdAt);
+        saveUserToFirebase(name, email.toLowerCase(Locale.US), phone, hashedPassword, createdAt);
     }
 
     private void saveUserToFirebase(String name, String email, String phone, String hashedPassword, String createdAt) {
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference usersRef = FirebaseDatabase.getInstance(
+                com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository.DB_URL
+        ).getReference("Users");
 
         // Sinh ID theo quy luật CS01, CS02, CS03...
         UserIdGenerator.next(usersRef, new UserIdGenerator.Callback() {

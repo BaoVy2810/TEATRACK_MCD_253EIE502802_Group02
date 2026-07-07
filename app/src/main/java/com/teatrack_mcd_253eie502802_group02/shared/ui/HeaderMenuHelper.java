@@ -73,6 +73,7 @@ public final class HeaderMenuHelper {
             signOutItem.setOnClickListener(v -> {
                 popupWindow.dismiss();
                 FirebaseAuth.getInstance().signOut();
+                com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper.clearSession(activity);
                 Intent intent = new Intent(activity, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_NEW_TASK

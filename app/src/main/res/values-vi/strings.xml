@@ -417,6 +417,8 @@
     <string name="error_system_general">Lỗi hệ thống: %1$s</string>
     <string name="error_firebase_connection">Lỗi kết nối Firebase: %1$s</string>
     <string name="error_google_signin_failed">Đăng nhập Google thất bại: %1$s</string>
+    <string name="error_google_token_missing">Không lấy được token Google. Kiểm tra SHA-1 và Web Client ID trên Firebase.</string>
+    <string name="error_google_firebase_auth_failed">Đăng nhập Google thất bại: %1$s. Hãy bật Google sign-in trong Firebase Authentication.</string>
     <string name="error_auth_failed">Xác thực thất bại.</string>
     <string name="msg_register_success">Đăng ký thành công!</string>
     <string name="error_register_failed">Đăng ký thất bại: %1$s</string>

@@ -81,6 +81,7 @@ public final class HeaderClientHelper {
             signOutItem.setOnClickListener(v -> {
                 popupWindow.dismiss();
                 FirebaseAuth.getInstance().signOut();
+                UserProfileHelper.clearSession(activity);
                 Intent intent = new Intent(activity, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                         | Intent.FLAG_ACTIVITY_NEW_TASK

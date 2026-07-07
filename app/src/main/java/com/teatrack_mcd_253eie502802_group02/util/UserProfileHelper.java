@@ -67,6 +67,13 @@ public final class UserProfileHelper {
         return userId != null ? userId : "";
     }
 
+    public static void clearSession(Context context) {
+        if (context == null) {
+            return;
+        }
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().clear().apply();
+    }
+
     public static void cacheFromSnapshot(SharedPreferences prefs, DataSnapshot snapshot) {
         if (prefs == null || snapshot == null || !snapshot.exists()) {
             return;

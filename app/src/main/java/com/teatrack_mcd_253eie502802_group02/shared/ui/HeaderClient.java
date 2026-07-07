@@ -38,6 +38,7 @@ public class HeaderClient extends AppCompatActivity {
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.menu_signout) {
                     com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
+                    com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper.clearSession(this);
                     Intent intent = new Intent(this, com.teatrack_mcd_253eie502802_group02.MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

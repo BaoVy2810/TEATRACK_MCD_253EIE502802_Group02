@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "276172473565-s900ttmt186b1ouvk4fu3189o8ivii4t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teatrack_mcd_253eie502802_group02",
+            "certificate_hash": "941c1cfce3d689f27f2ebe3c803aca752955dcd6"
+          }
+        },
+        {
           "client_id": "276172473565-phfvd53bvqqpdqd1cs1r49ki201ag8td.apps.googleusercontent.com",
           "client_type": 3
         }

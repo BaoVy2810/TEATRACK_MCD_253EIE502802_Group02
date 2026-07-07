@@ -455,6 +455,8 @@
     <string name="error_system_general">System error: %1$s</string>
     <string name="error_firebase_connection">Firebase connection error!</string>
     <string name="error_google_signin_failed">Google Sign-In failed: %1$s</string>
+    <string name="error_google_token_missing">Could not get Google token. Check Firebase SHA-1 fingerprint and Web Client ID.</string>
+    <string name="error_google_firebase_auth_failed">Google login failed: %1$s. Enable Google sign-in in Firebase Authentication.</string>
     <string name="error_auth_failed">Authentication Failed.</string>
     <string name="msg_register_success">Registration successful!</string>
     <string name="error_register_failed">Registration failed: %1$s</string>

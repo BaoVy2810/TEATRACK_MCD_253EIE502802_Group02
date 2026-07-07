@@ -16,18 +16,30 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.credentials.Credential;
 import androidx.credentials.CredentialManager;
+import androidx.credentials.CustomCredential;
 import androidx.credentials.GetCredentialRequest;
 import androidx.credentials.GetCredentialResponse;
 import androidx.credentials.exceptions.GetCredentialException;
+import androidx.credentials.exceptions.NoCredentialException;
 
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -50,6 +62,7 @@ import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -60,6 +73,8 @@ public class LoginActivity extends BaseActivity {
 
     private FirebaseAuth mAuth;
     private CredentialManager credentialManager;
+    private GoogleSignInClient googleSignInClient;
+    private ActivityResultLauncher<Intent> legacyGoogleSignInLauncher;
     private DatabaseReference databaseReference;
 
     private TextInputEditText edtLoginName, edtPassword;
@@ -74,6 +89,11 @@ public class LoginActivity extends BaseActivity {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_USER_ID = "userId";
+    private static final long GOOGLE_DB_TIMEOUT_MS = 6000L;
+
+    private final Handler googleHandler = new Handler(Looper.getMainLooper());
+    private Runnable googleDbTimeoutRunnable;
+    private boolean googleNavigationStarted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +112,7 @@ public class LoginActivity extends BaseActivity {
 
         mAuth = FirebaseAuth.getInstance();
         credentialManager = CredentialManager.create(this);
+        initGoogleSignIn();
         databaseReference = FirebaseDatabase.getInstance(DATABASE_URL).getReference("Users");
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
@@ -101,9 +122,11 @@ public class LoginActivity extends BaseActivity {
 
         if (mAuth.getCurrentUser() != null) {
             String savedUserId = sharedPreferences.getString(KEY_USER_ID, null);
-            if (savedUserId != null) {
+            if (savedUserId != null && !savedUserId.isEmpty()) {
                 startActivity(new Intent(this, Homepage.class));
                 finish();
+            } else {
+                resolveGoogleUser(mAuth.getCurrentUser(), true);
             }
         }
 
@@ -202,10 +225,62 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    private void initGoogleSignIn() {
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
+
+        legacyGoogleSignInLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() != RESULT_OK || result.getData() == null) {
+                        setGoogleLoading(false);
+                        Log.w(TAG, "Google picker dismissed, resultCode=" + result.getResultCode());
+                        return;
+                    }
+                    Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                    try {
+                        GoogleSignInAccount account = task.getResult(ApiException.class);
+                        if (account != null && account.getIdToken() != null) {
+                            firebaseAuthWithGoogle(account.getIdToken());
+                        } else {
+                            setGoogleLoading(false);
+                            Log.e(TAG, "Google account returned without idToken");
+                            Toast.makeText(this, getString(R.string.error_google_token_missing), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (ApiException e) {
+                        setGoogleLoading(false);
+                        Log.e(TAG, "Legacy Google sign-in failed: " + e.getStatusCode(), e);
+                        if (e.getStatusCode() != GoogleSignInStatusCodes.SIGN_IN_CANCELLED) {
+                            Toast.makeText(
+                                    this,
+                                    getString(R.string.error_google_signin_failed, e.getMessage()),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                    }
+                }
+        );
+    }
+
+    private void setGoogleLoading(boolean loading) {
+        if (btnGoogleSignIn != null) {
+            btnGoogleSignIn.setEnabled(!loading);
+        }
+    }
+
     private void signInWithGoogle() {
+        googleNavigationStarted = false;
+        setGoogleLoading(true);
+        launchLegacyGoogleSignIn();
+    }
+
+    private void requestGoogleCredential(boolean autoSelect) {
         GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
-                .setAutoSelectEnabled(false)
+                .setFilterByAuthorizedAccounts(autoSelect)
+                .setAutoSelectEnabled(autoSelect)
                 .setServerClientId(getString(R.string.default_web_client_id))
                 .build();
 
@@ -228,118 +303,449 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onError(GetCredentialException e) {
-                        Toast.makeText(LoginActivity.this, getString(R.string.error_google_signin_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
+                        if (e instanceof NoCredentialException) {
+                            if (autoSelect) {
+                                requestGoogleCredential(false);
+                            } else {
+                                launchLegacyGoogleSignIn();
+                            }
+                            return;
+                        }
+                        Log.e(TAG, "Google credential error", e);
+                        Toast.makeText(
+                                LoginActivity.this,
+                                getString(R.string.error_google_signin_failed, e.getMessage()),
+                                Toast.LENGTH_SHORT
+                        ).show();
                     }
                 }
         );
     }
 
-    private void handleSignIn(Credential credential) {
-        if (credential instanceof GoogleIdTokenCredential) {
-            GoogleIdTokenCredential googleIdTokenCredential = (GoogleIdTokenCredential) credential;
-            firebaseAuthWithGoogle(googleIdTokenCredential.getIdToken());
-        } else {
-            Log.e(TAG, "Unexpected credential type");
+    private void launchLegacyGoogleSignIn() {
+        if (googleSignInClient == null || legacyGoogleSignInLauncher == null) {
+            setGoogleLoading(false);
+            Toast.makeText(this, getString(R.string.error_auth_failed), Toast.LENGTH_SHORT).show();
+            return;
         }
+        // Clear cached Google/Firebase session so the account picker shows every time.
+        mAuth.signOut();
+        googleSignInClient.signOut().addOnCompleteListener(task -> {
+            if (isFinishing()) {
+                setGoogleLoading(false);
+                return;
+            }
+            legacyGoogleSignInLauncher.launch(googleSignInClient.getSignInIntent());
+        });
+    }
+
+    private void handleSignIn(Credential credential) {
+        GoogleIdTokenCredential googleIdTokenCredential = extractGoogleCredential(credential);
+        if (googleIdTokenCredential != null && googleIdTokenCredential.getIdToken() != null) {
+            setGoogleLoading(true);
+            firebaseAuthWithGoogle(googleIdTokenCredential.getIdToken());
+            return;
+        }
+        Log.e(TAG, "Unexpected credential type: " + credential.getClass().getName());
+        launchLegacyGoogleSignIn();
+    }
+
+    @Nullable
+    private GoogleIdTokenCredential extractGoogleCredential(@NonNull Credential credential) {
+        if (credential instanceof GoogleIdTokenCredential) {
+            return (GoogleIdTokenCredential) credential;
+        }
+        if (credential instanceof CustomCredential) {
+            CustomCredential customCredential = (CustomCredential) credential;
+            if (GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL.equals(customCredential.getType())) {
+                try {
+                    return GoogleIdTokenCredential.createFrom(customCredential.getData());
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to parse Google CustomCredential", e);
+                }
+            }
+        }
+        return null;
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
+        if (idToken == null || idToken.trim().isEmpty()) {
+            setGoogleLoading(false);
+            Toast.makeText(this, getString(R.string.error_google_token_missing), Toast.LENGTH_LONG).show();
+            return;
+        }
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        saveUserToDatabase(user);
+                        resolveGoogleUser(mAuth.getCurrentUser(), false);
                     } else {
-                        Toast.makeText(this, getString(R.string.error_auth_failed), Toast.LENGTH_SHORT).show();
+                        setGoogleLoading(false);
+                        Exception error = task.getException();
+                        Log.e(TAG, "Firebase Google auth failed", error);
+                        String detail = error != null && error.getMessage() != null
+                                ? error.getMessage()
+                                : getString(R.string.error_auth_failed);
+                        Toast.makeText(
+                                this,
+                                getString(R.string.error_google_firebase_auth_failed, detail),
+                                Toast.LENGTH_LONG
+                        ).show();
                     }
                 });
     }
 
-    private void saveUserToDatabase(FirebaseUser user) {
-        if (user == null) return;
-        String uid = user.getUid();
+    private void clearGoogleDbTimeout() {
+        if (googleDbTimeoutRunnable != null) {
+            googleHandler.removeCallbacks(googleDbTimeoutRunnable);
+            googleDbTimeoutRunnable = null;
+        }
+    }
 
-        databaseReference.orderByChild("firebaseUid").equalTo(uid)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            String existingRole = "Customer";
-                            String existingUserId = null;
-                            String existingFullName = null;
-                            String existingPhone = null;
-                            for (DataSnapshot child : snapshot.getChildren()) {
-                                existingUserId = child.getKey();
-                                String r = child.child("role").getValue(String.class);
-                                if (r != null) {
-                                    existingRole = r;
-                                }
-                                existingFullName = child.child("fullName").getValue(String.class);
-                                if (existingFullName == null || existingFullName.trim().isEmpty()) {
-                                    existingFullName = child.child("name").getValue(String.class);
-                                }
-                                existingPhone = child.child("phoneNumber").getValue(String.class);
-                                if (existingPhone == null || existingPhone.trim().isEmpty()) {
-                                    existingPhone = child.child("phone").getValue(String.class);
-                                }
-                                break;
-                            }
-                            UserProfileHelper.cacheProfile(
-                                    LoginActivity.this,
-                                    existingUserId,
-                                    existingRole,
-                                    existingFullName,
-                                    existingPhone
-                            );
-                            startActivity(new Intent(LoginActivity.this, Homepage.class));
-                            finish();
+    private void resolveGoogleUser(FirebaseUser user, boolean silentRestore) {
+        if (user == null) {
+            setGoogleLoading(false);
+            if (!silentRestore) {
+                Toast.makeText(this, getString(R.string.error_auth_failed), Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+
+        final String uid = user.getUid();
+        final String normalizedEmail = normalizeEmail(user.getEmail());
+        final boolean[] resolved = {false};
+
+        clearGoogleDbTimeout();
+        if (!silentRestore) {
+            googleDbTimeoutRunnable = () -> {
+                if (resolved[0] || isFinishing()) {
+                    return;
+                }
+                resolved[0] = true;
+                Log.w(TAG, "Users lookup timed out, navigating with Firebase session");
+                openHomeAfterGoogleAuth(user);
+            };
+            googleHandler.postDelayed(googleDbTimeoutRunnable, GOOGLE_DB_TIMEOUT_MS);
+        }
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (resolved[0]) {
+                    return;
+                }
+                resolved[0] = true;
+                clearGoogleDbTimeout();
+
+                DataSnapshot matchedByUid = null;
+                DataSnapshot matchedByEmail = null;
+
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    if (child.getKey() == null) {
+                        continue;
+                    }
+                    String storedUid = child.child("firebaseUid").getValue(String.class);
+                    if (uid.equals(storedUid)) {
+                        matchedByUid = child;
+                        break;
+                    }
+                    if (matchedByEmail == null && normalizedEmail != null) {
+                        String storedEmail = child.child("email").getValue(String.class);
+                        if (storedEmail != null && normalizedEmail.equals(normalizeEmail(storedEmail))) {
+                            matchedByEmail = child;
+                        }
+                    }
+                }
+
+                if (matchedByUid != null) {
+                    completeGoogleLogin(matchedByUid, silentRestore);
+                    return;
+                }
+                if (matchedByEmail != null) {
+                    linkFirebaseUidAndLogin(matchedByEmail, uid, user, silentRestore);
+                    return;
+                }
+                if (silentRestore) {
+                    mAuth.signOut();
+                    setGoogleLoading(false);
+                    return;
+                }
+                createGoogleUser(user, uid);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                if (resolved[0]) {
+                    return;
+                }
+                resolved[0] = true;
+                clearGoogleDbTimeout();
+                Log.e(TAG, "Failed to load Users for Google login: " + error.getMessage());
+                if (silentRestore) {
+                    mAuth.signOut();
+                    setGoogleLoading(false);
+                    return;
+                }
+                openHomeAfterGoogleAuth(user);
+            }
+        });
+    }
+
+    private void openHomeAfterGoogleAuth(@NonNull FirebaseUser user) {
+        if (googleNavigationStarted || isFinishing()) {
+            createGoogleUserInBackground(user);
+            return;
+        }
+        googleNavigationStarted = true;
+        setGoogleLoading(false);
+        UserProfileHelper.cacheProfile(
+                getApplicationContext(),
+                sharedPreferences.getString(KEY_USER_ID, ""),
+                "Customer",
+                user.getDisplayName(),
+                null
+        );
+        sharedPreferences.edit()
+                .putString("userRole", "Customer")
+                .apply();
+        startActivity(new Intent(this, Homepage.class));
+        finish();
+        createGoogleUserInBackground(user);
+    }
+
+    private void createGoogleUserInBackground(@NonNull FirebaseUser user) {
+        final String uid = user.getUid();
+        final String normalizedEmail = normalizeEmail(user.getEmail());
+        DatabaseReference usersRef = FirebaseDatabase.getInstance(DATABASE_URL).getReference("Users");
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    String key = child.getKey();
+                    if (key == null) {
+                        continue;
+                    }
+                    String storedUid = child.child("firebaseUid").getValue(String.class);
+                    if (uid.equals(storedUid)) {
+                        cacheGoogleProfileFromSnapshot(child);
+                        return;
+                    }
+                    if (normalizedEmail != null) {
+                        String storedEmail = child.child("email").getValue(String.class);
+                        if (storedEmail != null && normalizedEmail.equals(normalizeEmail(storedEmail))) {
+                            usersRef.child(key).updateChildren(buildGoogleLinkUpdates(user));
+                            cacheGoogleProfileFromSnapshot(child);
                             return;
                         }
-                        UserIdGenerator.next(databaseReference, new UserIdGenerator.Callback() {
-                            @Override
-                            public void onGenerated(String csId) {
-                                Map<String, Object> userMap = new HashMap<>();
-                                userMap.put("id", csId);
-                                userMap.put("firebaseUid", uid);
-                                userMap.put("name", user.getDisplayName());
-                                userMap.put("fullName", user.getDisplayName());
-                                userMap.put("email", user.getEmail());
-                                userMap.put("role", "Customer");
-                                userMap.put("status", "Active");
-                                userMap.put("provider", "google");
-                                databaseReference.child(csId).setValue(userMap);
-
-                                sharedPreferences.edit()
-                                        .putString(KEY_USER_ID, csId)
-                                        .putString("userRole", "Customer")
-                                        .apply();
-                                UserProfileHelper.cacheProfile(
-                                        LoginActivity.this,
-                                        csId,
-                                        "Customer",
-                                        user.getDisplayName(),
-                                        null
-                                );
-
-                                startActivity(new Intent(LoginActivity.this, Homepage.class));
-                                finish();
-                            }
-
-                            @Override
-                            public void onError(String message) {
-                                startActivity(new Intent(LoginActivity.this, Homepage.class));
-                                finish();
-                            }
-                        });
+                    }
+                }
+                UserIdGenerator.next(usersRef, new UserIdGenerator.Callback() {
+                    @Override
+                    public void onGenerated(String csId) {
+                        Map<String, Object> userMap = new HashMap<>();
+                        userMap.put("id", csId);
+                        userMap.put("firebaseUid", uid);
+                        userMap.put("name", user.getDisplayName());
+                        userMap.put("fullName", user.getDisplayName());
+                        userMap.put("email", normalizedEmail);
+                        userMap.put("role", "Customer");
+                        userMap.put("status", "Active");
+                        userMap.put("provider", "google");
+                        userMap.put("createdAt", String.valueOf(System.currentTimeMillis()));
+                        usersRef.child(csId).setValue(userMap);
+                        getApplicationContext()
+                                .getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+                                .edit()
+                                .putString(KEY_USER_ID, csId)
+                                .putString("userRole", "Customer")
+                                .apply();
+                        UserProfileHelper.cacheProfile(
+                                getApplicationContext(),
+                                csId,
+                                "Customer",
+                                user.getDisplayName(),
+                                null
+                        );
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        startActivity(new Intent(LoginActivity.this, Homepage.class));
-                        finish();
+                    public void onError(String message) {
+                        Log.e(TAG, "Background Google user create failed: " + message);
                     }
                 });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Background Google user sync cancelled: " + error.getMessage());
+            }
+        });
+    }
+
+    private Map<String, Object> buildGoogleLinkUpdates(@NonNull FirebaseUser user) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("firebaseUid", user.getUid());
+        updates.put("provider", "google");
+        String displayName = user.getDisplayName();
+        if (displayName != null && !displayName.trim().isEmpty()) {
+            updates.put("fullName", displayName.trim());
+            updates.put("name", displayName.trim());
+        }
+        return updates;
+    }
+
+    private void cacheGoogleProfileFromSnapshot(@NonNull DataSnapshot userSnapshot) {
+        String userId = userSnapshot.getKey();
+        if (userId == null) {
+            return;
+        }
+        String role = userSnapshot.child("role").getValue(String.class);
+        if (role == null || role.trim().isEmpty()) {
+            role = "Customer";
+        }
+        String fullName = userSnapshot.child("fullName").getValue(String.class);
+        if (fullName == null || fullName.trim().isEmpty()) {
+            fullName = userSnapshot.child("name").getValue(String.class);
+        }
+        String phone = userSnapshot.child("phoneNumber").getValue(String.class);
+        if (phone == null || phone.trim().isEmpty()) {
+            phone = userSnapshot.child("phone").getValue(String.class);
+        }
+        UserProfileHelper.cacheProfile(this, userId, role, fullName, phone);
+        sharedPreferences.edit()
+                .putString(KEY_USER_ID, userId)
+                .putString("userRole", role)
+                .apply();
+    }
+
+    private void linkFirebaseUidAndLogin(
+            DataSnapshot existingUser,
+            String uid,
+            FirebaseUser firebaseUser,
+            boolean silentRestore
+    ) {
+        String userId = existingUser.getKey();
+        if (userId == null) {
+            if (silentRestore) {
+                mAuth.signOut();
+            } else {
+                createGoogleUser(firebaseUser, uid);
+            }
+            return;
+        }
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("firebaseUid", uid);
+        updates.put("provider", "google");
+        String displayName = firebaseUser.getDisplayName();
+        if (displayName != null && !displayName.trim().isEmpty()) {
+            String existingFullName = existingUser.child("fullName").getValue(String.class);
+            if (existingFullName == null || existingFullName.trim().isEmpty()) {
+                updates.put("fullName", displayName.trim());
+            }
+            String existingName = existingUser.child("name").getValue(String.class);
+            if (existingName == null || existingName.trim().isEmpty()) {
+                updates.put("name", displayName.trim());
+            }
+        }
+
+        databaseReference.child(userId).updateChildren(updates)
+                .addOnSuccessListener(unused -> completeGoogleLogin(existingUser, silentRestore))
+                .addOnFailureListener(e -> completeGoogleLogin(existingUser, silentRestore));
+    }
+
+    private void completeGoogleLogin(DataSnapshot userSnapshot, boolean silentRestore) {
+        setGoogleLoading(false);
+        String userId = userSnapshot.getKey();
+        if (userId == null) {
+            if (!silentRestore) {
+                Toast.makeText(this, getString(R.string.error_auth_failed), Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+
+        String role = userSnapshot.child("role").getValue(String.class);
+        if (role == null || role.trim().isEmpty()) {
+            role = "Customer";
+        }
+        String fullName = userSnapshot.child("fullName").getValue(String.class);
+        if (fullName == null || fullName.trim().isEmpty()) {
+            fullName = userSnapshot.child("name").getValue(String.class);
+        }
+        String phone = userSnapshot.child("phoneNumber").getValue(String.class);
+        if (phone == null || phone.trim().isEmpty()) {
+            phone = userSnapshot.child("phone").getValue(String.class);
+        }
+
+        UserProfileHelper.cacheProfile(this, userId, role, fullName, phone);
+        sharedPreferences.edit()
+                .putString(KEY_USER_ID, userId)
+                .putString("userRole", role)
+                .apply();
+
+        googleNavigationStarted = true;
+        Intent destination = "Admin".equalsIgnoreCase(role)
+                ? new Intent(this, AdminDashboard.class)
+                : new Intent(this, Homepage.class);
+        startActivity(destination);
+        finish();
+    }
+
+    private void createGoogleUser(FirebaseUser user, String uid) {
+        UserIdGenerator.next(databaseReference, new UserIdGenerator.Callback() {
+            @Override
+            public void onGenerated(String csId) {
+                Map<String, Object> userMap = new HashMap<>();
+                userMap.put("id", csId);
+                userMap.put("firebaseUid", uid);
+                userMap.put("name", user.getDisplayName());
+                userMap.put("fullName", user.getDisplayName());
+                userMap.put("email", normalizeEmail(user.getEmail()));
+                userMap.put("role", "Customer");
+                userMap.put("status", "Active");
+                userMap.put("provider", "google");
+                userMap.put("createdAt", String.valueOf(System.currentTimeMillis()));
+                databaseReference.child(csId).setValue(userMap)
+                        .addOnSuccessListener(unused -> {
+                            setGoogleLoading(false);
+                            UserProfileHelper.cacheProfile(
+                                    LoginActivity.this,
+                                    csId,
+                                    "Customer",
+                                    user.getDisplayName(),
+                                    null
+                            );
+                            sharedPreferences.edit()
+                                    .putString(KEY_USER_ID, csId)
+                                    .putString("userRole", "Customer")
+                                    .apply();
+                            googleNavigationStarted = true;
+                            startActivity(new Intent(LoginActivity.this, Homepage.class));
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            setGoogleLoading(false);
+                            Log.e(TAG, "Create Google user failed, opening home anyway", e);
+                            openHomeAfterGoogleAuth(user);
+                        });
+            }
+
+            @Override
+            public void onError(String message) {
+                setGoogleLoading(false);
+                Log.e(TAG, "Generate Google user id failed, opening home anyway: " + message);
+                openHomeAfterGoogleAuth(user);
+            }
+        });
+    }
+
+    @Nullable
+    private static String normalizeEmail(@Nullable String email) {
+        if (email == null) {
+            return null;
+        }
+        String trimmed = email.trim();
+        return trimmed.isEmpty() ? null : trimmed.toLowerCase(Locale.US);
     }
 
     private void handleLogin() {
