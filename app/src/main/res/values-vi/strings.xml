@@ -904,7 +904,9 @@
     <string name="str_my_orders">Đơn hàng của tôi</string>
     <string name="str_search_order_hint">Tìm theo mã đơn hàng...</string>
     <string name="str_tab_all">Tất cả</string>
-    <string name="str_tab_pending">Chờ xác nhận</string>
+    <string name="str_tab_unread">Chưa đọc</string>
+    <string name="str_tab_pending">Chờ phản hồi</string>
+    <string name="str_tab_resolved">Đã giải quyết</string>
     <string name="str_tab_processing">Đang chuẩn bị</string>
     <string name="str_tab_ready">Chờ lấy hàng</string>
     <string name="str_tab_shipping">Đang giao</string>
@@ -923,4 +925,29 @@
     <string name="str_status_delivered">Đã hoàn thành</string>
     <string name="str_status_completed">Đã hoàn thành</string>
     <string name="str_status_cancelled">Đã hủy</string>
+
+    <!-- Admin Complaints Stat Cards -->
+    <string name="stat_complaint_total">TỔNG PHẢN HỒI</string>
+    <string name="stat_complaint_unread">MỚI &amp; CHƯA ĐỌC</string>
+    <string name="stat_complaint_pending">CHỜ PHẢN HỒI</string>
+    <string name="stat_complaint_resolved">ĐÃ GIẢI QUYẾT</string>
+    <string name="stat_active_feedback">Phản hồi đang hoạt động</string>
+    <string name="stat_waiting">Đang chờ</string>
+    <string name="stat_done">Hoàn thành</string>
+    <string name="err_required">Trường này là bắt buộc</string>
+    <string name="err_invalid_email">Địa chỉ email không hợp lệ</string>
+    <string name="str_feedback_topic">Vui lòng chọn một chủ đề</string>
+
+    <!-- Admin Complaint Details Dialog -->
+    <string name="complaint_detail_title">Chi tiết khiếu nại</string>
+    <string name="label_complaint_topic">Chủ đề</string>
+    <string name="label_complaint_date">Ngày tạo</string>
+    <string name="label_complaint_content">Nội dung khiếu nại</string>
+    <string name="label_your_response">Phản hồi của bạn</string>
+    <string name="hint_type_reply">Nhập nội dung phản hồi...</string>
+    <string name="btn_discard">Hủy bỏ</string>
+    <string name="btn_send_reply">Gửi phản hồi</string>
+    <string name="label_admin_reply_prefix">Admin phản hồi:</string>
+    <string name="label_topic_complaint">KHIẾU NẠI</string>
+    <string name="btn_view_details">Xem chi tiết</string>
 </resources>

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="24dp"
+    app:cardCornerRadius="@dimen/modal_corner"
     app:cardElevation="8dp">
 
     <ScrollView
@@ -32,14 +32,14 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_toStartOf="@id/btnCloseDialog"
+                    android:layout_toStartOf="@id/btnClose"
                     android:text="@string/str_agency_details"
                     android:textColor="@color/brand_blue"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <ImageButton
-                    android:id="@+id/btnCloseDialog"
+                    android:id="@+id/btnClose"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_alignParentEnd="true"
@@ -77,7 +77,7 @@
                 android:inputType="text"
                 android:paddingHorizontal="12dp"
                 android:textColor="@color/brand_blue"
-                android:textColorHint="#0088FF"
+                android:textColorHint="@color/brand_blue"
                 android:textSize="12sp" />
 
             <!-- Agency Name -->
@@ -101,7 +101,7 @@
                 android:inputType="text"
                 android:paddingHorizontal="12dp"
                 android:textColor="@color/brand_blue"
-                android:textColorHint="#0088FF"
+                android:textColorHint="@color/brand_blue"
                 android:textSize="12sp" />
 
             <!-- Address -->
@@ -125,7 +125,7 @@
                 android:inputType="text"
                 android:paddingHorizontal="12dp"
                 android:textColor="@color/brand_blue"
-                android:textColorHint="#0088FF"
+                android:textColorHint="@color/brand_blue"
                 android:textSize="12sp" />
 
             <!-- Phone -->
@@ -149,7 +149,7 @@
                 android:inputType="phone"
                 android:paddingHorizontal="12dp"
                 android:textColor="@color/brand_blue"
-                android:textColorHint="#0088FF"
+                android:textColorHint="@color/brand_blue"
                 android:textSize="12sp" />
 
             <!-- Image -->
@@ -180,7 +180,7 @@
                     android:inputType="text"
                     android:paddingHorizontal="12dp"
                     android:textColor="@color/brand_blue"
-                    android:textColorHint="#0088FF"
+                    android:textColorHint="@color/brand_blue"
                     android:textSize="12sp" />
 
                 <com.google.android.material.button.MaterialButton
@@ -231,8 +231,9 @@
                 android:inputType="textUri"
                 android:paddingHorizontal="12dp"
                 android:textColor="@color/brand_blue"
-                android:textColorHint="#0088FF"
+                android:textColorHint="@color/brand_blue"
                 android:textSize="12sp" />
+
 
             <!-- Buttons Row -->
             <LinearLayout

@@ -813,6 +813,15 @@
     <string name="str_topic_other">Other</string>
     <string name="str_content_label">Content</string>
     <string name="str_submit">Submit</string>
+
+    <!-- Admin Complaints Stat Cards -->
+    <string name="stat_complaint_total">TOTAL FEEDBACKS</string>
+    <string name="stat_complaint_unread">NEW &amp; UNREAD</string>
+    <string name="stat_complaint_pending">WAITING RESPONSE</string>
+    <string name="stat_complaint_resolved">RESOLVED</string>
+    <string name="stat_active_feedback">Active feedback</string>
+    <string name="stat_waiting">Waiting</string>
+    <string name="stat_done">Done</string>
     <string name="err_required">This field is required</string>
     <string name="err_invalid_email">Invalid email address</string>
     <string name="str_feedback_topic">Please select a topic</string>
@@ -1047,6 +1056,7 @@
     <string name="str_filter">Filter</string>
     <string name="str_back">Back</string>
     <string name="str_tab_all">All</string>
+    <string name="str_tab_unread">Unread</string>
     <string name="str_tab_pending">Pending</string>
     <string name="str_tab_resolved">Resolved</string>
     <string name="str_tab_processing">Processing</string>
@@ -1172,4 +1182,17 @@
     <string name="str_desc_max"> (Up to %1$s)</string>
     <string name="str_desc_per_item">Discount %1$s per item</string>
     <string name="str_desc_amount">Flat %1$s off</string>
+
+    <!-- Admin Complaint Details Dialog -->
+    <string name="complaint_detail_title">Complaint Details</string>
+    <string name="label_complaint_topic">Topic</string>
+    <string name="label_complaint_date">Date Created</string>
+    <string name="label_complaint_content">Message Content</string>
+    <string name="label_your_response">Your Response</string>
+    <string name="hint_type_reply">Type your reply here...</string>
+    <string name="btn_discard">Discard</string>
+    <string name="btn_send_reply">Send Reply</string>
+    <string name="label_admin_reply_prefix">Admin Reply:</string>
+    <string name="label_topic_complaint">COMPLAINT</string>
+    <string name="btn_view_details">View Details</string>
 </resources>

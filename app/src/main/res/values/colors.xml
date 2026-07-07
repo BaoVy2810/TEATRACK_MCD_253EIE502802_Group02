@@ -65,6 +65,16 @@
     <color name="stat_products_start">#72D5EC</color>
     <color name="stat_products_end">#0EA5E9</color>
 
+    <!-- ── Complaints Stat card gradients ── -->
+    <color name="stat_complaint_total_start">#0088FF</color>
+    <color name="stat_complaint_total_end">#0055CC</color>
+    <color name="stat_complaint_unread_start">#F87171</color>
+    <color name="stat_complaint_unread_end">#EF4444</color>
+    <color name="stat_complaint_pending_start">#FB923C</color>
+    <color name="stat_complaint_pending_end">#F59E0B</color>
+    <color name="stat_complaint_resolved_start">#34D399</color>
+    <color name="stat_complaint_resolved_end">#059669</color>
+
     <!-- text inside stat cards -->
     <color name="stat_text_white">#FFFFFF</color>
     <color name="stat_text_soft">#CCE8FF</color>          <!-- ~rgba(255,255,255,0.80) -->

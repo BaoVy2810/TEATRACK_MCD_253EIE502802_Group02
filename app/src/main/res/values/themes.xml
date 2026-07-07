@@ -398,6 +398,11 @@
         <item name="cornerSize">16dp</item>
     </style>
 
+    <style name="ShapeAppearance.TeaTrack.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="CustomMaterialCalendarDaySelectedStyle" parent="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
         <item name="itemFillColor">@color/brand_blue</item>
         <item name="itemTextColor">@color/white</item>

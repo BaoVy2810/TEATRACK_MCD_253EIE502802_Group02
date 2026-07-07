@@ -40,50 +40,46 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <FrameLayout
+            <!-- Status filter tabs (horizontal scroll) -->
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="14dp"
-                android:background="@color/white"
-                android:elevation="1dp"
-                android:paddingVertical="10dp">
+                android:scrollbars="none"
+                android:paddingHorizontal="12dp"
+                android:layout_marginTop="12dp"
+                android:paddingBottom="12dp"
+                android:clipToPadding="false">
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/layoutFilterTabs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/title_feedback_management"
-                    android:textColor="@color/brand_blue"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </FrameLayout>
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabFilter"
+                    <include
+                        android:id="@+id/tabAll"
+                        layout="@layout/layout_order_history_tab" />
+
+                    <include
+                        android:id="@+id/tabUnread"
+                        layout="@layout/layout_order_history_tab" />
+
+                    <include
+                        android:id="@+id/tabPending"
+                        layout="@layout/layout_order_history_tab" />
+
+                    <include
+                        android:id="@+id/tabResolved"
+                        layout="@layout/layout_order_history_tab" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:tabIndicatorColor="@color/brand_blue"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="@color/brand_blue"
-                app:tabTextColor="@color/text_secondary">
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/str_tab_all" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/str_tab_pending" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/str_tab_resolved" />
-            </com.google.android.material.tabs.TabLayout>
+                android:layout_height="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

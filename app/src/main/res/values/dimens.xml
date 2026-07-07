@@ -48,7 +48,7 @@
 
     <!-- Stat cards -->
     <dimen name="stat_card_padding">16dp</dimen>
-    <dimen name="stat_card_corner">16dp</dimen>
+    <dimen name="stat_card_corner">24dp</dimen>
     <dimen name="stat_card_elevation">4dp</dimen>
     <dimen name="stat_card_gap">12dp</dimen>
     <dimen name="stat_icon_wrap_size">40dp</dimen>
@@ -109,7 +109,7 @@
     <dimen name="nav_elevation">8dp</dimen>
 
     <!-- Modal -->
-    <dimen name="modal_corner">20dp</dimen>
+    <dimen name="modal_corner">24dp</dimen>
     <dimen name="modal_header_padding">20dp</dimen>
     <dimen name="modal_body_padding">20dp</dimen>
     <dimen name="modal_footer_padding">16dp</dimen>

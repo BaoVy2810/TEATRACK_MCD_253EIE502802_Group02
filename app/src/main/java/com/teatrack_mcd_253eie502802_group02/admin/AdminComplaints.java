@@ -2,15 +2,21 @@ package com.teatrack_mcd_253eie502802_group02.admin;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,7 +48,9 @@ public class AdminComplaints extends AppCompatActivity {
     private List<ContactRequest> allContacts = new ArrayList<>();
     private List<ContactRequest> displayList = new ArrayList<>();
     private DatabaseReference mDatabase;
-    private TabLayout tabFilter;
+    private View tabAll, tabUnread, tabPending, tabResolved;
+    private View activeTab;
+    private int selectedFilter = 0; // 0: All, 1: Unread, 2: Pending, 3: Resolved
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
 
     @Override
@@ -60,22 +68,104 @@ public class AdminComplaints extends AppCompatActivity {
     private void initViews() {
         rvComplaints = findViewById(R.id.rvComplaints);
         rvComplaints.setLayoutManager(new LinearLayoutManager(this));
-        
-        // Setup TabLayout for filtering (assuming it exists in layout, if not we'll need to check)
-        tabFilter = findViewById(R.id.tabFilter); 
-        if (tabFilter != null) {
-            tabFilter.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    filterList(tab.getPosition());
-                }
-                @Override public void onTabUnselected(TabLayout.Tab tab) {}
-                @Override public void onTabReselected(TabLayout.Tab tab) {}
-            });
-        }
+
+        tabAll = findViewById(R.id.tabAll);
+        tabUnread = findViewById(R.id.tabUnread);
+        tabPending = findViewById(R.id.tabPending);
+        tabResolved = findViewById(R.id.tabResolved);
+
+        activeTab = tabAll;
+        initTabLabels();
+        setTabActive(tabAll);
+
+        // Click listeners for tabs to filter
+        View.OnClickListener tabClick = v -> {
+            int id = v.getId();
+            if (id == R.id.tabAll) selectedFilter = 0;
+            else if (id == R.id.tabUnread) selectedFilter = 1;
+            else if (id == R.id.tabPending) selectedFilter = 2;
+            else if (id == R.id.tabResolved) selectedFilter = 3;
+            
+            updateTabSelection();
+            filterList();
+        };
+
+        if (tabAll != null) tabAll.setOnClickListener(tabClick);
+        if (tabUnread != null) tabUnread.setOnClickListener(tabClick);
+        if (tabPending != null) tabPending.setOnClickListener(tabClick);
+        if (tabResolved != null) tabResolved.setOnClickListener(tabClick);
 
         adapter = new ComplaintAdapter(displayList, this::showDetailDialog);
         rvComplaints.setAdapter(adapter);
+    }
+
+    private void initTabLabels() {
+        setTabLabel(tabAll, R.string.str_tab_all);
+        setTabLabel(tabUnread, R.string.str_tab_unread);
+        setTabLabel(tabPending, R.string.str_tab_pending);
+        setTabLabel(tabResolved, R.string.str_tab_resolved);
+    }
+
+    private void setTabLabel(View tab, int labelRes) {
+        if (tab == null) return;
+        TextView label = tab.findViewById(R.id.tvTabLabel);
+        if (label != null) {
+            label.setText(labelRes);
+        }
+    }
+
+    private void updateTabSelection() {
+        View[] tabs = {tabAll, tabUnread, tabPending, tabResolved};
+        int[] filters = {0, 1, 2, 3};
+
+        setTabInactive(activeTab);
+        for (int i = 0; i < tabs.length; i++) {
+            if (filters[i] == selectedFilter) {
+                setTabActive(tabs[i]);
+                activeTab = tabs[i];
+                break;
+            }
+        }
+    }
+
+    private void setTabActive(View tab) {
+        if (tab == null) return;
+        tab.setBackgroundResource(R.drawable.bg_order_tab_active);
+        TextView label = tab.findViewById(R.id.tvTabLabel);
+        TextView count = tab.findViewById(R.id.tvTabCount);
+        if (label != null) {
+            label.setTextColor(ContextCompat.getColor(this, R.color.white));
+            label.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
+        if (count != null) {
+            count.setBackgroundResource(R.drawable.bg_order_tab_count_active);
+            count.setTextColor(ContextCompat.getColor(this, R.color.white));
+            count.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
+    }
+
+    private void setTabInactive(View tab) {
+        if (tab == null) return;
+        tab.setBackgroundResource(R.drawable.bg_order_tab_inactive);
+        TextView label = tab.findViewById(R.id.tvTabLabel);
+        TextView count = tab.findViewById(R.id.tvTabCount);
+        if (label != null) {
+            label.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
+            label.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
+        if (count != null) {
+            count.setBackgroundResource(R.drawable.bg_order_tab_count_inactive);
+            count.setTextColor(ContextCompat.getColor(this, R.color.on_surface));
+            count.setTypeface(null, android.graphics.Typeface.BOLD);
+        }
+    }
+
+    private void setTabCount(View tab, int count) {
+        if (tab == null) return;
+        TextView countView = tab.findViewById(R.id.tvTabCount);
+        if (countView != null) {
+            countView.setText(String.valueOf(count));
+        }
     }
 
     private void setupFirebase() {
@@ -86,25 +176,36 @@ public class AdminComplaints extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 allContacts.clear();
+                int unread = 0;
+                int pending = 0;
+                int resolved = 0;
+
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     ContactRequest contact = ds.getValue(ContactRequest.class);
                     if (contact != null) {
+                        if (contact.get_id() == null) contact.set_id(ds.getKey());
                         allContacts.add(contact);
+                        
+                        if (!contact.isRead()) unread++;
+                        if (contact.getStatus() == 1) pending++;
+                        else if (contact.getStatus() == 2) resolved++;
                     }
                 }
                 
+                updateTabCounts(allContacts.size(), unread, pending, resolved);
+
                 // Sort by time descending
                 Collections.sort(allContacts, (o1, o2) -> {
                     try {
                         Date d1 = sdf.parse(o1.getTime());
                         Date d2 = sdf.parse(o2.getTime());
                         return d2.compareTo(d1);
-                    } catch (ParseException e) {
+                    } catch (Exception e) {
                         return 0;
                     }
                 });
 
-                filterList(tabFilter != null ? tabFilter.getSelectedTabPosition() : 0);
+                filterList();
             }
 
             @Override
@@ -114,17 +215,35 @@ public class AdminComplaints extends AppCompatActivity {
         });
     }
 
-    private void filterList(int position) {
+    private void updateTabCounts(int total, int unread, int pending, int resolved) {
+        setTabCount(tabAll, total);
+        setTabCount(tabUnread, unread);
+        setTabCount(tabPending, pending);
+        setTabCount(tabResolved, resolved);
+    }
+
+
+    private void filterList() {
         displayList.clear();
-        if (position == 0) { // All
-            displayList.addAll(allContacts);
-        } else if (position == 1) { // Pending (status 1)
-            for (ContactRequest c : allContacts) {
-                if (c.getStatus() == 1) displayList.add(c);
+        for (ContactRequest c : allContacts) {
+            boolean matchesFilter = false;
+            switch (selectedFilter) {
+                case 0: // All
+                    matchesFilter = true;
+                    break;
+                case 1: // Unread
+                    matchesFilter = !c.isRead();
+                    break;
+                case 2: // Pending
+                    matchesFilter = c.getStatus() == 1;
+                    break;
+                case 3: // Resolved
+                    matchesFilter = c.getStatus() == 2;
+                    break;
             }
-        } else if (position == 2) { // Resolved (status 2)
-            for (ContactRequest c : allContacts) {
-                if (c.getStatus() == 2) displayList.add(c);
+
+            if (matchesFilter) {
+                displayList.add(c);
             }
         }
         adapter.notifyDataSetChanged();
@@ -134,30 +253,53 @@ public class AdminComplaints extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = LayoutInflater.from(this).inflate(R.layout.dialog_admin_reply, null);
 
-        TextView tvInfo = new TextView(this);
-        tvInfo.setPadding(50, 40, 50, 10);
-        tvInfo.setTextSize(14);
-        tvInfo.setTextColor(getResources().getColor(android.R.color.black));
-        tvInfo.setText(String.format("From: %s\nPhone: %s\nEmail: %s\nBranch: %s\nTopic: %s\nTime: %s\n\nContent: %s",
-                contact.getFullname(), contact.getPhone(), contact.getEmail(),
-                contact.getBranch(), contact.getTopic(), contact.getTime(), contact.getContent()));
+        TextView tvName = view.findViewById(R.id.tvDetailUserName);
+        TextView tvEmail = view.findViewById(R.id.tvDetailUserEmail);
+        TextView tvStatus = view.findViewById(R.id.tvDetailStatus);
+        TextView tvTopic = view.findViewById(R.id.tvDetailTopic);
+        TextView tvDate = view.findViewById(R.id.tvDetailDate);
+        TextView tvContent = view.findViewById(R.id.tvDetailContent);
+        EditText etReply = view.findViewById(R.id.etReply);
+        View btnClose = view.findViewById(R.id.btnClose);
+        View btnCancel = view.findViewById(R.id.btnCancel);
+        View btnSend = view.findViewById(R.id.btnSendReply);
 
-        EditText etNote = view.findViewById(R.id.etReply);
-        etNote.setText(contact.getNote());
+        tvName.setText(contact.getFullname());
+        tvEmail.setText(contact.getEmail());
+        tvTopic.setText(contact.getTopic());
+        tvDate.setText(contact.getTime());
+        tvContent.setText(contact.getContent());
+        etReply.setText(contact.getNote());
 
-        android.widget.LinearLayout layout = new android.widget.LinearLayout(this);
-        layout.setOrientation(android.widget.LinearLayout.VERTICAL);
-        layout.addView(tvInfo);
-        layout.addView(view);
+        if (contact.getStatus() == 1) {
+            tvStatus.setText("Pending");
+            tvStatus.setBackgroundResource(R.drawable.bg_badge_pending);
+            tvStatus.setTextColor(ContextCompat.getColor(this, R.color.badge_pending_text));
+        } else {
+            tvStatus.setText("Resolved");
+            tvStatus.setBackgroundResource(R.drawable.bg_badge_completed);
+            tvStatus.setTextColor(ContextCompat.getColor(this, R.color.badge_completed_text));
+        }
 
-        builder.setTitle("Feedback Details")
-               .setView(layout)
-               .setPositiveButton(contact.getStatus() == 1 ? "Resolve" : "Save", (dialog, which) -> {
-                   String note = etNote.getText().toString().trim();
-                   submitUpdate(contact, note, 2);
-               })
-               .setNegativeButton("Close", null)
-               .show();
+        AlertDialog dialog = builder.setView(view).create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        btnSend.setOnClickListener(v -> {
+            String note = etReply.getText().toString().trim();
+            submitUpdate(contact, note, 2);
+            dialog.dismiss();
+        });
+
+        dialog.show();
+        
+        // Mark as read when opened
+        if (!contact.isRead()) {
+            mDatabase.child(contact.get_id()).child("read").setValue(true);
+        }
     }
 
     private void submitUpdate(ContactRequest contact, String note, int newStatus) {
