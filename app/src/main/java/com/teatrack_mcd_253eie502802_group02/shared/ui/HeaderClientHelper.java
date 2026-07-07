@@ -2,25 +2,37 @@ package com.teatrack_mcd_253eie502802_group02.shared.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import com.teatrack_mcd_253eie502802_group02.util.AvatarBitmapHelper;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Base64;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 
+import androidx.activity.ComponentActivity;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.teatrack_mcd_253eie502802_group02.MainActivity;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.data.FirebaseProductRepository;
+import com.teatrack_mcd_253eie502802_group02.util.CustomerSessionHelper;
 import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 import java.util.Arrays;
@@ -31,6 +43,56 @@ public final class HeaderClientHelper {
     private static final String KEY_AVATAR_USER_ID = "avatarUserId";
 
     private HeaderClientHelper() {
+    }
+
+    public static void setupSignOutMenu(Activity activity) {
+        View btnProfile = activity.findViewById(R.id.btn_profile);
+        if (btnProfile == null) {
+            return;
+        }
+        bindProfileAvatar(activity);
+        btnProfile.setOnClickListener(v -> showSignOutMenu(activity, v));
+
+        if (activity instanceof ComponentActivity) {
+            ComponentActivity componentActivity = (ComponentActivity) activity;
+            componentActivity.getLifecycle().addObserver(new DefaultLifecycleObserver() {
+                @Override
+                public void onResume(@NonNull LifecycleOwner owner) {
+                    bindProfileAvatar(activity);
+                }
+            });
+        }
+    }
+
+    private static void showSignOutMenu(Activity activity, View anchor) {
+        View popupView = LayoutInflater.from(activity).inflate(R.layout.popup_sign_out, null, false);
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
+        popupWindow.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        popupWindow.setElevation(12f);
+        popupWindow.setOutsideTouchable(true);
+
+        View signOutItem = popupView.findViewById(R.id.tvSignOut);
+        if (signOutItem != null) {
+            signOutItem.setOnClickListener(v -> {
+                popupWindow.dismiss();
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(activity, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                activity.startActivity(intent);
+                activity.finish();
+            });
+        }
+
+        popupView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        int xOff = anchor.getWidth() - popupView.getMeasuredWidth();
+        popupWindow.showAsDropDown(anchor, xOff, 8, Gravity.END);
     }
 
     public static void bindProfileAvatar(Activity activity) {
@@ -63,7 +125,7 @@ public final class HeaderClientHelper {
                 : Arrays.copyOf(avatarViews, count);
 
         SharedPreferences prefs = activity.getSharedPreferences(UserProfileHelper.PREF_NAME, Context.MODE_PRIVATE);
-        String userId = UserProfileHelper.getUserId(activity);
+        String userId = CustomerSessionHelper.getCustomerUserId(activity);
         String cachedUserId = prefs.getString(KEY_AVATAR_USER_ID, "");
         String cachedAvatar = prefs.getString(KEY_AVATAR_BASE64, "");
         if (!userId.isEmpty()
@@ -103,7 +165,7 @@ public final class HeaderClientHelper {
     }
 
     public static void cacheAvatar(Context context, String base64Image) {
-        cacheAvatar(context, UserProfileHelper.getUserId(context), base64Image);
+        cacheAvatar(context, CustomerSessionHelper.getCustomerUserId(context), base64Image);
     }
 
     public static void cacheAvatar(Context context, String userId, String base64Image) {
@@ -157,11 +219,6 @@ public final class HeaderClientHelper {
     }
 
     private static Bitmap decodeAvatar(String base64Image) {
-        try {
-            byte[] decoded = Base64.decode(base64Image, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
-        } catch (IllegalArgumentException ignored) {
-            return null;
-        }
+        return AvatarBitmapHelper.decodeBase64(base64Image);
     }
 }

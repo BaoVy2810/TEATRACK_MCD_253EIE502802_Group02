@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.ComplaintAdapter;
+import com.teatrack_mcd_253eie502802_group02.data.ContactSampleSeeder;
 import com.teatrack_mcd_253eie502802_group02.model.ContactRequest;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.util.AdminAvatarHelper;
@@ -175,6 +176,8 @@ public class AdminComplaints extends BaseActivity {
         String dbUrl = "https://teatrack-htng-default-rtdb.asia-southeast1.firebasedatabase.app";
         mDatabase = FirebaseDatabase.getInstance(dbUrl).getReference("contacts");
 
+        ContactSampleSeeder.ensureSamples(mDatabase, null);
+
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -274,7 +277,7 @@ public class AdminComplaints extends BaseActivity {
         AdminAvatarHelper.bindAvatar(ivUserAvatar, null, contact.getEmail());
         tvDate.setText(contact.getTime());
         tvContent.setText(contact.getContent());
-        etReply.setText(contact.getNote());
+        etReply.setText(contact.isRead() && contact.getNote() != null ? contact.getNote() : "");
 
         if (contact.getStatus() == 1) {
             tvStatus.setText(R.string.str_tab_pending);

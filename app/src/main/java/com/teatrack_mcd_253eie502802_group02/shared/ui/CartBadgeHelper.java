@@ -19,7 +19,7 @@ public final class CartBadgeHelper {
             btnCart.setOnClickListener(v ->
                     activity.startActivity(new Intent(activity, Cart.class)));
         }
-        HeaderMenuHelper.setupProfileMenu(activity);
+        HeaderClientHelper.setupSignOutMenu(activity);
         HeaderClientHelper.bindProfileAvatar(activity);
         updateBadge(activity);
     }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fabChatbot"
+    android:layout_width="72dp"
+    android:layout_height="72dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:contentDescription="@string/chatbot_fab_cd"
+    android:elevation="8dp">
+
+    <View
+        android:id="@+id/pulseRing1"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_chatbot_fab_ring" />
+
+    <View
+        android:id="@+id/pulseRing2"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_chatbot_fab_ring" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivFabAvatar"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/chatbot_fab_cd"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/admin_avatar"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.TeaTrack.Circle"
+        app:strokeColor="@color/white"
+        app:strokeWidth="2dp" />
+</FrameLayout>

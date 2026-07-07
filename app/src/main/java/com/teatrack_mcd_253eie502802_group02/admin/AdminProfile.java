@@ -3,11 +3,8 @@ package com.teatrack_mcd_253eie502802_group02.admin;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -30,9 +27,9 @@ import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderClientHelper;
 import com.teatrack_mcd_253eie502802_group02.util.AdminSessionHelper;
+import com.teatrack_mcd_253eie502802_group02.util.AvatarBitmapHelper;
 import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class AdminProfile extends BaseActivity {
@@ -113,12 +110,17 @@ public class AdminProfile extends BaseActivity {
 
     private void compressAndSaveAvatar(Uri imageUri) {
         try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-            Bitmap resized = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+            Bitmap resized = AvatarBitmapHelper.prepareFromUri(this, imageUri);
+            if (resized == null) {
+                Toast.makeText(this, getString(R.string.msg_avatar_process_error), Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            resized.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-            String base64Image = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+            String base64Image = AvatarBitmapHelper.toBase64Jpeg(resized);
+            if (base64Image == null) {
+                Toast.makeText(this, getString(R.string.msg_avatar_process_error), Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             binding.imgAvatar.setImageBitmap(resized);
             HeaderClientHelper.cacheAvatar(this, userId, base64Image);
@@ -177,9 +179,10 @@ public class AdminProfile extends BaseActivity {
                 binding.tvAddressValue.setText(user.getAddress());
 
                 if (user.getAvatarBase64() != null && !user.getAvatarBase64().isEmpty()) {
-                    byte[] decodedBytes = Base64.decode(user.getAvatarBase64(), Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                    binding.imgAvatar.setImageBitmap(bitmap);
+                    Bitmap bitmap = AvatarBitmapHelper.decodeBase64(user.getAvatarBase64());
+                    if (bitmap != null) {
+                        binding.imgAvatar.setImageBitmap(bitmap);
+                    }
                     HeaderClientHelper.cacheAvatar(AdminProfile.this, userId, user.getAvatarBase64());
                 }
             }

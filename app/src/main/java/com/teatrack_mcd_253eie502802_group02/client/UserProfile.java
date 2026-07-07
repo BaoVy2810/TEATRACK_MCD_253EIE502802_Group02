@@ -25,6 +25,7 @@ import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.NavBarHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.CartBadgeHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderClientHelper;
+import com.teatrack_mcd_253eie502802_group02.util.CustomerSessionHelper;
 import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
 public class UserProfile extends BaseActivity {
@@ -80,7 +81,7 @@ public class UserProfile extends BaseActivity {
     private void loadProfileHeader() {
         bindHeaderFromCache();
 
-        String userId = UserProfileHelper.getUserId(this);
+        String userId = CustomerSessionHelper.getCustomerUserId(this);
         if (userId.isEmpty()) {
             return;
         }
@@ -111,7 +112,7 @@ public class UserProfile extends BaseActivity {
                             tvUserPhone.setText(phone.trim());
                         }
                         if (user.getAvatarBase64() != null && !user.getAvatarBase64().trim().isEmpty()) {
-                            HeaderClientHelper.cacheAvatar(UserProfile.this, user.getAvatarBase64());
+                            HeaderClientHelper.cacheAvatar(UserProfile.this, userId, user.getAvatarBase64());
                         }
                         HeaderClientHelper.bindProfileAvatar(UserProfile.this);
                     }

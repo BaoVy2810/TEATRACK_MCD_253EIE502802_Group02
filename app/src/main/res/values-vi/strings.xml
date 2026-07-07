@@ -1081,6 +1081,13 @@
     <string name="str_order_details_title">Chi tiết đơn hàng</string>
     <string name="str_agency_address">Địa chỉ chi nhánh</string>
     <string name="chatbot_fab_cd">Hỗ trợ chat</string>
+    <string name="chatbot_title">Trợ lý TeaTrack</string>
+    <string name="chatbot_status_online">AI · Đang trực tuyến</string>
+    <string name="chatbot_input_hint">Hỏi tôi bất cứ điều gì…</string>
+    <string name="chatbot_send_cd">Gửi tin nhắn</string>
+    <string name="chatbot_welcome">Xin chào! Tôi là trợ lý ảo của TeaTrack. Tôi có thể giúp bạn chọn món hoặc trả lời các thắc mắc về trà sữa Ngô Gia. Hôm nay bạn thấy thế nào?</string>
+    <string name="chatbot_api_key_missing">Vui lòng thêm GEMINI_API_KEY vào local.properties để dùng chat AI.</string>
+    <string name="chatbot_error_connection">Rất tiếc, tôi đang gặp sự cố kết nối. Bạn vui lòng thử lại sau nhé!</string>
     <string name="msg_opening_notifications">Đang mở thông báo...</string>
     <string name="msg_data_already_seeded">Dữ liệu đã được khởi tạo!</string>
     <string name="msg_seeding_vouchers_success">Đã khởi tạo 10 voucher thành công!</string>

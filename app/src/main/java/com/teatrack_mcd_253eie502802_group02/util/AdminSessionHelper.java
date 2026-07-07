@@ -84,8 +84,33 @@ public final class AdminSessionHelper {
 
     public static void cacheAdminSnapshot(@NonNull Context context, @NonNull DataSnapshot adminSnap) {
         SharedPreferences prefs = context.getSharedPreferences(UserProfileHelper.PREF_NAME, Context.MODE_PRIVATE);
+        preserveCustomerSessionIfNeeded(prefs);
         UserProfileHelper.cacheFromSnapshot(prefs, adminSnap);
         prefs.edit().putString(UserProfileHelper.KEY_USER_ROLE, "Admin").apply();
+    }
+
+    private static void preserveCustomerSessionIfNeeded(@NonNull SharedPreferences prefs) {
+        String customerId = prefs.getString(UserProfileHelper.KEY_CUSTOMER_USER_ID, "");
+        if (customerId != null && !customerId.isEmpty()) {
+            return;
+        }
+        String currentRole = prefs.getString(UserProfileHelper.KEY_USER_ROLE, "");
+        String currentId = prefs.getString(UserProfileHelper.KEY_USER_ID, "");
+        if (UserProfileHelper.isAdminRole(currentRole) || currentId == null || currentId.isEmpty()) {
+            return;
+        }
+        SharedPreferences.Editor editor = prefs.edit()
+                .putString(UserProfileHelper.KEY_CUSTOMER_USER_ID, currentId)
+                .putString(UserProfileHelper.KEY_CUSTOMER_ROLE, currentRole);
+        String fullName = prefs.getString(UserProfileHelper.KEY_FULL_NAME, "");
+        if (fullName != null && !fullName.isEmpty()) {
+            editor.putString(UserProfileHelper.KEY_CUSTOMER_FULL_NAME, fullName);
+        }
+        String phone = prefs.getString(UserProfileHelper.KEY_PHONE, "");
+        if (phone != null && !phone.isEmpty()) {
+            editor.putString(UserProfileHelper.KEY_CUSTOMER_PHONE, phone);
+        }
+        editor.apply();
     }
 
     public static void bindHeaderAvatar(@NonNull Activity activity) {

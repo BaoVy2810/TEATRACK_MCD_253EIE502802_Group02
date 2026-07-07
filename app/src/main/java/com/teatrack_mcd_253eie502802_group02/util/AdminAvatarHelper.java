@@ -1,9 +1,7 @@
 package com.teatrack_mcd_253eie502802_group02.util;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -205,15 +203,7 @@ public final class AdminAvatarHelper {
 
     @Nullable
     private static Bitmap decodeAvatar(@Nullable String base64Image) {
-        if (TextUtils.isEmpty(base64Image)) {
-            return null;
-        }
-        try {
-            byte[] decoded = Base64.decode(base64Image, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(decoded, 0, decoded.length);
-        } catch (IllegalArgumentException ignored) {
-            return null;
-        }
+        return AvatarBitmapHelper.decodeBase64(base64Image);
     }
 
     @NonNull

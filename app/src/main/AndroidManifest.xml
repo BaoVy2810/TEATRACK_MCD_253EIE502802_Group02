@@ -75,7 +75,8 @@
             android:exported="false" />
         <activity
             android:name=".client.ChatbotBubble"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".client.ContactWithUs"
             android:exported="false" />

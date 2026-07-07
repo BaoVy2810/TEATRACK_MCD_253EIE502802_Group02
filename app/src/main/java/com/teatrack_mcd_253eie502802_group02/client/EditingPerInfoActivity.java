@@ -4,7 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import com.teatrack_mcd_253eie502802_group02.util.AvatarBitmapHelper;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -126,9 +126,10 @@ public class EditingPerInfoActivity extends BaseActivity {
                     selectGender(user.getGender());
 
                     if (user.getAvatarBase64() != null && !user.getAvatarBase64().isEmpty()) {
-                        byte[] decodedBytes = Base64.decode(user.getAvatarBase64(), Base64.DEFAULT);
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                        binding.imgAvatar.setImageBitmap(bitmap);
+                        Bitmap bitmap = AvatarBitmapHelper.decodeBase64(user.getAvatarBase64());
+                        if (bitmap != null) {
+                            binding.imgAvatar.setImageBitmap(bitmap);
+                        }
                     }
                 } catch (Exception e) {
                     Toast.makeText(EditingPerInfoActivity.this, R.string.personal_info_format_error, Toast.LENGTH_SHORT).show();

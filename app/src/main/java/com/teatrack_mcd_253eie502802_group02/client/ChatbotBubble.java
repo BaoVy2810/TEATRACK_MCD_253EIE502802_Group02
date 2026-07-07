@@ -1,10 +1,14 @@
 package com.teatrack_mcd_253eie502802_group02.client;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 
-import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
+import androidx.activity.EdgeToEdge;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,9 +19,11 @@ import com.google.ai.client.generativeai.type.GenerateContentResponse;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.teatrack_mcd_253eie502802_group02.BuildConfig;
 import com.teatrack_mcd_253eie502802_group02.R;
 import com.teatrack_mcd_253eie502802_group02.adapter.ChatAdapter;
 import com.teatrack_mcd_253eie502802_group02.model.ChatMessage;
+import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,30 +34,62 @@ public class ChatbotBubble extends BaseActivity {
 
     private RecyclerView rvChat;
     private ChatAdapter chatAdapter;
-    private List<ChatMessage> messages = new ArrayList<>();
+    private final List<ChatMessage> messages = new ArrayList<>();
     private EditText etMessage;
-    private ImageButton btnSend;
-    private ImageButton btnBack;
+    private ImageView btnSend;
+    private ImageView btnBack;
 
-    private String apiKey = "YOUR_GEMINI_API_KEY"; 
+    private final String apiKey = BuildConfig.GEMINI_API_KEY;
     private GenerativeModelFutures model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_chatbot_bubble);
 
         initViews();
+        applyWindowInsets();
         setupChat();
         setupAI();
 
         btnSend.setOnClickListener(v -> sendMessage());
         btnBack.setOnClickListener(v -> finish());
 
-        // Welcome message
+        etMessage.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                scrollChatToBottom();
+            }
+        });
+
         if (messages.isEmpty()) {
-            addBotMessage("Xin chào! Tôi là trợ lý ảo của TeaTrack. Tôi có thể giúp bạn chọn món hoặc trả lời các thắc mắc về trà sữa Ngô Gia. Hôm nay bạn thấy thế nào?");
+            addBotMessage(getString(R.string.chatbot_welcome));
         }
+    }
+
+    private void applyWindowInsets() {
+        View mainView = findViewById(R.id.main);
+        if (mainView == null) {
+            return;
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets ime = insets.getInsets(WindowInsetsCompat.Type.ime());
+            int bottomInset = Math.max(systemBars.bottom, ime.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, bottomInset);
+            if (ime.bottom > 0) {
+                scrollChatToBottom();
+            }
+            return insets;
+        });
+        ViewCompat.requestApplyInsets(mainView);
+    }
+
+    private void scrollChatToBottom() {
+        if (rvChat == null || messages.isEmpty()) {
+            return;
+        }
+        rvChat.post(() -> rvChat.smoothScrollToPosition(messages.size() - 1));
     }
 
     private void initViews() {
@@ -77,11 +115,12 @@ public class ChatbotBubble extends BaseActivity {
 
     private void sendMessage() {
         String userText = etMessage.getText().toString().trim();
-        if (userText.isEmpty()) return;
+        if (userText.isEmpty()) {
+            return;
+        }
 
         addUserMessage(userText);
         etMessage.setText("");
-
         generateAIResponse(userText);
     }
 
@@ -109,10 +148,10 @@ public class ChatbotBubble extends BaseActivity {
             @Override
             public void onFailure(Throwable t) {
                 runOnUiThread(() -> {
-                    if (apiKey.equals("YOUR_GEMINI_API_KEY")) {
-                        addBotMessage("Vui lòng cấu hình API Key trong ChatbotBubble.java để sử dụng AI.");
+                    if (apiKey == null || apiKey.isEmpty()) {
+                        addBotMessage(getString(R.string.chatbot_api_key_missing));
                     } else {
-                        addBotMessage("Rất tiếc, tôi đang gặp sự cố kết nối. Bạn vui lòng thử lại sau nhé!");
+                        addBotMessage(getString(R.string.chatbot_error_connection));
                     }
                 });
             }

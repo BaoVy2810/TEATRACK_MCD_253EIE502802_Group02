@@ -2,81 +2,96 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f2f9fe">
+    android:background="#F2F9FE"
+    tools:context="com.teatrack_mcd_253eie502802_group02.client.ChatbotBubble">
 
-    <!-- Toolbar -->
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/toolbar"
+        android:id="@+id/header_container"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/header_height"
         app:cardBackgroundColor="@color/white"
-        app:cardElevation="4dp"
+        app:cardElevation="@dimen/header_elevation"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.BottomRounded">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp">
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/header_height"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/btnBack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/left"
-                android:contentDescription="Back"
+                android:background="@drawable/bg_arrow_circle"
+                android:contentDescription="@string/product_detail_back"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_left"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/brand_blue" />
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="12dp"
-                android:src="@mipmap/logo_ngo_gia"
-                android:contentDescription="Logo" />
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvTopTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_marginHorizontal="8dp"
+                android:fontFamily="@font/inter_family"
+                android:gravity="center"
+                android:text="@string/chatbot_title"
+                android:textColor="@color/brand_blue"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tvChatbotStatus"
+                app:layout_constraintEnd_toStartOf="@+id/headerSpacer"
+                app:layout_constraintStart_toEndOf="@+id/btnBack"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TeaTrack Assistant"
-                    android:textColor="@color/brand_blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/inter" />
+            <TextView
+                android:id="@+id/tvChatbotStatus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="2dp"
+                android:fontFamily="@font/inter_semibold"
+                android:gravity="center"
+                android:text="@string/chatbot_status_online"
+                android:textColor="#10B981"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/headerSpacer"
+                app:layout_constraintStart_toEndOf="@+id/btnBack"
+                app:layout_constraintTop_toBottomOf="@+id/tvTopTitle" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="AI-powered"
-                    android:textColor="#10B981"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/inter_semibold" />
-            </LinearLayout>
-
-        </LinearLayout>
+            <View
+                android:id="@+id/headerSpacer"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="8dp"
         android:clipToPadding="false"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toTopOf="@id/inputArea"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/header_container" />
 
-    <!-- Input Area -->
     <LinearLayout
         android:id="@+id/inputArea"
         android:layout_width="match_parent"
@@ -84,7 +99,8 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <EditText
@@ -93,21 +109,25 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/bg_input_rounded"
-            android:hint="Ask me anything..."
+            android:fontFamily="@font/inter"
+            android:hint="@string/chatbot_input_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
             android:minHeight="48dp"
             android:paddingHorizontal="16dp"
-            android:textSize="14sp"
-            android:inputType="text"
-            android:importantForAutofill="no" />
+            android:textColor="@color/brand_blue"
+            android:textColorHint="@color/brand_blue"
+            android:textSize="14sp" />
 
         <ImageButton
             android:id="@+id/btnSend"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/bg_arrow_circle"
+            android:contentDescription="@string/chatbot_send_cd"
+            android:padding="10dp"
             android:src="@drawable/send"
-            android:contentDescription="Send"
             app:tint="@color/brand_blue" />
     </LinearLayout>
 

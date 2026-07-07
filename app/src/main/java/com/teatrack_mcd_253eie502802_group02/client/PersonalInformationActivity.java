@@ -3,11 +3,8 @@ package com.teatrack_mcd_253eie502802_group02.client;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -29,9 +26,10 @@ import com.teatrack_mcd_253eie502802_group02.model.User;
 import com.teatrack_mcd_253eie502802_group02.shared.BaseActivity;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.HeaderClientHelper;
 import com.teatrack_mcd_253eie502802_group02.shared.ui.ProfileBackHelper;
+import com.teatrack_mcd_253eie502802_group02.util.AvatarBitmapHelper;
+import com.teatrack_mcd_253eie502802_group02.util.CustomerSessionHelper;
 import com.teatrack_mcd_253eie502802_group02.util.UserProfileHelper;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class PersonalInformationActivity extends BaseActivity {
@@ -50,8 +48,7 @@ public class PersonalInformationActivity extends BaseActivity {
         setContentView(binding.getRoot());
 
         // ✅ Gán userId sớm nhất có thể
-        SharedPreferences sharedPreferences = getSharedPreferences(UserProfileHelper.PREF_NAME, MODE_PRIVATE);
-        userId = sharedPreferences.getString(UserProfileHelper.KEY_USER_ID, null);
+        userId = CustomerSessionHelper.getCustomerUserId(this);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -93,18 +90,21 @@ public class PersonalInformationActivity extends BaseActivity {
 
     private void compressAndSaveAvatar(Uri imageUri) {
         try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-            Bitmap resized = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
+            Bitmap resized = AvatarBitmapHelper.prepareFromUri(this, imageUri);
+            if (resized == null) {
+                Toast.makeText(this, "Lỗi xử lý ảnh!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            resized.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-            byte[] imageBytes = baos.toByteArray();
-
-            String base64Image = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+            String base64Image = AvatarBitmapHelper.toBase64Jpeg(resized);
+            if (base64Image == null) {
+                Toast.makeText(this, "Lỗi xử lý ảnh!", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             binding.imgAvatar.setImageBitmap(resized);
 
-            HeaderClientHelper.cacheAvatar(this, base64Image);
+            HeaderClientHelper.cacheAvatar(this, userId, base64Image);
             saveBase64ToDatabase(base64Image);
 
         } catch (IOException e) {
@@ -159,10 +159,14 @@ public class PersonalInformationActivity extends BaseActivity {
                             binding.tvAddressValue.setText(user.getAddress());
 
                             if (user.getAvatarBase64() != null && !user.getAvatarBase64().isEmpty()) {
-                                byte[] decodedBytes = Base64.decode(user.getAvatarBase64(), Base64.DEFAULT);
-                                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                                binding.imgAvatar.setImageBitmap(bitmap);
-                                HeaderClientHelper.cacheAvatar(PersonalInformationActivity.this, user.getAvatarBase64());
+                                Bitmap bitmap = AvatarBitmapHelper.decodeBase64(user.getAvatarBase64());
+                                if (bitmap != null) {
+                                    binding.imgAvatar.setImageBitmap(bitmap);
+                                }
+                            HeaderClientHelper.cacheAvatar(
+                                    PersonalInformationActivity.this,
+                                    userId,
+                                    user.getAvatarBase64());
                             }
                         }
                     }

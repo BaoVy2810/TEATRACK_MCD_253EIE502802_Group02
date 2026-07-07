@@ -624,6 +624,13 @@
     <string name="payment_title_bank">Thanh toán Ngân hàng/Ví</string>
     <!-- Blog & Chatbot -->
     <string name="chatbot_fab_cd">Chat support</string>
+    <string name="chatbot_title">TeaTrack Assistant</string>
+    <string name="chatbot_status_online">AI-powered · Online</string>
+    <string name="chatbot_input_hint">Ask me anything…</string>
+    <string name="chatbot_send_cd">Send message</string>
+    <string name="chatbot_welcome">Hello! I am TeaTrack\'s virtual assistant. I can help you choose drinks or answer questions about Ngô Gia milk tea. How are you today?</string>
+    <string name="chatbot_api_key_missing">Please add GEMINI_API_KEY to local.properties to use AI chat.</string>
+    <string name="chatbot_error_connection">Sorry, I am having connection issues. Please try again later.</string>
 
     <string name="blog_image_desc">Blog post image</string>
     <string name="blog_detail_related_title">Related posts</string>

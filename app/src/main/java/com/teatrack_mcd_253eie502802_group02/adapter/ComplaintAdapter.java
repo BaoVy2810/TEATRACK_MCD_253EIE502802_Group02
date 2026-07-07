@@ -65,7 +65,9 @@ public class ComplaintAdapter extends RecyclerView.Adapter<ComplaintAdapter.Comp
             holder.tvStatus.setTextColor(Color.parseColor("#065F46"));
         }
 
-        if (contact.getNote() != null && !contact.getNote().isEmpty()) {
+        if (!contact.isRead()) {
+            holder.layoutAdminReply.setVisibility(View.GONE);
+        } else if (contact.getNote() != null && !contact.getNote().isEmpty()) {
             holder.layoutAdminReply.setVisibility(View.VISIBLE);
             holder.tvAdminReply.setText(contact.getNote());
         } else {
